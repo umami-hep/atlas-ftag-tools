@@ -1,5 +1,6 @@
 import functools
 import operator
+from collections import namedtuple
 from dataclasses import dataclass
 
 OPERATORS = {
@@ -14,6 +15,8 @@ for i in range(2, 20):
     OPERATORS[f"%{i}=="] = functools.partial(lambda x, y, i: (x % i) == y, i=i)
     OPERATORS[f"%{i}<="] = functools.partial(lambda x, y, i: (x % i) == y, i=i)
     OPERATORS[f"%{i}>="] = functools.partial(lambda x, y, i: (x % i) == y, i=i)
+
+CutsResult = namedtuple("CutsResult", "idx values")
 
 
 @dataclass(frozen=True)
@@ -37,7 +40,7 @@ class Cuts:
     def from_list(cls, cuts: list):
         if cuts and isinstance(cuts[0], str):
             cuts = list(map(lambda cut: cut.split(" "), cuts))
-        elif cuts and isinstance(cuts[0], list):
+        if cuts and isinstance(cuts[0], list):
             cuts = list(map(tuple, cuts))
         return cls(tuple(Cut(*cut) for cut in dict.fromkeys(cuts)))  # type: ignore
 
@@ -61,7 +64,7 @@ class Cuts:
         for cut in self.cuts:
             idx = cut(array)
             array, keep = array[idx], keep[idx]
-        return idx, array
+        return CutsResult(idx, array)
 
     def __add__(self, other):
         return Cuts(tuple(dict.fromkeys(self.cuts + other.cuts)))
