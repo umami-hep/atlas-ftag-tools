@@ -20,7 +20,10 @@ dev = [
 requires = ["setuptools>=62"]
 build-backend = "setuptools.build_meta"
 
+[tool.black]
+line-length = 100
+preview = "True"
+
 [tool.ruff]
 select = ["I", "E", "F", "B", "UP", "ARG", "SIM", "TID", "RUF"]
 line-length = 100
-

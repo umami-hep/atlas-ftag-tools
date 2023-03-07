@@ -8,7 +8,7 @@ class Flavour:
     name: str
     label: str
     cuts: Cuts
-    colour: str = None
+    colour: str | None = None
 
     @property
     def prob(self):
@@ -34,13 +34,13 @@ class DefaultFlavours:
     ujets = Flavour(
         name="u",
         label="Light-jets",
-        cuts=["HadronConeExclTruthLabelID == 0"],
+        cuts=Cuts.from_list(["HadronConeExclTruthLabelID == 0"]),
         colour="#2ca02c",
     )
     taujets = Flavour(
         name="tau",
         label="$\\tau$-jets",
-        cuts=["HadronConeExclTruthLabelID == 15"],
+        cuts=Cuts.from_list(["HadronConeExclTruthLabelID == 15"]),
         colour="#7c5295",
     )
 

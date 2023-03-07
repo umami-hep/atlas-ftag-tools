@@ -1,3 +1,4 @@
+import functools
 import operator
 from dataclasses import dataclass
 
@@ -10,9 +11,9 @@ OPERATORS = {
 }
 
 for i in range(2, 20):
-    OPERATORS[f"%{i}=="] = lambda x, y: (x % i) == y
-    OPERATORS[f"%{i}<="] = lambda x, y: (x % i) == y
-    OPERATORS[f"%{i}>="] = lambda x, y: (x % i) == y
+    OPERATORS[f"%{i}=="] = functools.partial(lambda x, y, i: (x % i) == y, i=i)
+    OPERATORS[f"%{i}<="] = functools.partial(lambda x, y, i: (x % i) == y, i=i)
+    OPERATORS[f"%{i}>="] = functools.partial(lambda x, y, i: (x % i) == y, i=i)
 
 
 @dataclass(frozen=True)
@@ -36,9 +37,9 @@ class Cuts:
     def from_list(cls, cuts: list):
         if cuts and isinstance(cuts[0], str):
             cuts = list(map(lambda cut: cut.split(" "), cuts))
-        if cuts and isinstance(cuts[0], list):
-            cuts = map(tuple, cuts)
-        return cls(tuple(Cut(*cut) for cut in dict.fromkeys(cuts)))
+        elif cuts and isinstance(cuts[0], list):
+            cuts = list(map(tuple, cuts))
+        return cls(tuple(Cut(*cut) for cut in dict.fromkeys(cuts)))  # type: ignore
 
     @classmethod
     def empty(cls):
