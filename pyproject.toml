@@ -3,8 +3,7 @@ name = "atlas-ftag"
 version = "0.1"
 description = "ATLAS Flavour Tagging Tools"
 license = {text = "MIT"}
-requires-python = ">=3.9"
-
+requires-python = ">=3.10"
 dependencies = [
   "h5py",
   "numpy",
@@ -25,5 +24,5 @@ line-length = 100
 preview = "True"
 
 [tool.ruff]
-select = ["I", "E", "F", "B", "UP", "ARG", "SIM", "TID", "RUF"]
+select = ["I", "E", "W", "F", "B", "UP", "ARG", "SIM", "TID", "RUF", "D2", "D3", "D4"]
 line-length = 100
