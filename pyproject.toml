@@ -1,0 +1,26 @@
+[project]
+name = "atlas-ftag"
+version = "0.1"
+description = "ATLAS Flavour Tagging Tools"
+license = {text = "MIT"}
+requires-python = ">=3.9"
+
+dependencies = [
+  "h5py",
+  "numpy",
+]
+
+[project.optional-dependencies]
+dev = [
+  "black",
+  "ruff",
+]
+
+[build-system]
+requires = ["setuptools>=62"]
+build-backend = "setuptools.build_meta"
+
+[tool.ruff]
+select = ["I", "E", "F", "B", "UP", "ARG", "SIM", "TID", "RUF"]
+line-length = 100
+
