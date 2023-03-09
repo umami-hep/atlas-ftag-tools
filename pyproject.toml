@@ -25,7 +25,7 @@ preview = "True"
 
 [tool.ruff]
 select = ["I", "E", "W", "F", "B", "UP", "ARG", "SIM", "TID", "RUF", "D2", "D3", "D4"]
-ignore = ["D211", "D213"]
+ignore = ["D211", "D213", "RUF005"]
 line-length = 100
 
 [mypy]

@@ -11,8 +11,8 @@ class Sample:
     @property
     def path(self) -> Path | list[Path]:
         if isinstance(self.pattern, str):
-            pattern = [Path(self.pattern)]
-        return [self.ntuple_dir / p for p in pattern]
+            return self.ntuple_dir / self.pattern
+        return [self.ntuple_dir / p for p in self.pattern]
 
     def __str__(self):
         return self.name
