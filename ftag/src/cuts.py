@@ -1,7 +1,9 @@
 import functools
 import operator
 from collections import namedtuple
+from collections.abc import Generator
 from dataclasses import dataclass
+from typing import Self
 
 OPERATORS = {
     "==": operator.__eq__,
@@ -28,24 +30,24 @@ class Cut:
     def __call__(self, array):
         return OPERATORS[self.operator](array[self.variable], self.value)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.variable} {self.operator} {self.value}"
 
 
 @dataclass(frozen=True)
 class Cuts:
-    cuts: tuple[Cut]
+    cuts: tuple[Cut, ...]
 
     @classmethod
-    def from_list(cls, cuts: list):
+    def from_list(cls, cuts: list) -> Self:
         if cuts and isinstance(cuts[0], str):
             cuts = list(map(lambda cut: cut.split(" "), cuts))
         if cuts and isinstance(cuts[0], list):
             cuts = list(map(tuple, cuts))
-        return cls(tuple(Cut(*cut) for cut in dict.fromkeys(cuts)))  # type: ignore
+        return cls(tuple(Cut(*cut) for cut in dict.fromkeys(cuts)))
 
     @classmethod
-    def empty(cls):
+    def empty(cls) -> Self:
         return cls(tuple())
 
     def __post_init__(self):
@@ -53,30 +55,30 @@ class Cuts:
         assert all(isinstance(c, Cut) for c in self.cuts)
 
     @property
-    def variables(self):
+    def variables(self) -> list[str]:
         return list(dict.fromkeys(c.variable for c in self))
 
-    def ignore(self, variables):
+    def ignore(self, variables: list[str]):
         return Cuts(tuple(c for c in self if c.variable not in variables))
 
-    def __call__(self, array):
+    def __call__(self, array) -> CutsResult:
         keep = list(range(len(array)))
         for cut in self.cuts:
             idx = cut(array)
             array, keep = array[idx], keep[idx]
         return CutsResult(idx, array)
 
-    def __add__(self, other):
+    def __add__(self, other: Self):
         return Cuts(tuple(dict.fromkeys(self.cuts + other.cuts)))
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.cuts)
 
-    def __iter__(self):
+    def __iter__(self) -> Generator:
         yield from self.cuts
 
     def __getitem__(self, variable):
         return Cuts(tuple(cut for cut in self.cuts if cut.variable == variable))
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str([f"{c}" for c in self.cuts])

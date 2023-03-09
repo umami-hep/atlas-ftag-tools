@@ -11,10 +11,10 @@ class Flavour:
     colour: str | None = None
 
     @property
-    def prob(self):
+    def px(self) -> str:
         return f"p{self.name}"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
 
@@ -69,5 +69,5 @@ class DefaultFlavours:
         colour="#38761D",
     )
 
-    def __getitem__(self, key):
+    def __getitem__(self, key) -> Flavour:
         return getattr(self, key)
