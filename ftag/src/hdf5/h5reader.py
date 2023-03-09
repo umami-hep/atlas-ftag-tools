@@ -99,8 +99,7 @@ class H5SingleReader:
 
 @dataclass
 class H5Reader:
-    fname: Path | str | None = None
-    fnames: list[Path | str] | None = None
+    fname: list[Path | str] | Path | str
     weights: list[float] | None = None
     batch_size: int = 100_000
     jets_name: str = "jets"
@@ -108,22 +107,18 @@ class H5Reader:
     shuffle: bool = True
 
     def __post_init__(self) -> None:
-        if self.fname is not None:
-            if self.fnames is not None:
-                raise ValueError("Only one of fname or fnames can be specified")
-            self.fnames = [self.fname]
-        if self.fnames is None:
-            raise ValueError("One of fname or fnames must be specified")
+        if isinstance(self.fname, str | Path):
+            self.fname = [self.fname]
 
         # calculate batch sizes
         if self.weights is None:
-            self.weights = [1 / len(self.fnames)] * len(self.fnames)
+            self.weights = [1 / len(self.fname)] * len(self.fname)
         self.batch_sizes = [int(w * self.batch_size) for w in self.weights]
 
         # create readers
         self.readers = [
             H5SingleReader(fname, batch_size, self.jets_name, self.as_full, self.shuffle)
-            for fname, batch_size in zip(self.fnames, self.batch_sizes, strict=True)
+            for fname, batch_size in zip(self.fname, self.batch_sizes, strict=True)
         ]
 
     def stream(self, variables: dict, num_jets, cuts: Cuts | None = None) -> Generator:
