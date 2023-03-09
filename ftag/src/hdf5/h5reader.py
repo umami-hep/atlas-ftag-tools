@@ -99,7 +99,7 @@ class H5SingleReader:
 
 @dataclass
 class H5Reader:
-    fname: list[Path | str] | Path | str
+    fname: Path | str | list[Path | str]
     weights: list[float] | None = None
     batch_size: int = 100_000
     jets_name: str = "jets"
