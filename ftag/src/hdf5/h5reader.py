@@ -16,7 +16,7 @@ class H5SingleReader:
     fname: Path | str
     batch_size: int = 100_000
     jets_name: str = "jets"
-    as_full: bool = False
+    precision: str | None = None
     shuffle: bool = True
 
     def __post_init__(self) -> None:
@@ -35,7 +35,7 @@ class H5SingleReader:
             return obj.attrs[name]
 
     def empty(self, ds: h5py.Dataset, variables: list[str]) -> np.ndarray:
-        return np.array(0, dtype=get_dtype(ds, variables, self.as_full))
+        return np.array(0, dtype=get_dtype(ds, variables, self.precision))
 
     def read_chunk(self, ds: h5py.Dataset, array: np.ndarray, low: int) -> np.ndarray:
         high = min(low + self.batch_size, self.num_jets)
@@ -103,7 +103,7 @@ class H5Reader:
     weights: list[float] | None = None
     batch_size: int = 100_000
     jets_name: str = "jets"
-    as_full: bool = False
+    precision: str | None = None
     shuffle: bool = True
 
     def __post_init__(self) -> None:
@@ -117,7 +117,7 @@ class H5Reader:
 
         # create readers
         self.readers = [
-            H5SingleReader(fname, batch_size, self.jets_name, self.as_full, self.shuffle)
+            H5SingleReader(fname, batch_size, self.jets_name, self.precision, self.shuffle)
             for fname, batch_size in zip(self.fname, self.batch_sizes, strict=True)
         ]
 

@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def get_dtype(ds, variables=None, precision=None) -> np.dtype:
+def get_dtype(ds, variables: list[str] | None = None, precision: str | None = None) -> np.dtype:
     """Return a dtype based on an existing dataset and requested variables."""
     if variables is None:
         variables = ds.dtype.names
