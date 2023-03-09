@@ -8,7 +8,7 @@ class Flavour:
     name: str
     label: str
     cuts: Cuts
-    colour: str | None = None
+    colour: str
 
     @property
     def px(self) -> str:
@@ -18,56 +18,15 @@ class Flavour:
         return self.name
 
 
-class DefaultFlavours:
-    bjets = Flavour(
-        name="b",
-        label="$b$-jets",
-        cuts=Cuts.from_list(["HadronConeExclTruthLabelID == 5"]),
-        colour="#1f77b4",
-    )
-    cjets = Flavour(
-        name="c",
-        label="$c$-jets",
-        cuts=Cuts.from_list(["HadronConeExclTruthLabelID == 4"]),
-        colour="#ff7f0e",
-    )
-    ujets = Flavour(
-        name="u",
-        label="Light-jets",
-        cuts=Cuts.from_list(["HadronConeExclTruthLabelID == 0"]),
-        colour="#2ca02c",
-    )
-    taujets = Flavour(
-        name="tau",
-        label="$\\tau$-jets",
-        cuts=Cuts.from_list(["HadronConeExclTruthLabelID == 15"]),
-        colour="#7c5295",
-    )
+@dataclass
+class FlavourContainer:
+    flavours: dict[str, Flavour]
 
-    Hbb = Flavour(
-        name="hbb",
-        label="Hbb",
-        cuts=Cuts.from_list(["R10TruthLabel_R22v1 == 11"]),
-        colour="#1f77b4",
-    )
-    Hcc = Flavour(
-        name="hcc",
-        label="Hcc",
-        cuts=Cuts.from_list(["R10TruthLabel_R22v1 == 12"]),
-        colour="#B45F06",
-    )
-    top = Flavour(
-        name="top",
-        label="Top",
-        cuts=Cuts.from_list(["R10TruthLabel_R22v1 == 1"]),
-        colour="#A300A3",
-    )
-    qcd = Flavour(
-        name="qcd",
-        label="QCD",
-        cuts=Cuts.from_list(["R10TruthLabel_R22v1 == 10"]),
-        colour="#38761D",
-    )
+    def __iter__(self):
+        yield from self.flavours.values()
 
     def __getitem__(self, key) -> Flavour:
-        return getattr(self, key)
+        return self.flavours[key]
+
+    def __getattr__(self, name) -> Flavour:
+        return self[name]
