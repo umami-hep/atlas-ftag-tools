@@ -1,7 +1,6 @@
 # FTAG TOOLS
 
-This is a collection of tools for FTAG.
-
+This is a collection of Python tools for working with FTAG.
 
 ### Cuts
 
@@ -44,5 +43,5 @@ from ftag import Flavours
 print(Flavours.bjets)
 
 # apply HadronConeExclTruthLabelID == 5 selection
-bjets = Flavours.bjets.cuts(array)
+bjets = Flavours.bjets.cuts(array).values
 ```
