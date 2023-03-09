@@ -1,6 +1,6 @@
 from ftag.src.cuts import Cuts
 from ftag.src.flavour import DefaultFlavours
-from ftag.src.hdf5.h5reader import H5MultiReader, H5Reader
+from ftag.src.hdf5.h5reader import H5Reader
 
 Flavours = DefaultFlavours()
-__all__ = ["Cuts", "Flavours", "H5Reader", "H5MultiReader"]
+__all__ = ["Cuts", "Flavours", "H5Reader"]
