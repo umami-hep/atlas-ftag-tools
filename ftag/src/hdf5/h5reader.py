@@ -121,6 +121,14 @@ class H5Reader:
             for fname, batch_size in zip(self.fname, self.batch_sizes, strict=True)
         ]
 
+    @property
+    def num_jets(self) -> int:
+        return sum(r.num_jets for r in self.readers)
+
+    def get_dtype(self, name: str) -> np.dtype:
+        with h5py.File(self.readers[0].fname) as f:
+            return f[name].dtype
+
     def stream(self, variables: dict, num_jets, cuts: Cuts | None = None) -> Generator:
         # calculate number of jets to load from each reader
         assert self.weights is not None
@@ -141,8 +149,9 @@ class H5Reader:
 
             # combine samples and shuffle
             data = {name: np.concatenate([s[name] for s in samples]) for name in variables}
-            for name in variables:
-                rng.shuffle(data[name])
+            if self.shuffle:
+                for name in variables:
+                    rng.shuffle(data[name])
 
             # apply selections
             if cuts:

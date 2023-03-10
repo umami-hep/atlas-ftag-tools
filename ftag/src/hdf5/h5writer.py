@@ -16,6 +16,7 @@ class H5Writer:
     add_flavour_label: bool = False
     compression: str = "lzf"
     precision: str | None = None
+    shuffle: bool = True
     num_written: int = 0
     rng = np.random.default_rng(42)
 
@@ -25,7 +26,7 @@ class H5Writer:
         self.dst.parent.mkdir(parents=True, exist_ok=True)
         self.file = h5py.File(self.dst, "w")
         self.add_attr("srcfile", str(self.src))
-        for name, var in self.variables:
+        for name, var in self.variables.items():
             self.create_ds(name, var)
 
     def create_ds(self, name: str, variables: list[str]) -> None:
@@ -63,9 +64,13 @@ class H5Writer:
         obj = self.file[group] if group else self.file
         obj.attrs.create(name, data)
 
-    def write(self, data: dict[str, np.array], shuffle=True) -> None:
+    def write(self, data: dict[str, np.array]) -> None:
+        if (total := self.num_written + len(data[self.jets_name])) > self.num_jets:
+            raise ValueError(
+                f"Attempted to write more jets than expected: {total:,} > {self.num_jets:,}"
+            )
         idx = np.arange(len(data[self.jets_name]))
-        if shuffle:
+        if self.shuffle:
             self.rng.shuffle(idx)
             data = {name: array[idx] for name, array in data.items()}
 
