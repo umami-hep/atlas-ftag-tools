@@ -20,6 +20,5 @@ env/
 *.h5
 *.egg-info/
 *_cache/
-*.ipynb
 .coverage*
 .cometml-runs
