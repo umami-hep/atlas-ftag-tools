@@ -12,7 +12,7 @@ class Flavour:
 
     @property
     def px(self) -> str:
-        return f"p{self.name}"
+        return f"p{self.name.rstrip('jets')}"
 
     def __str__(self) -> str:
         return self.name

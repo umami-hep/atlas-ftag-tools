@@ -1,9 +1,12 @@
 import functools
 import operator
+from ast import literal_eval
 from collections import namedtuple
 from collections.abc import Generator
 from dataclasses import dataclass
 from typing import Self
+
+import numpy as np
 
 OPERATORS = {
     "==": operator.__eq__,
@@ -25,7 +28,13 @@ CutsResult = namedtuple("CutsResult", "idx values")
 class Cut:
     variable: str
     operator: str
-    value: str
+    _value: str | int | float
+
+    @property
+    def value(self) -> int | float:
+        if isinstance(self._value, str):
+            return literal_eval(self._value)
+        return self._value
 
     def __call__(self, array):
         return OPERATORS[self.operator](array[self.variable], self.value)
@@ -62,7 +71,7 @@ class Cuts:
         return Cuts(tuple(c for c in self if c.variable not in variables))
 
     def __call__(self, array) -> CutsResult:
-        keep = list(range(len(array)))
+        keep = np.arange(len(array))
         for cut in self.cuts:
             idx = cut(array)
             array, keep = array[idx], keep[idx]
@@ -80,5 +89,5 @@ class Cuts:
     def __getitem__(self, variable):
         return Cuts(tuple(cut for cut in self.cuts if cut.variable == variable))
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return str([f"{c}" for c in self.cuts])

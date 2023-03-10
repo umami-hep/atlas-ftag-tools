@@ -1,4 +1,10 @@
+from tempfile import TemporaryFile
+
+import h5py
 import numpy as np
+from numpy.lib.recfunctions import unstructured_to_structured as u2s
+
+__all__ = ["get_dummy_file"]
 
 
 def get_dtype(ds, variables: list[str] | None = None, precision: str | None = None) -> np.dtype:
@@ -28,3 +34,77 @@ def cast_dtype(typestr: str, precision: str) -> np.dtype:
     if precision == "full":
         return np.dtype("f4")
     raise ValueError(f"Invalid precision {precision}")
+
+
+def get_dummy_file():
+    jet_vars = [
+        "pt",
+        "eta",
+        "abs_eta",
+        "mass",
+        "HadronConeExclTruthLabelID",
+        "n_tracks",
+        "n_truth_promptLepton",
+    ]
+
+    track_vars = ["pt", "deta", "dphi", "dr"]
+
+    # settings
+    n_jets = 1000
+    n_tracks_per_jet = 40
+
+    # setup jets
+    shapes_jets = {
+        "inputs": [n_jets, len(jet_vars)],
+    }
+
+    # setup tracks
+    shapes_tracks = {
+        "inputs": [n_jets, n_tracks_per_jet, len(track_vars)],
+        "valid": [n_jets, n_tracks_per_jet],
+    }
+
+    # setup jets
+    rng = np.random.default_rng()
+    jets_dtype = np.dtype([(n, "f4") for n in jet_vars])
+    jets = u2s(rng.random(shapes_jets["inputs"]), jets_dtype)
+    jets["HadronConeExclTruthLabelID"] = np.random.choice([0, 4, 5], size=n_jets)
+    jets["pt"] *= 400e3
+    jets["abs_eta"] *= 4.0
+
+    # setup tracks
+    tracks_dtype = np.dtype([(n, "f4") for n in track_vars])
+    tracks = u2s(rng.random(shapes_tracks["inputs"]), tracks_dtype)
+    valid = rng.random(shapes_tracks["valid"])
+    valid = valid.astype(bool).view(dtype=np.dtype([("valid", bool)]))
+    tracks = join_structured_arrays([tracks, valid])
+
+    f = h5py.File(TemporaryFile(), "w", backing_store=False)
+    f.create_dataset("jets", data=jets)
+    f.create_dataset("tracks", data=tracks)
+    f.create_dataset("flow", data=tracks)
+    return f
+
+
+def join_structured_arrays(arrays: list):
+    """Join a list of structured numpy arrays.
+
+    See https://github.com/numpy/numpy/issues/7811
+
+    Parameters
+    ----------
+    arrays : list
+        List of structured numpy arrays to join
+
+    Returns
+    -------
+    np.array
+        A merged structured array
+    """
+    dtype: list = sum((a.dtype.descr for a in arrays), [])
+    newrecarray = np.empty(arrays[0].shape, dtype=dtype)
+    for a in arrays:
+        for name in a.dtype.names:
+            newrecarray[name] = a[name]
+
+    return newrecarray
