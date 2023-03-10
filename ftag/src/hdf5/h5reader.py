@@ -152,7 +152,7 @@ class H5Reader:
             # select
             yield data
 
-    def load(self, variables: dict[str, list], num_jets: int, cuts: Cuts | None = None) -> dict:
+    def load(self, variables: dict, num_jets: int, cuts: Cuts | None = None) -> dict:
         data: dict[str, list] = {name: [] for name in variables}
         for sample in self.stream(variables, num_jets, cuts):
             for name, array in sample.items():
