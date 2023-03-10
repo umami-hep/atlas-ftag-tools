@@ -100,11 +100,11 @@ class H5SingleReader:
 @dataclass
 class H5Reader:
     fname: Path | str | list[Path | str]
-    weights: list[float] | None = None
     batch_size: int = 100_000
     jets_name: str = "jets"
     precision: str | None = None
     shuffle: bool = True
+    weights: list[float] | None = None
 
     def __post_init__(self) -> None:
         if isinstance(self.fname, str | Path):
@@ -120,6 +120,11 @@ class H5Reader:
             H5SingleReader(fname, batch_size, self.jets_name, self.precision, self.shuffle)
             for fname, batch_size in zip(self.fname, self.batch_sizes, strict=True)
         ]
+
+    @property
+    def vds_path(self) -> Path:
+        # TODO: this is mostly needed to get the src dtype, there is probably a better way of exposing this directly
+        return Path(self.readers[0].fname)
 
     @property
     def num_jets(self) -> int:

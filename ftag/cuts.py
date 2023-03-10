@@ -75,7 +75,7 @@ class Cuts:
         for cut in self.cuts:
             idx = cut(array)
             array, keep = array[idx], keep[idx]
-        return CutsResult(idx, array)
+        return CutsResult(keep, array)
 
     def __add__(self, other: Self):
         return Cuts(tuple(dict.fromkeys(self.cuts + other.cuts)))

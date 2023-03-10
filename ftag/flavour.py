@@ -26,7 +26,10 @@ class FlavourContainer:
         yield from self.flavours.values()
 
     def __getitem__(self, key) -> Flavour:
-        return self.flavours[key]
+        try:
+            return self.flavours[key]
+        except KeyError as e:
+            raise KeyError(f"Flavour '{key}' not found") from e
 
     def __getattr__(self, name) -> Flavour:
         return self[name]

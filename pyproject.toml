@@ -1,5 +1,5 @@
 [project]
-name = "ftag"
+name = "atlas-ftag-tools"
 version = "0.1"
 description = "ATLAS Flavour Tagging Tools"
 license = {text = "MIT"}
