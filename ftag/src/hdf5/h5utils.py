@@ -1,4 +1,4 @@
-from tempfile import TemporaryFile
+from tempfile import NamedTemporaryFile
 
 import h5py
 import numpy as np
@@ -79,11 +79,12 @@ def get_dummy_file():
     valid = valid.astype(bool).view(dtype=np.dtype([("valid", bool)]))
     tracks = join_structured_arrays([tracks, valid])
 
-    f = h5py.File(TemporaryFile(), "w", backing_store=False)
+    fname = NamedTemporaryFile(suffix=".h5").name
+    f = h5py.File(fname, "w")
     f.create_dataset("jets", data=jets)
     f.create_dataset("tracks", data=tracks)
     f.create_dataset("flow", data=tracks)
-    return f
+    return fname, f
 
 
 def join_structured_arrays(arrays: list):
