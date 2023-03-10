@@ -5,7 +5,7 @@ import yaml
 from ftag.src.cuts import Cuts
 from ftag.src.flavour import Flavour, FlavourContainer
 from ftag.src.hdf5.h5reader import H5Reader
-from ftag.src.hdf5.h5utils import get_dummy_file as get_dummy_file
+from ftag.src.hdf5.h5utils import get_dummy_file
 from ftag.src.hdf5.h5writer import H5Writer
 from ftag.src.sample import Sample
 
