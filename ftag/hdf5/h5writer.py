@@ -3,7 +3,8 @@ from pathlib import Path
 
 import h5py
 import numpy as np
-from jetpp.hdf5.h5utils import get_dtype
+
+from ftag.hdf5 import get_dtype
 
 
 @dataclass

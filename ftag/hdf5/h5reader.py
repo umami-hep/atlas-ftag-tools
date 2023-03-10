@@ -6,9 +6,9 @@ from pathlib import Path
 import h5py
 import numpy as np
 
-from ftag.src.cuts import Cuts
-from ftag.src.hdf5.h5utils import get_dtype
-from ftag.src.vds import create_vritual_file
+from ftag.cuts import Cuts
+from ftag.hdf5.h5utils import get_dtype
+from ftag.vds import create_vritual_file
 
 
 @dataclass

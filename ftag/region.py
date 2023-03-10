@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from jetpp.classes.cuts import Cuts
+from ftag.cuts import Cuts
 
 
 @dataclass(frozen=True)

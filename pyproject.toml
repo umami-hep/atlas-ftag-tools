@@ -1,5 +1,5 @@
 [project]
-name = "atlas-ftag"
+name = "ftag"
 version = "0.1"
 description = "ATLAS Flavour Tagging Tools"
 license = {text = "MIT"}
@@ -14,6 +14,9 @@ dev = [
   "black",
   "ruff",
 ]
+
+[tool.setuptools]
+packages = ["ftag"]
 
 [build-system]
 requires = ["setuptools>=62"]

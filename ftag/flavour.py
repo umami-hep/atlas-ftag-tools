@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from ftag.src.cuts import Cuts
+from ftag.cuts import Cuts
 
 
 @dataclass(frozen=True)
