@@ -6,13 +6,13 @@ from pathlib import Path
 class Sample:
     name: str
     ntuple_dir: Path
-    pattern: str | list[str]
+    pattern: str | tuple[str]
 
     @property
     def path(self) -> Path | list[Path]:
         if isinstance(self.pattern, str):
             return self.ntuple_dir / self.pattern
-        return [self.ntuple_dir / p for p in self.pattern]
+        return tuple(self.ntuple_dir / p for p in self.pattern)
 
     def __str__(self):
         return self.name
