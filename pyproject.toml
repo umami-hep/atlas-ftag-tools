@@ -11,8 +11,8 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-  "black",
-  "ruff",
+  "black==23.1.0",
+  "ruff==0.0.254",
 ]
 
 [tool.setuptools]

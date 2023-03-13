@@ -135,12 +135,8 @@ class H5Reader:
             return f[name].dtype
 
     def stream(self, variables: dict, num_jets, cuts: Cuts | None = None) -> Generator:
-        # calculate number of jets to load from each reader
-        assert self.weights is not None
-        num_jets = [int(w * num_jets) for w in self.weights]
-
-        # get streams for unselected jets from each reader
-        streams = [r.stream(variables, n) for r, n in zip(self.readers, num_jets, strict=True)]
+        # get streams for selected jets from each reader
+        streams = [r.stream(variables, r.num_jets) for r in self.readers]
 
         rng = np.random.default_rng(42)
         while True:
