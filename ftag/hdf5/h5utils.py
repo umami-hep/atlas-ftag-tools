@@ -70,7 +70,8 @@ def get_dummy_file():
     jets = u2s(rng.random(shapes_jets["inputs"]), jets_dtype)
     jets["HadronConeExclTruthLabelID"] = np.random.choice([0, 4, 5], size=n_jets)
     jets["pt"] *= 400e3
-    jets["abs_eta"] *= 4.0
+    jets["eta"] = (jets["eta"] - 0.5) * 6.0
+    jets["abs_eta"] = np.abs(jets["eta"])
 
     # setup tracks
     tracks_dtype = np.dtype([(n, "f4") for n in track_vars])

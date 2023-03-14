@@ -136,7 +136,7 @@ class H5Reader:
 
     def stream(self, variables: dict, num_jets, cuts: Cuts | None = None) -> Generator:
         # get streams for selected jets from each reader
-        streams = [r.stream(variables, r.num_jets) for r in self.readers]
+        streams = [r.stream(variables, int(r.num_jets / self.num_jets * num_jets)) for r in self.readers]
 
         rng = np.random.default_rng(42)
         while True:

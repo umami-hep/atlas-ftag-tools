@@ -9,11 +9,11 @@ from typing import Self
 import numpy as np
 
 OPERATORS = {
-    "==": operator.__eq__,
-    ">=": operator.__ge__,
-    "<=": operator.__le__,
-    ">": operator.__gt__,
-    "<": operator.__lt__,
+    "==": operator.eq,
+    ">=": operator.ge,
+    "<=": operator.le,
+    ">": operator.gt,
+    "<": operator.lt,
 }
 
 for i in range(2, 20):
