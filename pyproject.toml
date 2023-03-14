@@ -3,7 +3,7 @@ name = "atlas-ftag-tools"
 version = "0.1"
 description = "ATLAS Flavour Tagging Tools"
 license = {text = "MIT"}
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
   "h5py",
   "numpy",
@@ -13,6 +13,10 @@ dependencies = [
 dev = [
   "black==23.1.0",
   "ruff==0.0.254",
+  "pytest==7.2.2",
+  "pytest-cov==4.0.0",
+  "pytest_notebook==0.8.1",
+  "ipykernel==6.21.3",
 ]
 
 [tool.setuptools]
@@ -30,6 +34,10 @@ preview = "True"
 select = ["I", "E", "W", "F", "B", "UP", "ARG", "SIM", "TID", "RUF", "D2", "D3", "D4"]
 ignore = ["D211", "D213", "RUF005"]
 line-length = 100
+
+[tool.pytest]
+nb_exec_timeout = 50
+nb_coverage = "True"
 
 [mypy]
 ignore_missing_imports = "True"
