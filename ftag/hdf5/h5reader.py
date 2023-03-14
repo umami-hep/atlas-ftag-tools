@@ -8,7 +8,7 @@ import numpy as np
 
 from ftag.cuts import Cuts
 from ftag.hdf5.h5utils import get_dtype
-from ftag.vds import create_vritual_file
+from ftag.vds import create_virtual_file
 
 
 @dataclass
@@ -22,7 +22,7 @@ class H5SingleReader:
     def __post_init__(self) -> None:
         self.fname = str(self.fname)
         if "*" in self.fname:
-            self.fname = create_vritual_file(self.fname)
+            self.fname = create_virtual_file(self.fname)
 
     @property
     def num_jets(self) -> int:
@@ -123,7 +123,8 @@ class H5Reader:
 
     @property
     def vds_path(self) -> Path:
-        # TODO: this is mostly needed to get the src dtype, there is probably a better way of exposing this directly
+        # TODO: this is mostly needed to get the src dtype,
+        # there is probably a better way of exposing this directly
         return Path(self.readers[0].fname)
 
     @property
@@ -136,7 +137,9 @@ class H5Reader:
 
     def stream(self, variables: dict, num_jets, cuts: Cuts | None = None) -> Generator:
         # get streams for selected jets from each reader
-        streams = [r.stream(variables, int(r.num_jets / self.num_jets * num_jets)) for r in self.readers]
+        streams = [
+            r.stream(variables, int(r.num_jets / self.num_jets * num_jets)) for r in self.readers
+        ]
 
         rng = np.random.default_rng(42)
         while True:
