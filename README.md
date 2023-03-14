@@ -18,5 +18,5 @@ python -m pip install -e .
 
 To install optional development dependencies (for formatting and linting) you can istead install with
 ```bash
-python -m pip install -e .[dev]
+python -m pip install -e ".[dev]"
 ```
