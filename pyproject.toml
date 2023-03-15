@@ -12,6 +12,7 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
   "black==23.1.0",
+  "darglint==1.8.1",
   "ruff==0.0.254",
   "pytest==7.2.2",
   "pytest-cov==4.0.0",
@@ -29,6 +30,12 @@ build-backend = "setuptools.build_meta"
 [tool.black]
 line-length = 100
 preview = "True"
+
+[tool.darglint]
+ignore = ["DAR203", "DAR103"]
+docstring_style = "numpy"
+strictness = "full"
+log_level = "INFO"
 
 [tool.ruff]
 select = ["I", "E", "W", "F", "B", "UP", "ARG", "SIM", "TID", "RUF", "D2", "D3", "D4"]
