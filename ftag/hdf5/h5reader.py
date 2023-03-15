@@ -58,7 +58,19 @@ class H5SingleReader:
         return {name: array[keep_idx] for name, array in data.items()}
 
     def stream(self, variables: dict, num_jets: int, cuts: Cuts | None = None) -> Generator:
-        """Generate batches of selected jets."""
+        """Generate batches of selected jets.
+
+        Args:
+            variables (dict): _description_
+            num_jets (int): _description_
+            cuts (Cuts | None, optional): _description_. Defaults to None.
+
+        Raises:
+            ValueError: _description_
+
+        Yields:
+            Generator: _description_
+        """
         if num_jets > self.num_jets:
             raise ValueError(
                 f"{num_jets:,} jets requested but only {self.num_jets:,} available in {self.fname}"

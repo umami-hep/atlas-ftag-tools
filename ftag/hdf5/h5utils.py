@@ -8,7 +8,20 @@ __all__ = ["get_dummy_file"]
 
 
 def get_dtype(ds, variables: list[str] | None = None, precision: str | None = None) -> np.dtype:
-    """Return a dtype based on an existing dataset and requested variables."""
+    """Return a dtype based on an existing dataset and requested variables.
+
+    Args:
+        ds (_type_): _description_
+        variables (list[str] | None, optional): _description_. Defaults to None.
+        precision (str | None, optional): _description_. Defaults to None.
+
+    Raises:
+        ValueError: _description_
+
+    Returns:
+        np.dtype: _description_
+    """    
+
     if variables is None:
         variables = ds.dtype.names
 
@@ -25,7 +38,19 @@ def get_dtype(ds, variables: list[str] | None = None, precision: str | None = No
 
 
 def cast_dtype(typestr: str, precision: str) -> np.dtype:
-    """Cast float type to half or full precision."""
+    """Cast float type to half or full precision.
+
+    Args:
+        typestr (str): _description_
+        precision (str): _description_
+
+    Raises:
+        ValueError: _description_
+
+    Returns:
+        np.dtype: _description_
+    """    
+
     t = np.dtype(typestr)
     if t.kind != "f" or t.itemsize != 2:
         return t
@@ -93,15 +118,11 @@ def join_structured_arrays(arrays: list):
 
     See https://github.com/numpy/numpy/issues/7811
 
-    Parameters
-    ----------
-    arrays : list
-        List of structured numpy arrays to join
+    Args:
+        arrays (list) : List of structured numpy arrays to join
 
-    Returns
-    -------
-    np.array
-        A merged structured array
+    Returns:
+        np.array: A merged structured array
     """
     dtype: list = sum((a.dtype.descr for a in arrays), [])
     newrecarray = np.empty(arrays[0].shape, dtype=dtype)
