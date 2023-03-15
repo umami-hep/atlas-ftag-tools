@@ -31,16 +31,13 @@ build-backend = "setuptools.build_meta"
 line-length = 100
 preview = "True"
 
-[tool.darglint]
-ignore = ["DAR203", "DAR103"]
-docstring_style = "numpy"
-strictness = "full"
-log_level = "INFO"
-
 [tool.ruff]
 select = ["I", "E", "W", "F", "B", "UP", "ARG", "SIM", "TID", "RUF", "D2", "D3", "D4"]
 ignore = ["D211", "D213", "RUF005"]
 line-length = 100
+
+[tool.ruff.pydocstyle]
+convention = "numpy"  # Accepts: "google", "numpy", or "pep257".
 
 [tool.pytest]
 nb_exec_timeout = 50

@@ -1,0 +1,5 @@
+[darglint]
+ignore = D211, D213
+docstring_style = numpy
+strictness = full
+log_level = INFO

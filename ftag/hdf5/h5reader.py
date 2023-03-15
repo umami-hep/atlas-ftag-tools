@@ -60,16 +60,24 @@ class H5SingleReader:
     def stream(self, variables: dict, num_jets: int, cuts: Cuts | None = None) -> Generator:
         """Generate batches of selected jets.
 
-        Args:
-            variables (dict): _description_
-            num_jets (int): _description_
-            cuts (Cuts | None, optional): _description_. Defaults to None.
+        Parameters
+        ----------
+        variables : dict
+            _description_
+        num_jets : int
+            _description_
+        cuts : Cuts | None, optional
+            _description_, by default None
 
-        Raises:
-            ValueError: _description_
+        Yields
+        ------
+        Generator
+            _description_
 
-        Yields:
-            Generator: _description_
+        Raises
+        ------
+        ValueError
+            _description_
         """
         if num_jets > self.num_jets:
             raise ValueError(

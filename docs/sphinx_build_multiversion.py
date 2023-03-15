@@ -1,5 +1,5 @@
-"""Script to loop over a number of git branches/tags, check them out and build the
-the sphinx docs.
+"""Script to loop over a number of git branches/tags, check them out and build sphinx docs.
+
 The branches/tags for which the docs are generated are defined in the file
 "docs/source/_static/switcher.json" (note that the docs do not use the local version
 by default, but instead the version from the latest commit on GH-Pages. This is due to
@@ -14,9 +14,10 @@ from shutil import copy
 from subprocess import run
 
 
-def build_docs_version(version):
-    """Builds the docs for a specific version. The latest conf.py is used no matter
-    if it differs from the version from back then.
+def build_docs_version(version: str):
+    """Build the docs for a specific version.
+
+    The latest conf.py is used no matter if it differs from the version from back then.
     This function expects the file "conf_latest.py" to exist in the current working
     directory.
 
@@ -49,8 +50,7 @@ def build_docs_version(version):
 
 
 def main():
-    """main function that is executed when the script is called."""
-    with open("docs/source/_static/switcher.json", "r") as f:  # pylint: disable=W1514
+    with open("docs/source/_static/switcher.json") as f:  # pylint: disable=W1514
         version_switcher = json.load(f)
 
     # get currently active branch
