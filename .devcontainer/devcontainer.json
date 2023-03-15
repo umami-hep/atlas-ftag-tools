@@ -1,0 +1,8 @@
+{
+    "name": "Python",
+    "build": {
+        "dockerfile": "../docker/Dockerfile_dev",
+        "context": "../"
+    },
+    "runArgs": []
+}

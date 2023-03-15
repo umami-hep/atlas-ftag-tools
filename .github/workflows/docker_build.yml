@@ -27,6 +27,9 @@ jobs:
       - name: Build image
         run: docker build -f docker/Dockerfile --tag ${GITLAB_CONTAINER_REGISTRY}/atlas-ftag-tools:latest .
 
+      - name: Build development image
+        run: docker build -f docker/Dockerfile_dev --tag ${GITLAB_CONTAINER_REGISTRY}/atlas-ftag-tools:latest-dev .
+
       - name: Login to GitLab container registry
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: docker login gitlab-registry.cern.ch -u ${{ secrets.GITLAB_USERNAME }} -p ${{ secrets.GITLAB_TOKEN }}
@@ -35,6 +38,11 @@ jobs:
       - name: Push image
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: docker push ${GITLAB_CONTAINER_REGISTRY}/atlas-ftag-tools:latest
+
+      # Push this image if this is on the main branch
+      - name: Push development image
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: docker push ${GITLAB_CONTAINER_REGISTRY}/atlas-ftag-tools:latest-dev
 
   build_release:
     # Build an extra image for tagged commits
