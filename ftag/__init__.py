@@ -1,3 +1,8 @@
+"""atlas-ftag-tools - Common tools for ATLAS flavour tagging software"""
+
+
+__version__ = "0.0.1"
+
 from pathlib import Path
 
 import yaml
