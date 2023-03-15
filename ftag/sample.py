@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Tuple
+
 
 @dataclass(frozen=True)
 class Sample:
@@ -9,10 +9,10 @@ class Sample:
     pattern: str | tuple[str]
 
     @property
-    def path(self) -> Path | Tuple[Path]:
+    def path(self) -> Path | tuple[Path]:
         if isinstance(self.pattern, str):
             return self.ntuple_dir / self.pattern
-        return tuple(self.ntuple_dir / p for p in self.pattern) # type: ignore
+        return tuple(self.ntuple_dir / p for p in self.pattern)  # type: ignore
 
     def __str__(self):
         return self.name
