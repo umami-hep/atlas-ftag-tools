@@ -5,10 +5,10 @@ Please see the [example notebook](ftag/example.ipynb) for usage.
 
 ## Installation
 
-To install the package you can install from pip via
+To install the package you can install from pip using the [release on pypi](https://pypi.org/project/atlas-ftag-tools/) via
 
 ```
-coming soon
+pip install atlas-ftag-tools
 ```
 
 or you can clone the repository and install in editable mode with
