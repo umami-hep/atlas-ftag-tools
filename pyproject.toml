@@ -1,6 +1,6 @@
 [project]
 name = "atlas-ftag-tools"
-version = "0.1"
+version = "v0.0.1"
 description = "ATLAS Flavour Tagging Tools"
 license = {text = "MIT"}
 requires-python = ">=3.11"
@@ -13,6 +13,7 @@ dependencies = [
 dev = [
   "black==23.1.0",
   "ruff==0.0.254",
+  "pre-commit==3.1.1",
   "pytest==7.2.2",
   "pytest-cov==4.0.0",
   "pytest_notebook==0.8.1",
