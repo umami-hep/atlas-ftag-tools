@@ -1,11 +1,8 @@
 [project]
 name = "atlas-ftag-tools"
-version = "0.0.1"
-authors = ["Sam Van Stroud", "Philipp Gadow"]
 description = "ATLAS Flavour Tagging Tools"
-long_description = file: README.md
-long_description_content_type = text/markdown
-url = https://github.com/umami-hep/atlas-ftag-tools/
+authors = [{name="Sam Van Stroud"}, {name="Philipp Gadow"}]
+dynamic = ["version"]
 license = {text = "MIT"}
 requires-python = ">=3.11"
 dependencies = [
@@ -13,6 +10,9 @@ dependencies = [
   "numpy==1.24.*",
   "PyYAML==6.0"
 ]
+
+[project.urls]
+"Homepage" = "https://github.com/umami-hep/atlas-ftag-tools/"
 
 [project.optional-dependencies]
 dev = [
@@ -27,6 +27,9 @@ dev = [
 
 [tool.setuptools]
 packages = ["ftag", "ftag.hdf5"]
+
+[tool.setuptools.dynamic]
+version = {attr = "ftag.__version__"}
 
 [build-system]
 requires = ["setuptools>=62"]
