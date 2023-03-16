@@ -1,33 +1,124 @@
+# single b-tagging
 - name: bjets
   label: $b$-jets
   cuts: ["HadronConeExclTruthLabelID == 5"]
-  colour: "#1f77b4"
+  colour: tab:blue
+  category: single-btag
 - name: cjets
   label: $c$-jets
   cuts: ["HadronConeExclTruthLabelID == 4"]
-  colour: "#ff7f0e"
+  colour: tab:orange
+  category: single-btag
 - name: ujets
   label: Light-jets
   cuts: ["HadronConeExclTruthLabelID == 0"]
-  colour: "#2ca02c"
+  colour: tab:green
+  category: single-btag
 - name: taujets
   label: $\tau$-jets
   cuts: ["HadronConeExclTruthLabelID == 15"]
-  colour: "#7c5295"
+  colour: tab:purple
+  category: single-btag
 
+# extended single b-tagging
+- name: singlebjets
+  cuts: ["HadronConeExclExtendedTruthLabelID == 5"]
+  label: $b$-jets
+  colour: tab:blue
+  category: single-btag-extended
+- name: bcjets
+  cuts: ["HadronConeExclExtendedTruthLabelID == 54"]
+  label: $bc$-jets
+  colour: aqua
+  category: single-btag-extended
+- name: bbjets
+  cuts: ["HadronConeExclExtendedTruthLabelID == 55"]
+  label: $bb$-jets
+  colour: darkblue
+  category: single-btag-extended
+- name: singlecjets
+  cuts: ["HadronConeExclExtendedTruthLabelID == 4"]
+  label: $c$-jets
+  colour: tab:orange
+  category: single-btag-extended
+- name: ccjets
+  cuts: ["HadronConeExclExtendedTruthLabelID == 44"]
+  label: $cc$-jets
+  colour: gold
+  category: single-btag-extended
+
+# Xbb tagging
 - name: hbb
   label: Hbb
   cuts: ["R10TruthLabel_R22v1 == 11"]
-  colour: "#1f77b4"
+  colour: tab:blue
+  category: xbb
 - name: hcc
   label: Hcc
   cuts: ["R10TruthLabel_R22v1 == 12"]
   colour: "#B45F06"
+  category: xbb
 - name: top
   label: Top
   cuts: ["R10TruthLabel_R22v1 == 1"]
   colour: "#A300A3"
+  category: xbb
 - name: qcd
   label: QCD
   cuts: ["R10TruthLabel_R22v1 == 10"]
   colour: "#38761D"
+  category: xbb
+
+# partonic labelling
+- name: upjets
+  label: $u$-jets
+  cuts: ["PartonTruthLabelID == 1"]
+  colour: lightgreen
+  category: partonic
+- name: downjets
+  label: $d$-jets
+  cuts: ["PartonTruthLabelID == 2"]
+  colour: darkgreen
+  category: partonic
+- name: strangejets
+  label: $s$-jets
+  cuts: ["PartonTruthLabelID == 3"]
+  colour: aquamarine
+  category: partonic
+- name: gluonjets
+  label: gluon-jets
+  cuts: ["HadronConeExclTruthLabelID == 0", "PartonTruthLabelID == 21"]
+  colour: salmon
+  category: partonic
+
+# lepton decay labelling
+- name: lquarkjets
+  label: light-jets w/o gluons
+  cuts: ["HadronConeExclTruthLabelID == 0", "PartonTruthLabelID != 21"]
+  colour: "#a05252"
+  category: lepton-decay
+- name: hadrbjets
+  label: hadronic $b$-hadron decay
+  cuts: ["HadronConeExclTruthLabelID == 5", "LeptonDecayLabel == 0"]
+  colour: "#264653"
+  category: lepton-decay
+- name: lepbjets
+  label: leptonic $b$-hadron decay
+  cuts: ["HadronConeExclTruthLabelID == 5", "LeptonDecayLabel notin (0,-99)"]
+  colour: "#190099"
+  category: lepton-decay
+- name: singleebdecay
+  label: $e$ in $b$- or $c$-hadron decay
+  cuts: ["LeptonDecayLabel == 1"]
+  colour: "#e9c46a"
+  category: lepton-decay
+- name: singlemubdecay
+  label: $\mu$'s in $b$- or $c$-hadron decay
+  cuts: ["LeptonDecayLabel == 2"]
+  colour: "#f4a261"
+  category: lepton-decay
+- name: singletaubdecay
+  label: $\tau$ in $b$- or $c$-hadron decay
+  cuts: ["LeptonDecayLabel == 3"]
+  colour: "#e76f51"
+  category: lepton-decay

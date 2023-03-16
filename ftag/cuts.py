@@ -10,10 +10,13 @@ import numpy as np
 
 OPERATORS = {
     "==": operator.eq,
+    "!=": operator.ne,
     ">=": operator.ge,
     "<=": operator.le,
     ">": operator.gt,
     "<": operator.lt,
+    "in": lambda x, y: np.isin(x, y),
+    "notin": lambda x, y: ~np.isin(x, y),
 }
 
 for i in range(2, 20):
