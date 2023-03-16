@@ -19,4 +19,4 @@ flavours_dict = {f["name"]: Flavour(cuts=Cuts.from_list(f.pop("cuts")), **f) for
 assert len(flavours_dict) == len(flavours_yaml), "Duplicate flavour names detected"
 Flavours = FlavourContainer(flavours_dict)
 
-__all__ = ["Cuts", "Flavours", "Sample", "hdf5"]
+__all__ = ["Cuts", "Flavours", "Sample", "hdf5", "__version__"]
