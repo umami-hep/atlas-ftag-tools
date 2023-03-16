@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Generator
 from dataclasses import dataclass
 
 from ftag.cuts import Cuts
