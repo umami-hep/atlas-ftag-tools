@@ -65,7 +65,7 @@ default_role = "code"
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-json_url = "docs/source/_static/switcher.json" # "https://umami-hep.github.io/atlas-ftag-tools/main/_static/switcher.json"
+json_url = "https://umami-hep.github.io/atlas-ftag-tools/main/_static/switcher.json"
 release = ftag.__version__
 
 # get git hash we are currently on (when building the docs)
