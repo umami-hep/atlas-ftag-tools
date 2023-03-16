@@ -1,7 +1,7 @@
 """atlas-ftag-tools - Common tools for ATLAS flavour tagging software."""
 
 
-__version__ = "v0.0.2"
+__version__ = "v0.0.3"
 
 from pathlib import Path
 
