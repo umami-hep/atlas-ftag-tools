@@ -3,9 +3,5 @@
         "name": "latest",
         "version": "main",
         "url": "https://umami-hep.github.io/puma/main/"
-    },
-    {
-        "version": "v0.0.1",
-        "url": "https://umami-hep.github.io/puma/v0.0.1/"
     }
 ]
