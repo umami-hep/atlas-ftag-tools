@@ -18,7 +18,7 @@ import requests
 
 import ftag
 
-sys.path.insert(0, os.path.abspath("../../atlas-ftag-tools"))
+sys.path.insert(0, os.path.abspath("../../ftag"))
 
 
 # -- Project information -----------------------------------------------------
@@ -45,7 +45,7 @@ extensions = [
 # -- sphinx-autoapi extension -----------------------------------------------
 # https://sphinx-autoapi.readthedocs.io/en/latest/reference/config.html#
 autoapi_type = "python"
-autoapi_dirs = ["../../atlas-ftag-tools"]
+autoapi_dirs = ["../../ftag"]
 autoapi_ignore = ["*test*"]
 autoapi_python_use_implicit_namespaces = True
 autoapi_python_class_content = "both"
