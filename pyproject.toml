@@ -28,7 +28,7 @@ dev = [
 
 [tool.setuptools]
 packages = ["ftag", "ftag.hdf5"]
-include-package-data = "True"
+include-package-data = true
 
 [tool.setuptools.dynamic]
 version = {attr = "ftag.__version__"}
