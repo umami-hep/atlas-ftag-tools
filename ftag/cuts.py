@@ -1,10 +1,11 @@
+from __future__ import annotations
+
 import functools
 import operator
 from ast import literal_eval
 from collections import namedtuple
 from collections.abc import Generator
 from dataclasses import dataclass
-from typing import Self
 
 import numpy as np
 
@@ -51,7 +52,7 @@ class Cuts:
     cuts: tuple[Cut, ...]
 
     @classmethod
-    def from_list(cls, cuts: list) -> Self:
+    def from_list(cls, cuts: list) -> Cuts:
         if cuts and isinstance(cuts[0], str):
             cuts = list(map(lambda cut: cut.split(" "), cuts))
         if cuts and isinstance(cuts[0], list):
@@ -59,7 +60,7 @@ class Cuts:
         return cls(tuple(Cut(*cut) for cut in dict.fromkeys(cuts)))
 
     @classmethod
-    def empty(cls) -> Self:
+    def empty(cls) -> Cuts:
         return cls(tuple())
 
     def __post_init__(self):
@@ -80,7 +81,7 @@ class Cuts:
             array, keep = array[idx], keep[idx]
         return CutsResult(keep, array)
 
-    def __add__(self, other: Self):
+    def __add__(self, other: Cuts):
         return Cuts(tuple(dict.fromkeys(self.cuts + other.cuts)))
 
     def __len__(self) -> int:

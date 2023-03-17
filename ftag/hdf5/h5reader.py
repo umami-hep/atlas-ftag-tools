@@ -1,4 +1,5 @@
 import logging as log
+import math
 from collections.abc import Generator
 from dataclasses import dataclass
 from pathlib import Path
@@ -63,27 +64,29 @@ class H5SingleReader:
         Parameters
         ----------
         variables : dict
-            _description_
+            Dictionary of variables to for each group.
         num_jets : int
-            _description_
+            Total number of selected jets to generate.
         cuts : Cuts | None, optional
-            _description_, by default None
+            Cuts to apply, by default None
 
         Yields
         ------
         Generator
-            _description_
+            Generator of batches of selected jets.
 
         Raises
         ------
         ValueError
-            _description_
+            If more jets are requested than available.
         """
         if num_jets > self.num_jets:
             raise ValueError(
                 f"{num_jets:,} jets requested but only {self.num_jets:,} available in {self.fname}"
             )
 
+        jet_vars = list(variables.get(self.jets_name, []))
+        variables[self.jets_name] = jet_vars + (cuts.variables if cuts else [])
         total = 0
         with h5py.File(self.fname) as f:
             data = {name: self.empty(f[name], var) for name, var in variables.items()}
@@ -158,7 +161,8 @@ class H5Reader:
     def stream(self, variables: dict, num_jets, cuts: Cuts | None = None) -> Generator:
         # get streams for selected jets from each reader
         streams = [
-            r.stream(variables, int(r.num_jets / self.num_jets * num_jets)) for r in self.readers
+            r.stream(variables, int(r.num_jets / self.num_jets * num_jets), cuts)
+            for r in self.readers
         ]
 
         rng = np.random.default_rng(42)
@@ -177,11 +181,6 @@ class H5Reader:
                 for name in variables:
                     rng.shuffle(data[name])
 
-            # apply selections
-            if cuts:
-                idx = cuts(data[self.jets_name]).idx
-                data = {name: array[idx] for name, array in data.items()}
-
             # select
             yield data
 
@@ -191,3 +190,9 @@ class H5Reader:
             for name, array in sample.items():
                 data[name].append(array)
         return {name: np.concatenate(array) for name, array in data.items()}
+
+    def estimate_available_jets(self, cuts: Cuts, num: int = 1_000_000) -> int:
+        """Estimate the number of jets available after selection cuts, rounded down."""
+        all_jets = self.load({self.jets_name: cuts.variables}, num)[self.jets_name]
+        estimated_num_jets = len(cuts(all_jets).values) / len(all_jets) * self.num_jets
+        return math.floor(estimated_num_jets / 1_000) * 1_000
