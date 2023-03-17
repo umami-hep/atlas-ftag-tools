@@ -4,7 +4,7 @@ import h5py
 import numpy as np
 from numpy.lib.recfunctions import unstructured_to_structured as u2s
 
-__all__ = ["get_dummy_file"]
+__all__ = ["get_dummy_file", "join_structured_arrays"]
 
 
 def get_dtype(ds, variables: list[str] | None = None, precision: str | None = None) -> np.dtype:
