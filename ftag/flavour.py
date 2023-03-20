@@ -39,7 +39,7 @@ class FlavourContainer:
         return self[name]
 
     def __repr__(self) -> str:
-        return f"FlavourContainer({', '.join(list(f.name for f in self))})"
+        return f"{self.__class__.__name__}({', '.join(list(f.name for f in self))})"
 
     @property
     def categories(self) -> list[str]:
