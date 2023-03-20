@@ -10,12 +10,13 @@ on:
 jobs:
   build-sphinx-docs:
     runs-on: ubuntu-latest
-    container: python:3.11.2
     steps:
-      - name: Checkout
-        uses: actions/checkout@master
+      - name: Checkout repository code
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
+      - name: Set up python version
+        uses: actions/setup-python@v4
 
       # - name: Build Sphinx documentation
       #   run: bash docs/build_docs.sh
