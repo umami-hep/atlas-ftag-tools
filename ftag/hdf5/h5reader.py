@@ -58,35 +58,19 @@ class H5SingleReader:
                     )
         return {name: array[keep_idx] for name, array in data.items()}
 
-    def stream(self, variables: dict, num_jets: int, cuts: Cuts | None = None) -> Generator:
-        """Generate batches of selected jets.
-
-        Parameters
-        ----------
-        variables : dict
-            Dictionary of variables to for each group.
-        num_jets : int
-            Total number of selected jets to generate.
-        cuts : Cuts | None, optional
-            Cuts to apply, by default None
-
-        Yields
-        ------
-        Generator
-            Generator of batches of selected jets.
-
-        Raises
-        ------
-        ValueError
-            If more jets are requested than available.
-        """
+    def stream(
+        self, variables: dict | None = None, num_jets: int | None = None, cuts: Cuts | None = None
+    ) -> Generator:
+        if num_jets is None:
+            num_jets = self.num_jets
         if num_jets > self.num_jets:
             raise ValueError(
                 f"{num_jets:,} jets requested but only {self.num_jets:,} available in {self.fname}"
             )
 
-        jet_vars = list(variables.get(self.jets_name, []))
-        variables[self.jets_name] = jet_vars + (cuts.variables if cuts else [])
+        if variables is None:
+            variables = {self.jets_name: None}
+
         total = 0
         with h5py.File(self.fname) as f:
             data = {name: self.empty(f[name], var) for name, var in variables.items()}
@@ -158,7 +142,33 @@ class H5Reader:
         with h5py.File(self.readers[0].fname) as f:
             return f[name].dtype
 
-    def stream(self, variables: dict, num_jets, cuts: Cuts | None = None) -> Generator:
+    def stream(
+        self, variables: dict | None = None, num_jets: int | None = None, cuts: Cuts | None = None
+    ) -> Generator:
+        """Generate batches of selected jets.
+
+        Parameters
+        ----------
+        variables : dict | None, optional
+            Dictionary of variables to for each group, by default use all jet variables.
+        num_jets : int | None, optional
+            Total number of selected jets to generate, by default all.
+        cuts : Cuts | None, optional
+            Selection cuts to apply, by default None
+
+        Yields
+        ------
+        Generator
+            Generator of batches of selected jets.
+        """
+        if num_jets is None:
+            num_jets = self.num_jets
+        if variables is None:
+            variables = {self.jets_name: None}
+        if self.jets_name not in variables or variables[self.jets_name] is not None:
+            jet_vars = variables.get(self.jets_name, [])
+            variables[self.jets_name] = list(jet_vars) + (cuts.variables if cuts else [])
+
         # get streams for selected jets from each reader
         streams = [
             r.stream(variables, int(r.num_jets / self.num_jets * num_jets), cuts)
@@ -184,11 +194,16 @@ class H5Reader:
             # select
             yield data
 
-    def load(self, variables: dict, num_jets: int, cuts: Cuts | None = None) -> dict:
+    def load(
+        self, variables: dict | None = None, num_jets: int | None = None, cuts: Cuts | None = None
+    ) -> dict:
+        if variables is None:
+            variables = {self.jets_name: None}
         data: dict[str, list] = {name: [] for name in variables}
         for sample in self.stream(variables, num_jets, cuts):
             for name, array in sample.items():
-                data[name].append(array)
+                if name in data:
+                    data[name].append(array)
         return {name: np.concatenate(array) for name, array in data.items()}
 
     def estimate_available_jets(self, cuts: Cuts, num: int = 1_000_000) -> int:
