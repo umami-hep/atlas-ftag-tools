@@ -18,6 +18,14 @@ class Flavour:
     def px(self) -> str:
         return f"p{self.name.removesuffix('jets')}"
 
+    @property
+    def eff_str(self) -> str:
+        return self.label.replace("jets", "jet") + " efficiency"
+
+    @property
+    def rej_str(self) -> str:
+        return self.label.replace("jets", "jet") + " rejection"
+
     def __str__(self) -> str:
         return self.name
 
