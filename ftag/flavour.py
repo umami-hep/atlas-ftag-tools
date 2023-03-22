@@ -18,6 +18,14 @@ class Flavour:
     def px(self) -> str:
         return f"p{self.name.removesuffix('jets')}"
 
+    @property
+    def eff_str(self) -> str:
+        return self.label.replace("jets", "jet") + " efficiency"
+
+    @property
+    def rej_str(self) -> str:
+        return self.label.replace("jets", "jet") + " rejection"
+
     def __str__(self) -> str:
         return self.name
 
@@ -37,6 +45,11 @@ class FlavourContainer:
 
     def __getattr__(self, name) -> Flavour:
         return self[name]
+
+    def __contains__(self, flavour: str | Flavour) -> bool:
+        if isinstance(flavour, Flavour):
+            flavour = flavour.name
+        return flavour in self.flavours
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({', '.join(list(f.name for f in self))})"

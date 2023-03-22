@@ -1,6 +1,8 @@
 # Changelog
 
 ### [Latest]
+- improve mock data generation, update H5Reader defaults [#10](https://github.com/umami-hep/atlas-ftag-tools/pull/10)
+- add git hash to files written with H5Writer [#9](https://github.com/umami-hep/atlas-ftag-tools/pull/9)
 
 ### [v0.0.4]
 - set uniform python version in docker and actions [#7](https://github.com/umami-hep/atlas-ftag-tools/pull/7)
