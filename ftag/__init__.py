@@ -10,6 +10,7 @@ import yaml
 import ftag.hdf5 as hdf5
 from ftag.cuts import Cuts
 from ftag.flavour import Flavour, FlavourContainer
+from ftag.mock import get_mock_file
 from ftag.sample import Sample
 
 # load flavours
@@ -19,4 +20,4 @@ flavours_dict = {f["name"]: Flavour(cuts=Cuts.from_list(f.pop("cuts")), **f) for
 assert len(flavours_dict) == len(flavours_yaml), "Duplicate flavour names detected"
 Flavours = FlavourContainer(flavours_dict)
 
-__all__ = ["Cuts", "Flavours", "Sample", "hdf5", "__version__"]
+__all__ = ["Cuts", "Flavours", "Sample", "hdf5", "get_mock_file", "__version__"]
