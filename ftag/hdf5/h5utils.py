@@ -1,8 +1,4 @@
-from tempfile import NamedTemporaryFile, mkdtemp
-
-import h5py
 import numpy as np
-from numpy.lib.recfunctions import unstructured_to_structured as u2s
 
 __all__ = ["join_structured_arrays"]
 
