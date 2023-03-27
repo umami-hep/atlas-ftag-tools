@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import logging as log
 import math
 from collections.abc import Generator
@@ -114,7 +116,7 @@ class H5Reader:
     weights: list[float] | None = None
 
     def __post_init__(self) -> None:
-        if isinstance(self.fname, str | Path):
+        if isinstance(self.fname, (str, Path)):
             self.fname = [self.fname]
 
         # calculate batch sizes
@@ -125,7 +127,7 @@ class H5Reader:
         # create readers
         self.readers = [
             H5SingleReader(fname, batch_size, self.jets_name, self.precision, self.shuffle)
-            for fname, batch_size in zip(self.fname, self.batch_sizes, strict=True)
+            for fname, batch_size in zip(self.fname, self.batch_sizes)
         ]
 
     @property

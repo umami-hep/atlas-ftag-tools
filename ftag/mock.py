@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from tempfile import NamedTemporaryFile, mkdtemp
 
 import h5py
@@ -55,7 +57,7 @@ def softmax(x, axis=None):
 def get_mock_scores(labels: np.ndarray):
     rng = np.random.default_rng()
     scores = np.zeros((len(labels), 3))
-    for label, count in zip(*np.unique(labels, return_counts=True), strict=True):
+    for label, count in zip(*np.unique(labels, return_counts=True)):
         if label == 0:
             scores[labels == label] = rng.normal(loc=[2, 0, 0], scale=1, size=(count, 3))
         elif label == 4:

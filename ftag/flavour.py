@@ -16,7 +16,9 @@ class Flavour:
 
     @property
     def px(self) -> str:
-        return f"p{self.name.removesuffix('jets')}"
+        if self.name.endswith("jets"):
+            return f"p{self.name[: -len('jets')]}"
+        return f"p{self.name}"
 
     @property
     def eff_str(self) -> str:
@@ -60,3 +62,11 @@ class FlavourContainer:
 
     def by_category(self, category: str) -> FlavourContainer:
         return FlavourContainer({k: v for k, v in self.flavours.items() if v.category == category})
+
+    def from_cuts(self, cuts: list | Cuts) -> Flavour:
+        if isinstance(cuts, list):
+            cuts = Cuts.from_list(cuts)
+        for flavour in self:
+            if flavour.cuts == cuts:
+                return flavour
+        raise KeyError(f"Flavour with {cuts} not found")
