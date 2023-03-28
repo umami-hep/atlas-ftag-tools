@@ -1,6 +1,10 @@
 # Changelog
 
 ### [Latest]
+- make `inf` check optional [#14](https://github.com/umami-hep/atlas-ftag-tools/pull/14)
+
+### [v0.0.6]
+- minor `rng` fixes, add minimum package requirements [#13](https://github.com/umami-hep/atlas-ftag-tools/pull/13)
 
 ### [v0.0.5]
 - support python >=3.8, unpin package versions [#12](https://github.com/umami-hep/atlas-ftag-tools/pull/12)
