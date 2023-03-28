@@ -7,9 +7,9 @@ license = {text = "MIT"}
 readme = "README.md"
 requires-python = ">=3.8"
 dependencies = [
-  "h5py",
+  "h5py>=3.0",  # requires numpy
   "numpy",
-  "PyYAML"
+  "PyYAML>=5.1"
 ]
 
 [project.urls]
