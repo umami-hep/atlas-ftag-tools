@@ -74,13 +74,14 @@ class H5SingleReader:
             variables = {self.jets_name: None}
 
         total = 0
+        rng = np.random.default_rng(42)
         with h5py.File(self.fname) as f:
             data = {name: self.empty(f[name], var) for name, var in variables.items()}
 
             # get indices
             indices = list(range(0, self.num_jets, self.batch_size))
             if self.shuffle:
-                np.random.default_rng(42).shuffle(indices)
+                rng.shuffle(indices)
 
             # loop over batches and read file
             for low in indices:

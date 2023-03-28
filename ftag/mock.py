@@ -11,40 +11,41 @@ from ftag.hdf5 import join_structured_arrays
 __all__ = ["get_mock_file"]
 
 JET_VARS = [
-    "pt",
-    "eta",
-    "abs_eta",
-    "mass",
-    "pt_btagJes",
-    "eta_btagJes",
-    "n_tracks",
-    "HadronConeExclTruthLabelID",
-    "HadronConeExclTruthLabelPt",
-    "n_truth_promptLepton",
+    ("pt", "f4"),
+    ("eta", "f4"),
+    ("abs_eta", "f4"),
+    ("mass", "f4"),
+    ("pt_btagJes", "f4"),
+    ("eta_btagJes", "f4"),
+    ("n_tracks", "i4"),
+    ("HadronConeExclTruthLabelID", "i4"),
+    ("HadronConeExclTruthLabelPt", "f4"),
+    ("n_truth_promptLepton", "i4"),
+    ("flavour_label", "i4"),
 ]
 
 TRACK_VARS = [
-    "d0",
-    "z0SinTheta",
-    "dphi",
-    "deta",
-    "qOverP",
-    "IP3D_signed_d0_significance",
-    "IP3D_signed_z0_significance",
-    "phiUncertainty",
-    "thetaUncertainty",
-    "qOverPUncertainty",
-    "numberOfPixelHits",
-    "numberOfSCTHits",
-    "numberOfInnermostPixelLayerHits",
-    "numberOfNextToInnermostPixelLayerHits",
-    "numberOfInnermostPixelLayerSharedHits",
-    "numberOfInnermostPixelLayerSplitHits",
-    "numberOfPixelSharedHits",
-    "numberOfPixelSplitHits",
-    "numberOfSCTSharedHits",
-    "numberOfPixelHoles",
-    "numberOfSCTHoles",
+    ("d0", "f4"),
+    ("z0SinTheta", "f4"),
+    ("dphi", "f4"),
+    ("deta", "f4"),
+    ("qOverP", "f4"),
+    ("IP3D_signed_d0_significance", "f4"),
+    ("IP3D_signed_z0_significance", "f4"),
+    ("phiUncertainty", "f4"),
+    ("thetaUncertainty", "f4"),
+    ("qOverPUncertainty", "f4"),
+    ("numberOfPixelHits", "i4"),
+    ("numberOfSCTHits", "i4"),
+    ("numberOfInnermostPixelLayerHits", "i4"),
+    ("numberOfNextToInnermostPixelLayerHits", "i4"),
+    ("numberOfInnermostPixelLayerSharedHits", "i4"),
+    ("numberOfInnermostPixelLayerSplitHits", "i4"),
+    ("numberOfPixelSharedHits", "i4"),
+    ("numberOfPixelSplitHits", "i4"),
+    ("numberOfSCTSharedHits", "i4"),
+    ("numberOfPixelHoles", "i4"),
+    ("numberOfSCTHoles", "i4"),
 ]
 
 
@@ -55,7 +56,7 @@ def softmax(x, axis=None):
 
 
 def get_mock_scores(labels: np.ndarray):
-    rng = np.random.default_rng()
+    rng = np.random.default_rng(42)
     scores = np.zeros((len(labels), 3))
     for label, count in zip(*np.unique(labels, return_counts=True)):
         if label == 0:
@@ -70,34 +71,33 @@ def get_mock_scores(labels: np.ndarray):
     return scores
 
 
-def get_mock_file(num_jets=1000, add_tagger_scores=False, tracks_name: str = "tracks"):
-    # settings
-    n_tracks_per_jet = 40
-
+def get_mock_file(num_jets=1000, tracks_name: str = "tracks", num_tracks: int = 40):
     # setup jets
-    rng = np.random.default_rng()
-    jets_dtype = np.dtype([(n, "f4") for n in JET_VARS])
+    rng = np.random.default_rng(42)
+    jets_dtype = np.dtype(JET_VARS)
     jets = u2s(rng.random((num_jets, len(JET_VARS))), jets_dtype)
-    jets["HadronConeExclTruthLabelID"] = np.random.choice([0, 4, 5], size=num_jets)
+    jets["HadronConeExclTruthLabelID"] = rng.choice([0, 4, 5], size=num_jets)
+    jets["flavour_label"] = rng.choice([0, 4, 5], size=num_jets)
     jets["pt"] *= 400e3
     jets["mass"] *= 50e3
     jets["eta"] = (jets["eta"] - 0.5) * 6.0
     jets["abs_eta"] = np.abs(jets["eta"])
     jets["n_truth_promptLepton"] = 0
 
-    if add_tagger_scores:
-        scores = get_mock_scores(jets["HadronConeExclTruthLabelID"])
-        jets = join_structured_arrays([jets, scores])
+    # add tagger scores
+    scores = get_mock_scores(jets["HadronConeExclTruthLabelID"])
+    jets = join_structured_arrays([jets, scores])
 
+    # create a tempfile in a new folder
     fname = NamedTemporaryFile(suffix=".h5", dir=mkdtemp()).name
     f = h5py.File(fname, "w")
     f.create_dataset("jets", data=jets)
 
     # setup tracks
     if tracks_name:
-        tracks_dtype = np.dtype([(n, "f4") for n in TRACK_VARS])
-        tracks = u2s(rng.random((num_jets, n_tracks_per_jet, len(TRACK_VARS))), tracks_dtype)
-        valid = rng.choice([True, False], size=(num_jets, n_tracks_per_jet))
+        tracks_dtype = np.dtype(TRACK_VARS)
+        tracks = u2s(rng.random((num_jets, num_tracks, len(TRACK_VARS))), tracks_dtype)
+        valid = rng.choice([True, False], size=(num_jets, num_tracks))
         valid = valid.astype(bool).view(dtype=np.dtype([("valid", bool)]))
         tracks = join_structured_arrays([tracks, valid])
         f.create_dataset(tracks_name, data=tracks)
