@@ -21,6 +21,7 @@ class H5SingleReader:
     jets_name: str = "jets"
     precision: str | None = None
     shuffle: bool = True
+    do_remove_inf: bool = False
 
     def __post_init__(self) -> None:
         self.fname = str(self.fname)
@@ -94,7 +95,8 @@ class H5SingleReader:
                     data = {name: array[idx] for name, array in data.items()}
 
                 # check for inf and remove
-                data = self.remove_inf(data)
+                if self.do_remove_inf:
+                    data = self.remove_inf(data)
 
                 # check for completion
                 total += len(data[self.jets_name])
