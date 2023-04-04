@@ -24,7 +24,8 @@ class H5SingleReader:
     do_remove_inf: bool = False
 
     def __post_init__(self) -> None:
-        self.fname = Sample(self.fname).virtual_file()
+        self.sample = Sample(self.fname)
+        self.fname = self.sample.virtual_file()
 
     @property
     def num_jets(self) -> int:
@@ -132,18 +133,16 @@ class H5Reader:
         ]
 
     @property
-    def vds_path(self) -> Path:
-        # TODO: this is mostly needed to get the src dtype,
-        # there is probably a better way of exposing this directly
-        return Path(self.readers[0].fname)
-
-    @property
     def num_jets(self) -> int:
         return sum(r.num_jets for r in self.readers)
 
-    def get_dtype(self, name: str) -> np.dtype:
-        with h5py.File(self.readers[0].fname) as f:
-            return f[name].dtype
+    @property
+    def files(self) -> list[Path]:
+        return [Path(r.fname) for r in self.readers]
+
+    def dtype(self, names: list[str]) -> dict[str, np.dtype]:
+        with h5py.File(self.files[0]) as f:
+            return {name: f[name].dtype for name in names}
 
     def stream(
         self, variables: dict | None = None, num_jets: int | None = None, cuts: Cuts | None = None
