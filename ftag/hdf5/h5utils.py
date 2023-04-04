@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import numpy as np
 
-__all__ = ["join_structured_arrays"]
+__all__ = ["join_structured_arrays", "get_dtype", "cast_dtype"]
 
 
 def get_dtype(ds, variables: list[str] | None = None, precision: str | None = None) -> np.dtype:
@@ -11,21 +11,21 @@ def get_dtype(ds, variables: list[str] | None = None, precision: str | None = No
     Parameters
     ----------
     ds : _type_
-        _description_
+        Input h5 dataset
     variables : list[str] | None, optional
-        _description_, by default None
+        List of variables to include in dtype, by default None
     precision : str | None, optional
-        _description_, by default None
+        Precision to cast floats to, "half" or "full", by default None
 
     Returns
     -------
     np.dtype
-        _description_
+        Output dtype
 
     Raises
     ------
     ValueError
-        _description_
+        If variables are not found in dataset
     """
     if variables is None:
         variables = ds.dtype.names
@@ -48,19 +48,19 @@ def cast_dtype(typestr: str, precision: str) -> np.dtype:
     Parameters
     ----------
     typestr : str
-        _description_
+        Input type string
     precision : str
-        _description_
+        Precision to cast to, "half" or "full"
 
     Returns
     -------
     np.dtype
-        _description_
+        Output dtype
 
     Raises
     ------
     ValueError
-        _description_
+        If precision is not "half" or "full"
     """
     t = np.dtype(typestr)
     if t.kind != "f" or t.itemsize != 2:

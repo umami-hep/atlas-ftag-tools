@@ -4,6 +4,7 @@ import logging as log
 import math
 from collections.abc import Generator
 from dataclasses import dataclass
+from functools import cached_property
 from pathlib import Path
 
 import h5py
@@ -11,7 +12,7 @@ import numpy as np
 
 from ftag.cuts import Cuts
 from ftag.hdf5.h5utils import get_dtype
-from ftag.vds import create_virtual_file
+from ftag.sample import Sample
 
 
 @dataclass
@@ -24,11 +25,10 @@ class H5SingleReader:
     do_remove_inf: bool = False
 
     def __post_init__(self) -> None:
-        self.fname = str(self.fname)
-        if "*" in self.fname:
-            self.fname = create_virtual_file(self.fname)
+        self.sample = Sample(self.fname)
+        self.fname = self.sample.virtual_file()
 
-    @property
+    @cached_property
     def num_jets(self) -> int:
         with h5py.File(self.fname) as f:
             return len(f[self.jets_name])
@@ -134,18 +134,20 @@ class H5Reader:
         ]
 
     @property
-    def vds_path(self) -> Path:
-        # TODO: this is mostly needed to get the src dtype,
-        # there is probably a better way of exposing this directly
-        return Path(self.readers[0].fname)
-
-    @property
     def num_jets(self) -> int:
         return sum(r.num_jets for r in self.readers)
 
-    def get_dtype(self, name: str) -> np.dtype:
-        with h5py.File(self.readers[0].fname) as f:
-            return f[name].dtype
+    @property
+    def files(self) -> list[Path]:
+        return [Path(r.fname) for r in self.readers]
+
+    @cached_property
+    def dtypes(self) -> dict[str, np.dtype]:
+        dtypes = {}
+        with h5py.File(self.files[0]) as f:
+            for key in f:
+                dtypes[key] = f[key].dtype
+        return dtypes
 
     def stream(
         self, variables: dict | None = None, num_jets: int | None = None, cuts: Cuts | None = None
