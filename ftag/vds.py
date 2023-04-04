@@ -43,7 +43,10 @@ def create_virtual_file(pattern: str, out_fname: Path | None = None, overwrite: 
     if out_fname is None:
         assert len(set(Path(fname).parent for fname in fnames)) == 1
         out_fname = Path(fnames[0]).parent / "vds" / "vds.h5"
+    else:
+        out_fname = Path(out_fname)
 
+    # check if file already exists
     if not overwrite and out_fname.is_file():
         return out_fname
 
