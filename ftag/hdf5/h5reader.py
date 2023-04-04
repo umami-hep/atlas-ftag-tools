@@ -4,6 +4,7 @@ import logging as log
 import math
 from collections.abc import Generator
 from dataclasses import dataclass
+from functools import cached_property
 from pathlib import Path
 
 import h5py
@@ -27,7 +28,7 @@ class H5SingleReader:
         self.sample = Sample(self.fname)
         self.fname = self.sample.virtual_file()
 
-    @property
+    @cached_property
     def num_jets(self) -> int:
         with h5py.File(self.fname) as f:
             return len(f[self.jets_name])
@@ -140,9 +141,12 @@ class H5Reader:
     def files(self) -> list[Path]:
         return [Path(r.fname) for r in self.readers]
 
-    def dtype(self, names: list[str]) -> dict[str, np.dtype]:
+    @cached_property
+    def dtypes(self) -> dict[str, np.dtype]:
+        dtypes = {}
         with h5py.File(self.files[0]) as f:
-            return {name: f[name].dtype for name in names}
+            for key in f.keys():
+                dtypes[key] = f[key].dtype
 
     def stream(
         self, variables: dict | None = None, num_jets: int | None = None, cuts: Cuts | None = None
