@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import glob
 from dataclasses import dataclass
-from functools import cached_property
 from pathlib import Path
 
 from ftag.flavour import remove_suffix
@@ -30,7 +29,7 @@ class Sample:
         return Path(self.pattern)
 
     @property
-    def files(self) -> list[Path]:
+    def files(self) -> list[str]:
         return glob.glob(str(self.path)) if "*" in str(self.path) else [str(self.path)]
 
     @property
@@ -62,7 +61,7 @@ class Sample:
         hashes = [remove_suffix(dsid.split(".")[7], "_output") for dsid in self.dsid]
         return list(set(hashes))
 
-    def virtual_file(self, **kwargs) -> Path:
+    def virtual_file(self, **kwargs) -> Path | str:
         if "*" in str(self.path):
             return create_virtual_file(self.path, **kwargs)
         return self.path

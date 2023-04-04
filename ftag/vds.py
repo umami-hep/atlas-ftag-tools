@@ -33,7 +33,9 @@ def get_virtual_layout(fnames: list[str], group: str):
     return layout
 
 
-def create_virtual_file(pattern: str, out_fname: Path | None = None, overwrite: bool = False):
+def create_virtual_file(
+    pattern: Path | str, out_fname: Path | None = None, overwrite: bool = False
+):
     # get list of filenames
     fnames = glob.glob(str(pattern))
     if not fnames:
