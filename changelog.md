@@ -1,6 +1,8 @@
 # Changelog
 
 ### [Latest]
+
+### [v0.0.7]
 - Improve Sample class [#15](https://github.com/umami-hep/atlas-ftag-tools/pull/15)
 - make `inf` check optional [#14](https://github.com/umami-hep/atlas-ftag-tools/pull/14)
 
