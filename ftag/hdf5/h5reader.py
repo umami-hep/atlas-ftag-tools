@@ -11,7 +11,7 @@ import numpy as np
 
 from ftag.cuts import Cuts
 from ftag.hdf5.h5utils import get_dtype
-from ftag.vds import create_virtual_file
+from ftag.sample import Sample
 
 
 @dataclass
@@ -24,9 +24,7 @@ class H5SingleReader:
     do_remove_inf: bool = False
 
     def __post_init__(self) -> None:
-        self.fname = str(self.fname)
-        if "*" in self.fname:
-            self.fname = create_virtual_file(self.fname)
+        self.fname = Sample(self.fname).virtual_file()
 
     @property
     def num_jets(self) -> int:
