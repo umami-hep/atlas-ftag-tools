@@ -145,8 +145,9 @@ class H5Reader:
     def dtypes(self) -> dict[str, np.dtype]:
         dtypes = {}
         with h5py.File(self.files[0]) as f:
-            for key in f.keys():
+            for key in f:
                 dtypes[key] = f[key].dtype
+        return dtypes
 
     def stream(
         self, variables: dict | None = None, num_jets: int | None = None, cuts: Cuts | None = None
