@@ -6,6 +6,12 @@ from dataclasses import dataclass
 from ftag.cuts import Cuts
 
 
+def remove_suffix(string: str, suffix: str) -> str:
+    if string.endswith(suffix):
+        return string[: -len(suffix)]
+    return string
+
+
 @dataclass(frozen=True)
 class Flavour:
     name: str
@@ -16,9 +22,7 @@ class Flavour:
 
     @property
     def px(self) -> str:
-        if self.name.endswith("jets"):
-            return f"p{self.name[: -len('jets')]}"
-        return f"p{self.name}"
+        return f"p{remove_suffix(self.name, 'jets')}"
 
     @property
     def eff_str(self) -> str:
