@@ -111,12 +111,33 @@ class H5SingleReader:
 
 @dataclass
 class H5Reader:
+    """Reads data from multiple HDF5 files.
+
+    Parameters
+    ----------
+    fname : Path | str | list[Path | str]
+        Path to the HDF5 file or list of paths
+    batch_size : int, optional
+        Number of jets to read at a time, by default 100_000
+    jets_name : str, optional
+        Name of the jets dataset, by default "jets"
+    precision : str | None, optional
+        Cast floats to given precision, by default None
+    shuffle : bool, optional
+        Read batches in a shuffled order, by default True
+    weights : list[float] | None, optional
+        Weights for different input datasets, by default None
+    do_remove_inf : bool, optional
+        Remove jets with inf values, by default False
+    """
+
     fname: Path | str | list[Path | str]
     batch_size: int = 100_000
     jets_name: str = "jets"
     precision: str | None = None
     shuffle: bool = True
     weights: list[float] | None = None
+    do_remove_inf: bool = False
 
     def __post_init__(self) -> None:
         if isinstance(self.fname, (str, Path)):
@@ -129,8 +150,8 @@ class H5Reader:
 
         # create readers
         self.readers = [
-            H5SingleReader(fname, batch_size, self.jets_name, self.precision, self.shuffle)
-            for fname, batch_size in zip(self.fname, self.batch_sizes)
+            H5SingleReader(f, b, self.jets_name, self.precision, self.shuffle, self.do_remove_inf)
+            for f, b in zip(self.fname, self.batch_sizes)
         ]
 
     @property
