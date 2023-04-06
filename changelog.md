@@ -1,7 +1,10 @@
 # Changelog
 
 ### [Latest]
+
+### [v0.0.8]
 - Add `vds` command line tool to create virtual datasets [#16](https://github.com/umami-hep/atlas-ftag-tools/pull/16)
+- fix for [#14](https://github.com/umami-hep/atlas-ftag-tools/pull/14)
 
 ### [v0.0.7]
 - Improve Sample class [#15](https://github.com/umami-hep/atlas-ftag-tools/pull/15)
