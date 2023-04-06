@@ -60,3 +60,24 @@ def create_virtual_file(
             f.create_virtual_dataset(group, layout)
 
     return out_fname
+
+
+def main():
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Create a virtual dataset from a glob pattern")
+    parser.add_argument("pattern", type=Path, help="Glob pattern of files to merge")
+    parser.add_argument("output", type=Path, help="Output file name")
+    args = parser.parse_args()
+
+    print(f"Globbing {args.pattern}...")
+    create_virtual_file(args.pattern, args.output, overwrite=True)
+    with h5py.File(args.output) as f:
+        key = list(f.keys())[0]
+        num = len(f[key])
+    print(f"Virtual dataset '{key}' has {num:,} entries")
+    print(f"Saved virtual file to {args.output.resolve()}")
+
+
+if __name__ == "__main__":
+    main()

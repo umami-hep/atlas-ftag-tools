@@ -26,3 +26,16 @@ or from source
 ```bash
 python -m pip install -e ".[dev]"
 ```
+
+
+## Create virtual file
+
+This package contains a script to easily merge a set of H5 files.
+A virtual file is a fast and lightweight way to wrap a set of files.
+See the [h5py documentation](https://docs.h5py.org/en/stable/vds.html) for more information on virtual datasets.
+
+The script is `vds.py` and can be run after installing this package with
+
+```
+vds <pattern> <output path>
+```
