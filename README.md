@@ -39,3 +39,5 @@ The script is `vds.py` and can be run after installing this package with
 ```
 vds <pattern> <output path>
 ```
+
+The `<pattern>` argument should be a quotes enclosed [glob pattern](https://en.wikipedia.org/wiki/Glob_(programming)), for example `"path/to/*.h5"`
