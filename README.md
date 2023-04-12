@@ -40,7 +40,7 @@ The script is `vds.py` and can be run after installing this package with
 vds <pattern> <output path>
 ```
 
-The `<pattern>` argument should be a quotes enclosed [glob pattern](https://en.wikipedia.org/wiki/Glob_(programming)), for example `"path/to/*.h5"`
+The `<pattern>` argument should be a quotes enclosed [glob pattern](https://en.wikipedia.org/wiki/Glob_(programming)), for example `"dsid/path/*.h5"`
 
 
 ## Calculate WPs
@@ -52,8 +52,10 @@ The script is `working_points.py` and can be run after installing this package w
 wps \
     --ttbar "path/to/ttbar/*.h5" \
     --tagger GN120220509 \
-    --f 0.1
+    --fx 0.1
 ```
+
+Both the `--tagger` and `--fx` options accept a list if you want to get the WPs for multiple taggers.
 
 If you want to use the `ttbar` WPs get the efficiencies and rejections for the `zprime` sample, you can add `--zprime "path/to/zprime/*.h5"` to the command.
 Note that a default selection of $p_T > 250 ~GeV$ to jets in the `zprime` sample.

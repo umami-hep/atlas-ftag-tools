@@ -107,7 +107,7 @@ def get_working_points(args=None):
     # loop over taggers
     out = {}
     for tagger, fx in zip(args.tagger, args.fx):
-        out[tagger] = {"fx": fx}
+        out[tagger] = {"signal": args.signal, "fx": fx}
 
         # calculate discriminant
         disc = get_discriminant(jets, tagger, args.signal, fx)
