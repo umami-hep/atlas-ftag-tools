@@ -2,6 +2,8 @@
 
 ### [Latest]
 
+- Add `wps` command line tool to calculate working points [#17](https://github.com/umami-hep/atlas-ftag-tools/pull/17)
+
 ### [v0.0.8]
 - Add `vds` command line tool to create virtual datasets [#16](https://github.com/umami-hep/atlas-ftag-tools/pull/16)
 - fix for [#14](https://github.com/umami-hep/atlas-ftag-tools/pull/14)
