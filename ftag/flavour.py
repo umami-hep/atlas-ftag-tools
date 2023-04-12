@@ -2,6 +2,9 @@ from __future__ import annotations
 
 from collections.abc import Generator
 from dataclasses import dataclass
+from pathlib import Path
+
+import yaml
 
 from ftag.cuts import Cuts
 
@@ -74,3 +77,10 @@ class FlavourContainer:
             if flavour.cuts == cuts:
                 return flavour
         raise KeyError(f"Flavour with {cuts} not found")
+
+
+with open(Path(__file__).parent / "flavours.yaml") as f:
+    flavours_yaml = yaml.safe_load(f)
+flavours_dict = {f["name"]: Flavour(cuts=Cuts.from_list(f.pop("cuts")), **f) for f in flavours_yaml}
+assert len(flavours_dict) == len(flavours_yaml), "Duplicate flavour names detected"
+Flavours = FlavourContainer(flavours_dict)

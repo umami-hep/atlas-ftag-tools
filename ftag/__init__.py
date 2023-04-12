@@ -5,19 +5,24 @@ __version__ = "v0.0.8"
 
 from pathlib import Path
 
-import yaml
-
 import ftag.hdf5 as hdf5
 from ftag.cuts import Cuts
-from ftag.flavour import Flavour, FlavourContainer
+from ftag.flavour import Flavour, FlavourContainer, Flavours
 from ftag.mock import get_mock_file
 from ftag.sample import Sample
+from ftag.wps.discriminant import get_discriminant
+from ftag.wps.working_points import get_working_points
 
 # load flavours
-with open(Path(__file__).parent / "flavours.yaml") as f:
-    flavours_yaml = yaml.safe_load(f)
-flavours_dict = {f["name"]: Flavour(cuts=Cuts.from_list(f.pop("cuts")), **f) for f in flavours_yaml}
-assert len(flavours_dict) == len(flavours_yaml), "Duplicate flavour names detected"
-Flavours = FlavourContainer(flavours_dict)
 
-__all__ = ["Cuts", "Flavours", "Sample", "hdf5", "get_mock_file", "__version__"]
+
+__all__ = [
+    "Cuts",
+    "Flavours",
+    "Sample",
+    "hdf5",
+    "get_mock_file",
+    "get_discriminant",
+    "get_working_points",
+    "__version__",
+]

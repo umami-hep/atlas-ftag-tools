@@ -28,6 +28,7 @@ dev = [
 
 [project.scripts]
 vds = "ftag.vds:main"
+wps = "ftag.wps.working_points:main"
 
 [tool.setuptools]
 packages = ["ftag", "ftag.hdf5"]
