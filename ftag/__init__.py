@@ -3,11 +3,10 @@
 
 __version__ = "v0.0.8"
 
-from pathlib import Path
 
 import ftag.hdf5 as hdf5
 from ftag.cuts import Cuts
-from ftag.flavour import Flavour, FlavourContainer, Flavours
+from ftag.flavour import Flavours
 from ftag.mock import get_mock_file
 from ftag.sample import Sample
 from ftag.wps.discriminant import get_discriminant
