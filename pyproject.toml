@@ -31,7 +31,7 @@ vds = "ftag.vds:main"
 wps = "ftag.wps.working_points:main"
 
 [tool.setuptools]
-packages = ["ftag", "ftag.hdf5"]
+packages = ["ftag", "ftag.hdf5", "ftag.wps"]
 include-package-data = true
 
 [tool.setuptools.dynamic]
