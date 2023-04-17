@@ -2,7 +2,8 @@
 
 ### [Latest]
 
-- Add `wps` command line tool to calculate working points [#17](https://github.com/umami-hep/atlas-ftag-tools/pull/17)
+- Update `working_points.py` with configurable cuts [#18](https://github.com/umami-hep/atlas-ftag-tools/pull/18)
+- Add `working_points.py` script to calculate working points [#17](https://github.com/umami-hep/atlas-ftag-tools/pull/17)
 
 ### [v0.0.8]
 - Add `vds` command line tool to create virtual datasets [#16](https://github.com/umami-hep/atlas-ftag-tools/pull/16)
