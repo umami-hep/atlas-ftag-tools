@@ -129,7 +129,7 @@ def get_working_points(args=None):
         out[tagger] = {"signal": args.signal, "fx": fx}
 
         # calculate discriminant
-        disc = get_discriminant(jets, tagger, args.signal, fx)
+        disc = get_discriminant(jets, tagger, Flavours[args.signal], fx)
         sig_disc = disc[flavs[args.signal].cuts(jets).idx]
 
         # loop over efficiency working points
@@ -144,7 +144,7 @@ def get_working_points(args=None):
 
             # calculate for zprime
             if args.zprime:
-                zp_disc = get_discriminant(zp_jets, tagger, args.signal, 0.018)
+                zp_disc = get_discriminant(zp_jets, tagger, Flavours[args.signal], fx)
                 d["zprime"] = get_eff_rej(zp_jets, zp_disc, wp, flavs)
 
     if args.outfile:
