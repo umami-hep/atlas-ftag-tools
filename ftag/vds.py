@@ -65,9 +65,11 @@ def create_virtual_file(
 def main():
     import argparse
 
-    parser = argparse.ArgumentParser(description="Create a virtual dataset from a glob pattern")
-    parser.add_argument("pattern", type=Path, help="Glob pattern of files to merge")
-    parser.add_argument("output", type=Path, help="Output file name")
+    parser = argparse.ArgumentParser(
+        description="Create a lightweight wrapper around a set of h5 files"
+    )
+    parser.add_argument("pattern", type=Path, help="quotes-enclosed glob pattern of files to merge")
+    parser.add_argument("output", type=Path, help="path to output virtual file")
     args = parser.parse_args()
 
     print(f"Globbing {args.pattern}...")
