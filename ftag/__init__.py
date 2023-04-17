@@ -12,9 +12,6 @@ from ftag.sample import Sample
 from ftag.wps.discriminant import get_discriminant
 from ftag.wps.working_points import get_working_points
 
-# load flavours
-
-
 __all__ = [
     "Cuts",
     "Flavours",

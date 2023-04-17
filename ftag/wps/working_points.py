@@ -26,14 +26,14 @@ def parse_args(args):
         "--zprime",
         required=False,
         type=Path,
-        help="path to zprime (supports globbing). WPs from ttbar will be reused for zprime.",
+        help="path to zprime (supports globbing). WPs from ttbar will be reused for zprime",
     )
     parser.add_argument(
         "-e",
         "--effs",
         nargs="+",
         type=float,
-        help="efficiency WP(s)",
+        help="efficiency working point(s)",
         default=[60, 70, 77, 85],
     )
     parser.add_argument(
@@ -42,7 +42,7 @@ def parse_args(args):
         nargs="+",
         required=True,
         type=str,
-        help="tagger name(s).",
+        help="tagger name(s)",
     )
     parser.add_argument(
         "-f",
@@ -50,7 +50,7 @@ def parse_args(args):
         nargs="+",
         required=True,
         type=float,
-        help="fb or fc values for each tagger.",
+        help="fb or fc value(s) for each tagger",
     )
     parser.add_argument(
         "-s",
@@ -65,13 +65,27 @@ def parse_args(args):
         "--num_jets",
         default=1_000_000,
         type=int,
-        help="use this many jets to calculate WPs.",
+        help="use this many jets (post selection)",
+    )
+    parser.add_argument(
+        "--ttbar_cuts",
+        nargs="+",
+        default=["pt > 20e3"],
+        type=list,
+        help="selection to apply to ttbar (|eta| < 2.5 is always applied)",
+    )
+    parser.add_argument(
+        "--zprime_cuts",
+        nargs="+",
+        default=["pt > 250e3"],
+        type=list,
+        help="selection to apply to zprime (|eta| < 2.5 is always applied)",
     )
     parser.add_argument(
         "-o",
         "--outfile",
         type=Path,
-        help="save results to yaml instead of printing.",
+        help="save results to yaml instead of printing",
     )
 
     return parser.parse_args(args)
@@ -90,19 +104,24 @@ def get_eff_rej(jets, disc, wp, flavs):
 def get_working_points(args=None):
     args = parse_args(args)
 
+    if len(args.tagger) != len(args.fx):
+        raise ValueError("Must provide fb/fc for each tagger")
+
+    # setup cuts and variables
     flavs = Flavours.by_category("single-btag")
-    ttbar_cuts = Cuts.from_list(["pt > 20e3", "eta > -2.5", "eta < 2.5"])
-    zp_cuts = Cuts.from_list(["pt > 250e3", "eta > -2.5", "eta < 2.5"])
+    default_cuts = Cuts.from_list(["eta > -2.5", "eta < 2.5"])
+    ttbar_cuts = Cuts.from_list(args.ttbar_cuts) + default_cuts
+    zprime_cuts = Cuts.from_list(args.zprime_cuts) + default_cuts
     all_vars = list(flavs)[0].cuts.variables
     for tagger in args.tagger:
         all_vars += [f"{tagger}_{f.px}" for f in flavs if "tau" not in f.px]
 
     # load jets
-    reader = H5Reader(args.ttbar, batch_size=10_000)
+    reader = H5Reader(args.ttbar)
     jets = reader.load({"jets": all_vars}, args.num_jets, cuts=ttbar_cuts)["jets"]
     if args.zprime:
-        zp_reader = H5Reader(args.zprime, batch_size=10_000)
-        zp_jets = zp_reader.load({"jets": all_vars}, args.num_jets, cuts=zp_cuts)["jets"]
+        zp_reader = H5Reader(args.zprime)
+        zp_jets = zp_reader.load({"jets": all_vars}, args.num_jets, cuts=zprime_cuts)["jets"]
 
     # loop over taggers
     out = {}
@@ -118,8 +137,7 @@ def get_working_points(args=None):
             d = out[tagger][eff] = {}
 
             # calculate working point
-            wp = round(float(np.percentile(sig_disc, 100 - eff)), 3)
-            d["cut_value"] = wp
+            wp = d["cut_value"] = round(float(np.percentile(sig_disc, 100 - eff)), 3)
 
             # calculate eff and rej for each flavour
             d["ttbar"] = get_eff_rej(jets, disc, wp, flavs)
