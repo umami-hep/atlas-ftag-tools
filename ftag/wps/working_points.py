@@ -113,7 +113,7 @@ def cut_value(jets, discs, eff, signal, do_rej=False):
 
     if do_rej:
         eff = 100 / eff
-        return round(np.percentile(sig_disc, 100 - eff), 3)
+        return round(float(np.percentile(sig_disc, 100 - eff)), 3)
     
     else:
         return round(float(np.percentile(sig_disc, 100 - eff)), 3)
