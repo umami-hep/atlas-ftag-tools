@@ -51,7 +51,7 @@ jobs:
 
   publish:
     name: Publish to PyPI
-    needs: [notebook_tests]
+    needs: [pytest, notebook_tests]
     # Only run for a tagged commit
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
     runs-on: ubuntu-latest
