@@ -48,11 +48,6 @@ jobs:
         run: coverage run --source ftag -m pytest --show-capture=stdout
       - name: Report coverage with Codecov
         uses: codecov/codecov-action@v3
-      - uses: actions/upload-artifact@v3
-        if: failure()
-        with:
-          name: example.ipynb
-          path: ftag/example.ipynb
 
   publish:
     name: Publish to PyPI

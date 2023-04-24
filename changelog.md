@@ -2,6 +2,9 @@
 
 ### [Latest]
 
+- Add tests [#24](https://github.com/umami-hep/atlas-ftag-tools/pull/24)
+
+
 ### [v0.1.0]
 - Update `working_points.py` with configurable cuts [#18](https://github.com/umami-hep/atlas-ftag-tools/pull/18)
 - Add `working_points.py` script to calculate working points [#17](https://github.com/umami-hep/atlas-ftag-tools/pull/17)
