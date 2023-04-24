@@ -2,11 +2,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from subprocess import check_output
 
 import h5py
 import numpy as np
 
+import ftag
 from ftag.hdf5 import get_dtype
 
 
@@ -30,9 +30,7 @@ class H5Writer:
         self.dst.parent.mkdir(parents=True, exist_ok=True)
         self.file = h5py.File(self.dst, "w")
         self.add_attr("srcfile", str(self.src))
-        git_hash = check_output(["git", "rev-parse", "--short", "HEAD"], cwd=Path(__file__).parent)
-        self.git_hash = git_hash.decode("ascii").strip()
-        self.add_attr("writer_hash", self.git_hash)
+        self.add_attr("writer_version", ftag.__version__)
         for name, var in self.variables.items():
             self.create_ds(name, var)
 
