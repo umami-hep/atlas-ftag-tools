@@ -139,7 +139,7 @@ def get_working_points(args=None):
 
         # loop over efficiency working points
         for eff in args.effs:
-            d = out[tagger][eff] = {}
+            d = out[tagger][f"{eff:.0f}"] = {}
 
             wp_flavour = args.signal
             if args.rejection:

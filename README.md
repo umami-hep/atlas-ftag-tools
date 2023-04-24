@@ -1,3 +1,7 @@
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![PyPI version](https://badge.fury.io/py/atlas-ftag-tools.svg)](https://badge.fury.io/py/atlas-ftag-tools)
+[![codecov](https://codecov.io/gh/umami-hep/atlas-ftag-tools/branch/main/graph/badge.svg?token=MBHLIYYQ7I)](https://codecov.io/gh/umami-hep/atlas-ftag-tools)
+
 # ATLAS FTAG Python Tools
 
 This is a collection of Python tools for working with files produced with the FTAG [ntuple dumper](https://gitlab.cern.ch/atlas-flavor-tagging-tools/training-dataset-dumper/).
@@ -65,3 +69,14 @@ If instead of defining the working points for a series of signal efficiencies, y
 By default the working points are printed to the terminal, but you can save the results to a YAML file with the `--outfile` option.
 
 Use `--help` for more options and information.
+
+
+## Tests
+
+To run the tests you can use the `pytest` or `coverage` command, for example
+
+```bash
+coverage run --source ftag -m pytest --show-capture=stdout
+```
+
+Running `coverage report` will display the test coverage.

@@ -10,7 +10,7 @@ def get_dtype(ds, variables: list[str] | None = None, precision: str | None = No
 
     Parameters
     ----------
-    ds : _type_
+    ds : h5py.Dataset
         Input h5 dataset
     variables : list[str] | None, optional
         List of variables to include in dtype, by default None
@@ -63,7 +63,7 @@ def cast_dtype(typestr: str, precision: str) -> np.dtype:
         If precision is not "half" or "full"
     """
     t = np.dtype(typestr)
-    if t.kind != "f" or t.itemsize != 2:
+    if t.kind != "f":
         return t
     if precision == "half":
         return np.dtype("f2")
