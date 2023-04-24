@@ -2,9 +2,9 @@
 
 ### [Latest]
 
+### [v0.1.1]
 - Replace git hash with package version in output files [#25](https://github.com/umami-hep/atlas-ftag-tools/pull/25)
 - Add tests [#24](https://github.com/umami-hep/atlas-ftag-tools/pull/24)
-
 
 ### [v0.1.0]
 - Update `working_points.py` with configurable cuts [#18](https://github.com/umami-hep/atlas-ftag-tools/pull/18)
