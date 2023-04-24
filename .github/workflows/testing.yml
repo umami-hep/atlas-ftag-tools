@@ -2,12 +2,12 @@ name: Test and publish
 on:
   pull_request:
     branches:
-      - '*'
+      - "*"
   push:
     branches:
-      - 'main'
+      - "main"
     tags:
-      - '*'
+      - "*"
 
 jobs:
   notebook_tests:
@@ -31,6 +31,23 @@ jobs:
         with:
           name: example.ipynb
           path: ftag/example.ipynb
+
+  pytest:
+    name: pytest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v3
+      - name: Set up python version
+        uses: actions/setup-python@v4
+      - run: echo "The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - run: echo "The ${{ github.repository }} repository has been cloned to the runner."
+      - run: python -m pip install -e .[dev] # install in editable mode with additional development tools
+      - name: Run tests
+        run: coverage run --source ftag -m pytest --show-capture=stdout
+      - name: Report coverage with Codecov
+        uses: codecov/codecov-action@v3
 
   publish:
     name: Publish to PyPI

@@ -134,7 +134,7 @@ def get_working_points(args=None):
 
         # loop over efficiency working points
         for eff in args.effs:
-            d = out[tagger][eff] = {}
+            d = out[tagger][f"{eff:.0f}"] = {}
 
             # calculate working point
             wp = d["cut_value"] = round(float(np.percentile(sig_disc, 100 - eff)), 3)
