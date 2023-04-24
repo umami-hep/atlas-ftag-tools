@@ -2,6 +2,7 @@
 
 ### [Latest]
 
+- Replace git hash with package version in output files [#25](https://github.com/umami-hep/atlas-ftag-tools/pull/25)
 - Add tests [#24](https://github.com/umami-hep/atlas-ftag-tools/pull/24)
 
 
