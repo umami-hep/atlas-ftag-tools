@@ -59,7 +59,7 @@ def get_mock_scores(labels: np.ndarray):
     rng = np.random.default_rng(42)
     scores = np.zeros((len(labels), 3))
     for label, count in zip(*np.unique(labels, return_counts=True)):
-        if label == 0:
+        if label == 0 or label == 15:
             scores[labels == label] = rng.normal(loc=[2, 0, 0], scale=1, size=(count, 3))
         elif label == 4:
             scores[labels == label] = rng.normal(loc=[0, 1, 0], scale=2.5, size=(count, 3))
@@ -76,7 +76,7 @@ def get_mock_file(num_jets=1000, tracks_name: str = "tracks", num_tracks: int = 
     rng = np.random.default_rng(42)
     jets_dtype = np.dtype(JET_VARS)
     jets = u2s(rng.random((num_jets, len(JET_VARS))), jets_dtype)
-    jets["HadronConeExclTruthLabelID"] = rng.choice([0, 4, 5], size=num_jets)
+    jets["HadronConeExclTruthLabelID"] = rng.choice([0, 4, 5, 15], size=num_jets)
     jets["flavour_label"] = rng.choice([0, 4, 5], size=num_jets)
     jets["pt"] *= 400e3
     jets["mass"] *= 50e3

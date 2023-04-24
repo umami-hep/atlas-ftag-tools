@@ -47,6 +47,8 @@ class FlavourContainer:
         yield from self.flavours.values()
 
     def __getitem__(self, key) -> Flavour:
+        if isinstance(key, Flavour):
+            key = key.name
         try:
             return self.flavours[key]
         except KeyError as e:
