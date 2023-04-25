@@ -64,6 +64,8 @@ Both the `--tagger` and `--fx` options accept a list if you want to get the WPs 
 If you want to use the `ttbar` WPs get the efficiencies and rejections for the `zprime` sample, you can add `--zprime "path/to/zprime/*.h5"` to the command.
 Note that a default selection of $p_T > 250 ~GeV$ to jets in the `zprime` sample.
 
+If instead of defining the working points for a series of signal efficiencies, you wish to calculate a WP corresponding to a specific background rejection, the `--rejection` option can be given along with the desired background.
+
 By default the working points are printed to the terminal, but you can save the results to a YAML file with the `--outfile` option.
 
 Use `--help` for more options and information.

@@ -1,6 +1,7 @@
 # Changelog
 
 ### [Latest]
+- Update `working_points.py` with calculation of WPs given rejections [#23](https://github.com/umami-hep/atlas-ftag-tools/pull/23)
 
 ### [v0.1.1]
 - Replace git hash with package version in output files [#25](https://github.com/umami-hep/atlas-ftag-tools/pull/25)

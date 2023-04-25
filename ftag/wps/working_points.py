@@ -33,7 +33,7 @@ def parse_args(args):
         "--effs",
         nargs="+",
         type=float,
-        help="efficiency working point(s)",
+        help="efficiency working point(s). If -r is specified, values should be 1/efficiency",
         default=[60, 70, 77, 85],
     )
     parser.add_argument(
@@ -59,6 +59,13 @@ def parse_args(args):
         choices=["bjets", "cjets"],
         type=str,
         help='signal flavour ("bjets" or "cjets")',
+    )
+    parser.add_argument(
+        "-r",
+        "--rejection",
+        default=None,
+        choices=["ujets", "cjets", "bjets"],
+        help="use rejection of specified background class to determine working points",
     )
     parser.add_argument(
         "-n",
@@ -129,15 +136,19 @@ def get_working_points(args=None):
         out[tagger] = {"signal": args.signal, "fx": fx}
 
         # calculate discriminant
-        disc = get_discriminant(jets, tagger, Flavours[args.signal], fx)
-        sig_disc = disc[flavs[args.signal].cuts(jets).idx]
+        disc = get_discriminant(jets, tagger, args.signal, fx)
 
         # loop over efficiency working points
         for eff in args.effs:
             d = out[tagger][f"{eff:.0f}"] = {}
 
-            # calculate working point
-            wp = d["cut_value"] = round(float(np.percentile(sig_disc, 100 - eff)), 3)
+            wp_flavour = args.signal
+            if args.rejection:
+                eff = 100 / eff
+                wp_flavour = args.rejection
+
+            wp_disc = disc[flavs[wp_flavour].cuts(jets).idx]
+            wp = d["cut_value"] = round(float(np.percentile(wp_disc, 100 - eff)), 3)
 
             # calculate eff and rej for each flavour
             d["ttbar"] = get_eff_rej(jets, disc, wp, flavs)
