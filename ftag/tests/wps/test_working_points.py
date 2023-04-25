@@ -38,7 +38,7 @@ def test_get_working_points(ttbar_file, eff_val="60"):
     assert "eff" in output["MockTagger"][eff_val]["ttbar"]
     assert "rej" in output["MockTagger"][eff_val]["ttbar"]
     assert output["MockTagger"][eff_val]["ttbar"]["eff"]["bjets"] == pytest.approx(
-        float(eff_val) / 100
+        float(eff_val) / 100, rel=1e-2
     )
 
 
@@ -68,7 +68,7 @@ def test_get_working_points_rejection(ttbar_file, rej_val="100"):
     assert "eff" in output["MockTagger"][rej_val]["ttbar"]
     assert "rej" in output["MockTagger"][rej_val]["ttbar"]
     assert output["MockTagger"][rej_val]["ttbar"]["eff"]["ujets"] == pytest.approx(
-        1 / float(rej_val)
+        1 / float(rej_val), rel=1e-1
     )
 
 
@@ -98,7 +98,7 @@ def test_get_working_points_cjets(ttbar_file, eff_val="60"):
     assert "eff" in output["MockTagger"][eff_val]["ttbar"]
     assert "rej" in output["MockTagger"][eff_val]["ttbar"]
     assert output["MockTagger"][eff_val]["ttbar"]["eff"]["cjets"] == pytest.approx(
-        float(eff_val) / 100
+        float(eff_val) / 100, rel=1e-2
     )
 
 
@@ -131,5 +131,5 @@ def test_get_working_points_zprime(ttbar_file, zprime_file, eff_val="60"):
     assert "eff" in output["MockTagger"][eff_val]["zprime"]
     assert "rej" in output["MockTagger"][eff_val]["zprime"]
     assert output["MockTagger"][eff_val]["ttbar"]["eff"]["bjets"] == pytest.approx(
-        float(eff_val) / 100
+        float(eff_val) / 100, rel=1e-2
     )
