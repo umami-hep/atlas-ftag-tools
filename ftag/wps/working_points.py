@@ -33,7 +33,8 @@ def parse_args(args):
         "--effs",
         nargs="+",
         type=float,
-        help="efficiency working point(s). If --rejection is specified, values should be 1/efficiency.",
+        help="efficiency working point(s). If --rejection is specified, values should be",
+             " 1/efficiency."
         default=[60, 70, 77, 85],
     )
     parser.add_argument(
