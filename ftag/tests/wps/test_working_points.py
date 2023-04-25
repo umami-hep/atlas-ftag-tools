@@ -37,7 +37,9 @@ def test_get_working_points(ttbar_file, eff_val="60"):
     assert "ttbar" in output["MockTagger"][eff_val]
     assert "eff" in output["MockTagger"][eff_val]["ttbar"]
     assert "rej" in output["MockTagger"][eff_val]["ttbar"]
-    assert output["MockTagger"][eff_val]["ttbar"]["eff"]["bjets"] == pytest.approx(float(eff_val))
+    assert output["MockTagger"][eff_val]["ttbar"]["eff"]["bjets"] == pytest.approx(
+        float(eff_val) / 100
+    )
 
 
 def test_get_working_points_rejection(ttbar_file, rej_val="100"):
@@ -65,7 +67,10 @@ def test_get_working_points_rejection(ttbar_file, rej_val="100"):
     assert "ttbar" in output["MockTagger"][rej_val]
     assert "eff" in output["MockTagger"][rej_val]["ttbar"]
     assert "rej" in output["MockTagger"][rej_val]["ttbar"]
-    assert output["MockTagger"][rej_val]["ttbar"]["rej"]["ujets"] == pytest.approx(float(rej_val))
+    assert output["MockTagger"][rej_val]["ttbar"]["eff"]["ujets"] == pytest.approx(
+        1 / float(rej_val)
+    )
+
 
 def test_get_working_points_cjets(ttbar_file, eff_val="60"):
     args = [
@@ -92,7 +97,9 @@ def test_get_working_points_cjets(ttbar_file, eff_val="60"):
     assert "ttbar" in output["MockTagger"][eff_val]
     assert "eff" in output["MockTagger"][eff_val]["ttbar"]
     assert "rej" in output["MockTagger"][eff_val]["ttbar"]
-    assert output["MockTagger"][eff_val]["ttbar"]["eff"]["bjets"] == pytest.approx(float(eff_val))
+    assert output["MockTagger"][eff_val]["ttbar"]["eff"]["cjets"] == pytest.approx(
+        float(eff_val) / 100
+    )
 
 
 def test_get_working_points_zprime(ttbar_file, zprime_file, eff_val="60"):
@@ -123,4 +130,6 @@ def test_get_working_points_zprime(ttbar_file, zprime_file, eff_val="60"):
     assert "zprime" in output["MockTagger"][eff_val]
     assert "eff" in output["MockTagger"][eff_val]["zprime"]
     assert "rej" in output["MockTagger"][eff_val]["zprime"]
-    assert output["MockTagger"][eff_val]["ttbar"]["eff"]["bjets"] == pytest.approx(float(eff_val))
+    assert output["MockTagger"][eff_val]["ttbar"]["eff"]["bjets"] == pytest.approx(
+        float(eff_val) / 100
+    )

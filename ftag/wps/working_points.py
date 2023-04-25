@@ -107,6 +107,7 @@ def get_eff_rej(jets, disc, wp, flavs):
         out["rej"][str(bkg)] = float(f"{1/eff:.3g}")
     return out
 
+
 def get_working_points(args=None):
     args = parse_args(args)
 
