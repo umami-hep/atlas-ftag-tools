@@ -8,29 +8,51 @@ This is a collection of Python tools for working with files produced with the FT
 The code is intended to be used a [library](https://iscinumpy.dev/post/app-vs-library/) for other projects.
 Please see the [example notebook](ftag/example.ipynb) for usage.
 
+# Quickstart 
+
 ## Installation
 
-To install the package you can install from pip using the [release on pypi](https://pypi.org/project/atlas-ftag-tools/) via
+If you want to use this package without modification, you can install from [pypi](https://pypi.org/project/atlas-ftag-tools/) using `pip`.
 
 ```bash
 pip install atlas-ftag-tools
 ```
 
-or you can clone the repository and install in editable mode with
-```bash
-python -m pip install -e .
-```
-
-To install optional development dependencies (for formatting and linting) you can instead install with either from pip
+To additionally install the development dependencies (for formatting and linting) rn
 ```bash
 pip install atlas-ftag-tools[dev]
 ```
 
-or from source
+## Development
+
+If you plan on making changes to teh code, instead clone the repository and install the package from source in editable mode with
+
+```bash
+python -m pip install -e .
+```
+
+Include development dependencies with
+
 ```bash
 python -m pip install -e ".[dev]"
 ```
 
+You can set up pre-commit hooks with
+
+```bash
+pre-commit install
+```
+
+To run the tests you can use the `pytest` or `coverage` command, for example
+
+```bash
+coverage run --source ftag -m pytest --show-capture=stdout
+```
+
+Running `coverage report` will display the test coverage.
+
+
+# Usage
 
 ## Create virtual file
 
@@ -45,6 +67,8 @@ vds <pattern> <output path>
 ```
 
 The `<pattern>` argument should be a quotes enclosed [glob pattern](https://en.wikipedia.org/wiki/Glob_(programming)), for example `"dsid/path/*.h5"`
+
+See `vds --help` for more options and information.
 
 
 ## Calculate WPs
@@ -68,15 +92,6 @@ If instead of defining the working points for a series of signal efficiencies, y
 
 By default the working points are printed to the terminal, but you can save the results to a YAML file with the `--outfile` option.
 
-Use `--help` for more options and information.
+See `wps --help` for more options and information.
 
 
-## Tests
-
-To run the tests you can use the `pytest` or `coverage` command, for example
-
-```bash
-coverage run --source ftag -m pytest --show-capture=stdout
-```
-
-Running `coverage report` will display the test coverage.
