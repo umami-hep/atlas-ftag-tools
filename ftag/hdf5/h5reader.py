@@ -216,8 +216,9 @@ class H5Reader:
             # combine samples and shuffle
             data = {name: np.concatenate([s[name] for s in samples]) for name in variables}
             if self.shuffle:
-                for name in variables:
-                    rng.shuffle(data[name])
+                idx = np.arange(len(data[self.jets_name]))
+                rng.shuffle(idx)
+                data = {name: array[idx] for name, array in data.items()}
 
             # select
             yield data
