@@ -1,6 +1,8 @@
 # Changelog
 
 ### [Latest]
+
+### [v0.1.2]
 - Fix shuffling bug in H5Reader [#26](https://github.com/umami-hep/atlas-ftag-tools/pull/26)
 - Update `working_points.py` with calculation of WPs given rejections [#23](https://github.com/umami-hep/atlas-ftag-tools/pull/23)
 
