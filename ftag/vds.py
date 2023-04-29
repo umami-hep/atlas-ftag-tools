@@ -8,18 +8,22 @@ from typing import Optional, Tuple
 import h5py
 
 
-def filter_events(fname: str, group: str, event_ratio: Tuple[int, int], filtering_var: str) -> Tuple[np.ndarray, int]:
+def filter_events(
+    fname: str, group: str, filter_fraction: float, filtering_var: str
+) -> Tuple[np.ndarray, int]:
     with h5py.File(fname, "r") as f:
-        event_numbers = f[group][filtering_var][:]
-        num_total_events = len(event_numbers)
+        filtering_var = f[group][filtering_var][:]
+        num_total_var = len(filtering_var)
 
-        mask = np.random.rand(num_total_events) < event_ratio[0] / sum(event_ratio)
+        mask = np.random.rand(num_total_var) < filter_fraction
         filtered_indices = np.where(mask)[0]
 
-    return filtered_indices, num_total_events
+    return filtered_indices, num_total_var
 
 
-def get_virtual_layout(fnames: list[str], group: str, event_ratio: Tuple[int, int], filtering_var: Optional[str]):
+def get_virtual_layout(
+    fnames: list[str], group: str, event_ratio: Tuple[int, int], filtering_var: Optional[str]
+):
     sources = []
     total = 0
     for fname in fnames:
@@ -46,7 +50,7 @@ def get_virtual_layout(fnames: list[str], group: str, event_ratio: Tuple[int, in
     idx = 0
     for source in sources:
         length = source.shape[0]
-        layout[idx: idx + length] = source
+        layout[idx : idx + length] = source
         idx += length
 
     return layout
@@ -93,16 +97,27 @@ def main():
     )
     parser.add_argument("pattern", type=Path, help="quotes-enclosed glob pattern of files to merge")
     parser.add_argument("output", type=Path, help="path to output virtual file")
-    parser.add_argument("--filtering-var", default=None, help="variable to use for event filtering (None for no filtering)")
+    parser.add_argument(
+        "--filtering-var",
+        default=None,
+        help="variable to use for event filtering (None for no filtering)",
+    )
     args = parser.parse_args()
 
     print(f"Globbing {args.pattern}...")
-    create_virtual_file(args.pattern, args.output, overwrite=True, event_ratio=(5, 1), filtering_var=args.filtering_var)
+    create_virtual_file(
+        args.pattern,
+        args.output,
+        overwrite=True,
+        event_ratio=(5, 1),
+        filtering_var=args.filtering_var,
+    )
     with h5py.File(args.output) as f:
         key = list(f.keys())[0]
         num = len(f[key])
     print(f"Virtual dataset '{key}' has {num:,} entries")
     print(f"Saved virtual file to {args.output.resolve()}")
+
 
 if __name__ == "__main__":
     main()
