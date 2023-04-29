@@ -1,16 +1,15 @@
 from __future__ import annotations
 
 import glob
-import numpy as np
 from pathlib import Path
-from typing import Optional, Tuple
 
 import h5py
+import numpy as np
 
 
 def filter_events(
     fname: str, group: str, filter_fraction: float, filtering_var: str
-) -> Tuple[np.ndarray, int]:
+) -> tuple[np.ndarray, int]:
     with h5py.File(fname, "r") as f:
         filtering_var = f[group][filtering_var][:]
         num_total_var = len(filtering_var)
@@ -18,23 +17,20 @@ def filter_events(
         mask = np.random.rand(num_total_var) < filter_fraction
         filtered_indices = np.where(mask)[0]
 
-    return filtered_indices, num_total_var
+    return filtered_indices
 
 
-def get_virtual_layout(
-    fnames: list[str], group: str, event_ratio: Tuple[int, int], filtering_var: Optional[str]
-):
+def get_virtual_layout(fnames: list[str], group: str, filter_fraction: float, filtering_var: str):
     sources = []
     total = 0
     for fname in fnames:
         if filtering_var:
-            indices, num_total_events = filter_events(fname, group, event_ratio, filtering_var)
+            indices = filter_events(fname, group, filter_fraction, filtering_var)
             with h5py.File(fname) as f:
                 vsource = h5py.VirtualSource(f[group], shape=(len(indices),), sel=indices)
         else:
             with h5py.File(fname) as f:
                 vsource = h5py.VirtualSource(f[group])
-                num_total_events = vsource.shape[0]
 
         total += vsource.shape[0]
         sources.append(vsource)
@@ -60,8 +56,8 @@ def create_virtual_file(
     pattern: Path | str,
     out_fname: Path | None = None,
     overwrite: bool = False,
-    event_ratio: Tuple[int, int] = (5, 1),
-    filtering_var: Optional[str] = None,
+    filter_fraction: float = 0.2,
+    filtering_var: str = None,
 ):
     # get list of filenames
     fnames = glob.glob(str(pattern))
@@ -83,7 +79,7 @@ def create_virtual_file(
     out_fname.parent.mkdir(exist_ok=True)
     with h5py.File(out_fname, "w") as f:
         for group in h5py.File(fnames[0]):
-            layout = get_virtual_layout(fnames, group, event_ratio, filtering_var)
+            layout = get_virtual_layout(fnames, group, filter_fraction, filtering_var)
             f.create_virtual_dataset(group, layout)
 
     return out_fname
