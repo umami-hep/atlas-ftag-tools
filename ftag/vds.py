@@ -2,14 +2,13 @@ from __future__ import annotations
 
 import glob
 from pathlib import Path
+from tqdm import tqdm
 
 import h5py
 import numpy as np
 
 
-def filter_events(
-    fname: str, group: str, filter_fraction: float, filtering_var: str | None
-) -> np.ndarray:
+def filter_events(fname: str, group: str, filter_fraction: float, filtering_var: str) -> np.ndarray:
     with h5py.File(fname, "r") as f:
         filtering_var = f[group][filtering_var][:]
         num_total_var = len(filtering_var)
@@ -20,27 +19,21 @@ def filter_events(
     return filtered_indices
 
 
-def get_filtered_chunks(
-    fnames: list[str], group: str, filter_fraction: float, filtering_var: str | None
-):
+def get_filtered_chunks(fnames: list[str], group: str, filter_fraction: float, filtering_var: str):
     filtered_chunks = []
     for fname in fnames:
-        print("Filtering events")
         indices = filter_events(fname, group, filter_fraction, filtering_var)
-        print("Got indices")
-        fixed_size_chunks = create_fixed_size_chunks(indices, chunk_size=1000)
+        fixed_size_chunks = create_fixed_size_chunks(indices)
         filtered_chunks.extend([(fname, chunk) for chunk in fixed_size_chunks])
 
     return filtered_chunks
 
 
 def create_fixed_size_chunks(indices: np.ndarray, chunk_size: int = 1_000) -> list[np.ndarray]:
-    print("Creating fixed size chunks")
     chunks = []
     for i in range(0, len(indices), chunk_size):
         chunk = indices[i : i + chunk_size]
         chunks.append(chunk)
-    print("Done creating fixed size chunks")
     return chunks
 
 
@@ -52,6 +45,7 @@ def create_virtual_dataset(
     filtering_var: str | None,
 ):
     if filtering_var:
+        print("Filtering events")
         filtered_chunks = get_filtered_chunks(
             fnames, filtering_var_group, filter_fraction, filtering_var
         )
@@ -64,16 +58,13 @@ def create_virtual_dataset(
     for group in groups:
         sources = []
         total = 0
-        print(len(filtered_chunks))
-        i = 0
-        for fname, indices in filtered_chunks:
+
+        print(f"Creating virtual dataset for {group}")
+        for fname, indices in tqdm(filtered_chunks):
             with h5py.File(fname, "r") as f:
                 src = h5py.VirtualSource(f[group])
                 sources.append(src[indices])
                 total += len(indices)
-            i += 1
-            if i % 100 == 0:
-                print(f"Processed {i} /  {len(filtered_chunks)} files")
 
         with h5py.File(fnames[0], "r") as f:
             dtype = f[group].dtype
@@ -139,9 +130,10 @@ def main():
     parser.add_argument("pattern", type=Path, help="quotes-enclosed glob pattern of files to merge")
     parser.add_argument("output", type=Path, help="path to output virtual file")
     parser.add_argument(
-        "--filtering-var",
+        "-f",
+        "--filter-spec",
         default=None,
-        help="variable to use for filtering (None for no filtering)",
+        help="filtering specification in the format 'group:variable' (None for no filtering)",
     )
     parser.add_argument(
         "--filter-fraction",
@@ -149,12 +141,12 @@ def main():
         default=0.2,
         help="fraction of events to keep when filtering",
     )
-    parser.add_argument(
-        "--filter-group",
-        default=None,
-        help="Dataset containing variable for filtering (None for no filtering)",
-    )
     args = parser.parse_args()
+
+    if args.filter_spec:
+        filtering_var_group, filtering_var = args.filter_spec.split(":")
+    else:
+        filtering_var_group = filtering_var = None
 
     print(f"Globbing {args.pattern}...")
     create_virtual_file(
@@ -162,8 +154,8 @@ def main():
         args.output,
         overwrite=True,
         filter_fraction=args.filter_fraction,
-        filtering_var=args.filtering_var,
-        filtering_var_group=args.filter_group,
+        filtering_var=filtering_var,
+        filtering_var_group=filtering_var_group,
     )
     with h5py.File(args.output) as f:
         key = list(f.keys())[0]
