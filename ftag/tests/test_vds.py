@@ -6,7 +6,7 @@ import h5py
 import numpy as np
 import pytest
 
-from vds import create_virtual_file, create_virtual_dataset, create_fixed_size_chunks
+from ftag.vds import create_fixed_size_chunks, create_virtual_dataset, create_virtual_file
 
 
 @pytest.fixture(scope="function")

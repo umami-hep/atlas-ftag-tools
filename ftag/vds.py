@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import glob
 from pathlib import Path
-from tqdm import tqdm
 
 import h5py
 import numpy as np
+from tqdm import tqdm
 
 
 def filter_events(fname: str, group: str, filter_fraction: float, filtering_var: str) -> np.ndarray:
