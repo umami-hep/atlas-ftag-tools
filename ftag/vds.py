@@ -25,64 +25,72 @@ def get_filtered_chunks(
 ):
     filtered_chunks = []
     for fname in fnames:
-        if filtering_var:
-            print("Filtering events")
-            indices = filter_events(fname, group, filter_fraction, filtering_var)
-            print("Got indices")
-        else:
-            with h5py.File(fname, "r") as f:
-                indices = np.arange(f[group].shape[0])
-
-        filtered_chunks.append((fname, indices))
+        print("Filtering events")
+        indices = filter_events(fname, group, filter_fraction, filtering_var)
+        print("Got indices")
+        fixed_size_chunks = create_fixed_size_chunks(indices, chunk_size=1000)
+        filtered_chunks.extend([(fname, chunk) for chunk in fixed_size_chunks])
 
     return filtered_chunks
 
 
-def get_contiguous_chunks(indices: np.ndarray) -> list[slice]:
-    contiguous_chunks = []
-    start = indices[0]
-    end = start
-    for i in range(1, len(indices)):
-        if indices[i] == end + 1:
-            end += 1
-        else:
-            contiguous_chunks.append(slice(start, end + 1))
-            start = indices[i]
-            end = start
-    contiguous_chunks.append(slice(start, end + 1))
-    return contiguous_chunks
+def create_fixed_size_chunks(indices: np.ndarray, chunk_size: int = 1_000) -> list[np.ndarray]:
+    print("Creating fixed size chunks")
+    chunks = []
+    for i in range(0, len(indices), chunk_size):
+        chunk = indices[i : i + chunk_size]
+        chunks.append(chunk)
+    print("Done creating fixed size chunks")
+    return chunks
 
 
 def create_virtual_dataset(
-    fnames: list[str], group: str, filter_fraction: float, filtering_var: str | None
+    fnames: list[str],
+    groups: list[str],
+    filter_fraction: float,
+    filtering_var_group: str | None,
+    filtering_var: str | None,
 ):
-    filtered_chunks = get_filtered_chunks(fnames, group, filter_fraction, filtering_var)
+    if filtering_var:
+        filtered_chunks = get_filtered_chunks(
+            fnames, filtering_var_group, filter_fraction, filtering_var
+        )
+    else:
+        filtered_chunks = [
+            (fname, np.arange(h5py.File(fname, "r")[groups[0]].shape[0])) for fname in fnames
+        ]
 
-    sources = []
-    total = 0
-    for fname, indices in filtered_chunks:
-        print(f"Adding {len(indices)} events from {fname}")
-        with h5py.File(fname, "r") as f:
-            src = h5py.VirtualSource(f[group])
-            contiguous_chunks = get_contiguous_chunks(indices)
-            for chunk in contiguous_chunks:
-                sources.append(src[chunk])
-                total += chunk.stop - chunk.start
+    layouts = {}
+    for group in groups:
+        sources = []
+        total = 0
+        print(len(filtered_chunks))
+        i = 0
+        for fname, indices in filtered_chunks:
+            with h5py.File(fname, "r") as f:
+                src = h5py.VirtualSource(f[group])
+                sources.append(src[indices])
+                total += len(indices)
+            i += 1
+            if i % 100 == 0:
+                print(f"Processed {i} /  {len(filtered_chunks)} files")
 
-    with h5py.File(fnames[0], "r") as f:
-        dtype = f[group].dtype
-        shape = f[group].shape
-    shape = (total,) + shape[1:]
-    layout = h5py.VirtualLayout(shape=shape, dtype=dtype)
+        with h5py.File(fnames[0], "r") as f:
+            dtype = f[group].dtype
+            shape = f[group].shape
+        shape = (total,) + shape[1:]
+        layout = h5py.VirtualLayout(shape=shape, dtype=dtype)
 
-    # fill the vds
-    idx = 0
-    for source in sources:
-        length = source.shape[0]
-        layout[idx : idx + length] = source
-        idx += length
+        # fill the vds
+        idx = 0
+        for source in sources:
+            length = source.shape[0]
+            layout[idx : idx + length] = source
+            idx += length
 
-    return layout
+        layouts[group] = layout
+
+    return layouts
 
 
 def create_virtual_file(
@@ -90,6 +98,7 @@ def create_virtual_file(
     out_fname: Path | None = None,
     overwrite: bool = False,
     filter_fraction: float = 0.2,
+    filtering_var_group: str | None = None,
     filtering_var: str | None = None,
 ):
     fnames = glob.glob(str(pattern))
@@ -107,11 +116,15 @@ def create_virtual_file(
     if not overwrite and out_fname.is_file():
         return out_fname
 
+    groups = list(h5py.File(fnames[0]).keys())
+
     # create virtual file
     out_fname.parent.mkdir(exist_ok=True)
     with h5py.File(out_fname, "w") as f:
-        for group in h5py.File(fnames[0]):
-            layout = create_virtual_dataset(fnames, group, filter_fraction, filtering_var)
+        layouts = create_virtual_dataset(
+            fnames, groups, filter_fraction, filtering_var_group, filtering_var
+        )
+        for group, layout in layouts.items():
             f.create_virtual_dataset(group, layout)
 
     return out_fname
@@ -128,13 +141,18 @@ def main():
     parser.add_argument(
         "--filtering-var",
         default=None,
-        help="variable to use for event filtering (None for no filtering)",
+        help="variable to use for filtering (None for no filtering)",
     )
     parser.add_argument(
         "--filter-fraction",
         type=float,
         default=0.2,
         help="fraction of events to keep when filtering",
+    )
+    parser.add_argument(
+        "--filter-group",
+        default=None,
+        help="Dataset containing variable for filtering (None for no filtering)",
     )
     args = parser.parse_args()
 
@@ -145,6 +163,7 @@ def main():
         overwrite=True,
         filter_fraction=args.filter_fraction,
         filtering_var=args.filtering_var,
+        filtering_var_group=args.filter_group,
     )
     with h5py.File(args.output) as f:
         key = list(f.keys())[0]
