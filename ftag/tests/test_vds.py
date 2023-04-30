@@ -26,7 +26,7 @@ def test_h5_files():
 
 
 @pytest.mark.parametrize(
-    "filter_fraction,filtering_var_group,filtering_var,expected_shape_0",
+    "filter_fraction,filtering_var_group,filtering_var,expected_shape",
     [
         (1, None, None, 25),
         (0.5, "data", "var", 25),
@@ -76,6 +76,7 @@ def test_create_virtual_file(test_h5_files):
         with h5py.File(output_path) as f:
             assert "data" in f
             assert len(f["data"]) == 25
+
 
 def test_create_fixed_size_chunks():
     indices = np.arange(10)
