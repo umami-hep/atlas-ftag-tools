@@ -10,16 +10,25 @@ from tqdm import tqdm
 
 def filter_events(fname: str, group: str, filter_fraction: float, filtering_var: str) -> np.ndarray:
     with h5py.File(fname, "r") as f:
-        filtering_var = f[group][filtering_var][:]
-        num_total_var = len(filtering_var)
+        filtering_var_values = f[group][filtering_var][:]
+        unique_values = np.unique(filtering_var_values)
 
-        mask = np.random.rand(num_total_var) < filter_fraction
-        filtered_indices = np.where(mask)[0]
+        num_unique_values = len(unique_values)
+        num_values_to_select = int(num_unique_values * filter_fraction)
+
+        selected_values_indices = np.random.choice(
+            num_unique_values, num_values_to_select, replace=False
+        )
+        selected_values = unique_values[selected_values_indices]
+
+        filtered_indices = np.where(np.isin(filtering_var_values, selected_values))[0]
 
     return filtered_indices
 
 
-def get_filtered_chunks(fnames: list[str], group: str, filter_fraction: float, filtering_var: str):
+def get_filtered_chunks(
+    fnames: list[str], group: str | None, filtering_var: str | None, filter_fraction: float
+):
     filtered_chunks = []
     for fname in fnames:
         indices = filter_events(fname, group, filter_fraction, filtering_var)
@@ -47,7 +56,7 @@ def create_virtual_dataset(
     if filtering_var:
         print("Filtering events")
         filtered_chunks = get_filtered_chunks(
-            fnames, filtering_var_group, filter_fraction, filtering_var
+            fnames, filtering_var_group, filtering_var, filter_fraction,
         )
     else:
         filtered_chunks = [

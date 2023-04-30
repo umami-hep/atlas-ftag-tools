@@ -33,7 +33,7 @@ def test_create_virtual_dataset(test_h5_files):
     layout = layouts["data"]
     assert isinstance(layout, h5py.VirtualLayout)
     assert layout.shape == (25,)
-    assert layout.dtype == np.dtype("int64")
+    assert layout.dtype == np.dtype([("var", "i8")])
 
 
 def test_create_virtual_file(test_h5_files):
