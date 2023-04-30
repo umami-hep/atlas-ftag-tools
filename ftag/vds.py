@@ -8,7 +8,9 @@ import numpy as np
 from tqdm import tqdm
 
 
-def filter_events(fname: str, group: str, filter_fraction: float, filtering_var: str) -> np.ndarray:
+def filter_events(
+    fname: str, group: str | None, filtering_var: str | None, filter_fraction: float
+) -> np.ndarray:
     with h5py.File(fname, "r") as f:
         filtering_var_values = f[group][filtering_var][:]
         unique_values = np.unique(filtering_var_values)
@@ -31,7 +33,12 @@ def get_filtered_chunks(
 ):
     filtered_chunks = []
     for fname in fnames:
-        indices = filter_events(fname, group, filter_fraction, filtering_var)
+        indices = filter_events(
+            fname,
+            group,
+            filtering_var,
+            filter_fraction,
+        )
         fixed_size_chunks = create_fixed_size_chunks(indices)
         filtered_chunks.extend([(fname, chunk) for chunk in fixed_size_chunks])
 
@@ -56,7 +63,10 @@ def create_virtual_dataset(
     if filtering_var:
         print("Filtering events")
         filtered_chunks = get_filtered_chunks(
-            fnames, filtering_var_group, filtering_var, filter_fraction,
+            fnames,
+            filtering_var_group,
+            filtering_var,
+            filter_fraction,
         )
     else:
         filtered_chunks = [

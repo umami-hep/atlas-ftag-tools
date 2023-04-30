@@ -61,7 +61,7 @@ def test_create_virtual_file(test_h5_files):
 def test_create_virtual_dataset_with_filter(test_h5_files):
     groups = ["data"]
     layouts = create_virtual_dataset(
-        test_h5_files, groups, filter_fraction=0.5, filtering_var_group="data", filtering_var="data"
+        test_h5_files, groups, filter_fraction=0.5, filtering_var_group="data", filtering_var="var"
     )
     layout = layouts["data"]
     assert isinstance(layout, h5py.VirtualLayout)
