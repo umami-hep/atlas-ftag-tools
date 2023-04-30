@@ -25,14 +25,34 @@ def test_h5_files():
         yield file_paths
 
 
-def test_create_virtual_dataset(test_h5_files):
+@pytest.mark.parametrize(
+    "filter_fraction,filtering_var_group,filtering_var,expected_shape_0",
+    [
+        (1, None, None, 25),
+        (0.5, "data", "var", 25),
+    ],
+)
+def test_create_virtual_dataset(
+    test_h5_files,
+    filter_fraction,
+    filtering_var_group,
+    filtering_var,
+    expected_shape,
+):
     groups = ["data"]
     layouts = create_virtual_dataset(
-        test_h5_files, groups, filter_fraction=1, filtering_var_group=None, filtering_var=None
+        test_h5_files,
+        groups,
+        filter_fraction=filter_fraction,
+        filtering_var_group=filtering_var_group,
+        filtering_var=filtering_var,
     )
     layout = layouts["data"]
     assert isinstance(layout, h5py.VirtualLayout)
-    assert layout.shape == (25,)
+    if filter_fraction < 1:
+        assert layout.shape[0] < expected_shape
+    else:
+        assert layout.shape[0] == expected_shape
     assert layout.dtype == np.dtype([("var", "i8")])
 
 
@@ -56,18 +76,6 @@ def test_create_virtual_file(test_h5_files):
         with h5py.File(output_path) as f:
             assert "data" in f
             assert len(f["data"]) == 25
-
-
-def test_create_virtual_dataset_with_filter(test_h5_files):
-    groups = ["data"]
-    layouts = create_virtual_dataset(
-        test_h5_files, groups, filter_fraction=0.5, filtering_var_group="data", filtering_var="var"
-    )
-    layout = layouts["data"]
-    assert isinstance(layout, h5py.VirtualLayout)
-    assert layout.shape[0] <= 25
-    assert layout.dtype == np.dtype("int64")
-
 
 def test_create_fixed_size_chunks():
     indices = np.arange(10)
