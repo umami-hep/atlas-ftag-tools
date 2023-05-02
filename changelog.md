@@ -1,6 +1,7 @@
 # Changelog
 
 ### [Latest]
+- Add option for merging MC21 ttbar samples using ```vds.py``` [#27](https://github.com/umami-hep/atlas-ftag-tools/pull/27)
 
 ### [v0.1.2]
 - Fix shuffling bug in H5Reader [#26](https://github.com/umami-hep/atlas-ftag-tools/pull/26)
