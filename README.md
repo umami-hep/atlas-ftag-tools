@@ -68,6 +68,8 @@ vds <pattern> <output path>
 
 The `<pattern>` argument should be a quotes enclosed [glob pattern](https://en.wikipedia.org/wiki/Glob_(programming)), for example `"dsid/path/*.h5"`
 
+The script can also be used for the merging of samples that need to be combined in a predefined ratio. This can be done using the ```--filter-spec``` to set the dataset group and variable name e.g. ```jet:eventNumber```, and ```--filter-fraction``` to determine the sampling ratio.
+
 See `vds --help` for more options and information.
 
 
