@@ -23,23 +23,18 @@ class Sample:
             raise FileNotFoundError(f"The following files do not exist: {missing}")
 
     @property
-    def path(self) -> Path | tuple[Path]:
+    def path(self) -> tuple[Path]:
+        pattern_tuple = self.pattern if isinstance(self.pattern, tuple) else (self.pattern,)
         if self.ntuple_dir is not None:
-            if isinstance(self.pattern, tuple):
-                return tuple(Path(self.ntuple_dir, p) for p in self.pattern)
-            return Path(self.ntuple_dir, self.pattern)
-        if isinstance(self.pattern, tuple):
-            return tuple(Path(p) for p in self.pattern)
-        return Path(self.pattern)
+            return tuple(Path(self.ntuple_dir, p) for p in pattern_tuple)
+        return tuple(Path(p) for p in pattern_tuple)
 
     @property
-    def files(self) -> list[str]:
-        if isinstance(self.path, tuple):
-            files = []
-            for p in self.path:
-                files += glob.glob(str(p)) if "*" in str(p) else [str(p)]
-                return files
-        return glob.glob(str(self.path)) if "*" in str(self.path) else [str(self.path)]
+    def files(self) -> list[str]:    
+        files = []
+        for p in self.path:
+            files += glob.glob(str(p)) if "*" in str(p) else [str(p)]
+        return files
 
     @property
     def num_files(self) -> int:
@@ -70,11 +65,11 @@ class Sample:
         hashes = [remove_suffix(dsid.split(".")[7], "_output") for dsid in self.dsid]
         return list(set(hashes))
 
-    def virtual_file(self, **kwargs) -> Path | str:
-        # FIXME: self.path can be a tuple here
-        if "*" in str(self.path):
-            return create_virtual_file(self.path, **kwargs)
-        return self.path
+    def virtual_file(self, **kwargs) -> list[Path | str]:
+        virtual_file_paths = []
+        for p in self.path:
+                virtual_file_paths.append(create_virtual_file(p, **kwargs) if "*" in str(p) else p)
+        return virtual_file_paths
 
     def __str__(self):
         return self.name
