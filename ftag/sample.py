@@ -10,7 +10,7 @@ from ftag.vds import create_virtual_file
 
 @dataclass(frozen=True)
 class Sample:
-    pattern: Path | str
+    pattern: Path | str | tuple[str]
     ntuple_dir: Path | str | None = None
     name: str | None = None
 
@@ -23,13 +23,22 @@ class Sample:
             raise FileNotFoundError(f"The following files do not exist: {missing}")
 
     @property
-    def path(self) -> Path:
+    def path(self) -> Path | tuple[Path]:
         if self.ntuple_dir is not None:
+            if isinstance(self.pattern, tuple):
+                return tuple(Path(self.ntuple_dir, p) for p in self.pattern)
             return Path(self.ntuple_dir, self.pattern)
+        if isinstance(self.pattern, tuple):
+            return tuple(Path(p) for p in self.pattern)
         return Path(self.pattern)
 
     @property
     def files(self) -> list[str]:
+        if isinstance(self.path, tuple):
+            files = []
+            for p in self.path:
+                files += glob.glob(str(p)) if "*" in str(p) else [str(p)]
+                return files
         return glob.glob(str(self.path)) if "*" in str(self.path) else [str(self.path)]
 
     @property
@@ -62,6 +71,7 @@ class Sample:
         return list(set(hashes))
 
     def virtual_file(self, **kwargs) -> Path | str:
+        # FIXME: self.path can be a tuple here
         if "*" in str(self.path):
             return create_virtual_file(self.path, **kwargs)
         return self.path
