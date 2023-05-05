@@ -10,7 +10,7 @@ from ftag.vds import create_virtual_file
 
 @dataclass(frozen=True)
 class Sample:
-    pattern: Path | str
+    pattern: Path | str | tuple[Path | str, ...]
     ntuple_dir: Path | str | None = None
     name: str | None = None
 
@@ -23,14 +23,18 @@ class Sample:
             raise FileNotFoundError(f"The following files do not exist: {missing}")
 
     @property
-    def path(self) -> Path:
+    def path(self) -> tuple[Path, ...]:
+        pattern_tuple = self.pattern if isinstance(self.pattern, (list, tuple)) else (self.pattern,)
         if self.ntuple_dir is not None:
-            return Path(self.ntuple_dir, self.pattern)
-        return Path(self.pattern)
+            return tuple(Path(self.ntuple_dir, p) for p in pattern_tuple)
+        return tuple(Path(p) for p in pattern_tuple)
 
     @property
     def files(self) -> list[str]:
-        return glob.glob(str(self.path)) if "*" in str(self.path) else [str(self.path)]
+        files = []
+        for p in self.path:
+            files += glob.glob(str(p)) if "*" in str(p) else [str(p)]
+        return files
 
     @property
     def num_files(self) -> int:
@@ -61,10 +65,11 @@ class Sample:
         hashes = [remove_suffix(dsid.split(".")[7], "_output") for dsid in self.dsid]
         return list(set(hashes))
 
-    def virtual_file(self, **kwargs) -> Path | str:
-        if "*" in str(self.path):
-            return create_virtual_file(self.path, **kwargs)
-        return self.path
+    def virtual_file(self, **kwargs) -> list[Path | str]:
+        virtual_file_paths = []
+        for p in self.path:
+            virtual_file_paths.append(create_virtual_file(p, **kwargs) if "*" in str(p) else p)
+        return virtual_file_paths
 
     def __str__(self):
         return self.name

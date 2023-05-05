@@ -26,7 +26,9 @@ class H5SingleReader:
 
     def __post_init__(self) -> None:
         self.sample = Sample(self.fname)
-        self.fname = self.sample.virtual_file()
+        if len(self.sample.virtual_file()) != 1:
+            raise ValueError("H5SingleReader should only read a single file")
+        self.fname = self.sample.virtual_file()[0]
 
     @cached_property
     def num_jets(self) -> int:
