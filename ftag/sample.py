@@ -24,7 +24,7 @@ class Sample:
 
     @property
     def path(self) -> tuple[Path, ...]:
-        pattern_tuple = self.pattern if isinstance(self.pattern, tuple) else (self.pattern,)
+        pattern_tuple = self.pattern if isinstance(self.pattern, (list, tuple)) else (self.pattern,)
         if self.ntuple_dir is not None:
             return tuple(Path(self.ntuple_dir, p) for p in pattern_tuple)
         return tuple(Path(p) for p in pattern_tuple)
