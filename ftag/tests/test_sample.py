@@ -18,7 +18,7 @@ def sample():
 
 
 def test_sample_path(sample):
-    assert isinstance(sample.path, Path)
+    assert isinstance(sample.path, (list, tuple))
 
 
 def test_sample_files(sample):
@@ -69,7 +69,7 @@ def test_sample_dumper_tag(sample):
 
 
 def test_sample_virtual_file(sample):
-    assert isinstance(sample.virtual_file(), Path)
+    assert isinstance(sample.virtual_file(), list)
 
 
 def test_sample_str(sample):
