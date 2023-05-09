@@ -210,10 +210,14 @@ class H5Reader:
         while True:
             # yeild from each stream
             samples = []
-            for stream in streams:
-                try:
-                    samples.append(next(stream))
-                except StopIteration:
+            streams_done = [False] * len(streams)  # Track which streams have been exhausted
+            for i, stream in enumerate(streams):
+                if not streams_done[i]:
+                    try:
+                        samples.append(next(stream))
+                    except StopIteration:
+                        streams_done[i] = True
+                if all(streams_done):
                     return
 
             # combine samples and shuffle
