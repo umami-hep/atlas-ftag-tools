@@ -3,18 +3,21 @@ from tempfile import NamedTemporaryFile, mkdtemp
 
 import h5py
 import numpy as np
+import pytest
 from numpy.lib.recfunctions import unstructured_to_structured as u2s
 
 from ftag.hdf5.h5reader import H5Reader
 from ftag.sample import Sample
 
 
-def test_H5Reader():
-    num = 3
-    length = 301
+# parameterise the test
+@pytest.mark.parametrize("num", [1, 2, 3])
+@pytest.mark.parametrize("length", [200, 301])
+def test_H5Reader(num, length):
     batch_size = 100
     effective_bs = batch_size // num * num
     remainder = length % effective_bs * num
+
     # create test files
     tmpdirs = []
     for i in range(num):
@@ -50,5 +53,7 @@ def test_H5Reader():
             trk = (data["tracks"]["a"] == i).all(-1)
             jet = data["jets"]["x"] == i
             assert (jet == trk).all()
-        corr = np.corrcoef(data["jets"]["x"], data["tracks"]["a"][:, 0])
-        assert (corr == 1).all()
+
+        if num > 1:
+            corr = np.corrcoef(data["jets"]["x"], data["tracks"]["a"][:, 0])
+            np.testing.assert_allclose(corr, 1)
