@@ -47,6 +47,7 @@ def test_H5Reader(num, length):
         assert "tracks" in data
         assert data["tracks"].shape == (effective_bs, 40) or data["tracks"].shape == (remainder, 40)
         assert len(data["tracks"].dtype.names) == 2
+        assert (np.unique(data["jets"]["x"]) == np.array(list(range(num)))).all()
 
         # check that the tracks are correctly matched to the jets
         for i in range(num):

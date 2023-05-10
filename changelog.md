@@ -2,6 +2,7 @@
 
 ### [Latest]
 - Fix for sample class [#28](https://github.com/umami-hep/atlas-ftag-tools/pull/28/)
+- Add test for H5Reader
 
 ### [v0.1.2]
 - Fix shuffling bug in H5Reader [#26](https://github.com/umami-hep/atlas-ftag-tools/pull/26)
