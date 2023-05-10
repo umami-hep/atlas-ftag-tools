@@ -66,8 +66,8 @@ def create_virtual_file(
                                 attrs_dict[name] = []
                            attrs_dict[name].append(value)
             for name, value in attrs_dict.items():
-                 if len(set(value)) == 1:
-                      f[group].attrs[name] = list(set(value))[0]
+                 if len(value) > 0:
+                      f[group].attrs[name] = value[0]
 
     return out_fname
 
