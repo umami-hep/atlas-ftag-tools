@@ -62,9 +62,12 @@ def create_virtual_file(
             for fname in fnames:
                  with h5py.File(fname) as g:
                       for name, value in g[group].attrs.items():
-                           attrs_dict[name] = value
+                           if name not in attrs_dict:
+                                attrs_dict[name] = []
+                           attrs_dict[name].append(value)
             for name, value in attrs_dict.items():
-                 f[group].attrs[name] = value
+                 if len(set(value)) == 1:
+                      f[group].attrs[name] = list(set(value))[0]
 
     return out_fname
 
