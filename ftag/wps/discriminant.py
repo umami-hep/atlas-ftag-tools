@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import numpy as np
 
 from ftag.flavour import Flavour, Flavours
@@ -12,7 +14,7 @@ def ctag_discriminant(pb, pc, pu, fb=0.2, epsilon=1e-10):
 
 
 def get_discriminant(
-    jets: np.ndarray, tagger: str, signal: Flavour, fx: float, epsilon: float = 1e-10
+    jets: np.ndarray, tagger: str, signal: Flavour | str, fx: float, epsilon: float = 1e-10
 ):
     """Calculate the b-tag or c-tag discriminant for a given tagger.
 

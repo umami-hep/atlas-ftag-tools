@@ -14,7 +14,7 @@ class Region:
         return self.name
 
     def __lt__(self, other):
-        return self.cuts[0].value < other.cuts[0].value
+        return self.name < other.name
 
     def __eq__(self, other):
         return self.name == other.name

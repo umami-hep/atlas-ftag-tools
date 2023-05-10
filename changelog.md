@@ -2,6 +2,18 @@
 
 ### [Latest]
 
+### [v0.1.3]
+- Fix for sample class [#28](https://github.com/umami-hep/atlas-ftag-tools/pull/28/)
+- Add test for H5Reader
+
+### [v0.1.2]
+- Fix shuffling bug in H5Reader [#26](https://github.com/umami-hep/atlas-ftag-tools/pull/26)
+- Update `working_points.py` with calculation of WPs given rejections [#23](https://github.com/umami-hep/atlas-ftag-tools/pull/23)
+
+### [v0.1.1]
+- Replace git hash with package version in output files [#25](https://github.com/umami-hep/atlas-ftag-tools/pull/25)
+- Add tests [#24](https://github.com/umami-hep/atlas-ftag-tools/pull/24)
+
 ### [v0.1.0]
 - Update `working_points.py` with configurable cuts [#18](https://github.com/umami-hep/atlas-ftag-tools/pull/18)
 - Add `working_points.py` script to calculate working points [#17](https://github.com/umami-hep/atlas-ftag-tools/pull/17)

@@ -26,7 +26,9 @@ class H5SingleReader:
 
     def __post_init__(self) -> None:
         self.sample = Sample(self.fname)
-        self.fname = self.sample.virtual_file()
+        if len(self.sample.virtual_file()) != 1:
+            raise ValueError("H5SingleReader should only read a single file")
+        self.fname = self.sample.virtual_file()[0]
 
     @cached_property
     def num_jets(self) -> int:
@@ -216,8 +218,9 @@ class H5Reader:
             # combine samples and shuffle
             data = {name: np.concatenate([s[name] for s in samples]) for name in variables}
             if self.shuffle:
-                for name in variables:
-                    rng.shuffle(data[name])
+                idx = np.arange(len(data[self.jets_name]))
+                rng.shuffle(idx)
+                data = {name: array[idx] for name, array in data.items()}
 
             # select
             yield data
