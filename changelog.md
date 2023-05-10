@@ -1,6 +1,8 @@
 # Changelog
 
 ### [Latest]
+
+### [v0.1.3]
 - Fix for sample class [#28](https://github.com/umami-hep/atlas-ftag-tools/pull/28/)
 - Add test for H5Reader
 
