@@ -58,6 +58,16 @@ def create_virtual_file(
         for group in h5py.File(fnames[0]):
             layout = get_virtual_layout(fnames, group)
             f.create_virtual_dataset(group, layout)
+            attrs_dict: dict = {}
+            for fname in fnames:
+                with h5py.File(fname) as g:
+                    for name, value in g[group].attrs.items():
+                        if name not in attrs_dict:
+                            attrs_dict[name] = []
+                        attrs_dict[name].append(value)
+            for name, value in attrs_dict.items():
+                if len(value) > 0:
+                    f[group].attrs[name] = value[0]
 
     return out_fname
 
