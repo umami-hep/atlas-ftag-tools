@@ -2,7 +2,6 @@
 
 ### [Latest]
 
-### [v0.1.4]
 - Add codes to copy attributes from source files to the target file [#20](https://github.com/umami-hep/atlas-ftag-tools/pull/20/)
 
 ### [v0.1.3]
