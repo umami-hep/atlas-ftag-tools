@@ -54,7 +54,7 @@ def test_main():
             fname = Path(tmpdir) / f"test_{i}.h5"
             with h5py.File(fname, "w") as f:
                 dset = f.create_dataset("data", (10,), dtype="f")
-                dset.attrs["key"] = f"value_{i}"
+                dset.attrs["key"] = "value"
 
         # Run the main function
         output_fname = Path(tmpdir) / "test_output.h5"
@@ -71,4 +71,4 @@ def test_main():
             key = list(f.keys())[0]
             assert key == "data"
             assert f[key].shape == (30,)
-            assert f[key].attrs["key"] == "value_0"
+            assert f[key].attrs["key"] == "value"
