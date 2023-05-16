@@ -1,6 +1,7 @@
 # Changelog
 
 ### [Latest]
+- Check for `num_jets` of `-1` [#31](https://github.com/umami-hep/atlas-ftag-tools/pull/31)
 - Update test for vds.py [#30](https://github.com/umami-hep/atlas-ftag-tools/pull/30)
 - Update cuts to allow larger possible max integer selection [#29](https://github.com/umami-hep/atlas-ftag-tools/pull/29)
 - Add codes to copy attributes from source files to the target file [#20](https://github.com/umami-hep/atlas-ftag-tools/pull/20/)
