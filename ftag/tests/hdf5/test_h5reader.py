@@ -58,3 +58,12 @@ def test_H5Reader(num, length):
         if num > 1:
             corr = np.corrcoef(data["jets"]["x"], data["tracks"]["a"][:, 0])
             np.testing.assert_allclose(corr, 1)
+
+    # testing load method
+    loaded_data = reader.load(num_jets=-1)
+
+    # check if -1 is passed, all data is loaded
+    assert loaded_data["jets"].shape == (num * length,)
+
+    # check not passing variables explicitly uses all variables
+    assert len(loaded_data["jets"].dtype.names) == 2
