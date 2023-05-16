@@ -228,6 +228,8 @@ class H5Reader:
     def load(
         self, variables: dict | None = None, num_jets: int | None = None, cuts: Cuts | None = None
     ) -> dict:
+        if num_jets == -1:
+            num_jets = self.num_jets
         if variables is None:
             variables = {self.jets_name: None}
         data: dict[str, list] = {name: [] for name in variables}
