@@ -63,6 +63,11 @@
   cuts: ["R10TruthLabel_R22v1 == 1"]
   colour: "#A300A3"
   category: xbb
+- name: inclusive_top
+  label: Inclusive Top
+  cuts: ["R10TruthLabel_R22v1 in (1,6,7)"]
+  colour: "#A300A3"
+  category: xbb
 - name: qcd
   label: QCD
   cuts: ["R10TruthLabel_R22v1 == 10"]
