@@ -1,6 +1,8 @@
 # Changelog
 
 ### [Latest]
+
+### [v0.1.4]
 - Check for `num_jets` of `-1` and add new inclusive top category [#31](https://github.com/umami-hep/atlas-ftag-tools/pull/31)
 - Update test for vds.py [#30](https://github.com/umami-hep/atlas-ftag-tools/pull/30)
 - Update cuts to allow larger possible max integer selection [#29](https://github.com/umami-hep/atlas-ftag-tools/pull/29)
