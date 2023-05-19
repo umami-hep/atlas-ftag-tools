@@ -55,6 +55,9 @@ Running `coverage report` will display the test coverage.
 
 # Usage
 
+Please see the [example notebook](ftag/example.ipynb) for full usage.
+Additional functionality is also documented below.
+
 ## Create virtual file
 
 This package contains a script to easily merge a set of H5 files.
