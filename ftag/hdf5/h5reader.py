@@ -141,6 +141,7 @@ class H5Reader:
     shuffle: bool = True
     weights: list[float] | None = None
     do_remove_inf: bool = False
+    equal_jets_from_samples: bool = True
 
     def __post_init__(self) -> None:
         if isinstance(self.fname, (str, Path)):
@@ -208,7 +209,7 @@ class H5Reader:
 
         rng = np.random.default_rng(42)
         while True:
-            # yeild from each stream
+            # yield from each stream
             samples = []
             streams_done = [False] * len(streams)  # Track which streams have been exhausted
             for i, stream in enumerate(streams):
@@ -217,6 +218,8 @@ class H5Reader:
                         samples.append(next(stream))
                     except StopIteration:
                         streams_done[i] = True
+                        if self.equal_jets_from_samples:
+                            return
                 if all(streams_done):
                     return
 
@@ -246,6 +249,9 @@ class H5Reader:
 
     def estimate_available_jets(self, cuts: Cuts, num: int = 1_000_000) -> int:
         """Estimate the number of jets available after selection cuts, rounded down."""
+        # And equal_jets_from_samples flag here
+        # to change how to estimate the number of available jets
+        # TODO: Not implemented yet!
         all_jets = self.load({self.jets_name: cuts.variables}, num)[self.jets_name]
         estimated_num_jets = len(cuts(all_jets).values) / len(all_jets) * self.num_jets
         return math.floor(estimated_num_jets / 1_000) * 1_000
