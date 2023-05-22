@@ -18,7 +18,7 @@ If you want to use this package without modification, you can install from [pypi
 pip install atlas-ftag-tools
 ```
 
-To additionally install the development dependencies (for formatting and linting) rn
+To additionally install the development dependencies (for formatting and linting) use
 ```bash
 pip install atlas-ftag-tools[dev]
 ```
@@ -37,10 +37,11 @@ Include development dependencies with
 python -m pip install -e ".[dev]"
 ```
 
-You can set up pre-commit hooks with
+You can set up and run pre-commit hooks with
 
 ```bash
 pre-commit install
+pre-commmit run --all-files
 ```
 
 To run the tests you can use the `pytest` or `coverage` command, for example
@@ -53,6 +54,9 @@ Running `coverage report` will display the test coverage.
 
 
 # Usage
+
+Please see the [example notebook](ftag/example.ipynb) for full usage.
+Additional functionality is also documented below.
 
 ## Create virtual file
 

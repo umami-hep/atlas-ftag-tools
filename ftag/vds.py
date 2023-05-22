@@ -1,9 +1,20 @@
 from __future__ import annotations
 
+import argparse
 import glob
 from pathlib import Path
 
 import h5py
+
+
+def parse_args(args):
+    parser = argparse.ArgumentParser(
+        description="Create a lightweight wrapper around a set of h5 files"
+    )
+    parser.add_argument("pattern", type=Path, help="quotes-enclosed glob pattern of files to merge")
+    parser.add_argument("output", type=Path, help="path to output virtual file")
+    args = parser.parse_args(args)
+    return args
 
 
 def get_virtual_layout(fnames: list[str], group: str):
@@ -58,20 +69,22 @@ def create_virtual_file(
         for group in h5py.File(fnames[0]):
             layout = get_virtual_layout(fnames, group)
             f.create_virtual_dataset(group, layout)
+            attrs_dict: dict = {}
+            for fname in fnames:
+                with h5py.File(fname) as g:
+                    for name, value in g[group].attrs.items():
+                        if name not in attrs_dict:
+                            attrs_dict[name] = []
+                        attrs_dict[name].append(value)
+            for name, value in attrs_dict.items():
+                if len(value) > 0:
+                    f[group].attrs[name] = value[0]
 
     return out_fname
 
 
-def main():
-    import argparse
-
-    parser = argparse.ArgumentParser(
-        description="Create a lightweight wrapper around a set of h5 files"
-    )
-    parser.add_argument("pattern", type=Path, help="quotes-enclosed glob pattern of files to merge")
-    parser.add_argument("output", type=Path, help="path to output virtual file")
-    args = parser.parse_args()
-
+def main(args=None):
+    args = parse_args(args)
     print(f"Globbing {args.pattern}...")
     create_virtual_file(args.pattern, args.output, overwrite=True)
     with h5py.File(args.output) as f:

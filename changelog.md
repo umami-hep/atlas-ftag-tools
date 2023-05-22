@@ -2,6 +2,16 @@
 
 ### [Latest]
 
+### [v0.1.4]
+- Check for `num_jets` of `-1` and add new inclusive top category [#31](https://github.com/umami-hep/atlas-ftag-tools/pull/31)
+- Update test for vds.py [#30](https://github.com/umami-hep/atlas-ftag-tools/pull/30)
+- Update cuts to allow larger possible max integer selection [#29](https://github.com/umami-hep/atlas-ftag-tools/pull/29)
+- Add codes to copy attributes from source files to the target file [#20](https://github.com/umami-hep/atlas-ftag-tools/pull/20/)
+
+### [v0.1.3]
+- Fix for sample class [#28](https://github.com/umami-hep/atlas-ftag-tools/pull/28/)
+- Add test for H5Reader
+
 ### [v0.1.2]
 - Fix shuffling bug in H5Reader [#26](https://github.com/umami-hep/atlas-ftag-tools/pull/26)
 - Update `working_points.py` with calculation of WPs given rejections [#23](https://github.com/umami-hep/atlas-ftag-tools/pull/23)

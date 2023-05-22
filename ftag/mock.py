@@ -92,6 +92,7 @@ def get_mock_file(num_jets=1000, tracks_name: str = "tracks", num_tracks: int = 
     fname = NamedTemporaryFile(suffix=".h5", dir=mkdtemp()).name
     f = h5py.File(fname, "w")
     f.create_dataset("jets", data=jets)
+    f.attrs["test"] = "test"
 
     # setup tracks
     if tracks_name:

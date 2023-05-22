@@ -6,7 +6,7 @@ import h5py
 import numpy as np
 import pytest
 
-from ftag.vds import create_virtual_file, get_virtual_layout
+from ftag.vds import create_virtual_file, get_virtual_layout, main
 
 
 @pytest.fixture(scope="function")
@@ -44,3 +44,31 @@ def test_create_virtual_file(test_h5_files):
             assert "data" in f
             print(f["data"])
             assert len(f["data"]) == 25
+
+
+def test_main():
+    # Create temporary directory to store test files
+    with tempfile.TemporaryDirectory() as tmpdir:
+        # Create some dummy h5 files
+        for i in range(3):
+            fname = Path(tmpdir) / f"test_{i}.h5"
+            with h5py.File(fname, "w") as f:
+                dset = f.create_dataset("data", (10,), dtype="f")
+                dset.attrs["key"] = "value"
+
+        # Run the main function
+        output_fname = Path(tmpdir) / "test_output.h5"
+        pattern = Path(tmpdir) / "*.h5"
+        args = [str(pattern), str(output_fname)]
+        main(args)
+
+        # Check that the output file exists
+        assert output_fname.is_file()
+
+        # Check that the output file contains the expected data
+        with h5py.File(output_fname, "r") as f:
+            assert len(f) == 1
+            key = list(f.keys())[0]
+            assert key == "data"
+            assert f[key].shape == (30,)
+            assert f[key].attrs["key"] == "value"
