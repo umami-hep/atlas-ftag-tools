@@ -64,14 +64,20 @@ class H5SingleReader:
         return {name: array[keep_idx] for name, array in data.items()}
 
     def stream(
-        self, variables: dict | None = None, num_jets: int | None = None, cuts: Cuts | None = None
+        self,
+        variables: dict | None = None,
+        num_jets: int | None = None,
+        cuts: Cuts | None = None,
     ) -> Generator:
         if num_jets is None:
             num_jets = self.num_jets
+
         if num_jets > self.num_jets:
-            raise ValueError(
-                f"{num_jets:,} jets requested but only {self.num_jets:,} available in {self.fname}"
+            log.warn(
+                f"{num_jets:,} jets requested but only {self.num_jets:,} available in {self.fname}."
+                " Set to maximum available number!"
             )
+            num_jets = self.num_jets
 
         if variables is None:
             variables = {self.jets_name: None}
@@ -173,7 +179,10 @@ class H5Reader:
         return dtypes
 
     def stream(
-        self, variables: dict | None = None, num_jets: int | None = None, cuts: Cuts | None = None
+        self,
+        variables: dict | None = None,
+        num_jets: int | None = None,
+        cuts: Cuts | None = None,
     ) -> Generator:
         """Generate batches of selected jets.
 
@@ -191,10 +200,14 @@ class H5Reader:
         Generator
             Generator of batches of selected jets.
         """
+        # Check if number of jets is given, if not, set to maximum available
         if num_jets is None:
             num_jets = self.num_jets
+
+        # Check if variables if given, if not, set to all
         if variables is None:
             variables = {self.jets_name: None}
+
         if self.jets_name not in variables or variables[self.jets_name] is not None:
             jet_vars = variables.get(self.jets_name, [])
             variables[self.jets_name] = list(jet_vars) + (cuts.variables if cuts else [])
@@ -226,7 +239,10 @@ class H5Reader:
             yield data
 
     def load(
-        self, variables: dict | None = None, num_jets: int | None = None, cuts: Cuts | None = None
+        self,
+        variables: dict | None = None,
+        num_jets: int | None = None,
+        cuts: Cuts | None = None,
     ) -> dict:
         if num_jets == -1:
             num_jets = self.num_jets
