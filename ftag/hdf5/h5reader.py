@@ -217,9 +217,9 @@ class H5Reader:
                     try:
                         samples.append(next(stream))
                     except StopIteration:
-                        streams_done[i] = True
                         if self.equal_jets:
                             return
+                        streams_done[i] = True
                 if all(streams_done):
                     return
 
@@ -248,10 +248,15 @@ class H5Reader:
         return {name: np.concatenate(array) for name, array in data.items()}
 
     def estimate_available_jets(self, cuts: Cuts, num: int = 1_000_000) -> int:
-        """Estimate the number of jets available after selection cuts, rounded down."""
-        # And equal_jets flag here
-        # to change how to estimate the number of available jets
-        # TODO: Not implemented yet!
+        """Estimate the number of jets available after selection cuts, rounded down.
+
+        If self.equal_jets is True, the number of jets is estimated from the smallest file.
+        However, the remaining jets after cuts is estimated from all files.
+        """
         all_jets = self.load({self.jets_name: cuts.variables}, num)[self.jets_name]
-        estimated_num_jets = len(cuts(all_jets).values) / len(all_jets) * self.num_jets
+        est_total_jets = {
+            True: min(r.num_jets for r in self.readers) * len(self.readers),
+            False: self.num_jets,
+        }[self.equal_jets]
+        estimated_num_jets = len(cuts(all_jets).values) / len(all_jets) * est_total_jets
         return math.floor(estimated_num_jets / 1_000) * 1_000
