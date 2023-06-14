@@ -6,6 +6,7 @@ import numpy as np
 import pytest
 from numpy.lib.recfunctions import unstructured_to_structured as u2s
 
+from ftag.cuts import Cuts
 from ftag.hdf5.h5reader import H5Reader
 from ftag.sample import Sample
 
@@ -77,3 +78,38 @@ def test_H5Reader(num, length, equal_jets):
 
     # check not passing variables explicitly uses all variables
     assert len(loaded_data["jets"].dtype.names) == 2
+
+
+@pytest.mark.parametrize("equal_jets", [True, False])
+def test_estimate_available_jets(equal_jets):
+    # create test files (of different lengths)
+    total_files = 2
+    length = 100_000
+    batch_size = 10_000
+    tmpdirs = []
+    for i in range(1, total_files + 1):
+        fname = NamedTemporaryFile(suffix=".h5", dir=mkdtemp()).name
+        tmpdirs.append(Path(fname).parent)
+
+        with h5py.File(fname, "w") as f:
+            data = i * np.ones((length * i, 2))
+            data = u2s(data, dtype=[("x", "f4"), ("y", "f4")])
+            f.create_dataset("jets", data=data)
+
+            data = i * np.ones((length * i, 40, 2))
+            data = u2s(data, dtype=[("a", "f4"), ("b", "f4")])
+            f.create_dataset("tracks", data=data)
+
+    # create a multi-path sample
+    sample = Sample([f"{x}/*.h5" for x in tmpdirs], name="test")
+
+    # test reading from multiple paths
+    reader = H5Reader(sample.path, batch_size=batch_size, equal_jets=equal_jets)
+
+    # create cuts that would not remove any jets
+    cuts = Cuts.from_list([("x", "!=", "-1"), ("y", "!=", "-1")])
+    estimated_num_jets = reader.estimate_available_jets(cuts, num=1000)
+    if equal_jets:
+        assert estimated_num_jets == total_files * length
+    else:
+        assert estimated_num_jets == total_files * (total_files + 1) / 2 * length
