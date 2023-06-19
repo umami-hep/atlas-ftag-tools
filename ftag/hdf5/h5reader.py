@@ -262,9 +262,9 @@ class H5Reader:
         However, the remaining jets after cuts is estimated from all files.
         """
         all_jets = self.load({self.jets_name: cuts.variables}, num)[self.jets_name]
-        est_total_jets = {
-            True: min(r.num_jets for r in self.readers) * len(self.readers),
-            False: self.num_jets,
-        }[self.equal_jets]
+        if self.equal_jets:
+            est_total_jets = min(r.num_jets for r in self.readers) * len(self.readers)
+        else:
+            est_total_jets = self.num_jets
         estimated_num_jets = len(cuts(all_jets).values) / len(all_jets) * est_total_jets
         return math.floor(estimated_num_jets / 1_000) * 1_000
