@@ -117,6 +117,23 @@ class H5SingleReader:
 
                 yield data
 
+    def load(
+        self,
+        variables: dict | None = None,
+        num_jets: int | None = None,
+        cuts: Cuts | None = None,
+    ) -> dict:
+        if num_jets == -1:
+            num_jets = self.num_jets
+        if variables is None:
+            variables = {self.jets_name: None}
+        data: dict[str, list] = {name: [] for name in variables}
+        for sample in self.stream(variables, num_jets, cuts):
+            for name, array in sample.items():
+                if name in data:
+                    data[name].append(array)
+        return {name: np.concatenate(array) for name, array in data.items()}
+
 
 @dataclass
 class H5Reader:
@@ -277,10 +294,13 @@ class H5Reader:
         If self.equal_jets is True, the number of jets is estimated from the smallest file.
         However, the remaining jets after cuts is estimated from all files.
         """
-        all_jets = self.load({self.jets_name: cuts.variables}, num)[self.jets_name]
         if self.equal_jets:
-            est_total_jets = min(r.num_jets for r in self.readers) * len(self.readers)
+            est_jets_sample = []
+            for reader in self.readers:
+                all_jets = reader.load({self.jets_name: cuts.variables}, num)[self.jets_name]
+                est_jets_sample.append(len(cuts(all_jets).values) / len(all_jets) * reader.num_jets)
+            estimated_num_jets = min(est_jets_sample) * len(self.readers)
         else:
-            est_total_jets = self.num_jets
-        estimated_num_jets = len(cuts(all_jets).values) / len(all_jets) * est_total_jets
+            all_jets = self.load({self.jets_name: cuts.variables}, num)[self.jets_name]
+            estimated_num_jets = len(cuts(all_jets).values) / len(all_jets) * self.num_jets
         return math.floor(estimated_num_jets / 1_000) * 1_000
