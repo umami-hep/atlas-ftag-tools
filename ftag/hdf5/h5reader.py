@@ -26,9 +26,10 @@ class H5SingleReader:
 
     def __post_init__(self) -> None:
         self.sample = Sample(self.fname)
-        if len(self.sample.virtual_file()) != 1:
+        fname = self.sample.virtual_file()
+        if len(fname) != 1:
             raise ValueError("H5SingleReader should only read a single file")
-        self.fname = self.sample.virtual_file()[0]
+        self.fname = fname[0]
 
     @cached_property
     def num_jets(self) -> int:
@@ -146,8 +147,17 @@ class H5Reader:
     shuffle: bool = True
     weights: list[float] | None = None
     do_remove_inf: bool = False
+    equal_jets: bool = True
 
     def __post_init__(self) -> None:
+        if not self.equal_jets:
+            log.warn(
+                "equal_jets is set to False, "
+                "which will result in different number of jets taken from samples. "
+                "Be aware that this can affect the resampling, "
+                "so make sure you know what you are doing."
+            )
+
         if isinstance(self.fname, (str, Path)):
             self.fname = [self.fname]
 
@@ -220,12 +230,18 @@ class H5Reader:
 
         rng = np.random.default_rng(42)
         while True:
-            # yeild from each stream
+            # yield from each stream
             samples = []
-            for stream in streams:
-                try:
-                    samples.append(next(stream))
-                except StopIteration:
+            streams_done = [False] * len(streams)  # Track which streams have been exhausted
+            for i, stream in enumerate(streams):
+                if not streams_done[i]:
+                    try:
+                        samples.append(next(stream))
+                    except StopIteration:
+                        if self.equal_jets:
+                            return
+                        streams_done[i] = True
+                if all(streams_done):
                     return
 
             # combine samples and shuffle
@@ -256,7 +272,15 @@ class H5Reader:
         return {name: np.concatenate(array) for name, array in data.items()}
 
     def estimate_available_jets(self, cuts: Cuts, num: int = 1_000_000) -> int:
-        """Estimate the number of jets available after selection cuts, rounded down."""
+        """Estimate the number of jets available after selection cuts, rounded down.
+
+        If self.equal_jets is True, the number of jets is estimated from the smallest file.
+        However, the remaining jets after cuts is estimated from all files.
+        """
         all_jets = self.load({self.jets_name: cuts.variables}, num)[self.jets_name]
-        estimated_num_jets = len(cuts(all_jets).values) / len(all_jets) * self.num_jets
+        if self.equal_jets:
+            est_total_jets = min(r.num_jets for r in self.readers) * len(self.readers)
+        else:
+            est_total_jets = self.num_jets
+        estimated_num_jets = len(cuts(all_jets).values) / len(all_jets) * est_total_jets
         return math.floor(estimated_num_jets / 1_000) * 1_000
