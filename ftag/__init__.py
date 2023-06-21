@@ -1,7 +1,7 @@
 """atlas-ftag-tools - Common tools for ATLAS flavour tagging software."""
 
 
-__version__ = "v0.1.4"
+__version__ = "v0.1.5"
 
 
 import ftag.hdf5 as hdf5

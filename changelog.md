@@ -2,6 +2,9 @@
 
 ### [Latest]
 
+
+### [v0.1.5]
+
 - Improve estimate_available_jets tests [#38](https://github.com/umami-hep/atlas-ftag-tools/pull/38)
 - Improve estimate_available_jets for multi-sample case [#37](https://github.com/umami-hep/atlas-ftag-tools/pull/37)
 - Add equal_jets option to for multi-sample H5Reader [#33](https://github.com/umami-hep/atlas-ftag-tools/pull/33)
