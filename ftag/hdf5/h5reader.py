@@ -58,7 +58,7 @@ class H5SingleReader:
                 isinf = np.isinf(array[var])
                 keep_idx = keep_idx & ~isinf.any(axis=-1)
                 if num_inf := isinf.sum():
-                    log.warn(
+                    log.warning(
                         f"{num_inf} inf values detected for variable {var} in"
                         f" {name} array. Removing the affected jets."
                     )
@@ -74,7 +74,7 @@ class H5SingleReader:
             num_jets = self.num_jets
 
         if num_jets > self.num_jets:
-            log.warn(
+            log.warning(
                 f"{num_jets:,} jets requested but only {self.num_jets:,} available in {self.fname}."
                 " Set to maximum available number!"
             )
@@ -168,7 +168,7 @@ class H5Reader:
 
     def __post_init__(self) -> None:
         if not self.equal_jets:
-            log.warn(
+            log.warning(
                 "equal_jets is set to False, "
                 "which will result in different number of jets taken from samples. "
                 "Be aware that this can affect the resampling, "
