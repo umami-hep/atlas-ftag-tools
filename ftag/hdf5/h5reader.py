@@ -154,7 +154,7 @@ class H5Reader:
 
     def __post_init__(self) -> None:
         if not self.equal_jets:
-            log.warn(
+            log.warning(
                 "equal_jets is set to False, which will result in different number of jets taken"
                 " from each sample. Be aware that this can affect the resampling, so make sure you"
                 " know what you are doing."
