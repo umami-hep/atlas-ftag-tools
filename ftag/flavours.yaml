@@ -49,12 +49,12 @@
 
 # Xbb tagging
 - name: hbb
-  label: Hbb
+  label: $H \rightarrow b\bar{b}$
   cuts: ["R10TruthLabel_R22v1 == 11"]
   colour: tab:blue
   category: xbb
 - name: hcc
-  label: Hcc
+  label: $H \rightarrow c\bar{c}$
   cuts: ["R10TruthLabel_R22v1 == 12"]
   colour: "#B45F06"
   category: xbb
