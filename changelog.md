@@ -2,6 +2,7 @@
 
 ### [Latest]
 
+- Changing labels of Hbb and Hcc [#35](https://github.com/umami-hep/atlas-ftag-tools/pull/35)
 - Setting num_jets to maximum available if too large [#34](https://github.com/umami-hep/atlas-ftag-tools/pull/34)
 
 ### [v0.1.4]
