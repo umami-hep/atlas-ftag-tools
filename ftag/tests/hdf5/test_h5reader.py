@@ -81,24 +81,46 @@ def test_H5Reader(num, length, equal_jets):
 
 
 @pytest.mark.parametrize("equal_jets", [True, False])
-def test_estimate_available_jets(equal_jets):
+@pytest.mark.parametrize("cuts_list", [["x != -1"], ["x != 1"], ["x == -1"]])
+def test_estimate_available_jets(equal_jets, cuts_list):
+    # fix the seed to make the test deterministic
+    np.random.seed(42)
+
     # create test files (of different lengths)
     total_files = 2
     length = 100_000
     batch_size = 10_000
     tmpdirs = []
+    actual_available_jets = []
     for i in range(1, total_files + 1):
         fname = NamedTemporaryFile(suffix=".h5", dir=mkdtemp()).name
         tmpdirs.append(Path(fname).parent)
 
         with h5py.File(fname, "w") as f:
+            permutation = np.random.permutation(length * i)
+
             data = i * np.ones((length * i, 2))
+            data[(length // 2) :, :] = i + 10
+            data = data[permutation]
+            x = data[:, 0]
             data = u2s(data, dtype=[("x", "f4"), ("y", "f4")])
             f.create_dataset("jets", data=data)
 
             data = i * np.ones((length * i, 40, 2))
+            data[(length // 2) :, :, :] = i + 10
+            data = data[permutation]
             data = u2s(data, dtype=[("a", "f4"), ("b", "f4")])
             f.create_dataset("tracks", data=data)
+
+            # record how many jets would remain after cuts
+            cut_condition = eval(cuts_list[0])
+            actual_available_jets.append(x[cut_condition].shape[0])
+
+    # calculate the actual number of available jets after cuts
+    if equal_jets:
+        actual_available_jets = min(actual_available_jets) * total_files
+    else:
+        actual_available_jets = sum(actual_available_jets)
 
     # create a multi-path sample
     sample = Sample([f"{x}/*.h5" for x in tmpdirs], name="test")
@@ -106,10 +128,9 @@ def test_estimate_available_jets(equal_jets):
     # test reading from multiple paths
     reader = H5Reader(sample.path, batch_size=batch_size, equal_jets=equal_jets)
 
-    # create cuts that would not remove any jets
-    cuts = Cuts.from_list([("x", "!=", "-1"), ("y", "!=", "-1")])
-    estimated_num_jets = reader.estimate_available_jets(cuts, num=1000)
-    if equal_jets:
-        assert estimated_num_jets == total_files * length
-    else:
-        assert estimated_num_jets == total_files * (total_files + 1) / 2 * length
+    # estimate available jets with given cuts
+    cuts = Cuts.from_list(cuts_list)
+    estimated_num_jets = reader.estimate_available_jets(cuts, num=100_000)
+
+    # These values should be approximately correct, but with the given random seed they are exact
+    assert estimated_num_jets == actual_available_jets

@@ -58,7 +58,7 @@ class H5SingleReader:
                 isinf = np.isinf(array[var])
                 keep_idx = keep_idx & ~isinf.any(axis=-1)
                 if num_inf := isinf.sum():
-                    log.warn(
+                    log.warning(
                         f"{num_inf} inf values detected for variable {var} in"
                         f" {name} array. Removing the affected jets."
                     )
@@ -74,7 +74,7 @@ class H5SingleReader:
             num_jets = self.num_jets
 
         if num_jets > self.num_jets:
-            log.warn(
+            log.warning(
                 f"{num_jets:,} jets requested but only {self.num_jets:,} available in {self.fname}."
                 " Set to maximum available number!"
             )
@@ -138,6 +138,9 @@ class H5Reader:
         Weights for different input datasets, by default None
     do_remove_inf : bool, optional
         Remove jets with inf values, by default False
+    equal_jets : bool, optional
+        Take the same number of jets (weighted) from each sample, by default True
+        If False, use all jets in each sample.
     """
 
     fname: Path | str | list[Path | str]
@@ -151,11 +154,10 @@ class H5Reader:
 
     def __post_init__(self) -> None:
         if not self.equal_jets:
-            log.warn(
-                "equal_jets is set to False, "
-                "which will result in different number of jets taken from samples. "
-                "Be aware that this can affect the resampling, "
-                "so make sure you know what you are doing."
+            log.warning(
+                "equal_jets is set to False, which will result in different number of jets taken"
+                " from each sample. Be aware that this can affect the resampling, so make sure you"
+                " know what you are doing."
             )
 
         if isinstance(self.fname, (str, Path)):
@@ -189,10 +191,7 @@ class H5Reader:
         return dtypes
 
     def stream(
-        self,
-        variables: dict | None = None,
-        num_jets: int | None = None,
-        cuts: Cuts | None = None,
+        self, variables: dict | None = None, num_jets: int | None = None, cuts: Cuts | None = None
     ) -> Generator:
         """Generate batches of selected jets.
 
@@ -230,17 +229,24 @@ class H5Reader:
 
         rng = np.random.default_rng(42)
         while True:
-            # yield from each stream
             samples = []
-            streams_done = [False] * len(streams)  # Track which streams have been exhausted
+            # Track which streams have been exhausted
+            streams_done = [False] * len(streams)
+
+            # for each unexhausted stream, get the next sample
             for i, stream in enumerate(streams):
                 if not streams_done[i]:
                     try:
                         samples.append(next(stream))
+
+                    # if equal_jets is True, we can stop when any stream is done
+                    # otherwise if sample is exhausted, mark it as done
                     except StopIteration:
                         if self.equal_jets:
                             return
                         streams_done[i] = True
+
+                # if equal_jets is False, we need to keep going until all streams are done
                 if all(streams_done):
                     return
 
@@ -251,36 +257,72 @@ class H5Reader:
                 rng.shuffle(idx)
                 data = {name: array[idx] for name, array in data.items()}
 
-            # select
+            # yield batch
             yield data
 
     def load(
-        self,
-        variables: dict | None = None,
-        num_jets: int | None = None,
-        cuts: Cuts | None = None,
+        self, variables: dict | None = None, num_jets: int | None = None, cuts: Cuts | None = None
     ) -> dict:
+        """Load multiple batches of selected jets into memory.
+
+        Parameters
+        ----------
+        variables : dict | None, optional
+            Dictionary of variables to for each group, by default use all jet variables.
+        num_jets : int | None, optional
+            Total number of selected jets to load, by default all.
+        cuts : Cuts | None, optional
+            Selection cuts to apply, by default None
+
+        Returns
+        -------
+        dict
+            Dictionary of arrays for each group.
+        """
+        # handle default arguments
         if num_jets == -1:
             num_jets = self.num_jets
         if variables is None:
             variables = {self.jets_name: None}
+
+        # get data from each sample
         data: dict[str, list] = {name: [] for name in variables}
-        for sample in self.stream(variables, num_jets, cuts):
-            for name, array in sample.items():
+        for batch in self.stream(variables, num_jets, cuts):
+            for name, array in batch.items():
                 if name in data:
                     data[name].append(array)
+
+        # concatenate batches
         return {name: np.concatenate(array) for name, array in data.items()}
 
     def estimate_available_jets(self, cuts: Cuts, num: int = 1_000_000) -> int:
-        """Estimate the number of jets available after selection cuts, rounded down.
+        """Estimate the number of jets available after selection cuts (round down).
 
-        If self.equal_jets is True, the number of jets is estimated from the smallest file.
-        However, the remaining jets after cuts is estimated from all files.
+        Parameters
+        ----------
+        cuts : Cuts
+            Selection cuts to apply.
+        num : int, optional
+            Number of jets to use for the estimation, by default 1_000_000.
+
+        Returns
+        -------
+        int
+            Estimated number of jets available after selection cuts,
+            rounded down to nearest thousand.
         """
-        all_jets = self.load({self.jets_name: cuts.variables}, num)[self.jets_name]
+        # if equal jets is True, available jets is based on the smallest sample
         if self.equal_jets:
-            est_total_jets = min(r.num_jets for r in self.readers) * len(self.readers)
+            num_jets = []
+            for r in self.readers:
+                stream = r.stream({self.jets_name: cuts.variables}, num)
+                all_jets = np.concatenate([batch[self.jets_name] for batch in stream])
+                frac_selected = len(cuts(all_jets).values) / len(all_jets)
+                num_jets.append(frac_selected * r.num_jets)
+            estimated_num_jets = min(num_jets) * len(self.readers)
+        # otherwise, available jets is based on all samples
         else:
-            est_total_jets = self.num_jets
-        estimated_num_jets = len(cuts(all_jets).values) / len(all_jets) * est_total_jets
+            all_jets = self.load({self.jets_name: cuts.variables}, num)[self.jets_name]
+            frac_selected = len(cuts(all_jets).values) / len(all_jets)
+            estimated_num_jets = frac_selected * self.num_jets
         return math.floor(estimated_num_jets / 1_000) * 1_000
