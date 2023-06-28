@@ -1,6 +1,7 @@
 # Changelog
 
 ### [Latest]
+- Update top labelling names [#39](https://github.com/umami-hep/atlas-ftag-tools/pulls)
 
 
 ### [v0.1.5]
