@@ -39,7 +39,6 @@ def get_discriminant(
     pb, pc, pu = (jets[f"{tagger}_pb"], jets[f"{tagger}_pc"], jets[f"{tagger}_pu"])
     if Flavours[signal] == Flavours.bjets:
         return btag_discriminant(pb, pc, pu, fx, epsilon)
-    elif Flavours[signal] == Flavours.cjets:
+    if Flavours[signal] == Flavours.cjets:
         return ctag_discriminant(pb, pc, pu, fx, epsilon)
-    else:
-        raise ValueError(f"Signal flavour must be bjets or cjets, not {signal}")
+    raise ValueError(f"Signal flavour must be bjets or cjets, not {signal}")

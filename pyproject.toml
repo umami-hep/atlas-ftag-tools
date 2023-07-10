@@ -17,8 +17,8 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-  "black==23.1.0",
-  "ruff==0.0.254",
+  "black==23.3.0",
+  "ruff==0.0.277",
   "pre-commit==3.1.1",
   "pytest==7.2.2",
   "pytest-cov==4.0.0",
@@ -47,8 +47,8 @@ preview = "True"
 
 [tool.ruff]
 target-version = "py38"
-select = ["I", "E", "W", "F", "B", "UP", "ARG", "SIM", "TID", "RUF", "D2", "D3", "D4"]
-ignore = ["D211", "D213", "RUF005"]
+select = ["A", "I", "E", "W", "F", "B", "UP", "PL", "ARG", "SIM", "TID", "RUF", "RET", "C4", "D2", "D3", "D4", "SIM"]
+ignore = ["D211", "D213", "RUF005", "PLR2004", "PTH123", "PLW2901"]
 line-length = 100
 
 [tool.ruff.pydocstyle]

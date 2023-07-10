@@ -4,7 +4,7 @@
 __version__ = "v0.1.5"
 
 
-import ftag.hdf5 as hdf5
+from ftag import hdf5
 from ftag.cuts import Cuts
 from ftag.flavour import Flavour, Flavours
 from ftag.mock import get_mock_file

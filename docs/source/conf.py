@@ -24,7 +24,7 @@ sys.path.insert(0, os.path.abspath("../../ftag"))
 # -- Project information -----------------------------------------------------
 
 project = "atlas-ftag-tools"
-copyright = "2023, atlas-ftag-tools developers"
+_copyright = "2023, atlas-ftag-tools developers"
 author = "atlas-ftag-tools developers"
 
 # The full version, including alpha/beta/rc tags

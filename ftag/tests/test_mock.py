@@ -22,7 +22,7 @@ def test_get_mock_file():
     )
     assert all(jets["pt"] > 0)
     assert all(jets["mass"] <= 50e3)
-    assert all(-3 <= jets["eta"]) and all(jets["eta"] <= 3)
+    assert all(jets["eta"] >= -3) and all(jets["eta"] <= 3)
     assert all(jets["n_truth_promptLepton"] == 0)
 
     # test tracks are correctly generated

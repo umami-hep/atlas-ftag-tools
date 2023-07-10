@@ -67,8 +67,7 @@ def get_mock_scores(labels: np.ndarray):
             scores[labels == label] = rng.normal(loc=[0, 0, 3.5], scale=5, size=(count, 3))
     scores = softmax(scores, axis=1)
     cols = [f"MockTagger_p{x}" for x in ["u", "c", "b"]]
-    scores = u2s(scores, dtype=np.dtype([(name, "f4") for name in cols]))
-    return scores
+    return u2s(scores, dtype=np.dtype([(name, "f4") for name in cols]))
 
 
 def get_mock_file(num_jets=1000, tracks_name: str = "tracks", num_tracks: int = 40):
