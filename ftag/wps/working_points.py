@@ -139,12 +139,12 @@ def get_working_points(args=None):
         disc = get_discriminant(jets, tagger, args.signal, fx)
 
         # loop over efficiency working points
-        for _eff in args.effs:
-            d = out[tagger][f"{_eff:.0f}"] = {}
+        for eff in args.effs:
+            d = out[tagger][f"{eff:.0f}"] = {}
 
             wp_flavour = args.signal
             if args.rejection:
-                eff = 100 / _eff
+                eff = 100 / eff
                 wp_flavour = args.rejection
 
             wp_disc = disc[flavs[wp_flavour].cuts(jets).idx]
