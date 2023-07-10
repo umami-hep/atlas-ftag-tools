@@ -42,23 +42,23 @@ class Sample:
 
     @property
     def dsid(self) -> list[str]:
-        return list(set([Path(fname).parent.name for fname in self.files]))
+        return list({Path(fname).parent.name for fname in self.files})
 
     @property
     def sample_id(self) -> list[str]:
-        return list(set([dsid.split(".")[2] for dsid in self.dsid]))
+        return list({dsid.split(".")[2] for dsid in self.dsid})
 
     @property
     def tags(self) -> list[str]:
-        return list(set([dsid.split(".")[3] for dsid in self.dsid]))
+        return list({dsid.split(".")[3] for dsid in self.dsid})
 
     @property
     def ptag(self) -> list[str]:
-        return list(set([tag for tags in self.tags for tag in tags.split("_") if "p" in tag]))
+        return list({tag for tags in self.tags for tag in tags.split("_") if "p" in tag})
 
     @property
     def rtag(self) -> list[str]:
-        return list(set([tag for tags in self.tags for tag in tags.split("_") if "r" in tag]))
+        return list({tag for tags in self.tags for tag in tags.split("_") if "r" in tag})
 
     @property
     def dumper_tag(self) -> list[str]:

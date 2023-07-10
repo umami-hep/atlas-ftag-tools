@@ -100,7 +100,7 @@ def parse_args(args):
 
 def get_eff_rej(jets, disc, wp, flavs):
     out = {"eff": {}, "rej": {}}
-    for bkg in [f for f in flavs]:
+    for bkg in list(flavs):
         bkg_disc = disc[bkg.cuts(jets).idx]
         eff = sum(bkg_disc > wp) / len(bkg_disc)
         out["eff"][str(bkg)] = float(f"{eff:.3g}")
@@ -139,12 +139,12 @@ def get_working_points(args=None):
         disc = get_discriminant(jets, tagger, args.signal, fx)
 
         # loop over efficiency working points
-        for eff in args.effs:
-            d = out[tagger][f"{eff:.0f}"] = {}
+        for _eff in args.effs:
+            d = out[tagger][f"{_eff:.0f}"] = {}
 
             wp_flavour = args.signal
             if args.rejection:
-                eff = 100 / eff
+                eff = 100 / _eff
                 wp_flavour = args.rejection
 
             wp_disc = disc[flavs[wp_flavour].cuts(jets).idx]
@@ -161,6 +161,7 @@ def get_working_points(args=None):
     if args.outfile:
         with open(args.outfile, "w") as f:
             yaml.dump(out, f, sort_keys=False)
+            return None
     else:
         return out
 

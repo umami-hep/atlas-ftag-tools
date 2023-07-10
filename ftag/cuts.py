@@ -54,14 +54,14 @@ class Cuts:
     @classmethod
     def from_list(cls, cuts: list) -> Cuts:
         if cuts and isinstance(cuts[0], str):
-            cuts = list(map(lambda cut: cut.split(" "), cuts))
+            cuts = [cut.split(" ") for cut in cuts]
         if cuts and isinstance(cuts[0], list):
             cuts = list(map(tuple, cuts))
         return cls(tuple(Cut(*cut) for cut in dict.fromkeys(cuts)))
 
     @classmethod
     def empty(cls) -> Cuts:
-        return cls(tuple())
+        return cls(())
 
     def __post_init__(self):
         assert isinstance(self.cuts, tuple)
