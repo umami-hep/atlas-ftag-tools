@@ -1,11 +1,12 @@
-import pytest
 from pathlib import Path
-import numpy as np
-import h5py
-from numpy.lib.recfunctions import unstructured_to_structured as u2s
-from numpy.lib.recfunctions import structured_to_unstructured as s2u
-
 from time import perf_counter
+
+import h5py
+import numpy as np
+import pytest
+from numpy.lib.recfunctions import structured_to_unstructured as s2u
+from numpy.lib.recfunctions import unstructured_to_structured as u2s
+
 from ftag.hdf5 import join_structured_arrays
 
 
@@ -14,7 +15,7 @@ class catchtime:
         self.time = perf_counter()
         return self
 
-    def __exit__(self, type, value, traceback):
+    def __exit__(self, type, value, traceback):  # noqa: A002
         self.time = perf_counter() - self.time
         self.readout = f"Time: {self.time:.3f} seconds"
 
@@ -29,8 +30,7 @@ idx = (0, 500)
 save_dir = Path("/tmp")
 
 
-
-def generate_data(n_total=1000, n_tracks = 50, compression="gzip", float_type="float16"):
+def generate_data(n_total=1000, n_tracks=50, compression="gzip", float_type="float16"):
     f_dtype = np.dtype([(f"vf_{i}", float_type) for i in range(n_float_vars)])
     i_dtype = np.dtype([(f"vi_{i}", "uint8") for i in range(n_int_vars)])
 
@@ -61,16 +61,14 @@ def generate_data(n_total=1000, n_tracks = 50, compression="gzip", float_type="f
 
 
 def load_structured(idx):
-    with h5py.File(save_dir / "test_structured.h5", "r") as f:
-        with catchtime() as t:
-            tracks = f["tracks"][idx[0] : idx[1]]
+    with h5py.File(save_dir / "test_structured.h5", "r") as f, catchtime() as t:
+        f["tracks"][idx[0] : idx[1]]
     return t
 
 
 def load_unstructured(idx):
-    with h5py.File(save_dir / "test_unstructured.h5", "r") as f:
-        with catchtime() as t:
-            tracks = f["tracks"][idx[0] : idx[1]]
+    with h5py.File(save_dir / "test_unstructured.h5", "r") as f, catchtime() as t:
+        f["tracks"][idx[0] : idx[1]]
     return t
 
 
@@ -88,7 +86,7 @@ def load_structured_read_direct(idx):
 @pytest.mark.parametrize("float_type", ["float16", "float32"])
 @pytest.mark.parametrize("n_total", [1000, 10000])
 def test_timing(compression, float_type, n_total):
-    idx = (0,n_total // 2)
+    idx = (0, n_total // 2)
     generate_data(compression=compression, float_type=float_type, n_total=n_total)
     load_structured_time = load_structured(idx).time
     load_unstructured_time = load_unstructured(idx).time
