@@ -25,8 +25,6 @@ class catchtime:
 
 n_float_vars = 20
 n_int_vars = 20
-idx = (0, 500)
-
 save_dir = Path("/tmp")
 
 
