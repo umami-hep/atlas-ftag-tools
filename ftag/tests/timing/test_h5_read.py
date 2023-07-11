@@ -90,6 +90,11 @@ def test_timing(compression, float_type, n_total):
     load_unstructured_time = load_unstructured(idx).time
     load_structured_read_direct_time = load_structured_read_direct(idx).time
 
+    print("Results:")
+    print("Load structured:", load_structured_time)
+    print("Load unstructured:", load_unstructured_time)
+    print("Load structured read_direct:", load_structured_read_direct_time)
+
     # check that read_direct is fastest
     assert load_structured_read_direct_time < load_structured_time
     assert load_structured_read_direct_time < load_unstructured_time
