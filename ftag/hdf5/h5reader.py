@@ -88,6 +88,7 @@ class H5SingleReader:
         total = 0
         rng = np.random.default_rng(42)
         with h5py.File(self.fname) as f:
+            arrays = {name: self.empty(f[name], var) for name, var in variables.items()}
             data = {name: self.empty(f[name], var) for name, var in variables.items()}
 
             # get indices
@@ -98,7 +99,7 @@ class H5SingleReader:
             # loop over batches and read file
             for low in indices:
                 for name in variables:
-                    data[name] = self.read_chunk(f[name], data[name], low)
+                    data[name] = self.read_chunk(f[name], arrays[name], low)
 
                 # apply selections
                 if cuts:
