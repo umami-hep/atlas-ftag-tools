@@ -15,7 +15,7 @@ def remove_suffix(string: str, suffix: str) -> str:
     return string
 
 
-@dataclass(frozen=True)
+@dataclass
 class Flavour:
     name: str
     label: str

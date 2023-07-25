@@ -2,6 +2,7 @@
 
 ### [Latest]
 
+- Unfreeze flavour class to allow for on the fly modification [#43](https://github.com/umami-hep/atlas-ftag-tools/pull/43)
 - Update linters [#41](https://github.com/umami-hep/atlas-ftag-tools/pull/41)
 
 ### [v0.1.5]
