@@ -205,7 +205,10 @@ class H5Reader:
         dtypes = {}
         with h5py.File(self.files[0]) as f:
             for key in f:
-                dtypes[key] = f[key].dtype
+                dtype = f[key].dtype
+                if self.transform:
+                    dtype = self.transform.map_dtype(key, dtype)
+                dtypes[key] = dtype
         return dtypes
 
     def stream(
