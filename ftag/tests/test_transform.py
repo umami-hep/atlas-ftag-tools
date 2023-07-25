@@ -57,9 +57,9 @@ def test_map_ints(sample_batch, ints_map):
     assert transformed_batch["group2"]["var3"].tolist() == [50, 7]
 
 
-def test_rename_variables(sample_batch, variable_name_map):
+def test_map_variables(sample_batch, variable_name_map):
     transform = Transform(variable_name_map)
-    transformed_batch = transform.rename_variables(sample_batch)
+    transformed_batch = transform.map_variables(sample_batch)
 
     assert "new_var1" in transformed_batch["group1"].dtype.names
     assert "new_var2" in transformed_batch["group1"].dtype.names
@@ -71,7 +71,7 @@ def test_rename_variables(sample_batch, variable_name_map):
     assert "new_var4" not in transformed_batch["group2"].dtype.names
 
 
-def test_rename_variables_existing_variable(sample_batch):
+def test_map_variables_existing_variable(sample_batch):
     variable_name_map = {
         "group1": {
             "var1": "var2",
@@ -79,7 +79,7 @@ def test_rename_variables_existing_variable(sample_batch):
     }
     transform = Transform(variable_name_map)
     with pytest.raises(ValueError):
-        transform.rename_variables(sample_batch)
+        transform.map_variables(sample_batch)
 
 
 def test_transform_call(sample_batch, variable_name_map, ints_map):
@@ -93,7 +93,7 @@ def test_transform_call(sample_batch, variable_name_map, ints_map):
     assert transformed_batch["group2"]["new_var3"].tolist() == [5, 7]
 
 
-def test_transform_floats(sample_batch, floats_map):
+def test_map_floats(sample_batch, floats_map):
     transform = Transform(floats_map=floats_map)
-    transformed_batch = transform.transform_floats(sample_batch)
+    transformed_batch = transform.map_floats(sample_batch)
     assert transformed_batch["group3"]["var5"].tolist() == [1.0, 2.0]

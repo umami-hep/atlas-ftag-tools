@@ -150,7 +150,7 @@ def test_reader_transform():
         }
     )
 
-    reader = H5Reader(fname, transform=transform)
+    reader = H5Reader(fname, transform=transform, batch_size=1)
     data = reader.load(num_jets=10)
 
     assert "pt_new" in data["jets"].dtype.names
