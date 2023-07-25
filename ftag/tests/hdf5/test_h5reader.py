@@ -6,9 +6,11 @@ import numpy as np
 import pytest
 from numpy.lib.recfunctions import unstructured_to_structured as u2s
 
+from ftag import get_mock_file
 from ftag.cuts import Cuts
 from ftag.hdf5.h5reader import H5Reader
 from ftag.sample import Sample
+from ftag.transform import Transform
 
 
 # parameterise the test
@@ -134,3 +136,21 @@ def test_estimate_available_jets(equal_jets, cuts_list):
 
     # These values should be approximately correct, but with the given random seed they are exact
     assert estimated_num_jets == actual_available_jets
+
+
+def test_reader_transform():
+    fname, f = get_mock_file()
+
+    transform = Transform(
+        {
+            "jets": {
+                "pt": "pt_new",
+                "silent": "silent",
+            }
+        }
+    )
+
+    reader = H5Reader(fname, transform=transform)
+    data = reader.load(num_jets=10)
+
+    assert "pt_new" in data["jets"].dtype.names
