@@ -20,7 +20,10 @@ def floats_map():
     return {
         "group3": {
             "var5": "log10",
-        }
+        },
+        "group99": {
+            "var5": "log10",
+        },
     }
 
 
@@ -32,6 +35,9 @@ def ints_map():
             "new_var2": {2: 20},
         },
         "group2": {
+            "var3": {5: 50},
+        },
+        "group99": {
             "var3": {5: 50},
         },
     }
@@ -102,7 +108,8 @@ def test_map_floats(sample_batch, floats_map):
 def test_map_dtype_existing_variables():
     name = "group1"
     fail_map = {name: {"var1": "var2"}}
-    your_class_instance = Transform(fail_map)
+    tf = Transform(fail_map)
     dtype = np.dtype([("var1", "int32"), ("var2", "float64")])
+    assert tf.map_dtype("test", dtype) == dtype
     with pytest.raises(ValueError):
-        your_class_instance.map_dtype(name, dtype)
+        tf.map_dtype(name, dtype)

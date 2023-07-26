@@ -8,7 +8,7 @@ from numpy.lib.recfunctions import unstructured_to_structured as u2s
 
 from ftag import get_mock_file
 from ftag.cuts import Cuts
-from ftag.hdf5.h5reader import H5Reader
+from ftag.hdf5.h5reader import H5Reader, H5SingleReader
 from ftag.sample import Sample
 from ftag.transform import Transform
 
@@ -154,3 +154,53 @@ def test_reader_transform():
     data = reader.load(num_jets=10)
 
     assert "pt_new" in data["jets"].dtype.names
+
+
+@pytest.fixture
+def singlereader():
+    fname, f = get_mock_file()
+    return H5SingleReader(fname, batch_size=10, do_remove_inf=True)
+
+
+def test_remove_inf_no_inf_values(singlereader):
+    data = {"jets": np.array([(1, 2.0), (3, 4.0)], dtype=[("pt", "f4"), ("eta", "f4")])}
+    assert (singlereader.remove_inf(data)["jets"] == data["jets"]).all()
+
+
+def test_remove_inf_with_inf_values(singlereader):
+    _, f = get_mock_file()
+    data = {"jets": f["jets"][:100], "tracks": f["tracks"][:100]}
+    data["jets"]["pt"] = np.inf
+    result = singlereader.remove_inf(data)
+    assert len(result["jets"]) == 0
+    assert len(result["tracks"]) == 0
+
+    _, f = get_mock_file()
+    data = {"jets": f["jets"][:100], "tracks": f["tracks"][:100]}
+    data["jets"]["pt"] = 1
+    data["jets"]["pt"][0] = np.inf
+    result = singlereader.remove_inf(data)
+    assert len(result["jets"]) == 99
+    assert len(result["tracks"]) == 99
+
+
+"""
+def test_remove_inf_all_inf_values(singlereader):
+    # Test with input data containing all infinity values, the result should have no data
+    data = {
+        "jets": np.array(
+            [(1, np.inf), (3, np.inf), (5, np.inf)],
+            dtype=[('pt', 'f4'), ('eta', 'f4')],
+        ),
+        "muons": np.array(
+            [(0, np.inf), (5, np.inf)],
+            dtype=[('pt', 'f4'), ('eta', 'f4')],
+        ),
+    }
+    expected_result = {}
+    with pytest.warns(
+        UserWarning, match="3 inf values detected for variable eta in jets array"
+    ), pytest.warns(UserWarning, match="2 inf values detected for variable eta in muons array"):
+        result = singlereader.remove_inf(data)
+    assert result == expected_result
+"""
