@@ -44,7 +44,7 @@ class H5SingleReader:
             return obj.attrs[name]
 
     def empty(self, ds: h5py.Dataset, variables: list[str]) -> np.ndarray:
-        return np.array(0, dtype=get_dtype(ds, variables, self.precision))
+        return np.array(0, dtype=get_dtype(ds, variables, self.precision, transform=self.transform))
 
     def read_chunk(self, ds: h5py.Dataset, array: np.ndarray, low: int) -> np.ndarray:
         high = min(low + self.batch_size, self.num_jets)

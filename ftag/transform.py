@@ -10,55 +10,25 @@ Batch = dict[str, np.ndarray]
 
 @dataclass
 class Transform:
-    variable_name_map: dict[str, dict[str, str]] | None = None
+    variable_map: dict[str, dict[str, str]] | None = None
     ints_map: dict[str, dict[str, dict[int, int]]] | None = None
     floats_map: dict[str, dict[str, str | Callable]] | None = None
 
     def __post_init__(self):
-        if self.variable_name_map is None:
-            self.variable_name_map = {}
-        if self.ints_map is None:
-            self.ints_map = {}
-        if self.floats_map is None:
-            self.floats_map = {}
+        self.variable_map = self.variable_map or {}
+        self.variable_map_inv = {
+            k: {v: k for k, v in v.items()} for k, v in self.variable_map.items()
+        }
+        self.ints_map = self.ints_map or {}
+        self.floats_map = self.floats_map or {}
 
-        # convert string to callable
+        # convert string to numpy function
         for group, map_dict in self.floats_map.items():
             for variable, func in map_dict.items():
                 self.floats_map[group][variable] = getattr(np, func)
 
     def __call__(self, batch: Batch) -> Batch:
         return self.map_floats(self.map_ints(self.map_variables(batch)))
-
-    def map_dtype(self, name: str, dtype: np.dtype, inverse=False) -> np.dtype:
-        """
-        Rename variables in a dtype.
-
-        Parameters
-        ----------
-        name : str
-            Name of the group.
-        dtype : np.dtype
-            Structured numpy array dtype.
-        inverse : bool, optional
-            If True, apply the inverse mapping, by default False.
-
-        Returns
-        -------
-        np.dtype
-            A new dtype with renamed variables.
-        """
-        assert self.variable_name_map is not None
-        names = list(dtype.names)
-        remap = self.variable_name_map.get(name)
-        if not remap:
-            return dtype
-        for old, new in remap.items():
-            if old in names and new in names:
-                raise ValueError(f"Variables {old, new} already exists in {name}.")
-        if inverse:
-            remap = {v: k for k, v in remap.items()}
-        return np.dtype([(remap.get(name, name), dtype[name]) for name in names])
 
     def map_variables(self, batch: Batch) -> Batch:
         """
@@ -74,8 +44,8 @@ class Transform:
         Batch
             Dict of structured numpy arrays with renamed variables.
         """
-        assert self.variable_name_map is not None
-        for group in self.variable_name_map:
+        assert self.variable_map is not None
+        for group in self.variable_map:
             if group in batch:
                 batch[group] = batch[group].astype(self.map_dtype(group, batch[group].dtype))
         return batch
@@ -128,3 +98,19 @@ class Transform:
                 assert callable(func)
                 batch[group][variable] = func(batch[group][variable])
         return batch
+
+    def map_dtype(self, name: str, dtype: np.dtype) -> np.dtype:
+        assert self.variable_map is not None
+        if not (map_dict := self.variable_map.get(name.lstrip("/"))):
+            return dtype
+        names = list(dtype.names)
+        for old, new in map_dict.items():
+            if old in names and new in names:
+                raise ValueError(f"Variables {old, new} already exists in {name}.")
+        return np.dtype([(map_dict.get(name, name), dtype[name]) for name in names])
+
+    def map_variable_names(self, name: str, variables: list[str], inverse=False) -> list[str]:
+        variable_map = self.variable_map_inv if inverse else self.variable_map
+        if not (map_dict := variable_map.get(name.lstrip("/"))):
+            return variables
+        return [map_dict.get(name, name) for name in variables]
