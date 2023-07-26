@@ -183,6 +183,14 @@ def test_remove_inf_with_inf_values(singlereader):
     assert len(result["jets"]) == 99
     assert len(result["tracks"]) == 99
 
+    _, f = get_mock_file()
+    data = {"jets": f["jets"][:100], "tracks": f["tracks"][:100]}
+    data["tracks"]["d0"] = 1
+    data["tracks"]["d0"][0] = np.inf
+    result = singlereader.remove_inf(data)
+    assert len(result["jets"]) == 99
+    assert len(result["tracks"]) == 99
+
 
 """
 def test_remove_inf_all_inf_values(singlereader):

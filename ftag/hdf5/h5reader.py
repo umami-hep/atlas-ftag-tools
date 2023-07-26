@@ -57,10 +57,10 @@ class H5SingleReader:
         keep_idx = np.full(len(data[self.jets_name]), True)
         for name, array in data.items():
             for var in array.dtype.names:
-                notinf = ~np.isinf(array[var])
-                notinf = notinf if name == self.jets_name else notinf.any(axis=-1)
-                keep_idx = keep_idx & notinf
-                if num_inf := ~notinf.sum():
+                isinf = np.isinf(array[var])
+                isinf = isinf if name == self.jets_name else isinf.any(axis=-1)
+                keep_idx = keep_idx & ~isinf
+                if num_inf := isinf.sum():
                     log.warning(
                         f"{num_inf} inf values detected for variable {var} in"
                         f" {name} array. Removing the affected jets."
