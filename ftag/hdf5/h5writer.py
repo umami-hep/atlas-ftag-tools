@@ -14,8 +14,8 @@ from ftag.hdf5.h5reader import H5Reader
 class H5Writer:
     reader: H5Reader
     dst: Path | str
-    num_jets: int
     groups: list[str]
+    num_jets: int
     jets_name: str = "jets"
     add_flavour_label: bool = False
     compression: str = "lzf"
