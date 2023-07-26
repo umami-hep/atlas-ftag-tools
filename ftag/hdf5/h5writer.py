@@ -7,15 +7,15 @@ import h5py
 import numpy as np
 
 import ftag
+from ftag.hdf5.h5reader import H5Reader
 
 
 @dataclass
 class H5Writer:
-    src: Path | str
+    reader: H5Reader
     dst: Path | str
-    dtypes: dict[str, np.dtype]
-    variables: dict
     num_jets: int
+    groups: list[str]
     jets_name: str = "jets"
     add_flavour_label: bool = False
     compression: str = "lzf"
@@ -25,13 +25,14 @@ class H5Writer:
     rng = np.random.default_rng(42)
 
     def __post_init__(self):
-        self.src = Path(self.src)
+        self.src = Path(self.reader.files[0])
+        self.dtypes = self.reader.dtypes
         self.dst = Path(self.dst)
         self.dst.parent.mkdir(parents=True, exist_ok=True)
         self.file = h5py.File(self.dst, "w")
         self.add_attr("srcfile", str(self.src))
         self.add_attr("writer_version", ftag.__version__)
-        for group in self.variables:
+        for group in self.groups:
             self.create_ds(group)
 
     def create_ds(self, group: str) -> None:
@@ -81,6 +82,6 @@ class H5Writer:
 
         low = self.num_written
         high = low + len(idx)
-        for group in self.variables:
+        for group in self.groups:
             self.file[group][low:high] = data[group]
         self.num_written += len(idx)
