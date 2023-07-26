@@ -32,7 +32,7 @@ def ints_map():
     return {
         "group1": {
             "var2": {2: 20},
-            "new_var2": {2: 20},
+            "new_var2": {2: 30},
         },
         "group2": {
             "var3": {5: 50},
@@ -96,7 +96,7 @@ def test_transform_call(sample_batch, variable_map, ints_map):
     assert "new_var3" in transformed_batch["group2"].dtype.names
     assert "var3" not in transformed_batch["group2"].dtype.names
     assert transformed_batch["group1"]["new_var2"].tolist() == [20, 4]
-    assert transformed_batch["group2"]["new_var3"].tolist() == [5, 7]
+    assert transformed_batch["group2"]["new_var3"].tolist() == [50, 7]
 
 
 def test_map_floats(sample_batch, floats_map):
