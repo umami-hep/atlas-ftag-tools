@@ -7,13 +7,13 @@ import h5py
 import numpy as np
 
 import ftag
-from ftag.hdf5 import get_dtype
 
 
 @dataclass
 class H5Writer:
     src: Path | str
     dst: Path | str
+    dtypes: dict[str, np.dtype]
     variables: dict
     num_jets: int
     jets_name: str = "jets"
@@ -31,23 +31,23 @@ class H5Writer:
         self.file = h5py.File(self.dst, "w")
         self.add_attr("srcfile", str(self.src))
         self.add_attr("writer_version", ftag.__version__)
-        for name, var in self.variables.items():
-            self.create_ds(name, var)
+        for group in self.variables:
+            self.create_ds(group)
 
-    def create_ds(self, name: str, variables: list[str]) -> None:
+    def create_ds(self, group: str) -> None:
+        dtype = self.dtypes[group]
+        if group == self.jets_name and self.add_flavour_label:
+            dtype = np.dtype(dtype.descr + [("flavour_label", "i4")])
         with h5py.File(self.src) as f:
-            dtype = get_dtype(f[name], variables, self.precision)
-            if name == self.jets_name and self.add_flavour_label:
-                dtype = np.dtype(dtype.descr + [("flavour_label", "i4")])
-            num_tracks = f[name].shape[1:]
-            shape = (self.num_jets,) + num_tracks
+            num_tracks = f[group].shape[1:]
+        shape = (self.num_jets,) + num_tracks
 
         # optimal chunking is around 100 jets
         chunks = (100,) + num_tracks if num_tracks else None
 
         # note: enabling the hd5 shuffle filter doesn't improve anything
         self.file.create_dataset(
-            name, dtype=dtype, shape=shape, compression=self.compression, chunks=chunks
+            group, dtype=dtype, shape=shape, compression=self.compression, chunks=chunks
         )
 
     def close(self) -> None:
@@ -81,6 +81,6 @@ class H5Writer:
 
         low = self.num_written
         high = low + len(idx)
-        for n in self.variables:
-            self.file[n][low:high] = data[n]
+        for group in self.variables:
+            self.file[group][low:high] = data[group]
         self.num_written += len(idx)
