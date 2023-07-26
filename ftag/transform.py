@@ -28,7 +28,9 @@ class Transform:
                 self.floats_map[group][variable] = getattr(np, func)
 
     def __call__(self, batch: Batch) -> Batch:
-        return self.map_floats(self.map_ints(self.map_variables(batch)))
+        batch = self.map_ints(batch)
+        batch = self.map_floats(batch)
+        return self.map_variables(batch)
 
     def map_variables(self, batch: Batch) -> Batch:
         """
