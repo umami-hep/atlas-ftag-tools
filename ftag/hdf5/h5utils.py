@@ -2,10 +2,17 @@ from __future__ import annotations
 
 import numpy as np
 
+from ftag.transform import Transform
+
 __all__ = ["join_structured_arrays", "get_dtype", "cast_dtype"]
 
 
-def get_dtype(ds, variables: list[str] | None = None, precision: str | None = None) -> np.dtype:
+def get_dtype(
+    ds,
+    variables: list[str] | None = None,
+    precision: str | None = None,
+    transform: Transform | None = None,
+) -> np.dtype:
     """Return a dtype based on an existing dataset and requested variables.
 
     Parameters
@@ -16,6 +23,8 @@ def get_dtype(ds, variables: list[str] | None = None, precision: str | None = No
         List of variables to include in dtype, by default None
     precision : str | None, optional
         Precision to cast floats to, "half" or "full", by default None
+    transform : Transform | None, optional
+        Transform to apply to variables names, by default None
 
     Returns
     -------
@@ -30,7 +39,10 @@ def get_dtype(ds, variables: list[str] | None = None, precision: str | None = No
     if variables is None:
         variables = ds.dtype.names
 
-    if missing := set(variables) - set(ds.dtype.names):
+    if (missing := set(variables) - set(ds.dtype.names)) and transform is not None:
+        variables = transform.map_variable_names(ds.name, variables, inverse=True)
+        missing = set(variables) - set(ds.dtype.names)
+    if missing:
         raise ValueError(
             f"Variables {missing} were not found in dataset {ds.name} in file {ds.file.filename}"
         )

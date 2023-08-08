@@ -13,6 +13,7 @@ import numpy as np
 from ftag.cuts import Cuts
 from ftag.hdf5.h5utils import get_dtype
 from ftag.sample import Sample
+from ftag.transform import Transform
 
 
 @dataclass
@@ -23,6 +24,7 @@ class H5SingleReader:
     precision: str | None = None
     shuffle: bool = True
     do_remove_inf: bool = False
+    transform: Transform | None = None
 
     def __post_init__(self) -> None:
         self.sample = Sample(self.fname)
@@ -42,7 +44,7 @@ class H5SingleReader:
             return obj.attrs[name]
 
     def empty(self, ds: h5py.Dataset, variables: list[str]) -> np.ndarray:
-        return np.array(0, dtype=get_dtype(ds, variables, self.precision))
+        return np.array(0, dtype=get_dtype(ds, variables, self.precision, transform=self.transform))
 
     def read_chunk(self, ds: h5py.Dataset, array: np.ndarray, low: int) -> np.ndarray:
         high = min(low + self.batch_size, self.num_jets)
@@ -56,7 +58,8 @@ class H5SingleReader:
         for name, array in data.items():
             for var in array.dtype.names:
                 isinf = np.isinf(array[var])
-                keep_idx = keep_idx & ~isinf.any(axis=-1)
+                isinf = isinf if name == self.jets_name else isinf.any(axis=-1)
+                keep_idx = keep_idx & ~isinf
                 if num_inf := isinf.sum():
                     log.warning(
                         f"{num_inf} inf values detected for variable {var} in"
@@ -86,6 +89,7 @@ class H5SingleReader:
         total = 0
         rng = np.random.default_rng(42)
         with h5py.File(self.fname) as f:
+            arrays = {name: self.empty(f[name], var) for name, var in variables.items()}
             data = {name: self.empty(f[name], var) for name, var in variables.items()}
 
             # get indices
@@ -96,7 +100,7 @@ class H5SingleReader:
             # loop over batches and read file
             for low in indices:
                 for name in variables:
-                    data[name] = self.read_chunk(f[name], data[name], low)
+                    data[name] = self.read_chunk(f[name], arrays[name], low)
 
                 # apply selections
                 if cuts:
@@ -106,6 +110,10 @@ class H5SingleReader:
                 # check for inf and remove
                 if self.do_remove_inf:
                     data = self.remove_inf(data)
+
+                # apply transform
+                if self.transform:
+                    data = self.transform(data)
 
                 # check for completion
                 total += len(data[self.jets_name])
@@ -138,6 +146,8 @@ class H5Reader:
         Weights for different input datasets, by default None
     do_remove_inf : bool, optional
         Remove jets with inf values, by default False
+    transform : Transform | None, optional
+        Transform to apply to data, by default None
     equal_jets : bool, optional
         Take the same number of jets (weighted) from each sample, by default True
         If False, use all jets in each sample.
@@ -150,6 +160,7 @@ class H5Reader:
     shuffle: bool = True
     weights: list[float] | None = None
     do_remove_inf: bool = False
+    transform: Transform | None = None
     equal_jets: bool = True
 
     def __post_init__(self) -> None:
@@ -170,7 +181,15 @@ class H5Reader:
 
         # create readers
         self.readers = [
-            H5SingleReader(f, b, self.jets_name, self.precision, self.shuffle, self.do_remove_inf)
+            H5SingleReader(
+                f,
+                b,
+                self.jets_name,
+                self.precision,
+                self.shuffle,
+                self.do_remove_inf,
+                self.transform,
+            )
             for f, b in zip(self.fname, self.batch_sizes)
         ]
 
@@ -187,7 +206,10 @@ class H5Reader:
         dtypes = {}
         with h5py.File(self.files[0]) as f:
             for key in f:
-                dtypes[key] = f[key].dtype
+                dtype = f[key].dtype
+                if self.transform:
+                    dtype = self.transform.map_dtype(key, dtype)
+                dtypes[key] = dtype
         return dtypes
 
     def stream(

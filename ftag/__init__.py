@@ -9,6 +9,7 @@ from ftag.cuts import Cuts
 from ftag.flavour import Flavour, Flavours
 from ftag.mock import get_mock_file
 from ftag.sample import Sample
+from ftag.transform import Transform
 from ftag.wps.discriminant import get_discriminant
 from ftag.wps.working_points import get_working_points
 
@@ -17,6 +18,7 @@ __all__ = [
     "Flavour",
     "Flavours",
     "Sample",
+    "Transform",
     "hdf5",
     "get_mock_file",
     "get_discriminant",

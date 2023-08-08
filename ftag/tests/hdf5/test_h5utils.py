@@ -3,6 +3,7 @@ import pytest
 
 from ftag.hdf5.h5utils import cast_dtype, get_dtype, join_structured_arrays
 from ftag.mock import get_mock_file
+from ftag.transform import Transform
 
 
 def test_get_dtype():
@@ -21,6 +22,15 @@ def test_get_dtype():
     variables = ["pt", "eta"]
     expected_dtype = np.dtype([("pt", "f2"), ("eta", "f2")])
     assert get_dtype(ds, variables, "half") == expected_dtype
+
+
+def test_get_dtype_with_transform():
+    tf = Transform(variable_map={"jets": {"pt": "pt_new"}})
+    f = get_mock_file()[1]
+    ds = f["jets"]
+    variables = ["pt_new", "eta"]
+    expected_dtype = np.dtype([("pt", "f4"), ("eta", "f4")])
+    assert get_dtype(ds, variables, transform=tf) == expected_dtype
 
 
 def test_cast_dtype():
