@@ -2,6 +2,7 @@
 
 ### [Latest]
 
+- Revert [#43](https://github.com/umami-hep/atlas-ftag-tools/pull/43) as it breaks downstream code that relies on hashing `Flavour` objects
 - Unfreeze flavour class to allow for on the fly modification [#43](https://github.com/umami-hep/atlas-ftag-tools/pull/43)
 - Update linters [#41](https://github.com/umami-hep/atlas-ftag-tools/pull/41)
 
