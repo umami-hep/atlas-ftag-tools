@@ -162,6 +162,12 @@ def singlereader():
     return H5SingleReader(fname, batch_size=10, do_remove_inf=True)
 
 
+@pytest.fixture
+def reader():
+    fname, f = get_mock_file()
+    return H5Reader(fname, batch_size=10)
+
+
 def test_remove_inf_no_inf_values(singlereader):
     data = {"jets": np.array([(1, 2.0), (3, 4.0)], dtype=[("pt", "f4"), ("eta", "f4")])}
     assert (singlereader.remove_inf(data)["jets"] == data["jets"]).all()
@@ -192,23 +198,29 @@ def test_remove_inf_with_inf_values(singlereader):
     assert len(result["tracks"]) == 99
 
 
-"""
 def test_remove_inf_all_inf_values(singlereader):
     # Test with input data containing all infinity values, the result should have no data
     data = {
         "jets": np.array(
             [(1, np.inf), (3, np.inf), (5, np.inf)],
-            dtype=[('pt', 'f4'), ('eta', 'f4')],
+            dtype=[("pt", "f4"), ("eta", "f4")],
         ),
         "muons": np.array(
-            [(0, np.inf), (5, np.inf)],
-            dtype=[('pt', 'f4'), ('eta', 'f4')],
+            [(0, np.inf), (3, np.inf), (5, np.inf)],
+            dtype=[("pt", "f4"), ("eta", "f4")],
         ),
     }
-    expected_result = {}
-    with pytest.warns(
-        UserWarning, match="3 inf values detected for variable eta in jets array"
-    ), pytest.warns(UserWarning, match="2 inf values detected for variable eta in muons array"):
-        result = singlereader.remove_inf(data)
-    assert result == expected_result
-"""
+    result = singlereader.remove_inf(data)
+    assert {len(result[k]) for k in result} == {0}
+
+
+def test_reader_shapes(reader):
+    assert {"jets": (10,)} == reader.shapes(10)
+    assert {"jets": (10,)} == reader.shapes(10, ["jets"])
+
+
+def test_reader_dtypes(reader):
+    with h5py.File(reader.files[0]) as f:
+        expected_dtype = {"jets": f["jets"].dtype, "tracks": f["tracks"].dtype}
+    assert reader.dtypes() == expected_dtype
+    print(reader.dtypes({"jets": ["pt"]}))
