@@ -224,3 +224,15 @@ def test_reader_dtypes(reader):
         expected_dtype = {"jets": f["jets"].dtype, "tracks": f["tracks"].dtype}
     assert reader.dtypes() == expected_dtype
     print(reader.dtypes({"jets": ["pt"]}))
+
+
+def test_get_attr(singlereader):
+    assert singlereader.get_attr("test") == "test"
+
+
+def test_stream(singlereader):
+    print(singlereader.stream())
+    total = 0
+    for batch in singlereader.stream():
+        total += len(batch["jets"])
+    assert total == singlereader.num_jets
