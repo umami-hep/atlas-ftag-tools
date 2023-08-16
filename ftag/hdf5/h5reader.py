@@ -218,7 +218,9 @@ class H5Reader:
                     dtypes[name] = dtype
         return dtypes
 
-    def shapes(self, num_jets: int, groups: list[str]) -> dict[str, tuple[int, ...]]:
+    def shapes(self, num_jets: int, groups: list[str] | None = None) -> dict[str, tuple[int, ...]]:
+        if groups is None:
+            groups = [self.jets_name]
         shapes = {}
         with h5py.File(self.files[0]) as f:
             for group in groups:
