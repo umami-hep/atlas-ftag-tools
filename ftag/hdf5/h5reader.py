@@ -27,6 +27,7 @@ class H5SingleReader:
     transform: Transform | None = None
 
     def __post_init__(self) -> None:
+        self.rng = np.random.default_rng(42)
         self.sample = Sample(self.fname)
         fname = self.sample.virtual_file()
         if len(fname) != 1:
@@ -87,7 +88,6 @@ class H5SingleReader:
             variables = {self.jets_name: None}
 
         total = 0
-        rng = np.random.default_rng(42)
         with h5py.File(self.fname) as f:
             arrays = {name: self.empty(f[name], var) for name, var in variables.items()}
             data = {name: self.empty(f[name], var) for name, var in variables.items()}
@@ -95,7 +95,7 @@ class H5SingleReader:
             # get indices
             indices = list(range(0, self.num_jets, self.batch_size))
             if self.shuffle:
-                rng.shuffle(indices)
+                self.rng.shuffle(indices)
 
             # loop over batches and read file
             for low in indices:
@@ -164,6 +164,7 @@ class H5Reader:
     equal_jets: bool = True
 
     def __post_init__(self) -> None:
+        self.rng = np.random.default_rng(42)
         if not self.equal_jets:
             log.warning(
                 "equal_jets is set to False, which will result in different number of jets taken"
@@ -201,16 +202,29 @@ class H5Reader:
     def files(self) -> list[Path]:
         return [Path(r.fname) for r in self.readers]
 
-    @cached_property
-    def dtypes(self) -> dict[str, np.dtype]:
+    def dtypes(self, variables: dict[str, list[str]] | None = None) -> dict[str, np.dtype]:
         dtypes = {}
         with h5py.File(self.files[0]) as f:
-            for key in f:
-                dtype = f[key].dtype
-                if self.transform:
-                    dtype = self.transform.map_dtype(key, dtype)
-                dtypes[key] = dtype
+            if variables is None:
+                for key in f:
+                    dtype = f[key].dtype
+                    if self.transform:
+                        dtype = self.transform.map_dtype(key, dtype)
+                    dtypes[key] = dtype
+            else:
+                for name, var in variables.items():
+                    ds = f[name]
+                    dtype = get_dtype(ds, var, self.precision, transform=self.transform)
+                    dtypes[name] = dtype
         return dtypes
+
+    def shapes(self, num_jets: int, groups: list[str]) -> dict[str, tuple[int, ...]]:
+        shapes = {}
+        with h5py.File(self.files[0]) as f:
+            for group in groups:
+                shape = f[group].shape
+                shapes[group] = (num_jets,) + shape[1:]
+        return shapes
 
     def stream(
         self, variables: dict | None = None, num_jets: int | None = None, cuts: Cuts | None = None
@@ -249,7 +263,6 @@ class H5Reader:
             for r in self.readers
         ]
 
-        rng = np.random.default_rng(42)
         while True:
             samples = []
             # Track which streams have been exhausted
@@ -276,7 +289,7 @@ class H5Reader:
             data = {name: np.concatenate([s[name] for s in samples]) for name in variables}
             if self.shuffle:
                 idx = np.arange(len(data[self.jets_name]))
-                rng.shuffle(idx)
+                self.rng.shuffle(idx)
                 data = {name: array[idx] for name, array in data.items()}
 
             # yield batch
