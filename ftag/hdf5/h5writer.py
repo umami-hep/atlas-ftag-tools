@@ -7,48 +7,69 @@ import h5py
 import numpy as np
 
 import ftag
-from ftag.hdf5.h5reader import H5Reader
 
 
 @dataclass
 class H5Writer:
-    reader: H5Reader
+    """Writes jets to an HDF5 file.
+
+    Parameters
+    ----------
+    dst : Path | str
+        Path to the output file.
+    dtypes : dict[str, np.dtype]
+        Dictionary of group names and their corresponding dtypes.
+    num_jets : int
+        Number of jets to write.
+    shapes : dict[str, int], optional
+        Dictionary of group names and their corresponding shapes.
+    jets_name : str, optional
+        Name of the jets group. Default is "jets".
+    add_flavour_label : bool, optional
+        Whether to add a flavour label to the jets group. Default is False.
+    compression : str, optional
+        Compression algorithm to use. Default is "lzf".
+    precision : str | None, optional
+        Precision to use. Default is None.
+    shuffle : bool, optional
+        Whether to shuffle the jets before writing. Default is True.
+    """
+
     dst: Path | str
-    groups: list[str]
-    num_jets: int
+    dtypes: dict[str, np.dtype]
+    shapes: dict[str, tuple[int, ...]]
     jets_name: str = "jets"
     add_flavour_label: bool = False
     compression: str = "lzf"
     precision: str | None = None
     shuffle: bool = True
-    num_written: int = 0
-    rng = np.random.default_rng(42)
 
     def __post_init__(self):
-        self.src = Path(self.reader.files[0])
-        self.dtypes = self.reader.dtypes
+        self.num_written = 0
+        self.rng = np.random.default_rng(42)
+        self.num_jets = [shape[0] for shape in self.shapes.values()]
+        assert len(set(self.num_jets)) == 1, "Must have same number of jets per group"
+        self.num_jets = self.num_jets[0]
+
         self.dst = Path(self.dst)
         self.dst.parent.mkdir(parents=True, exist_ok=True)
         self.file = h5py.File(self.dst, "w")
-        self.add_attr("srcfile", str(self.src))
         self.add_attr("writer_version", ftag.__version__)
-        for group in self.groups:
-            self.create_ds(group)
 
-    def create_ds(self, group: str) -> None:
-        dtype = self.dtypes[group]
-        if group == self.jets_name and self.add_flavour_label:
+        for name, dtype in self.dtypes.items():
+            self.create_ds(name, dtype)
+
+    def create_ds(self, name: str, dtype: np.dtype) -> None:
+        if name == self.jets_name and self.add_flavour_label:
             dtype = np.dtype(dtype.descr + [("flavour_label", "i4")])
-        with h5py.File(self.src) as f:
-            num_tracks = f[group].shape[1:]
-        shape = (self.num_jets,) + num_tracks
 
-        # optimal chunking is around 100 jets
-        chunks = (100,) + num_tracks if num_tracks else None
+        # optimal chunking is around 100 jets, only aply for track groups
+        shape = self.shapes[name]
+        chunks = (100,) + shape[1:] if shape[1:] else None
 
         # note: enabling the hd5 shuffle filter doesn't improve anything
         self.file.create_dataset(
-            group, dtype=dtype, shape=shape, compression=self.compression, chunks=chunks
+            name, dtype=dtype, shape=shape, compression=self.compression, chunks=chunks
         )
 
     def close(self) -> None:
@@ -82,6 +103,6 @@ class H5Writer:
 
         low = self.num_written
         high = low + len(idx)
-        for group in self.groups:
+        for group in self.dtypes:
             self.file[group][low:high] = data[group]
         self.num_written += len(idx)

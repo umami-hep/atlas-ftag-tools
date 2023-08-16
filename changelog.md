@@ -2,6 +2,9 @@
 
 ### [Latest]
 
+### [v0.1.7]
+- Improvements to the H5Writer interface [#46](https://github.com/umami-hep/atlas-ftag-tools/pull/46)
+
 ### [v0.1.6]
 - Add on the fly variable renaming and data transforms [#44](https://github.com/umami-hep/atlas-ftag-tools/pull/44)
 - Revert [#43](https://github.com/umami-hep/atlas-ftag-tools/pull/43) as it breaks downstream code that relies on hashing `Flavour` objects
