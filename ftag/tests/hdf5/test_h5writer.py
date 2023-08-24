@@ -101,7 +101,7 @@ def test_from_file(tmp_path, mock_data_path):
     tracks = f["tracks"][:]
 
     dst_path = Path(tmp_path) / "test.h5"
-    writer = H5Writer.from_file(source=mock_data_path, dst=dst_path)
+    writer = H5Writer.from_file(source=mock_data_path, dst=dst_path, shuffle=False)
 
     writer.write({"jets": jets, "tracks": tracks})
     with h5py.File(dst_path) as f:

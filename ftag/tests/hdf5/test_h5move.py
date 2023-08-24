@@ -14,7 +14,14 @@ def get_fname():
 
 def test_parse_args():
     # Test for the parse_args function
-    args = ["/path/to/file.h5", "/source/dataset", "/destination/dataset"]
+    args = [
+        "--fname",
+        "/path/to/file.h5",
+        "--src",
+        "/source/dataset",
+        "--dst",
+        "/destination/dataset",
+    ]
     parsed_args = parse_args(args)
     assert parsed_args.fname == Path("/path/to/file.h5")
     assert parsed_args.src == "/source/dataset"
@@ -25,7 +32,7 @@ def test_main(get_fname):
     fname = get_fname
     old_data = h5py.File(fname)["/jets"][:]
 
-    main([fname, "/jets", "/jets_new"])
+    main(["--fname", fname, "--src", "/jets", "--dst", "/jets_new"])
 
     f = h5py.File(fname)
     assert "/jets" not in f
