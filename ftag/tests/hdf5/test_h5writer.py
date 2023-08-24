@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import h5py
 import numpy as np
 import pytest
 
@@ -13,6 +14,12 @@ def mock_data():
     jets = f["jets"][:100][["pt", "eta"]]
     tracks = f["tracks"][:100]
     return jets, tracks
+
+
+@pytest.fixture
+def mock_data_path():
+    f = get_mock_file()[1]
+    return f.filename
 
 
 @pytest.fixture
@@ -86,3 +93,16 @@ def test_invalid_write(tmp_path, jet_dtype):
     data = {"jets": np.zeros(110, dtype=writer.dtypes["jets"])}
     with pytest.raises(ValueError):
         writer.write(data)
+
+
+def test_from_file(tmp_path, mock_data_path):
+    f = get_mock_file()[1]
+    jets = f["jets"][:]
+    tracks = f["tracks"][:]
+
+    dst_path = Path(tmp_path) / "test.h5"
+    writer = H5Writer.from_file(source=mock_data_path, dst=dst_path, shuffle=False)
+
+    writer.write({"jets": jets, "tracks": tracks})
+    with h5py.File(dst_path) as f:
+        assert np.array_equal(f["jets"][:], jets)

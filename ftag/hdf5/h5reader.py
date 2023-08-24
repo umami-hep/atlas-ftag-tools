@@ -73,6 +73,7 @@ class H5SingleReader:
         variables: dict | None = None,
         num_jets: int | None = None,
         cuts: Cuts | None = None,
+        start: int = 0,
     ) -> Generator:
         if num_jets is None:
             num_jets = self.num_jets
@@ -93,7 +94,7 @@ class H5SingleReader:
             data = {name: self.empty(f[name], var) for name, var in variables.items()}
 
             # get indices
-            indices = list(range(0, self.num_jets, self.batch_size))
+            indices = list(range(start, self.num_jets + start, self.batch_size))
             if self.shuffle:
                 self.rng.shuffle(indices)
 
@@ -229,7 +230,11 @@ class H5Reader:
         return shapes
 
     def stream(
-        self, variables: dict | None = None, num_jets: int | None = None, cuts: Cuts | None = None
+        self,
+        variables: dict | None = None,
+        num_jets: int | None = None,
+        cuts: Cuts | None = None,
+        start: int = 0,
     ) -> Generator:
         """Generate batches of selected jets.
 
@@ -241,6 +246,8 @@ class H5Reader:
             Total number of selected jets to generate, by default all.
         cuts : Cuts | None, optional
             Selection cuts to apply, by default None
+        start : int, optional
+            Starting index of the first jet to read, by default 0
 
         Yields
         ------
@@ -261,7 +268,7 @@ class H5Reader:
 
         # get streams for selected jets from each reader
         streams = [
-            r.stream(variables, int(r.num_jets / self.num_jets * num_jets), cuts)
+            r.stream(variables, int(r.num_jets / self.num_jets * num_jets), cuts, start)
             for r in self.readers
         ]
 

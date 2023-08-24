@@ -1,6 +1,7 @@
 # Changelog
 
 ### [Latest]
+- Add h5split command [#47](https://github.com/umami-hep/atlas-ftag-tools/pull/47)
 
 ### [v0.1.7]
 - Improvements to the H5Writer interface [#46](https://github.com/umami-hep/atlas-ftag-tools/pull/46)
