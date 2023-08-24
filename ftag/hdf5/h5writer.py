@@ -59,6 +59,20 @@ class H5Writer:
         for name, dtype in self.dtypes.items():
             self.create_ds(name, dtype)
 
+    @classmethod
+    def from_file(cls, source: Path, num_jets: int | None = None, **kwargs) -> H5Writer:
+        with h5py.File(source, "r") as f:
+            dtypes = {name: ds.dtype for name, ds in f.items()}
+            shapes = {name: ds.shape for name, ds in f.items()}
+            if num_jets is not None:
+                shapes = {name: (num_jets,) + shape[1:] for name, shape in shapes.items()}
+            compression = [ds.compression for ds in f.values()]
+            assert len(set(compression)) == 1, "Must have same compression for all groups"
+            compression = compression[0]
+            if compression not in kwargs:
+                kwargs["compression"] = compression
+        return cls(dtypes=dtypes, shapes=shapes, **kwargs)
+
     def create_ds(self, name: str, dtype: np.dtype) -> None:
         if name == self.jets_name and self.add_flavour_label:
             dtype = np.dtype(dtype.descr + [("flavour_label", "i4")])
