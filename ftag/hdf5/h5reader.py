@@ -72,8 +72,8 @@ class H5SingleReader:
         self,
         variables: dict | None = None,
         num_jets: int | None = None,
-        start: int = 0,
         cuts: Cuts | None = None,
+        start: int = 0,
     ) -> Generator:
         if num_jets is None:
             num_jets = self.num_jets
@@ -233,8 +233,8 @@ class H5Reader:
         self,
         variables: dict | None = None,
         num_jets: int | None = None,
-        start: int = 0,
         cuts: Cuts | None = None,
+        start: int = 0,
     ) -> Generator:
         """Generate batches of selected jets.
 
@@ -244,10 +244,10 @@ class H5Reader:
             Dictionary of variables to for each group, by default use all jet variables.
         num_jets : int | None, optional
             Total number of selected jets to generate, by default all.
-        start : int, optional
-            Starting index of the first jet to read, by default 0
         cuts : Cuts | None, optional
             Selection cuts to apply, by default None
+        start : int, optional
+            Starting index of the first jet to read, by default 0
 
         Yields
         ------
@@ -268,7 +268,7 @@ class H5Reader:
 
         # get streams for selected jets from each reader
         streams = [
-            r.stream(variables, int(r.num_jets / self.num_jets * num_jets), start, cuts)
+            r.stream(variables, int(r.num_jets / self.num_jets * num_jets), cuts, start)
             for r in self.readers
         ]
 
@@ -331,7 +331,7 @@ class H5Reader:
 
         # get data from each sample
         data: dict[str, list] = {name: [] for name in variables}
-        for batch in self.stream(variables, num_jets, cuts=cuts):
+        for batch in self.stream(variables, num_jets, cuts):
             for name, array in batch.items():
                 if name in data:
                     data[name].append(array)
