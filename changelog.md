@@ -1,6 +1,7 @@
 # Changelog
 
 ### [Latest]
+- Backward compatibility to python3.8 and small fix for h5split.py [#48](https://github.com/umami-hep/atlas-ftag-tools/pull/48)
 - Add h5split command [#47](https://github.com/umami-hep/atlas-ftag-tools/pull/47)
 
 ### [v0.1.7]
