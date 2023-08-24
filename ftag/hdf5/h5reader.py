@@ -72,6 +72,7 @@ class H5SingleReader:
         self,
         variables: dict | None = None,
         num_jets: int | None = None,
+        start: int = 0,
         cuts: Cuts | None = None,
     ) -> Generator:
         if num_jets is None:
@@ -93,7 +94,7 @@ class H5SingleReader:
             data = {name: self.empty(f[name], var) for name, var in variables.items()}
 
             # get indices
-            indices = list(range(0, self.num_jets, self.batch_size))
+            indices = list(range(start, self.num_jets + start, self.batch_size))
             if self.shuffle:
                 self.rng.shuffle(indices)
 
@@ -229,7 +230,11 @@ class H5Reader:
         return shapes
 
     def stream(
-        self, variables: dict | None = None, num_jets: int | None = None, cuts: Cuts | None = None
+        self,
+        variables: dict | None = None,
+        num_jets: int | None = None,
+        start: int = 0,
+        cuts: Cuts | None = None,
     ) -> Generator:
         """Generate batches of selected jets.
 
@@ -239,6 +244,8 @@ class H5Reader:
             Dictionary of variables to for each group, by default use all jet variables.
         num_jets : int | None, optional
             Total number of selected jets to generate, by default all.
+        start : int, optional
+            Starting index of the first jet to read, by default 0
         cuts : Cuts | None, optional
             Selection cuts to apply, by default None
 
@@ -261,7 +268,7 @@ class H5Reader:
 
         # get streams for selected jets from each reader
         streams = [
-            r.stream(variables, int(r.num_jets / self.num_jets * num_jets), cuts)
+            r.stream(variables, int(r.num_jets / self.num_jets * num_jets), start, cuts)
             for r in self.readers
         ]
 
@@ -324,7 +331,7 @@ class H5Reader:
 
         # get data from each sample
         data: dict[str, list] = {name: [] for name in variables}
-        for batch in self.stream(variables, num_jets, cuts):
+        for batch in self.stream(variables, num_jets, cuts=cuts):
             for name, array in batch.items():
                 if name in data:
                     data[name].append(array)

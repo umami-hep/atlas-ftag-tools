@@ -70,7 +70,9 @@ def get_mock_scores(labels: np.ndarray):
     return u2s(scores, dtype=np.dtype([(name, "f4") for name in cols]))
 
 
-def get_mock_file(num_jets=1000, tracks_name: str = "tracks", num_tracks: int = 40):
+def get_mock_file(
+    num_jets=1000, tracks_name: str = "tracks", num_tracks: int = 40
+) -> tuple[str, h5py.File]:
     # setup jets
     rng = np.random.default_rng(42)
     jets_dtype = np.dtype(JET_VARS)
