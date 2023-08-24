@@ -58,23 +58,6 @@ Running `coverage report` will display the test coverage.
 Please see the [example notebook](ftag/example.ipynb) for full usage.
 Additional functionality is also documented below.
 
-## Create virtual file
-
-This package contains a script to easily merge a set of H5 files.
-A virtual file is a fast and lightweight way to wrap a set of files.
-See the [h5py documentation](https://docs.h5py.org/en/stable/vds.html) for more information on virtual datasets.
-
-The script is `vds.py` and can be run after installing this package with
-
-```
-vds <pattern> <output path>
-```
-
-The `<pattern>` argument should be a quotes enclosed [glob pattern](https://en.wikipedia.org/wiki/Glob_(programming)), for example `"dsid/path/*.h5"`
-
-See `vds --help` for more options and information.
-
-
 ## Calculate WPs
 
 This package contains a script to calculate tagger working points (WPs).
@@ -99,3 +82,34 @@ By default the working points are printed to the terminal, but you can save the 
 See `wps --help` for more options and information.
 
 
+## H5 Utils
+
+### Create virtual file
+
+This package contains a script to easily merge a set of H5 files.
+A virtual file is a fast and lightweight way to wrap a set of files.
+See the [h5py documentation](https://docs.h5py.org/en/stable/vds.html) for more information on virtual datasets.
+
+The script is `vds.py` and can be run after installing this package with
+
+```
+vds <pattern> <output path>
+```
+
+The `<pattern>` argument should be a quotes enclosed [glob pattern](https://en.wikipedia.org/wiki/Glob_(programming)), for example `"dsid/path/*.h5"`
+
+See `vds --help` for more options and information.
+
+
+### [h5move](ftag/hdf5/h5move.py)
+
+A script to move/rename datasets inside an h5file.
+Useful for correcting discrepancies between group names.
+See [h5move.py](ftag/hdf5/h5move.py) for more info.
+
+
+### [h5split](ftag/hdf5/h5split.py)
+
+A script to split a large h5 file into several smaller files.
+Useful if output files are too large for EOS/grid storage.
+See [h5split.py](ftag/hdf5/h5split.py) for more info.
