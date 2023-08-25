@@ -1,13 +1,13 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Callable
+from typing import Callable, Dict
 
 import numpy as np
 
 __all__ = ["Transform"]
 
-Batch = dict[str, np.ndarray]
+Batch = Dict[str, np.ndarray]
 
 
 @dataclass

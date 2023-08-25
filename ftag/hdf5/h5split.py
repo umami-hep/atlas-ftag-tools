@@ -41,7 +41,8 @@ def main(args=None):
     args = parse_args(args)
 
     src = args.src
-    if args.dst is None:
+    dst = args.dst
+    if dst is None:
         dst = src.parent / f"split_{src.stem}"
     jets_per_file = args.jets_per_file
 
