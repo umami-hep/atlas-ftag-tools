@@ -51,14 +51,14 @@ def main(args=None):
     with h5py.File(src, "r") as f:
         total_jets = list(f.values())[0].shape[0]
 
-    num_output_files = total_jets // jets_per_file
+    num_full_files = total_jets // jets_per_file
     remainder = total_jets % jets_per_file
-    num_output_files += 1 if remainder != 0 else 0
-    print(f"\n{total_jets:,} jets will be split across {num_output_files:,} files\n")
+    num_total_files = num_full_files + (1 if remainder != 0 else 0)
+    print(f"\n{total_jets:,} jets will be split across {num_total_files:,} files\n")
 
     reader = H5Reader(src, batch_size=args.batch_size, shuffle=False)
     variables = dict.fromkeys(reader.dtypes().keys())
-    for i in range(num_output_files):
+    for i in range(num_full_files):
         start = i * jets_per_file
         out = dst / f"{src.stem}-split_{i}.h5"
         writer = H5Writer.from_file(src, dst=out, num_jets=jets_per_file, shuffle=False)
@@ -69,6 +69,17 @@ def main(args=None):
             print(f"\rProcessed {total_written:,}/{total_jets:,} jets ({pct_done:.1%})", end="")
         writer.close()
 
+    if remainder != 0:
+        start = num_full_files * jets_per_file
+
+        out = dst / f"{src.stem}-split_{num_total_files}.h5"
+        writer = H5Writer.from_file(src, dst=out, num_jets=remainder, shuffle=False)
+        for batch in reader.stream(variables=variables, num_jets=remainder, start=start):
+            writer.write(batch)
+            total_written = start + writer.num_written
+            pct_done = total_written / total_jets
+            print(f"\rProcessed {total_written:,}/{total_jets:,} jets ({pct_done:.1%})", end="")
+        writer.close()
     print("\nDone!\n")
 
 
