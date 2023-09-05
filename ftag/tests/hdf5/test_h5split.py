@@ -43,10 +43,11 @@ def test_main(mock_h5_file, capsys):
             for k in src:
                 assert (src[k][start:stop] == dst[k]).all()
 
+
 def test_remainder(mock_h5_file, capsys):
     args = ["--src", str(mock_h5_file), "--jets_per_file", "201", "--batch_size", "10"]
     main(args)
-    
+
     captured = capsys.readouterr()
     assert "Done!" in captured.out
     assert captured.err == ""

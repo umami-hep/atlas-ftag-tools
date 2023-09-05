@@ -71,7 +71,7 @@ def main(args=None):
 
     if remainder != 0:
         start = num_full_files * jets_per_file
-        
+
         out = dst / f"{src.stem}-split_{num_total_files}.h5"
         writer = H5Writer.from_file(src, dst=out, num_jets=remainder, shuffle=False)
         for batch in reader.stream(variables=variables, num_jets=remainder, start=start):
