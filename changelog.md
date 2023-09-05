@@ -3,6 +3,7 @@
 ### [Latest]
 
 ### [v0.1.8]
+- Fix to h5split to allow files with remainders [#49](https://github.com/umami-hep/atlas-ftag-tools/pull/49)
 - Backward compatibility to python3.8 and small fix for h5split.py [#48](https://github.com/umami-hep/atlas-ftag-tools/pull/48)
 - Add h5split command [#47](https://github.com/umami-hep/atlas-ftag-tools/pull/47)
 
