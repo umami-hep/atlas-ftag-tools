@@ -6,14 +6,12 @@ dynamic = ["version"]
 license = {text = "MIT"}
 readme = "README.md"
 requires-python = ">=3.8"
+
 dependencies = [
-  "h5py>=3.0",  # requires numpy
+  "h5py>=3.0",
   "numpy",
   "PyYAML>=5.1"
 ]
-
-[project.urls]
-"Homepage" = "https://github.com/umami-hep/atlas-ftag-tools/"
 
 [project.optional-dependencies]
 dev = [
@@ -25,6 +23,10 @@ dev = [
   "pytest_notebook==0.8.1",
   "ipykernel==6.21.3",
 ]
+
+[project.urls]
+"Homepage" = "https://github.com/umami-hep/atlas-ftag-tools/"
+
 
 [project.scripts]
 vds = "ftag.vds:main"
