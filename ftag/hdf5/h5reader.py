@@ -340,7 +340,7 @@ class H5Reader:
         return {name: np.concatenate(array) for name, array in data.items()}
 
     def estimate_available_jets(self, cuts: Cuts, num: int = 1_000_000) -> int:
-        """Estimate the number of jets available after selection cuts (round down).
+        """Estimate the number of jets available after selection cuts.
 
         Parameters
         ----------
@@ -352,15 +352,14 @@ class H5Reader:
         Returns
         -------
         int
-            Estimated number of jets available after selection cuts,
-            rounded down to nearest thousand.
+            Estimated number of jets available after selection cuts, rounded down.
         """
         # if equal jets is True, available jets is based on the smallest sample
         if self.equal_jets:
             num_jets = []
             for r in self.readers:
                 stream = r.stream({self.jets_name: cuts.variables}, num)
-                all_jets = np.concatenate([batch[self.jets_name] for batch in stream])
+                all_jets = np.concatenate([batch[self.jets_name].copy() for batch in stream])
                 frac_selected = len(cuts(all_jets).values) / len(all_jets)
                 num_jets.append(frac_selected * r.num_jets)
             estimated_num_jets = min(num_jets) * len(self.readers)
@@ -369,4 +368,4 @@ class H5Reader:
             all_jets = self.load({self.jets_name: cuts.variables}, num)[self.jets_name]
             frac_selected = len(cuts(all_jets).values) / len(all_jets)
             estimated_num_jets = frac_selected * self.num_jets
-        return math.floor(estimated_num_jets / 1_000) * 1_000
+        return math.floor(estimated_num_jets * 0.99)

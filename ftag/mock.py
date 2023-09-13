@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from pathlib import Path
 from tempfile import NamedTemporaryFile, mkdtemp
 
 import h5py
@@ -71,7 +72,10 @@ def get_mock_scores(labels: np.ndarray):
 
 
 def get_mock_file(
-    num_jets=1000, tracks_name: str = "tracks", num_tracks: int = 40
+    num_jets=1000,
+    fname: str | None = None,
+    tracks_name: str = "tracks",
+    num_tracks: int = 40,
 ) -> tuple[str, h5py.File]:
     # setup jets
     rng = np.random.default_rng(42)
@@ -90,7 +94,10 @@ def get_mock_file(
     jets = join_structured_arrays([jets, scores])
 
     # create a tempfile in a new folder
-    fname = NamedTemporaryFile(suffix=".h5", dir=mkdtemp()).name
+    if fname is None:
+        fname = NamedTemporaryFile(suffix=".h5", dir=mkdtemp()).name
+    else:
+        Path(fname).parent.mkdir(exist_ok=True, parents=True)
     f = h5py.File(fname, "w")
     f.create_dataset("jets", data=jets)
     f.attrs["test"] = "test"

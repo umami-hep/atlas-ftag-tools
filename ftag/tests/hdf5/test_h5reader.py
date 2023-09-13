@@ -12,6 +12,8 @@ from ftag.hdf5.h5reader import H5Reader, H5SingleReader
 from ftag.sample import Sample
 from ftag.transform import Transform
 
+np.random.seed(42)
+
 
 # parameterise the test
 @pytest.mark.parametrize("num", [1, 2, 3])
@@ -82,15 +84,36 @@ def test_H5Reader(num, length, equal_jets):
     assert len(loaded_data["jets"].dtype.names) == 2
 
 
+@pytest.mark.parametrize("batch_size", [10_000, 11_001, 50_123, 101_234])
+@pytest.mark.parametrize("num_jets", [100_000, 200_000])
+def test_estimate_available_jets(batch_size, num_jets):
+    fname, f = get_mock_file(num_jets=num_jets)
+    reader = H5Reader(fname, batch_size=batch_size, shuffle=False)
+    with h5py.File(reader.files[0]) as f:
+        jets = f["jets"][:]
+
+    cuts = Cuts.from_list(["pt > 50"])
+    estimated_num_jets = reader.estimate_available_jets(cuts, num=100_000)
+    actual_num_jets = np.sum(jets["pt"] > 50)
+    assert estimated_num_jets <= actual_num_jets
+    assert estimated_num_jets > 0.95 * actual_num_jets
+
+    cuts = Cuts.from_list(["HadronConeExclTruthLabelID == 5"])
+    estimated_num_jets = reader.estimate_available_jets(cuts, num=100_000)
+    actual_num_jets = np.sum(jets["HadronConeExclTruthLabelID"] == 5)
+    assert estimated_num_jets <= actual_num_jets
+    assert estimated_num_jets > 0.95 * actual_num_jets
+
+
 @pytest.mark.parametrize("equal_jets", [True, False])
 @pytest.mark.parametrize("cuts_list", [["x != -1"], ["x != 1"], ["x == -1"]])
-def test_estimate_available_jets(equal_jets, cuts_list):
+def test_equal_jets_estimate(equal_jets, cuts_list):
     # fix the seed to make the test deterministic
     np.random.seed(42)
 
     # create test files (of different lengths)
     total_files = 2
-    length = 100_000
+    length = 200_000
     batch_size = 10_000
     tmpdirs = []
     actual_available_jets = []
@@ -135,7 +158,8 @@ def test_estimate_available_jets(equal_jets, cuts_list):
     estimated_num_jets = reader.estimate_available_jets(cuts, num=100_000)
 
     # These values should be approximately correct, but with the given random seed they are exact
-    assert estimated_num_jets == actual_available_jets
+    assert actual_available_jets >= estimated_num_jets
+    assert estimated_num_jets - actual_available_jets <= 1000
 
 
 def test_reader_transform():

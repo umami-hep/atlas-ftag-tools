@@ -1,6 +1,7 @@
 # Changelog
 
 ### [Latest]
+- Fix bug in estimate_available_jets [#50](https://github.com/umami-hep/atlas-ftag-tools/pull/50)
 
 ### [v0.1.8]
 - Fix to h5split to allow files with remainders [#49](https://github.com/umami-hep/atlas-ftag-tools/pull/49)
