@@ -37,3 +37,7 @@ def test_get_mock_file():
     # test tracks are not generated when tracks_name is None
     fname, f = get_mock_file(num_jets=1000, tracks_name=None)
     assert tracks_name not in f.keys()
+
+    # test custom fname
+    fname, f = get_mock_file(fname="test.h5")
+    assert fname == "test.h5"
