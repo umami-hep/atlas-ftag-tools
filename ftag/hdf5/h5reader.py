@@ -359,13 +359,13 @@ class H5Reader:
             num_jets = []
             for r in self.readers:
                 stream = r.stream({self.jets_name: cuts.variables}, num)
-                all_jets = np.concatenate([batch[self.jets_name] for batch in stream])[:num]
+                all_jets = np.concatenate([batch[self.jets_name].copy() for batch in stream])
                 frac_selected = len(cuts(all_jets).values) / len(all_jets)
                 num_jets.append(frac_selected * r.num_jets)
             estimated_num_jets = min(num_jets) * len(self.readers)
         # otherwise, available jets is based on all samples
         else:
-            all_jets = self.load({self.jets_name: cuts.variables}, num)[self.jets_name][:num]
+            all_jets = self.load({self.jets_name: cuts.variables}, num)[self.jets_name]
             frac_selected = len(cuts(all_jets).values) / len(all_jets)
             estimated_num_jets = frac_selected * self.num_jets
-        return math.floor(estimated_num_jets)
+        return math.floor(estimated_num_jets / 1_000) * 1_000
