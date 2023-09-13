@@ -72,8 +72,8 @@ def get_mock_scores(labels: np.ndarray):
 
 
 def get_mock_file(
-    fname: str | None = None,
     num_jets=1000,
+    fname: str | None = None,
     tracks_name: str = "tracks",
     num_tracks: int = 40,
 ) -> tuple[str, h5py.File]:
