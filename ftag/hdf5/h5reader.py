@@ -352,7 +352,8 @@ class H5Reader:
         Returns
         -------
         int
-            Estimated number of jets available after selection cuts.
+            Estimated number of jets available after selection cuts, rounded
+            down to the nearest thousand.
         """
         # if equal jets is True, available jets is based on the smallest sample
         if self.equal_jets:
