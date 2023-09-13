@@ -369,4 +369,4 @@ class H5Reader:
             all_jets = self.load({self.jets_name: cuts.variables}, num)[self.jets_name]
             frac_selected = len(cuts(all_jets).values) / len(all_jets)
             estimated_num_jets = frac_selected * self.num_jets
-        return math.floor(estimated_num_jets / 1_000) * 1_000
+        return math.floor(estimated_num_jets)
