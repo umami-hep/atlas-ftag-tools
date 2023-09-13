@@ -60,7 +60,7 @@ def get_mock_scores(labels: np.ndarray):
     rng = np.random.default_rng(42)
     scores = np.zeros((len(labels), 3))
     for label, count in zip(*np.unique(labels, return_counts=True)):
-        if label == 0 or label == 15:
+        if label in (0, 15):
             scores[labels == label] = rng.normal(loc=[2, 0, 0], scale=1, size=(count, 3))
         elif label == 4:
             scores[labels == label] = rng.normal(loc=[0, 1, 0], scale=2.5, size=(count, 3))

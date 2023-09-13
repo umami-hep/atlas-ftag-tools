@@ -68,7 +68,7 @@ def test_main():
         # Check that the output file contains the expected data
         with h5py.File(output_fname, "r") as f:
             assert len(f) == 1
-            key = list(f.keys())[0]
+            key = next(iter(f.keys()))
             assert key == "data"
             assert f[key].shape == (30,)
             assert f[key].attrs["key"] == "value"

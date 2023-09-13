@@ -9,8 +9,7 @@ import h5py
 from ftag.hdf5 import H5Reader, H5Writer
 
 
-class HelpFormatter(argparse.RawTextHelpFormatter, argparse.ArgumentDefaultsHelpFormatter):
-    ...
+class HelpFormatter(argparse.RawTextHelpFormatter, argparse.ArgumentDefaultsHelpFormatter): ...
 
 
 def parse_args(args):
@@ -49,7 +48,7 @@ def main(args=None):
     print(f"\nSplitting: {src}")
     print(f"Destination: {dst}")
     with h5py.File(src, "r") as f:
-        total_jets = list(f.values())[0].shape[0]
+        total_jets = next(iter(f.values())).shape[0]
 
     num_full_files = total_jets // jets_per_file
     remainder = total_jets % jets_per_file

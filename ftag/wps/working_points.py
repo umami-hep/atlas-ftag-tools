@@ -119,7 +119,7 @@ def get_working_points(args=None):
     default_cuts = Cuts.from_list(["eta > -2.5", "eta < 2.5"])
     ttbar_cuts = Cuts.from_list(args.ttbar_cuts) + default_cuts
     zprime_cuts = Cuts.from_list(args.zprime_cuts) + default_cuts
-    all_vars = list(flavs)[0].cuts.variables
+    all_vars = next(iter(flavs)).cuts.variables
     for tagger in args.tagger:
         all_vars += [f"{tagger}_{f.px}" for f in flavs if "tau" not in f.px]
 

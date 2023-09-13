@@ -87,7 +87,7 @@ def main(args=None):
     print(f"Globbing {args.pattern}...")
     create_virtual_file(args.pattern, args.output, overwrite=True)
     with h5py.File(args.output) as f:
-        key = list(f.keys())[0]
+        key = next(iter(f.keys()))
         num = len(f[key])
     print(f"Virtual dataset '{key}' has {num:,} entries")
     print(f"Saved virtual file to {args.output.resolve()}")

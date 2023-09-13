@@ -1,6 +1,7 @@
 # Changelog
 
 ### [Latest]
+- Update linter versions
 
 ### [v0.1.9]
 - Fix bug in estimate_available_jets [#50](https://github.com/umami-hep/atlas-ftag-tools/pull/50)
