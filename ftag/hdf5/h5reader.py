@@ -352,8 +352,7 @@ class H5Reader:
         Returns
         -------
         int
-            Estimated number of jets available after selection cuts, rounded
-            down to the nearest thousand.
+            Estimated number of jets available after selection cuts, rounded down.
         """
         # if equal jets is True, available jets is based on the smallest sample
         if self.equal_jets:
@@ -369,4 +368,4 @@ class H5Reader:
             all_jets = self.load({self.jets_name: cuts.variables}, num)[self.jets_name]
             frac_selected = len(cuts(all_jets).values) / len(all_jets)
             estimated_num_jets = frac_selected * self.num_jets
-        return math.floor(estimated_num_jets)
+        return math.floor(estimated_num_jets * 0.99)
