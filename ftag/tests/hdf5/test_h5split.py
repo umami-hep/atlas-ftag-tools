@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from pathlib import Path
 
 import h5py
@@ -45,7 +47,8 @@ def test_main(mock_h5_file, capsys):
 
 
 def test_remainder(mock_h5_file, capsys):
-    args = ["--src", str(mock_h5_file), "--jets_per_file", "201", "--batch_size", "10"]
+    n_per_file = 201
+    args = ["--src", str(mock_h5_file), "--jets_per_file", str(n_per_file), "--batch_size", "10"]
     main(args)
 
     captured = capsys.readouterr()
@@ -58,9 +61,28 @@ def test_remainder(mock_h5_file, capsys):
 
     # check file content
     for i, f in enumerate(sorted(split_dir.glob("*.h5"))):
-        start = i * 201
-        stop = start + 201 if i <= 3 else 1000
+        start = i * n_per_file
+        stop = start + n_per_file if i <= 3 else 1000
+        print(start, stop)
         with h5py.File(f) as dst, h5py.File(mock_h5_file) as src:
             assert src.keys() == dst.keys()
             for k in src:
                 assert (src[k][start:stop] == dst[k]).all()
+
+
+def test_attrs(mock_h5_file):
+    args = ["--src", str(mock_h5_file), "--jets_per_file", "100", "--batch_size", "10"]
+    main(args)
+
+    split_dir = mock_h5_file.parent / f"split_{mock_h5_file.stem}"
+    assert split_dir.exists()
+
+    # for each file, check the h5 attrs are the same as the input file
+    for f in sorted(split_dir.glob("*.h5")):
+        with h5py.File(f) as dst, h5py.File(mock_h5_file) as src:
+            assert set(src.attrs).issubset(set(dst.attrs))
+
+            # check each dataset has the same attrs
+            for k in src:
+                print(dict(src[k].attrs), dict(dst[k].attrs))
+                assert set(src[k].attrs).issubset(set(dst[k].attrs))

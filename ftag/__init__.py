@@ -1,5 +1,5 @@
 """atlas-ftag-tools - Common tools for ATLAS flavour tagging software."""
-
+from __future__ import annotations
 
 __version__ = "v0.1.9"
 
