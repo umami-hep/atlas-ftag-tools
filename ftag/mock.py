@@ -101,6 +101,7 @@ def get_mock_file(
     f = h5py.File(fname, "w")
     f.create_dataset("jets", data=jets)
     f.attrs["test"] = "test"
+    f["jets"].attrs["test"] = "test"
 
     # setup tracks
     if tracks_name:
