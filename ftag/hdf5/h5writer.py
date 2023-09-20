@@ -105,6 +105,14 @@ class H5Writer:
         obj = self.file[group] if group else self.file
         obj.attrs.create(name, data)
 
+    def copy_attrs(self, fname: Path) -> None:
+        with h5py.File(fname) as f:
+            for name, value in f.attrs.items():
+                self.add_attr(name, value)
+            for name, ds in f.items():
+                for attr_name, value in ds.attrs.items():
+                    self.add_attr(attr_name, value, group=name)
+
     def write(self, data: dict[str, np.array]) -> None:
         if (total := self.num_written + len(data[self.jets_name])) > self.num_jets:
             raise ValueError(
