@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import numpy as np
+from numpy.lib.recfunctions import unstructured_to_structured as u2s
 
 from ftag.transform import Transform
 
@@ -106,3 +107,21 @@ def join_structured_arrays(arrays: list):
             newrecarray[name] = a[name]
 
     return newrecarray
+
+
+def structured_from_dict(d: dict[str, np.ndarray]) -> np.ndarray:
+    """Convert a dict to a structured array.
+
+    Parameters
+    ----------
+    d : dict
+        Input dict of numpy arrays
+
+    Returns
+    -------
+    np.ndarray
+        Structured array
+    """
+    arrays = np.column_stack(list(d.values()))
+    dtypes = np.dtype([(k, v.dtype) for k, v in d.items()])
+    return u2s(arrays, dtype=dtypes)
