@@ -1,6 +1,9 @@
 # Changelog
 
 ### [Latest]
+
+- Add func to create structured array from dict of arrays [#52](https://github.com/umami-hep/atlas-ftag-tools/pull/52)
+- Copy attrs when splitting files [#51](https://github.com/umami-hep/atlas-ftag-tools/pull/51)
 - Update linter versions
 
 ### [v0.1.9]
