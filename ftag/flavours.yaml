@@ -127,3 +127,25 @@
   cuts: ["LeptonDecayLabel == 3"]
   colour: "#e76f51"
   category: lepton-decay
+
+# lepton isolation
+- name: promptelectrons
+  label: prompt electrons
+  cuts: ["iffClass == 2"]
+  colour: tab:magenta
+  category: isolation
+- name: promptmuons
+  label: prompt muons
+  cuts: ["iffClass == 4"]
+  colour: tab:blue
+  category: isolation
+- name: nonpromptelectrons
+  label: non-prompt electrons
+  cuts: ["iffClass != 2"]
+  colour: tab:green
+  category: isolation
+- name: nonpromptmuons
+  label: non-prompt muons
+  cuts: ["iffClass != 4"]
+  colour: tab:orange
+  category: isolation
