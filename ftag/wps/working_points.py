@@ -96,6 +96,11 @@ def parse_args(args):
         type=Path,
         help="save results to yaml instead of printing",
     )
+    parser.add_argument(
+        "--xbb",
+        action="store_true",
+        help="Enable Xbb tagging which expects two fx values ftop and fhcc/fhbb for each tagger",
+    )
 
     return parser.parse_args(args)
 
@@ -113,8 +118,14 @@ def get_eff_rej(jets, disc, wp, flavs):
 def get_working_points(args=None):
     args = parse_args(args)
 
-    if len(args.tagger) != len(args.fx):
-        raise ValueError("Must provide fb/fc for each tagger")
+    if args.xbb:
+        if len(args.fx) != 2 * len(args.tagger):
+            raise ValueError("For Xbb tagging, each tagger must have two fx values")
+        fx_values = list(zip(args.fx[::2], args.fx[1::2]))
+    else:
+        if len(args.fx) != len(args.tagger):
+            raise ValueError("Number of taggers must match number of fx values")
+        fx_values = args.fx
 
     # setup cuts and variables
     flavs = Flavours.by_category("single-btag")
