@@ -10,5 +10,5 @@ __all__ = [
     "get_dtype",
     "cast_dtype",
     "join_structured_arrays",
-    "structured_from_dict"
+    "structured_from_dict",
 ]
