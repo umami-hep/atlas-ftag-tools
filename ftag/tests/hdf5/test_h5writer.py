@@ -63,7 +63,7 @@ def test_close(tmp_path, mock_data):
     writer.write(data)
     writer.close()
 
-    with pytest.raises(ValueError):
+    with pytest.raises(KeyError):
         writer.file["jets"].resize(writer.num_written)
 
 
