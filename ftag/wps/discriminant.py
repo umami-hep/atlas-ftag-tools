@@ -65,4 +65,4 @@ def get_discriminant(
     if func is None:
         raise ValueError(f"Signal flavour must be among {list(tagger_funcs.keys())}, not {signal}")
 
-    return func(jets, tagger, fx, epsilon)
+    return func(jets, tagger, *fx, epsilon)

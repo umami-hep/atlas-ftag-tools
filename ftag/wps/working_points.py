@@ -58,15 +58,15 @@ def parse_args(args):
         "-s",
         "--signal",
         default="bjets",
-        choices=["bjets", "cjets"],
+        choices=["bjets", "cjets", "hbb", "hcc"],
         type=str,
-        help='signal flavour ("bjets" or "cjets")',
+        help='signal flavour ("bjets" or "cjets" for b-tagging, "hbb" or "hcc" for Xbb)',
     )
     parser.add_argument(
         "-r",
         "--rejection",
         default=None,
-        choices=["ujets", "cjets", "bjets"],
+        choices=["ujets", "cjets", "bjets", "hbb", "hcc", "top", "qcd"],
         help="use rejection of specified background class to determine working points",
     )
     parser.add_argument(
@@ -128,7 +128,8 @@ def get_working_points(args=None):
         fx_values = args.fx
 
     # setup cuts and variables
-    flavs = Flavours.by_category("single-btag")
+    flavs = Flavours.by_category("single-btag") if not args.xbb else Flavours.by_category("xbb")
+
     default_cuts = Cuts.from_list(["eta > -2.5", "eta < 2.5"])
     ttbar_cuts = Cuts.from_list(args.ttbar_cuts) + default_cuts
     zprime_cuts = Cuts.from_list(args.zprime_cuts) + default_cuts
@@ -145,7 +146,7 @@ def get_working_points(args=None):
 
     # loop over taggers
     out = {}
-    for tagger, fx in zip(args.tagger, args.fx):
+    for tagger, fx in zip(args.tagger, fx_values):
         out[tagger] = {"signal": args.signal, "fx": fx}
 
         # calculate discriminant
