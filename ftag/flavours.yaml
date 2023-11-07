@@ -160,6 +160,11 @@
   cuts: ["iffClass == 6"]
   colour: salmon
   category: isolation
+- name: npxall
+  label: non-prompt lepton
+  cuts: ["iffClass notin (2,3,4,11)"]
+  colour: "#264653"
+  category: isolation
 - name: npxtau
   label: non-prompt lepton from tau
   cuts: ["iffClass == 7"]
