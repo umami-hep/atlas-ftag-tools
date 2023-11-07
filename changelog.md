@@ -1,6 +1,7 @@
 # Changelog
 
 ### [Latest]
+- Add isolation classes [#58](https://github.com/umami-hep/atlas-ftag-tools/pull/58)
 
 ### [v0.1.11]
 - Bugfix of `structured_from_dict` function [#53](https://github.com/umami-hep/atlas-ftag-tools/pull/54)
