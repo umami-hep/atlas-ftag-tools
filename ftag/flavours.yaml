@@ -129,6 +129,7 @@
   category: lepton-decay
 
 # lepton isolation
+## taken from https://gitlab.cern.ch/atlas/athena/-/blob/main/PhysicsAnalysis/AnalysisCommon/TruthClassification/README.md#4-details-about-the-lepton-categories
 - name: elxprompt
   label: prompt electrons
   cuts: ["iffClass == 2"]
