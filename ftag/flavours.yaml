@@ -129,23 +129,63 @@
   category: lepton-decay
 
 # lepton isolation
-- name: promptelectrons
+- name: elxprompt
   label: prompt electrons
   cuts: ["iffClass == 2"]
-  colour: tab:magenta
+  colour: tab:red
   category: isolation
-- name: promptmuons
+- name: elxflip
+  label: prompt electrons with charge-flip
+  cuts: ["iffClass == 3"]
+  colour: tab:orange
+  category: isolation
+- name: muxprompt
   label: prompt muons
   cuts: ["iffClass == 4"]
   colour: tab:blue
   category: isolation
-- name: nonpromptelectrons
-  label: non-prompt electrons
-  cuts: ["iffClass != 2"]
+- name: muxflip
+  label: prompt muons with charge-flip
+  cuts: ["iffClass == 11"]
+  colour: aqua
+  category: isolation
+- name: elxphconv
+  label: electrons from prompt photon-conversions
+  cuts: ["iffClass == 5"]
+  colour: tab:purple
+  category: isolation
+- name: elxfrommu
+  label: electrons from muons
+  cuts: ["iffClass == 6"]
+  colour: salmon
+  category: isolation
+- name: npxtau
+  label: non-prompt lepton from tau
+  cuts: ["iffClass == 7"]
+  colour: tab:brown
+  category: isolation
+- name: npxbjets
+  label: non-prompt lepton from $b$
+  cuts: ["iffClass == 8"]
+  colour: darkgreen
+  category: isolation
+- name: npxcjets
+  label: non-prompt lepton from $c$
+  cuts: ["iffClass == 9"]
   colour: tab:green
   category: isolation
-- name: nonpromptmuons
-  label: non-prompt muons
-  cuts: ["iffClass != 4"]
-  colour: tab:orange
+- name: npxujets
+  label: non-prompt lepton from light-flavour
+  cuts: ["iffClass == 10"]
+  colour: lightgreen
+  category: isolation
+- name: unclassified
+  label: unclassified leptons
+  cuts: ["iffClass == 1"]
+  colour: black
+  category: isolation
+- name: unknown
+  label: unknown leptons
+  cuts: ["iffClass == 0"]
+  colour: tab:gray
   category: isolation
