@@ -41,11 +41,11 @@ def test_Flavours_get_attr():
 
 def test_Flavours_contains():
     assert "bjets" in Flavours
-    assert "unknown" not in Flavours
+    assert "undefined" not in Flavours
 
 
 def test_Flavours_categories():
-    target = ["single-btag", "single-btag-extended", "xbb", "partonic", "lepton-decay"]
+    target = ["single-btag", "single-btag-extended", "xbb", "partonic", "lepton-decay", "isolation"]
     assert Flavours.categories == target
 
 

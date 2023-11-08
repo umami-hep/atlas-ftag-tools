@@ -127,3 +127,71 @@
   cuts: ["LeptonDecayLabel == 3"]
   colour: "#e76f51"
   category: lepton-decay
+
+# lepton isolation
+## taken from https://gitlab.cern.ch/atlas/athena/-/blob/main/PhysicsAnalysis/AnalysisCommon/TruthClassification/README.md#4-details-about-the-lepton-categories
+- name: elxprompt
+  label: prompt electrons
+  cuts: ["iffClass == 2"]
+  colour: tab:red
+  category: isolation
+- name: elxflip
+  label: prompt electrons with charge-flip
+  cuts: ["iffClass == 3"]
+  colour: tab:orange
+  category: isolation
+- name: muxprompt
+  label: prompt muons
+  cuts: ["iffClass == 4"]
+  colour: tab:blue
+  category: isolation
+- name: muxflip
+  label: prompt muons with charge-flip
+  cuts: ["iffClass == 11"]
+  colour: aqua
+  category: isolation
+- name: elxphconv
+  label: electrons from prompt photon-conversions
+  cuts: ["iffClass == 5"]
+  colour: tab:purple
+  category: isolation
+- name: elxfrommu
+  label: electrons from muons
+  cuts: ["iffClass == 6"]
+  colour: salmon
+  category: isolation
+- name: npxall
+  label: non-prompt lepton
+  cuts: ["iffClass notin (2,3,4,11)"]
+  colour: "#264653"
+  category: isolation
+- name: npxtau
+  label: non-prompt lepton from tau
+  cuts: ["iffClass == 7"]
+  colour: tab:brown
+  category: isolation
+- name: npxbjets
+  label: non-prompt lepton from $b$
+  cuts: ["iffClass == 8"]
+  colour: darkgreen
+  category: isolation
+- name: npxcjets
+  label: non-prompt lepton from $c$
+  cuts: ["iffClass == 9"]
+  colour: tab:green
+  category: isolation
+- name: npxujets
+  label: non-prompt lepton from light-flavour
+  cuts: ["iffClass == 10"]
+  colour: lightgreen
+  category: isolation
+- name: unclassified
+  label: unclassified leptons
+  cuts: ["iffClass == 1"]
+  colour: black
+  category: isolation
+- name: unknown
+  label: unknown leptons
+  cuts: ["iffClass == 0"]
+  colour: tab:gray
+  category: isolation
