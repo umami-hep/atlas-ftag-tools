@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import numpy as np
 from numpy.lib.recfunctions import structured_to_unstructured as s2u
 
@@ -22,7 +24,7 @@ def test_get_mock_file():
     )
     assert all(jets["pt"] > 0)
     assert all(jets["mass"] <= 50e3)
-    assert all(-3 <= jets["eta"]) and all(jets["eta"] <= 3)
+    assert all(jets["eta"] >= -3) and all(jets["eta"] <= 3)
     assert all(jets["n_truth_promptLepton"] == 0)
 
     # test tracks are correctly generated
@@ -36,4 +38,8 @@ def test_get_mock_file():
 
     # test tracks are not generated when tracks_name is None
     fname, f = get_mock_file(num_jets=1000, tracks_name=None)
-    assert tracks_name not in f.keys()
+    assert tracks_name not in f
+
+    # test custom fname
+    fname, f = get_mock_file(fname="test.h5")
+    assert fname == "test.h5"

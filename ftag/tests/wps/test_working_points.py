@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import pytest
 
 from ftag.mock import get_mock_file

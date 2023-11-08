@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from pathlib import Path
 from tempfile import NamedTemporaryFile, mkdtemp
 
 import h5py
@@ -59,7 +60,7 @@ def get_mock_scores(labels: np.ndarray):
     rng = np.random.default_rng(42)
     scores = np.zeros((len(labels), 3))
     for label, count in zip(*np.unique(labels, return_counts=True)):
-        if label == 0 or label == 15:
+        if label in (0, 15):
             scores[labels == label] = rng.normal(loc=[2, 0, 0], scale=1, size=(count, 3))
         elif label == 4:
             scores[labels == label] = rng.normal(loc=[0, 1, 0], scale=2.5, size=(count, 3))
@@ -67,11 +68,15 @@ def get_mock_scores(labels: np.ndarray):
             scores[labels == label] = rng.normal(loc=[0, 0, 3.5], scale=5, size=(count, 3))
     scores = softmax(scores, axis=1)
     cols = [f"MockTagger_p{x}" for x in ["u", "c", "b"]]
-    scores = u2s(scores, dtype=np.dtype([(name, "f4") for name in cols]))
-    return scores
+    return u2s(scores, dtype=np.dtype([(name, "f4") for name in cols]))
 
 
-def get_mock_file(num_jets=1000, tracks_name: str = "tracks", num_tracks: int = 40):
+def get_mock_file(
+    num_jets=1000,
+    fname: str | None = None,
+    tracks_name: str = "tracks",
+    num_tracks: int = 40,
+) -> tuple[str, h5py.File]:
     # setup jets
     rng = np.random.default_rng(42)
     jets_dtype = np.dtype(JET_VARS)
@@ -89,10 +94,14 @@ def get_mock_file(num_jets=1000, tracks_name: str = "tracks", num_tracks: int = 
     jets = join_structured_arrays([jets, scores])
 
     # create a tempfile in a new folder
-    fname = NamedTemporaryFile(suffix=".h5", dir=mkdtemp()).name
+    if fname is None:
+        fname = NamedTemporaryFile(suffix=".h5", dir=mkdtemp()).name
+    else:
+        Path(fname).parent.mkdir(exist_ok=True, parents=True)
     f = h5py.File(fname, "w")
     f.create_dataset("jets", data=jets)
     f.attrs["test"] = "test"
+    f["jets"].attrs["test"] = "test"
 
     # setup tracks
     if tracks_name:

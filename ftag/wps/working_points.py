@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import argparse
 from pathlib import Path
 
@@ -100,7 +102,7 @@ def parse_args(args):
 
 def get_eff_rej(jets, disc, wp, flavs):
     out = {"eff": {}, "rej": {}}
-    for bkg in [f for f in flavs]:
+    for bkg in list(flavs):
         bkg_disc = disc[bkg.cuts(jets).idx]
         eff = sum(bkg_disc > wp) / len(bkg_disc)
         out["eff"][str(bkg)] = float(f"{eff:.3g}")
@@ -119,7 +121,7 @@ def get_working_points(args=None):
     default_cuts = Cuts.from_list(["eta > -2.5", "eta < 2.5"])
     ttbar_cuts = Cuts.from_list(args.ttbar_cuts) + default_cuts
     zprime_cuts = Cuts.from_list(args.zprime_cuts) + default_cuts
-    all_vars = list(flavs)[0].cuts.variables
+    all_vars = next(iter(flavs)).cuts.variables
     for tagger in args.tagger:
         all_vars += [f"{tagger}_{f.px}" for f in flavs if "tau" not in f.px]
 
@@ -161,6 +163,7 @@ def get_working_points(args=None):
     if args.outfile:
         with open(args.outfile, "w") as f:
             yaml.dump(out, f, sort_keys=False)
+            return None
     else:
         return out
 

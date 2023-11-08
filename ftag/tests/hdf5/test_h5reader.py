@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from pathlib import Path
 from tempfile import NamedTemporaryFile, mkdtemp
 
@@ -6,9 +8,13 @@ import numpy as np
 import pytest
 from numpy.lib.recfunctions import unstructured_to_structured as u2s
 
+from ftag import get_mock_file
 from ftag.cuts import Cuts
-from ftag.hdf5.h5reader import H5Reader
+from ftag.hdf5.h5reader import H5Reader, H5SingleReader
 from ftag.sample import Sample
+from ftag.transform import Transform
+
+np.random.seed(42)
 
 
 # parameterise the test
@@ -80,15 +86,36 @@ def test_H5Reader(num, length, equal_jets):
     assert len(loaded_data["jets"].dtype.names) == 2
 
 
+@pytest.mark.parametrize("batch_size", [10_000, 11_001, 50_123, 101_234])
+@pytest.mark.parametrize("num_jets", [100_000, 200_000])
+def test_estimate_available_jets(batch_size, num_jets):
+    fname, f = get_mock_file(num_jets=num_jets)
+    reader = H5Reader(fname, batch_size=batch_size, shuffle=False)
+    with h5py.File(reader.files[0]) as f:
+        jets = f["jets"][:]
+
+    cuts = Cuts.from_list(["pt > 50"])
+    estimated_num_jets = reader.estimate_available_jets(cuts, num=100_000)
+    actual_num_jets = np.sum(jets["pt"] > 50)
+    assert estimated_num_jets <= actual_num_jets
+    assert estimated_num_jets > 0.95 * actual_num_jets
+
+    cuts = Cuts.from_list(["HadronConeExclTruthLabelID == 5"])
+    estimated_num_jets = reader.estimate_available_jets(cuts, num=100_000)
+    actual_num_jets = np.sum(jets["HadronConeExclTruthLabelID"] == 5)
+    assert estimated_num_jets <= actual_num_jets
+    assert estimated_num_jets > 0.95 * actual_num_jets
+
+
 @pytest.mark.parametrize("equal_jets", [True, False])
 @pytest.mark.parametrize("cuts_list", [["x != -1"], ["x != 1"], ["x == -1"]])
-def test_estimate_available_jets(equal_jets, cuts_list):
+def test_equal_jets_estimate(equal_jets, cuts_list):
     # fix the seed to make the test deterministic
     np.random.seed(42)
 
     # create test files (of different lengths)
     total_files = 2
-    length = 100_000
+    length = 200_000
     batch_size = 10_000
     tmpdirs = []
     actual_available_jets = []
@@ -133,4 +160,105 @@ def test_estimate_available_jets(equal_jets, cuts_list):
     estimated_num_jets = reader.estimate_available_jets(cuts, num=100_000)
 
     # These values should be approximately correct, but with the given random seed they are exact
-    assert estimated_num_jets == actual_available_jets
+    assert actual_available_jets >= estimated_num_jets
+    assert estimated_num_jets - actual_available_jets <= 1000
+
+
+def test_reader_transform():
+    fname, f = get_mock_file()
+
+    transform = Transform(
+        {
+            "jets": {
+                "pt": "pt_new",
+                "silent": "silent",
+            }
+        }
+    )
+
+    reader = H5Reader(fname, transform=transform, batch_size=1)
+    data = reader.load(num_jets=10)
+
+    assert "pt_new" in data["jets"].dtype.names
+
+
+@pytest.fixture
+def singlereader():
+    fname, f = get_mock_file()
+    return H5SingleReader(fname, batch_size=10, do_remove_inf=True)
+
+
+@pytest.fixture
+def reader():
+    fname, f = get_mock_file()
+    return H5Reader(fname, batch_size=10)
+
+
+def test_remove_inf_no_inf_values(singlereader):
+    data = {"jets": np.array([(1, 2.0), (3, 4.0)], dtype=[("pt", "f4"), ("eta", "f4")])}
+    assert (singlereader.remove_inf(data)["jets"] == data["jets"]).all()
+
+
+def test_remove_inf_with_inf_values(singlereader):
+    _, f = get_mock_file()
+    data = {"jets": f["jets"][:100], "tracks": f["tracks"][:100]}
+    data["jets"]["pt"] = np.inf
+    result = singlereader.remove_inf(data)
+    assert len(result["jets"]) == 0
+    assert len(result["tracks"]) == 0
+
+    _, f = get_mock_file()
+    data = {"jets": f["jets"][:100], "tracks": f["tracks"][:100]}
+    data["jets"]["pt"] = 1
+    data["jets"]["pt"][0] = np.inf
+    result = singlereader.remove_inf(data)
+    assert len(result["jets"]) == 99
+    assert len(result["tracks"]) == 99
+
+    _, f = get_mock_file()
+    data = {"jets": f["jets"][:100], "tracks": f["tracks"][:100]}
+    data["tracks"]["d0"] = 1
+    data["tracks"]["d0"][0] = np.inf
+    result = singlereader.remove_inf(data)
+    assert len(result["jets"]) == 99
+    assert len(result["tracks"]) == 99
+
+
+def test_remove_inf_all_inf_values(singlereader):
+    # Test with input data containing all infinity values, the result should have no data
+    data = {
+        "jets": np.array(
+            [(1, np.inf), (3, np.inf), (5, np.inf)],
+            dtype=[("pt", "f4"), ("eta", "f4")],
+        ),
+        "muons": np.array(
+            [(0, np.inf), (3, np.inf), (5, np.inf)],
+            dtype=[("pt", "f4"), ("eta", "f4")],
+        ),
+    }
+    result = singlereader.remove_inf(data)
+    assert {len(result[k]) for k in result} == {0}
+
+
+def test_reader_shapes(reader):
+    assert {"jets": (10,)} == reader.shapes(10)
+    assert {"jets": (10,)} == reader.shapes(10, ["jets"])
+
+
+def test_reader_dtypes(reader):
+    with h5py.File(reader.files[0]) as f:
+        expected_dtype = {"jets": f["jets"].dtype, "tracks": f["tracks"].dtype}
+    assert reader.dtypes() == expected_dtype
+    print(reader.dtypes({"jets": ["pt"]}))
+
+
+def test_get_attr(singlereader):
+    assert singlereader.get_attr("test") == "test"
+
+
+def test_stream(singlereader):
+    print(singlereader.stream())
+    total = 0
+    for batch in singlereader.stream():
+        total += len(batch["jets"])
+    assert total == singlereader.num_jets

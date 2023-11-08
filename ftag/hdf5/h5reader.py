@@ -13,6 +13,7 @@ import numpy as np
 from ftag.cuts import Cuts
 from ftag.hdf5.h5utils import get_dtype
 from ftag.sample import Sample
+from ftag.transform import Transform
 
 
 @dataclass
@@ -23,8 +24,10 @@ class H5SingleReader:
     precision: str | None = None
     shuffle: bool = True
     do_remove_inf: bool = False
+    transform: Transform | None = None
 
     def __post_init__(self) -> None:
+        self.rng = np.random.default_rng(42)
         self.sample = Sample(self.fname)
         fname = self.sample.virtual_file()
         if len(fname) != 1:
@@ -42,7 +45,7 @@ class H5SingleReader:
             return obj.attrs[name]
 
     def empty(self, ds: h5py.Dataset, variables: list[str]) -> np.ndarray:
-        return np.array(0, dtype=get_dtype(ds, variables, self.precision))
+        return np.array(0, dtype=get_dtype(ds, variables, self.precision, transform=self.transform))
 
     def read_chunk(self, ds: h5py.Dataset, array: np.ndarray, low: int) -> np.ndarray:
         high = min(low + self.batch_size, self.num_jets)
@@ -56,7 +59,8 @@ class H5SingleReader:
         for name, array in data.items():
             for var in array.dtype.names:
                 isinf = np.isinf(array[var])
-                keep_idx = keep_idx & ~isinf.any(axis=-1)
+                isinf = isinf if name == self.jets_name else isinf.any(axis=-1)
+                keep_idx = keep_idx & ~isinf
                 if num_inf := isinf.sum():
                     log.warning(
                         f"{num_inf} inf values detected for variable {var} in"
@@ -69,6 +73,7 @@ class H5SingleReader:
         variables: dict | None = None,
         num_jets: int | None = None,
         cuts: Cuts | None = None,
+        start: int = 0,
     ) -> Generator:
         if num_jets is None:
             num_jets = self.num_jets
@@ -84,19 +89,19 @@ class H5SingleReader:
             variables = {self.jets_name: None}
 
         total = 0
-        rng = np.random.default_rng(42)
         with h5py.File(self.fname) as f:
+            arrays = {name: self.empty(f[name], var) for name, var in variables.items()}
             data = {name: self.empty(f[name], var) for name, var in variables.items()}
 
             # get indices
-            indices = list(range(0, self.num_jets, self.batch_size))
+            indices = list(range(start, self.num_jets + start, self.batch_size))
             if self.shuffle:
-                rng.shuffle(indices)
+                self.rng.shuffle(indices)
 
             # loop over batches and read file
             for low in indices:
                 for name in variables:
-                    data[name] = self.read_chunk(f[name], data[name], low)
+                    data[name] = self.read_chunk(f[name], arrays[name], low)
 
                 # apply selections
                 if cuts:
@@ -106,6 +111,10 @@ class H5SingleReader:
                 # check for inf and remove
                 if self.do_remove_inf:
                     data = self.remove_inf(data)
+
+                # apply transform
+                if self.transform:
+                    data = self.transform(data)
 
                 # check for completion
                 total += len(data[self.jets_name])
@@ -138,6 +147,8 @@ class H5Reader:
         Weights for different input datasets, by default None
     do_remove_inf : bool, optional
         Remove jets with inf values, by default False
+    transform : Transform | None, optional
+        Transform to apply to data, by default None
     equal_jets : bool, optional
         Take the same number of jets (weighted) from each sample, by default True
         If False, use all jets in each sample.
@@ -150,9 +161,11 @@ class H5Reader:
     shuffle: bool = True
     weights: list[float] | None = None
     do_remove_inf: bool = False
+    transform: Transform | None = None
     equal_jets: bool = True
 
     def __post_init__(self) -> None:
+        self.rng = np.random.default_rng(42)
         if not self.equal_jets:
             log.warning(
                 "equal_jets is set to False, which will result in different number of jets taken"
@@ -170,7 +183,15 @@ class H5Reader:
 
         # create readers
         self.readers = [
-            H5SingleReader(f, b, self.jets_name, self.precision, self.shuffle, self.do_remove_inf)
+            H5SingleReader(
+                f,
+                b,
+                self.jets_name,
+                self.precision,
+                self.shuffle,
+                self.do_remove_inf,
+                self.transform,
+            )
             for f, b in zip(self.fname, self.batch_sizes)
         ]
 
@@ -182,16 +203,38 @@ class H5Reader:
     def files(self) -> list[Path]:
         return [Path(r.fname) for r in self.readers]
 
-    @cached_property
-    def dtypes(self) -> dict[str, np.dtype]:
+    def dtypes(self, variables: dict[str, list[str]] | None = None) -> dict[str, np.dtype]:
         dtypes = {}
         with h5py.File(self.files[0]) as f:
-            for key in f:
-                dtypes[key] = f[key].dtype
+            if variables is None:
+                for key in f:
+                    dtype = f[key].dtype
+                    if self.transform:
+                        dtype = self.transform.map_dtype(key, dtype)
+                    dtypes[key] = dtype
+            else:
+                for name, var in variables.items():
+                    ds = f[name]
+                    dtype = get_dtype(ds, var, self.precision, transform=self.transform)
+                    dtypes[name] = dtype
         return dtypes
 
+    def shapes(self, num_jets: int, groups: list[str] | None = None) -> dict[str, tuple[int, ...]]:
+        if groups is None:
+            groups = [self.jets_name]
+        shapes = {}
+        with h5py.File(self.files[0]) as f:
+            for group in groups:
+                shape = f[group].shape
+                shapes[group] = (num_jets,) + shape[1:]
+        return shapes
+
     def stream(
-        self, variables: dict | None = None, num_jets: int | None = None, cuts: Cuts | None = None
+        self,
+        variables: dict | None = None,
+        num_jets: int | None = None,
+        cuts: Cuts | None = None,
+        start: int = 0,
     ) -> Generator:
         """Generate batches of selected jets.
 
@@ -203,6 +246,8 @@ class H5Reader:
             Total number of selected jets to generate, by default all.
         cuts : Cuts | None, optional
             Selection cuts to apply, by default None
+        start : int, optional
+            Starting index of the first jet to read, by default 0
 
         Yields
         ------
@@ -223,11 +268,10 @@ class H5Reader:
 
         # get streams for selected jets from each reader
         streams = [
-            r.stream(variables, int(r.num_jets / self.num_jets * num_jets), cuts)
+            r.stream(variables, int(r.num_jets / self.num_jets * num_jets), cuts, start)
             for r in self.readers
         ]
 
-        rng = np.random.default_rng(42)
         while True:
             samples = []
             # Track which streams have been exhausted
@@ -254,7 +298,7 @@ class H5Reader:
             data = {name: np.concatenate([s[name] for s in samples]) for name in variables}
             if self.shuffle:
                 idx = np.arange(len(data[self.jets_name]))
-                rng.shuffle(idx)
+                self.rng.shuffle(idx)
                 data = {name: array[idx] for name, array in data.items()}
 
             # yield batch
@@ -296,7 +340,7 @@ class H5Reader:
         return {name: np.concatenate(array) for name, array in data.items()}
 
     def estimate_available_jets(self, cuts: Cuts, num: int = 1_000_000) -> int:
-        """Estimate the number of jets available after selection cuts (round down).
+        """Estimate the number of jets available after selection cuts.
 
         Parameters
         ----------
@@ -308,15 +352,14 @@ class H5Reader:
         Returns
         -------
         int
-            Estimated number of jets available after selection cuts,
-            rounded down to nearest thousand.
+            Estimated number of jets available after selection cuts, rounded down.
         """
         # if equal jets is True, available jets is based on the smallest sample
         if self.equal_jets:
             num_jets = []
             for r in self.readers:
                 stream = r.stream({self.jets_name: cuts.variables}, num)
-                all_jets = np.concatenate([batch[self.jets_name] for batch in stream])
+                all_jets = np.concatenate([batch[self.jets_name].copy() for batch in stream])
                 frac_selected = len(cuts(all_jets).values) / len(all_jets)
                 num_jets.append(frac_selected * r.num_jets)
             estimated_num_jets = min(num_jets) * len(self.readers)
@@ -325,4 +368,4 @@ class H5Reader:
             all_jets = self.load({self.jets_name: cuts.variables}, num)[self.jets_name]
             frac_selected = len(cuts(all_jets).values) / len(all_jets)
             estimated_num_jets = frac_selected * self.num_jets
-        return math.floor(estimated_num_jets / 1_000) * 1_000
+        return math.floor(estimated_num_jets * 0.99)

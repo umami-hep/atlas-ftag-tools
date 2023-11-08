@@ -6,19 +6,18 @@ dynamic = ["version"]
 license = {text = "MIT"}
 readme = "README.md"
 requires-python = ">=3.8"
+
 dependencies = [
-  "h5py>=3.0",  # requires numpy
+  "h5py>=3.0",
   "numpy",
   "PyYAML>=5.1"
 ]
 
-[project.urls]
-"Homepage" = "https://github.com/umami-hep/atlas-ftag-tools/"
-
 [project.optional-dependencies]
 dev = [
-  "black==23.1.0",
-  "ruff==0.0.254",
+  "black==23.9.1", 
+  "ruff==0.0.289",
+  "mypy==1.5.1",
   "pre-commit==3.1.1",
   "pytest==7.2.2",
   "pytest-cov==4.0.0",
@@ -26,9 +25,15 @@ dev = [
   "ipykernel==6.21.3",
 ]
 
+[project.urls]
+"Homepage" = "https://github.com/umami-hep/atlas-ftag-tools/"
+
+
 [project.scripts]
 vds = "ftag.vds:main"
 wps = "ftag.wps.working_points:main"
+h5move = "ftag.hdf5.h5move:main"
+h5split = "ftag.hdf5.h5split:main"
 
 [tool.setuptools]
 packages = ["ftag", "ftag.hdf5", "ftag.wps"]
@@ -47,9 +52,12 @@ preview = "True"
 
 [tool.ruff]
 target-version = "py38"
-select = ["I", "E", "W", "F", "B", "UP", "ARG", "SIM", "TID", "RUF", "D2", "D3", "D4"]
-ignore = ["D211", "D213", "RUF005"]
+select = ["A", "I", "E", "W", "F", "B", "UP", "PL", "ARG", "SIM", "TID", "RUF", "RET", "C4", "D2", "D3", "D4", "SIM"]
+ignore = ["D211", "D213", "RUF005", "PLR2004", "PTH123", "PLW2901"]
 line-length = 100
+
+[tool.ruff.isort]
+required-imports = ["from __future__ import annotations"]
 
 [tool.ruff.pydocstyle]
 convention = "numpy"  # Accepts: "google", "numpy", or "pep257".

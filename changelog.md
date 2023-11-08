@@ -2,10 +2,35 @@
 
 ### [Latest]
 - Update top labelling names [#39](https://github.com/umami-hep/atlas-ftag-tools/pull/39)
+- Add isolation classes [#58](https://github.com/umami-hep/atlas-ftag-tools/pull/58)
 
+
+### [v0.1.11]
+- Bugfix of `structured_from_dict` function [#53](https://github.com/umami-hep/atlas-ftag-tools/pull/54)
+
+### [v0.1.10]
+- Add func to create structured array from dict of arrays [#52](https://github.com/umami-hep/atlas-ftag-tools/pull/52)
+- Copy attrs when splitting files [#51](https://github.com/umami-hep/atlas-ftag-tools/pull/51)
+- Update linter versions
+
+### [v0.1.9]
+- Fix bug in estimate_available_jets [#50](https://github.com/umami-hep/atlas-ftag-tools/pull/50)
+
+### [v0.1.8]
+- Fix to h5split to allow files with remainders [#49](https://github.com/umami-hep/atlas-ftag-tools/pull/49)
+- Backward compatibility to python3.8 and small fix for h5split.py [#48](https://github.com/umami-hep/atlas-ftag-tools/pull/48)
+- Add h5split command [#47](https://github.com/umami-hep/atlas-ftag-tools/pull/47)
+
+### [v0.1.7]
+- Improvements to the H5Writer interface [#46](https://github.com/umami-hep/atlas-ftag-tools/pull/46)
+
+### [v0.1.6]
+- Add on the fly variable renaming and data transforms [#44](https://github.com/umami-hep/atlas-ftag-tools/pull/44)
+- Revert [#43](https://github.com/umami-hep/atlas-ftag-tools/pull/43) as it breaks downstream code that relies on hashing `Flavour` objects
+- Unfreeze flavour class to allow for on the fly modification [#43](https://github.com/umami-hep/atlas-ftag-tools/pull/43)
+- Update linters [#41](https://github.com/umami-hep/atlas-ftag-tools/pull/41)
 
 ### [v0.1.5]
-
 - Improve estimate_available_jets tests [#38](https://github.com/umami-hep/atlas-ftag-tools/pull/38)
 - Improve estimate_available_jets for multi-sample case [#37](https://github.com/umami-hep/atlas-ftag-tools/pull/37)
 - Add equal_jets option to for multi-sample H5Reader [#33](https://github.com/umami-hep/atlas-ftag-tools/pull/33)

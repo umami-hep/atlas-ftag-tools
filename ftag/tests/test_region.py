@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from ftag.cuts import Cut, Cuts
 from ftag.region import Region
 

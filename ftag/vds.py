@@ -13,8 +13,7 @@ def parse_args(args):
     )
     parser.add_argument("pattern", type=Path, help="quotes-enclosed glob pattern of files to merge")
     parser.add_argument("output", type=Path, help="path to output virtual file")
-    args = parser.parse_args(args)
-    return args
+    return parser.parse_args(args)
 
 
 def get_virtual_layout(fnames: list[str], group: str):
@@ -54,7 +53,7 @@ def create_virtual_file(
 
     # infer output path if not given
     if out_fname is None:
-        assert len(set(Path(fname).parent for fname in fnames)) == 1
+        assert len({Path(fname).parent for fname in fnames}) == 1
         out_fname = Path(fnames[0]).parent / "vds" / "vds.h5"
     else:
         out_fname = Path(out_fname)
@@ -88,7 +87,7 @@ def main(args=None):
     print(f"Globbing {args.pattern}...")
     create_virtual_file(args.pattern, args.output, overwrite=True)
     with h5py.File(args.output) as f:
-        key = list(f.keys())[0]
+        key = next(iter(f.keys()))
         num = len(f[key])
     print(f"Virtual dataset '{key}' has {num:,} entries")
     print(f"Saved virtual file to {args.output.resolve()}")
