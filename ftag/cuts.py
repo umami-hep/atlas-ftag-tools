@@ -22,6 +22,7 @@ OPERATORS = {
 
 for i in range(2, 101):
     OPERATORS[f"%{i}=="] = functools.partial(lambda x, y, i: (x % i) == y, i=i)
+    OPERATORS[f"%{i}!="] = functools.partial(lambda x, y, i: (x % i) != y, i=i)
     OPERATORS[f"%{i}<="] = functools.partial(lambda x, y, i: (x % i) <= y, i=i)
     OPERATORS[f"%{i}>="] = functools.partial(lambda x, y, i: (x % i) >= y, i=i)
 

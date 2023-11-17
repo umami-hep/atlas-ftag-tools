@@ -3,6 +3,7 @@
 ### [Latest]
 
 ### [v0.1.12]
+- Added 'X % M != n' cut [#61](https://github.com/umami-hep/atlas-ftag-tools/pull/61)
 - Update top labelling names [#39](https://github.com/umami-hep/atlas-ftag-tools/pull/39)
 - Add isolation classes [#58](https://github.com/umami-hep/atlas-ftag-tools/pull/58)
 
