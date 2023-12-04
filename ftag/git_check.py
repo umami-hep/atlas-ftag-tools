@@ -18,9 +18,9 @@ def is_git_repo(path):
 
 
 def check_for_uncommitted_changes(path):
-    if "pytest" in sys.modules:
-        return
     if not is_git_repo(path):
+        return
+    if "pytest" in sys.modules:
         return
 
     try:
@@ -32,10 +32,10 @@ def check_for_uncommitted_changes(path):
 
 
 def check_for_fork(path, upstream):
+    cmd = ["git", "remote", "get-url", "origin"]
     if not is_git_repo(path):
         return
 
-    cmd = ["git", "remote", "get-url", "origin"]
     origin = subprocess.check_output(cmd, cwd=path).decode("utf-8").strip()
     if upstream not in origin:
         raise GitError(f"Your origin {origin} is not a fork of the upstream repo {upstream}")
