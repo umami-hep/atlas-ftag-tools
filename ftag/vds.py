@@ -63,13 +63,11 @@ def create_virtual_file(
         return out_fname
 
     # identify common groups across all files
-    common_groups = None
+    common_groups: set[str] = set()
     for fname in fnames:
         with h5py.File(fname) as f:
             groups = set(f.keys())
-            common_groups = (
-                groups if common_groups is None else common_groups.intersection(groups)
-            )  # type: ignore
+            common_groups = groups if not common_groups else common_groups.intersection(groups)
 
     if not common_groups:
         raise ValueError("No common groups found across files")
