@@ -48,6 +48,29 @@ def test_create_virtual_file(test_h5_files):
             assert len(f["data"]) == 25
 
 
+def test_create_virtual_file_common_groups(test_h5_files):
+    # create additional h5 files with different group
+    with tempfile.TemporaryDirectory() as tmpdir:
+        extra_files = []
+        for i in range(2):
+            filename = os.path.join(tmpdir, f"extra_file_{i}.h5")
+            with h5py.File(filename, "w") as f:
+                f.create_dataset("extra_data", data=[i] * 5)
+            extra_files.append(filename)
+
+        all_files = test_h5_files + extra_files
+        pattern = os.path.join(os.path.dirname(all_files[0]), "*.h5")
+
+        # create temporary output file
+        with tempfile.NamedTemporaryFile() as tmpfile:
+            output_path = Path(tmpfile.name)
+            create_virtual_file(pattern, output_path, overwrite=True)
+
+            # check the output file
+            with h5py.File(output_path) as f:
+                assert "data" in f
+                assert "extra_data" not in f
+
 def test_main():
     # Create temporary directory to store test files
     with tempfile.TemporaryDirectory() as tmpdir:
