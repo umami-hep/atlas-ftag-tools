@@ -2,6 +2,14 @@
 
 ### [Latest]
 
+### [v0.1.13]
+- Add common git check functions  [#62](https://github.com/umami-hep/atlas-ftag-tools/pull/62)
+- Added 'X % M != n' cut [#61](https://github.com/umami-hep/atlas-ftag-tools/pull/61)
+
+### [v0.1.12]
+- Update top labelling names [#39](https://github.com/umami-hep/atlas-ftag-tools/pull/39)
+- Add isolation classes [#58](https://github.com/umami-hep/atlas-ftag-tools/pull/58)
+
 ### [v0.1.11]
 - Bugfix of `structured_from_dict` function [#53](https://github.com/umami-hep/atlas-ftag-tools/pull/54)
 
