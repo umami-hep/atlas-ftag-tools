@@ -71,6 +71,7 @@ def test_create_virtual_file_common_groups(test_h5_files):
                 assert "data" in f
                 assert "extra_data" not in f
 
+
 def test_main():
     # Create temporary directory to store test files
     with tempfile.TemporaryDirectory() as tmpdir:

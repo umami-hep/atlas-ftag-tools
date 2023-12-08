@@ -1,6 +1,7 @@
 # Changelog
 
 ### [Latest]
+- Merge only common groups in virtual datasets [#63](https://github.com/umami-hep/atlas-ftag-tools/pull/63)
 
 ### [v0.1.13]
 - Add common git check functions  [#62](https://github.com/umami-hep/atlas-ftag-tools/pull/62)
