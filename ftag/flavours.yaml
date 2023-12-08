@@ -58,11 +58,6 @@
   cuts: ["R10TruthLabel_R22v1 == 12"]
   colour: "#B45F06"
   category: xbb
-- name: tqqb
-  label: Fully Contained Top
-  cuts: ["R10TruthLabel_R22v1 == 1"]
-  colour: "#A300A3"
-  category: xbb
 - name: top
   label: Inclusive Top
   cuts: ["R10TruthLabel_R22v1 in (1,6,7)"]
@@ -72,6 +67,23 @@
   label: QCD
   cuts: ["R10TruthLabel_R22v1 == 10"]
   colour: "#38761D"
+  category: xbb
+
+# extended Xbb tagging
+- name: tqqb
+  label: Fully Contained Top
+  cuts: ["R10TruthLabel_R22v1 == 1"]
+  colour: "#A300A3"
+  category: xbb
+- name: wqq_from_t
+  label: Fully Contained W->qq from Top
+  cuts: ["R10TruthLabel_R22v1 == 6"]
+  colour: "indigo"
+  category: xbb
+- name: other_from_t
+  label: Other Matched from Top
+  cuts: ["R10TruthLabel_R22v1 == 7"]
+  colour: "purple"
   category: xbb
 
 # partonic labelling
