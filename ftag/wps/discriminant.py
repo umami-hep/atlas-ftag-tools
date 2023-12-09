@@ -32,7 +32,11 @@ def hcc_discriminant(jets, tagger, ftop=0.25, fhbb=0.3, epsilon=1e-10):
 
 
 def get_discriminant(
-    jets: np.ndarray, tagger: str, signal: Flavour | str, fx: float, epsilon: float = 1e-10
+    jets: np.ndarray,
+    tagger: str,
+    signal: Flavour | str,
+    fx: float | tuple[float, ...],
+    epsilon: float = 1e-10,
 ):
     """Calculate the b-tag or c-tag discriminant for a given tagger.
 
@@ -65,4 +69,4 @@ def get_discriminant(
     if func is None:
         raise ValueError(f"Signal flavour must be among {list(tagger_funcs.keys())}, not {signal}")
 
-    return func(jets, tagger, *fx, epsilon)
+    return func(jets, tagger, *fx, epsilon)  # type: ignore

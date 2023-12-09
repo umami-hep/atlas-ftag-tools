@@ -136,6 +136,7 @@ def test_get_working_points_zprime(ttbar_file, zprime_file, eff_val="60"):
         float(eff_val) / 100, rel=1e-2
     )
 
+
 def test_get_working_points_xbb(ttbar_file, eff_val="60"):
     # Assuming you're testing with two fx values for each tagger as required for Xbb
     ftop_value = "0.25"

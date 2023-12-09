@@ -71,11 +71,11 @@ def get_mock_scores(labels: np.ndarray):
     cols = [f"MockTagger_p{x}" for x in ["u", "c", "b"]]
     return u2s(scores, dtype=np.dtype([(name, "f4") for name in cols]))
 
+
 def get_mock_xbb_scores(labels: np.ndarray):
     rng = np.random.default_rng(42)
     scores = np.zeros((len(labels), 4))
     for label, count in zip(*np.unique(labels, return_counts=True)):
-
         if label == 11:
             scores[labels == label] = rng.normal(loc=[1, 0, 0, 0], scale=1, size=(count, 4))
         elif label == 12:

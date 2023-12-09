@@ -55,19 +55,14 @@ def test_get_discriminant():
     tagger = "tagger1"
     signal = Flavours.bjets
     disc = get_discriminant(jets, tagger, signal, (0.1,), epsilon=1e-10)
-    expected = btag_discriminant(
-        jets, tagger, fc=0.1, epsilon=1e-10
-    )
+    expected = btag_discriminant(jets, tagger, fc=0.1, epsilon=1e-10)
     assert np.allclose(disc, expected)
 
     signal = Flavours.cjets
     disc = get_discriminant(jets, tagger, signal, (0.2,), epsilon=1e-10)
-    expected = ctag_discriminant(
-        jets, tagger, fb=0.2, epsilon=1e-10
-    )
+    expected = ctag_discriminant(jets, tagger, fb=0.2, epsilon=1e-10)
     assert np.allclose(disc, expected)
 
     # test invalid signal flavour
     with pytest.raises(ValueError):
         get_discriminant(jets, tagger, Flavours.hbb, (0.1,), epsilon=1e-10)
-
