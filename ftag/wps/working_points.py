@@ -125,7 +125,7 @@ def get_working_points(args=None):
     else:
         if len(args.fx) != len(args.tagger):
             raise ValueError("Number of taggers must match number of fx values")
-        fx_values = args.fx
+        fx_values = [(fx,) for fx in args.fx]
 
     # setup cuts and variables
     flavs = Flavours.by_category("single-btag") if not args.xbb else Flavours.by_category("xbb")
