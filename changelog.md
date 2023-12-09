@@ -1,7 +1,7 @@
 # Changelog
 
 ### [Latest]
-
+- Extend working point script to Xbb [#55](https://github.com/umami-hep/atlas-ftag-tools/pull/55)
 ### [v0.1.13]
 - Add common git check functions  [#62](https://github.com/umami-hep/atlas-ftag-tools/pull/62)
 - Added 'X % M != n' cut [#61](https://github.com/umami-hep/atlas-ftag-tools/pull/61)
