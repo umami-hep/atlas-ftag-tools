@@ -172,3 +172,13 @@ def test_get_working_points_xbb(ttbar_file, eff_val="60"):
     assert output["MockXbbTagger"][eff_val]["ttbar"]["eff"]["hbb"] == pytest.approx(
         float(eff_val) / 100, rel=1e-2
     )
+
+
+def test_get_working_points_fx_length_check():
+    # test with incorrect length of fx values for regular b-tagging
+    with pytest.raises(ValueError):
+        get_working_points(["--ttbar", "path", "-t", "MockTagger", "-f", "0.1", "0.2"])
+
+    # test with incorrect length of fx values for Xbb tagging
+    with pytest.raises(ValueError):
+        get_working_points(["--ttbar", "path", "--xbb", "-t", "MockXbbTagger", "-f", "0.25"])
