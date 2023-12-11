@@ -21,6 +21,7 @@ JET_VARS = [
     ("n_tracks", "i4"),
     ("HadronConeExclTruthLabelID", "i4"),
     ("HadronConeExclTruthLabelPt", "f4"),
+    ("R10TruthLabel_R22v1", "i4"),
     ("n_truth_promptLepton", "i4"),
     ("flavour_label", "i4"),
 ]
@@ -71,6 +72,23 @@ def get_mock_scores(labels: np.ndarray):
     return u2s(scores, dtype=np.dtype([(name, "f4") for name in cols]))
 
 
+def get_mock_xbb_scores(labels: np.ndarray):
+    rng = np.random.default_rng(42)
+    scores = np.zeros((len(labels), 4))
+    for label, count in zip(*np.unique(labels, return_counts=True)):
+        if label == 11:
+            scores[labels == label] = rng.normal(loc=[1, 0, 0, 0], scale=1, size=(count, 4))
+        elif label == 12:
+            scores[labels == label] = rng.normal(loc=[0, 1, 0, 0], scale=1, size=(count, 4))
+        elif label == 1:
+            scores[labels == label] = rng.normal(loc=[0, 0, 1, 0], scale=1, size=(count, 4))
+        elif label == 10:
+            scores[labels == label] = rng.normal(loc=[0, 0, 0, 1], scale=1, size=(count, 4))
+    scores = softmax(scores, axis=1)
+    cols = [f"MockXbbTagger_p{x}" for x in ["hbb", "hcc", "top", "qcd"]]
+    return u2s(scores, dtype=np.dtype([(name, "f4") for name in cols]))
+
+
 def get_mock_file(
     num_jets=1000,
     fname: str | None = None,
@@ -83,6 +101,7 @@ def get_mock_file(
     jets = u2s(rng.random((num_jets, len(JET_VARS))), jets_dtype)
     jets["HadronConeExclTruthLabelID"] = rng.choice([0, 4, 5, 15], size=num_jets)
     jets["flavour_label"] = rng.choice([0, 4, 5], size=num_jets)
+    jets["R10TruthLabel_R22v1"] = rng.choice([1, 10, 11, 12], size=num_jets)
     jets["pt"] *= 400e3
     jets["mass"] *= 50e3
     jets["eta"] = (jets["eta"] - 0.5) * 6.0
@@ -91,7 +110,8 @@ def get_mock_file(
 
     # add tagger scores
     scores = get_mock_scores(jets["HadronConeExclTruthLabelID"])
-    jets = join_structured_arrays([jets, scores])
+    xbb_scores = get_mock_xbb_scores(jets["R10TruthLabel_R22v1"])
+    jets = join_structured_arrays([jets, scores, xbb_scores])
 
     # create a tempfile in a new folder
     if fname is None:
