@@ -20,7 +20,16 @@ def test_get_mock_file():
     jets = f["jets"]
     assert len(jets) == 1000
     assert set(jets.dtype.names) == set(
-        [name for name, dtype in JET_VARS] + ["MockTagger_pu", "MockTagger_pc", "MockTagger_pb"]
+        [name for name, dtype in JET_VARS]
+        + [
+            "MockTagger_pu",
+            "MockTagger_pc",
+            "MockTagger_pb",
+            "MockXbbTagger_phbb",
+            "MockXbbTagger_phcc",
+            "MockXbbTagger_ptop",
+            "MockXbbTagger_pqcd",
+        ]
     )
     assert all(jets["pt"] > 0)
     assert all(jets["mass"] <= 50e3)
