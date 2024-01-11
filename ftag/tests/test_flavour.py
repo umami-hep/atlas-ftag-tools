@@ -45,7 +45,15 @@ def test_Flavours_contains():
 
 
 def test_Flavours_categories():
-    target = ["single-btag", "single-btag-extended", "xbb", "partonic", "lepton-decay", "isolation"]
+    target = [
+        "single-btag",
+        "single-btag-extended",
+        "xbb",
+        "xbb-extended",
+        "partonic",
+        "lepton-decay",
+        "isolation",
+    ]
     assert Flavours.categories == target
 
 
