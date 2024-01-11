@@ -63,13 +63,6 @@ def parse_args(args):
         help='signal flavour ("bjets" or "cjets")',
     )
     parser.add_argument(
-        "-r",
-        "--rejection",
-        default=None,
-        choices=["ujets", "cjets", "bjets"],
-        help="use rejection of specified background class to determine working points",
-    )
-    parser.add_argument(
         "-n",
         "--num_jets",
         default=1_000_000,
@@ -99,17 +92,6 @@ def parse_args(args):
 
     return parser.parse_args(args)
 
-
-def get_eff_rej(jets, disc, wp, flavs):
-    out = {"eff": {}, "rej": {}}
-    for bkg in list(flavs):
-        bkg_disc = disc[bkg.cuts(jets).idx]
-        eff = sum(bkg_disc > wp) / len(bkg_disc)
-        out["eff"][str(bkg)] = float(f"{eff:.3g}")
-        out["rej"][str(bkg)] = float(f"{1/eff:.3g}")
-    return out
-
-
 def get_rej_eff_at_disc(jets, tagger, signal, fx, disc_cuts):
     disc = get_discriminant(jets, tagger, signal, fx)
     d = {}
@@ -128,7 +110,8 @@ def get_efficiencies(args=None):
 
     if len(args.tagger) != len(args.fx):
         raise ValueError("Must provide fb/fc for each tagger")
-
+    else:
+        fx_values = [(fx,) for fx in args.fx]
     # setup cuts and variables
     flavs = Flavours.by_category("single-btag")
     default_cuts = Cuts.from_list(["eta > -2.5", "eta < 2.5"])
@@ -147,48 +130,12 @@ def get_efficiencies(args=None):
 
     # loop over taggers
     out = {}
-    for tagger, fx in zip(args.tagger, args.fx):
+    for tagger, fx in zip(args.tagger, fx_values):
         out[tagger] = {"signal": args.signal, "fx": fx}
-        # calculate discriminant
-        # disc = get_discriminant(jets, tagger, args.signal, fx)
-        # for dcut in args.disc_cuts:
-        out[tagger]['ttbar'] = get_rej_eff_at_disc(jets, tagger, args.signal, fx, args.disc_cuts)
-
         
-            
-            # sig_discs = disc[flavs[wp_flavour].cuts(jets).idx]
-            # eff = sum(sig_discs > dcut) / len(sig_discs)
-            # print(dcut, eff)
-            # d = out[tagger]['ttbar'][f"{dcut:.4g}"] = {}
-            # d['eff'] = {}
-            # d['rej'] = {}
-            # for f in flavs:
-            #     e_discs = disc[f.cuts(jets).idx]
-            #     eff = sum(e_discs > dcut) / len(e_discs)
-            #     d['eff'][str(f)] = float(f"{eff:.3g}")
-            #     d['rej'][str(f)] = 1/float(f"{eff:.3g}")
-
+        out[tagger]['ttbar'] = get_rej_eff_at_disc(jets, tagger, args.signal, fx, args.disc_cuts)
         if args.zprime:
-            disc = get_discriminant(zp_jets, tagger, args.signal, fx)
-
-        # for eff in args.effs:
-        #     d = out[tagger][f"{eff:.0f}"] = {}
-
-            
-        #     if args.rejection:
-        #         eff = 100 / eff
-        #         wp_flavour = args.rejection
-
-        #     wp_disc = disc[flavs[wp_flavour].cuts(jets).idx]
-        #     wp = d["cut_value"] = round(float(np.percentile(wp_disc, 100 - eff)), 3)
-
-        #     # calculate eff and rej for each flavour
-        #     d["ttbar"] = get_eff_rej(jets, disc, wp, flavs)
-
-        #     # calculate for zprime
-        #     if args.zprime:
-        #         zp_disc = get_discriminant(zp_jets, tagger, Flavours[args.signal], fx)
-        #         d["zprime"] = get_eff_rej(zp_jets, zp_disc, wp, flavs)
+            out[tagger]['zprime'] = get_rej_eff_at_disc(zp_jets, tagger, args.signal, fx, args.disc_cuts)
 
     if args.outfile:
         with open(args.outfile, "w") as f:
