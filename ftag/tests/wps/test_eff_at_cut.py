@@ -1,8 +1,10 @@
 from __future__ import annotations
+
 import tempfile
 from pathlib import Path
 
 import pytest
+
 from ftag.mock import get_mock_file
 from ftag.wps.eff_at_disc_cut import get_efficiencies
 
@@ -16,7 +18,10 @@ def ttbar_file():
 def zprime_file():
     yield get_mock_file(10_000)[0]
 
-def test_get_rej_eff_at_disc_ttbar(ttbar_file, disc_vals=[1.0, 1.5]):
+
+def test_get_rej_eff_at_disc_ttbar(ttbar_file, disc_vals=None):
+    if disc_vals is None:
+        disc_vals = [1.0, 1.5]
     args = [
         "--ttbar",
         str(ttbar_file),
@@ -43,7 +48,10 @@ def test_get_rej_eff_at_disc_ttbar(ttbar_file, disc_vals=[1.0, 1.5]):
 
     assert "zprime" not in output["MockTagger"]
 
-def test_get_rej_eff_at_disc_zprime(ttbar_file, zprime_file, disc_vals=[1.0, 1.5]):
+
+def test_get_rej_eff_at_disc_zprime(ttbar_file, zprime_file, disc_vals=None):
+    if disc_vals is None:
+        disc_vals = [1.0, 1.5]
     args = [
         "--ttbar",
         str(ttbar_file),
@@ -75,6 +83,7 @@ def test_get_rej_eff_at_disc_zprime(ttbar_file, zprime_file, disc_vals=[1.0, 1.5
             assert "eff" in out[str(dval)]
             assert "rej" in out[str(dval)]
 
+
 def test_output_file(ttbar_file):
     with tempfile.TemporaryDirectory() as tmpdir:
         print(str(tmpdir))
@@ -93,10 +102,11 @@ def test_output_file(ttbar_file):
             "-o",
             str(output),
         ]
-        
+
         get_efficiencies(args)
         assert Path(output).exists()
-    
+
+
 def test_get_working_points_fx_length_check():
     # test with incorrect length of fx values for regular b-tagging
     with pytest.raises(ValueError):

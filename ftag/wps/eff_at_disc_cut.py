@@ -3,7 +3,6 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-import numpy as np
 import yaml
 
 from ftag.cuts import Cuts
@@ -92,26 +91,28 @@ def parse_args(args):
 
     return parser.parse_args(args)
 
+
 def get_rej_eff_at_disc(jets, tagger, signal, fx, disc_cuts):
     disc = get_discriminant(jets, tagger, signal, fx)
     d = {}
     flavs = Flavours.by_category("single-btag")
     for dcut in disc_cuts:
-        d[str(dcut)] = {'eff': {}, 'rej': {}}
+        d[str(dcut)] = {"eff": {}, "rej": {}}
         for f in flavs:
             e_discs = disc[f.cuts(jets).idx]
             eff = sum(e_discs > dcut) / len(e_discs)
-            d[str(dcut)]['eff'][str(f)] = float(f"{eff:.3g}")
-            d[str(dcut)]['rej'][str(f)] = 1/float(f"{eff:.3g}")
+            d[str(dcut)]["eff"][str(f)] = float(f"{eff:.3g}")
+            d[str(dcut)]["rej"][str(f)] = 1 / float(f"{eff:.3g}")
     return d
+
 
 def get_efficiencies(args=None):
     args = parse_args(args)
 
     if len(args.tagger) != len(args.fx):
         raise ValueError("Must provide fb/fc for each tagger")
-    else:
-        fx_values = [(fx,) for fx in args.fx]
+
+    fx_values = [(fx,) for fx in args.fx]
     # setup cuts and variables
     flavs = Flavours.by_category("single-btag")
     default_cuts = Cuts.from_list(["eta > -2.5", "eta < 2.5"])
@@ -132,10 +133,12 @@ def get_efficiencies(args=None):
     out = {}
     for tagger, fx in zip(args.tagger, fx_values):
         out[tagger] = {"signal": args.signal, "fx": fx}
-        
-        out[tagger]['ttbar'] = get_rej_eff_at_disc(jets, tagger, args.signal, fx, args.disc_cuts)
+
+        out[tagger]["ttbar"] = get_rej_eff_at_disc(jets, tagger, args.signal, fx, args.disc_cuts)
         if args.zprime:
-            out[tagger]['zprime'] = get_rej_eff_at_disc(zp_jets, tagger, args.signal, fx, args.disc_cuts)
+            out[tagger]["zprime"] = get_rej_eff_at_disc(
+                zp_jets, tagger, args.signal, fx, args.disc_cuts
+            )
 
     if args.outfile:
         with open(args.outfile, "w") as f:
