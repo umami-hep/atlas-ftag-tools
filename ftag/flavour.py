@@ -43,13 +43,15 @@ class Flavour:
 class FlavourContainer:
     flavours: dict[str, Flavour]
 
-    def __init__(self, yaml_path: Path = None):
+    def __init__(self, yaml_path: Path | None = None):
         if yaml_path is None:
             yaml_path = Path(__file__).parent / "flavours.yaml"
         with open(yaml_path) as f:
             flavours_yaml = yaml.safe_load(f)
         
-        flavours_dict = {f["name"]: Flavour(cuts=Cuts.from_list(f.pop("cuts")), **f) for f in flavours_yaml}
+        flavours_dict = {
+            f["name"]: Flavour(cuts=Cuts.from_list(f.pop("cuts")), **f) for f in flavours_yaml
+        }
         assert len(flavours_dict) == len(flavours_yaml), "Duplicate flavour names detected"
 
         self.flavours = flavours_dict
@@ -90,5 +92,6 @@ class FlavourContainer:
             if flavour.cuts == cuts:
                 return flavour
         raise KeyError(f"Flavour with {cuts} not found")
+
 
 Flavours = FlavourContainer()
