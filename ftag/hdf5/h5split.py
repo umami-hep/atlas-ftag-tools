@@ -9,7 +9,8 @@ import h5py
 from ftag.hdf5 import H5Reader, H5Writer
 
 
-class HelpFormatter(argparse.RawTextHelpFormatter, argparse.ArgumentDefaultsHelpFormatter): ...
+class HelpFormatter(argparse.RawTextHelpFormatter, argparse.ArgumentDefaultsHelpFormatter):
+    ...
 
 
 def parse_args(args):
