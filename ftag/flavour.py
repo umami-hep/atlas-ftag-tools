@@ -80,9 +80,20 @@ class FlavourContainer:
                 return flavour
         raise KeyError(f"Flavour with {cuts} not found")
 
+    @classmethod
+    def from_yaml(cls, yaml_path: Path | None = None) -> FlavourContainer:
+        if yaml_path is None:
+            yaml_path = Path(__file__).parent / "flavours.yaml"
 
-with open(Path(__file__).parent / "flavours.yaml") as f:
-    flavours_yaml = yaml.safe_load(f)
-flavours_dict = {f["name"]: Flavour(cuts=Cuts.from_list(f.pop("cuts")), **f) for f in flavours_yaml}
-assert len(flavours_dict) == len(flavours_yaml), "Duplicate flavour names detected"
-Flavours = FlavourContainer(flavours_dict)
+        with open(yaml_path) as f:
+            flavours_yaml = yaml.safe_load(f)
+
+        flavours_dict = {
+            f["name"]: Flavour(cuts=Cuts.from_list(f.pop("cuts")), **f) for f in flavours_yaml
+        }
+        assert len(flavours_dict) == len(flavours_yaml), "Duplicate flavour names detected"
+
+        return cls(flavours_dict)
+
+
+Flavours = FlavourContainer.from_yaml()
