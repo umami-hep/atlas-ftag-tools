@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import functools
 import logging as log
 import math
 from collections.abc import Generator
@@ -355,17 +356,24 @@ class H5Reader:
             Estimated number of jets available after selection cuts, rounded down.
         """
         # if equal jets is True, available jets is based on the smallest sample
-        if self.equal_jets:
-            num_jets = []
-            for r in self.readers:
-                stream = r.stream({self.jets_name: cuts.variables}, num)
-                all_jets = np.concatenate([batch[self.jets_name].copy() for batch in stream])
-                frac_selected = len(cuts(all_jets).values) / len(all_jets)
-                num_jets.append(frac_selected * r.num_jets)
-            estimated_num_jets = min(num_jets) * len(self.readers)
-        # otherwise, available jets is based on all samples
-        else:
-            all_jets = self.load({self.jets_name: cuts.variables}, num)[self.jets_name]
+        return estimate_available_jets(self, cuts, num)
+
+
+@functools.lru_cache  # define outside of the class to avoid memory leak
+def estimate_available_jets(reader: H5Reader, cuts: Cuts, num: int = 1_000_000) -> int:
+    """Estimate the number of jets available after selection cuts."""
+    # if equal jets is True, available jets is based on the smallest sample
+    if reader.equal_jets:
+        num_jets = []
+        for r in reader.readers:
+            stream = r.stream({reader.jets_name: cuts.variables}, num)
+            all_jets = np.concatenate([batch[reader.jets_name].copy() for batch in stream])
             frac_selected = len(cuts(all_jets).values) / len(all_jets)
-            estimated_num_jets = frac_selected * self.num_jets
-        return math.floor(estimated_num_jets * 0.99)
+            num_jets.append(frac_selected * r.num_jets)
+        estimated_num_jets = min(num_jets) * len(reader.readers)
+        # otherwise, available jets is based on all samples
+    else:
+        all_jets = reader.load({reader.jets_name: cuts.variables}, num)[reader.jets_name]
+        frac_selected = len(cuts(all_jets).values) / len(all_jets)
+        estimated_num_jets = frac_selected * reader.num_jets
+    return math.floor(estimated_num_jets * 0.99)
