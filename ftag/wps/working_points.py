@@ -36,7 +36,6 @@ def parse_args(args):
         nargs="+",
         type=float,
         help="efficiency working point(s). If -r is specified, values should be 1/efficiency",
-        default=[60, 70, 77, 85],
     )
     parser.add_argument(
         "-t",
@@ -68,6 +67,13 @@ def parse_args(args):
         default=None,
         choices=["ujets", "cjets", "bjets", "hbb", "hcc", "top", "qcd"],
         help="use rejection of specified background class to determine working points",
+    )
+    parser.add_argument(
+        "-d",
+        "--disc_cuts",
+        nargs="+",
+        type=float,
+        help="D_x value(s) to calculate efficiency at",
     )
     parser.add_argument(
         "-n",
@@ -116,7 +122,6 @@ def get_eff_rej(jets, disc, wp, flavs):
 
 
 def get_working_points(args=None):
-    args = parse_args(args)
 
     if args.xbb:
         if len(args.fx) != 2 * len(args.tagger):
@@ -180,10 +185,76 @@ def get_working_points(args=None):
         return out
 
 
-def main():
-    out = get_working_points()
+def get_rej_eff_at_disc(jets, tagger, signal, fx, disc_cuts):
+    disc = get_discriminant(jets, tagger, signal, fx)
+    d = {}
+    flavs = Flavours.by_category("single-btag")
+    for dcut in disc_cuts:
+        d[str(dcut)] = {"eff": {}, "rej": {}}
+        for f in flavs:
+            e_discs = disc[f.cuts(jets).idx]
+            eff = sum(e_discs > dcut) / len(e_discs)
+            d[str(dcut)]["eff"][str(f)] = float(f"{eff:.3g}")
+            d[str(dcut)]["rej"][str(f)] = 1 / float(f"{eff:.3g}")
+    return d
+
+
+def get_efficiencies(args=None):
+    
+
+    if len(args.tagger) != len(args.fx):
+        raise ValueError("Must provide fb/fc for each tagger")
+
+    fx_values = [(fx,) for fx in args.fx]
+    # setup cuts and variables
+    flavs = Flavours.by_category("single-btag")
+    default_cuts = Cuts.from_list(["eta > -2.5", "eta < 2.5"])
+    ttbar_cuts = Cuts.from_list(args.ttbar_cuts) + default_cuts
+    zprime_cuts = Cuts.from_list(args.zprime_cuts) + default_cuts
+    all_vars = next(iter(flavs)).cuts.variables
+    for tagger in args.tagger:
+        all_vars += [f"{tagger}_{f.px}" for f in flavs if "tau" not in f.px]
+
+    # load jets
+    reader = H5Reader(args.ttbar)
+    jets = reader.load({"jets": all_vars}, args.num_jets, cuts=ttbar_cuts)["jets"]
+    if args.zprime:
+        zp_reader = H5Reader(args.zprime)
+        zp_jets = zp_reader.load({"jets": all_vars}, args.num_jets, cuts=zprime_cuts)["jets"]
+
+    # loop over taggers
+    out = {}
+    for tagger, fx in zip(args.tagger, fx_values):
+        out[tagger] = {"signal": args.signal, "fx": fx}
+
+        out[tagger]["ttbar"] = get_rej_eff_at_disc(jets, tagger, args.signal, fx, args.disc_cuts)
+        if args.zprime:
+            out[tagger]["zprime"] = get_rej_eff_at_disc(
+                zp_jets, tagger, args.signal, fx, args.disc_cuts
+            )
+
+    if args.outfile:
+        with open(args.outfile, "w") as f:
+            yaml.dump(out, f, sort_keys=False)
+            return None
+    else:
+        return out
+
+def main(args=None):
+    args = parse_args(args)
+
+    if args.effs and args.disc_cuts:
+        raise ValueError("Cannot specify both --effs and --disc_cuts")
+
+    if args.effs:
+        out = get_working_points(args)
+    elif args.disc_cuts:
+        out = get_efficiencies(args)
+    else:
+        raise ValueError("Must specify either --effs or --disc_cuts")
     if out:
         print(yaml.dump(out, sort_keys=False))
+        return out
 
 
 if __name__ == "__main__":
