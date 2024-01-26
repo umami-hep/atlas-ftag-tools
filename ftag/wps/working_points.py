@@ -122,7 +122,6 @@ def get_eff_rej(jets, disc, wp, flavs):
 
 
 def get_working_points(args=None):
-
     if args.xbb:
         if len(args.fx) != 2 * len(args.tagger):
             raise ValueError("For Xbb tagging, each tagger must have two fx values")
@@ -200,8 +199,6 @@ def get_rej_eff_at_disc(jets, tagger, signal, fx, disc_cuts):
 
 
 def get_efficiencies(args=None):
-    
-
     if len(args.tagger) != len(args.fx):
         raise ValueError("Must provide fb/fc for each tagger")
 
@@ -240,6 +237,7 @@ def get_efficiencies(args=None):
     else:
         return out
 
+
 def main(args=None):
     args = parse_args(args)
 
@@ -255,6 +253,7 @@ def main(args=None):
     if out:
         print(yaml.dump(out, sort_keys=False))
         return out
+    return None
 
 
 if __name__ == "__main__":
