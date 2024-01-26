@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import tempfile
 from pathlib import Path
+
 import pytest
 
 from ftag.mock import get_mock_file
@@ -61,7 +62,7 @@ def test_get_working_points_rejection(ttbar_file, rej_val="100"):
         "-r",
         "ujets",
     ]
-    output =main(args)
+    output = main(args)
 
     assert "MockTagger" in output
     assert output["MockTagger"]["signal"] == "bjets"
@@ -91,7 +92,7 @@ def test_get_working_points_cjets(ttbar_file, eff_val="60"):
         "-n",
         "10_000",
     ]
-    output =main(args)
+    output = main(args)
 
     assert "MockTagger" in output
     assert output["MockTagger"]["signal"] == "cjets"
@@ -121,7 +122,7 @@ def test_get_working_points_zprime(ttbar_file, zprime_file, eff_val="60"):
         "-n",
         "10_000",
     ]
-    output =main(args)
+    output = main(args)
 
     assert "MockTagger" in output
     assert output["MockTagger"]["signal"] == "bjets"
@@ -161,7 +162,7 @@ def test_get_working_points_xbb(ttbar_file, eff_val="60"):
         "hbb",  # Test for hbb signal
     ]
 
-    output =main(args)
+    output = main(args)
 
     assert "MockXbbTagger" in output
     assert output["MockXbbTagger"]["signal"] == "hbb"
@@ -179,11 +180,14 @@ def test_get_working_points_xbb(ttbar_file, eff_val="60"):
 def test_get_working_points_fx_length_check():
     # test with incorrect length of fx values for regular b-tagging
     with pytest.raises(ValueError):
-       main(["--ttbar", "path", "-t", "MockTagger", "-f", "0.1", "0.2"])
+        main(["--ttbar", "path", "-t", "MockTagger", "-f", "0.1", "0.2"])
 
     # test with incorrect length of fx values for Xbb tagging
     with pytest.raises(ValueError):
-       main(["--ttbar", "path", "--xbb", "-t", "MockXbbTagger", "-f", "0.25"])
+        main(["--ttbar", "path", "--xbb", "-t", "MockXbbTagger", "-f", "0.25"])
+
+    with pytest.raises(ValueError):
+        main(["--ttbar", "path", "-t", "MockTagger", "-f", "0.1", "0.2", "-d", "1.0"])
 
 
 def test_get_rej_eff_at_disc_ttbar(ttbar_file, disc_vals=None):
@@ -233,7 +237,7 @@ def test_get_rej_eff_at_disc_zprime(ttbar_file, zprime_file, disc_vals=None):
     ]
     args.extend(["-d"] + [str(x) for x in disc_vals])
 
-    output =main(args)
+    output = main(args)
 
     assert "MockTagger" in output
     assert output["MockTagger"]["signal"] == "bjets"
@@ -272,9 +276,3 @@ def test_output_file(ttbar_file):
 
         main(args)
         assert Path(output).exists()
-
-
-def test_get_working_points_fx_length_check():
-    # test with incorrect length of fx values for regular b-tagging
-    with pytest.raises(ValueError):
-       main(["--ttbar", "path", "-t", "MockTagger", "-f", "0.1", "0.2", "-d", "1.0"])
