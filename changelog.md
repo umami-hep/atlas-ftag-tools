@@ -5,6 +5,7 @@
 ### [v0.1.14]
 - Add option to set custom flavour yaml path [#65](https://github.com/umami-hep/atlas-ftag-tools/pull/65)
 - Extend working point script to Xbb [#55](https://github.com/umami-hep/atlas-ftag-tools/pull/55)
+- Introduce script to calculate efficiencies and rejections at a given discriminant cut value [#64](https://github.com/umami-hep/atlas-ftag-tools/pull/64)
 
 ### [v0.1.13]
 - Add common git check functions  [#62](https://github.com/umami-hep/atlas-ftag-tools/pull/62)
