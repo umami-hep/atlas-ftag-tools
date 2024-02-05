@@ -2,6 +2,9 @@
 
 ### [Latest]
 
+### [v0.1.16.1]
+- Re-release of broken v0.1.16
+
 ### [v0.1.16]
 - Merge only common groups in virtual datasets [#63](https://github.com/umami-hep/atlas-ftag-tools/pull/63)
 - Bugfix of `get_discriminant` function [#70](https://github.com/umami-hep/atlas-ftag-tools/pull/70)
