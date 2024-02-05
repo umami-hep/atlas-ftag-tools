@@ -83,10 +83,11 @@ See `wps --help` for more options and information.
 
 ## Calculate efficiency at discriminant cut 
 
-This pakcage contains a script to calculate the efficiency and reejction values at a given discriminant cut value. The script `eff_at_disc_cut.py` can be run after intalling this package as follows
+The same script can be used to calculate the efficiency and rejection values at a given discriminant cut value.
+The script `working_points.py` can be run after intalling this package as follows
 
 ```
-effs \
+wps \
     --ttbar "path/to/ttbar/*.h5" \
     --tagger GN120220509 \
     --fx 0.1
