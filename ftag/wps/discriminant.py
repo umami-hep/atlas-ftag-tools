@@ -58,6 +58,8 @@ def get_discriminant(
     np.ndarray
         Array of discriminant values.
     """
+    if not isinstance(fx, tuple | list):
+        fx = (fx,)
     tagger_funcs = {
         "bjets": btag_discriminant,
         "cjets": ctag_discriminant,
