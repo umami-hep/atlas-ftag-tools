@@ -354,6 +354,11 @@ class H5Reader:
         int
             Estimated number of jets available after selection cuts, rounded down.
         """
+        # reset rngs to ensure same jets are used for each sample
+        self.rng = np.random.default_rng(42)
+        for r in self.readers:
+            r.rng = np.random.default_rng(42)
+
         # if equal jets is True, available jets is based on the smallest sample
         if self.equal_jets:
             num_jets = []

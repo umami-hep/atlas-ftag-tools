@@ -2,7 +2,16 @@
 
 ### [Latest]
 - Merge only common groups in virtual datasets [#63](https://github.com/umami-hep/atlas-ftag-tools/pull/63)
+- Bugfix of `get_discriminant` function [#70](https://github.com/umami-hep/atlas-ftag-tools/pull/70)
+
+### [v0.1.15]
+- Cache the estimated available jets [#67](https://github.com/umami-hep/atlas-ftag-tools/pull/67)
+- Introduce script to calculate efficiencies and rejections at a given discriminant cut value [#64](https://github.com/umami-hep/atlas-ftag-tools/pull/64)
+
+### [v0.1.14]
+- Add option to set custom flavour yaml path [#65](https://github.com/umami-hep/atlas-ftag-tools/pull/65)
 - Extend working point script to Xbb [#55](https://github.com/umami-hep/atlas-ftag-tools/pull/55)
+
 ### [v0.1.13]
 - Add common git check functions  [#62](https://github.com/umami-hep/atlas-ftag-tools/pull/62)
 - Added 'X % M != n' cut [#61](https://github.com/umami-hep/atlas-ftag-tools/pull/61)

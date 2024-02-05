@@ -106,6 +106,10 @@ def test_estimate_available_jets(batch_size, num_jets):
     assert estimated_num_jets <= actual_num_jets
     assert estimated_num_jets > 0.95 * actual_num_jets
 
+    # check that the estimate_available_jets function returns the same
+    # number of jets on subsequent calls
+    assert reader.estimate_available_jets(cuts, num=100_000) == estimated_num_jets
+
 
 @pytest.mark.parametrize("equal_jets", [True, False])
 @pytest.mark.parametrize("cuts_list", [["x != -1"], ["x != 1"], ["x == -1"]])

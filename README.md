@@ -81,6 +81,18 @@ By default the working points are printed to the terminal, but you can save the 
 
 See `wps --help` for more options and information.
 
+## Calculate efficiency at discriminant cut 
+
+This pakcage contains a script to calculate the efficiency and reejction values at a given discriminant cut value. The script `eff_at_disc_cut.py` can be run after intalling this package as follows
+
+```
+effs \
+    --ttbar "path/to/ttbar/*.h5" \
+    --tagger GN120220509 \
+    --fx 0.1
+    --disc_cuts 1.0 1.5
+```
+The `--tagger`, `--fx`, and `--outfile` follow the same procedure as in the 'Calculate WPs' script as described above.
 
 ## H5 Utils
 
