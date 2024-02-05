@@ -1,6 +1,7 @@
 # Changelog
 
 ### [Latest]
+- Bugfix of `get_discriminant` function [#70](https://github.com/umami-hep/atlas-ftag-tools/pull/70)
 - Cache the estimated available jets [#67](https://github.com/umami-hep/atlas-ftag-tools/pull/67)
 - Introduce script to calculate efficiencies and rejections at a given discriminant cut value [#64](https://github.com/umami-hep/atlas-ftag-tools/pull/64)
 
