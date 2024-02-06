@@ -5,14 +5,24 @@ import numpy as np
 from ftag.flavour import Flavour, Flavours
 
 
-def btag_discriminant(jets, tagger, fc=0.1, epsilon=1e-10):
+def btag_discriminant(jets, tagger, fc=0.1, ftau=0, epsilon=1e-10):
     pb, pc, pu = (jets[f"{tagger}_pb"], jets[f"{tagger}_pc"], jets[f"{tagger}_pu"])
-    return np.log((pb + epsilon) / ((1.0 - fc) * pu + fc * pc + epsilon))
+    ptau = jets[f"{tagger}_ptau"] if f"{tagger}_ptau" in jets.dtype.names else 0
+    if ftau > 0 and ptau == 0:
+        raise ValueError(
+            "Selected non zero ftau, but no tau probabilities found in the input array."
+        )
+    return np.log((pb + epsilon) / ((1.0 - fc - ftau) * pu + fc * pc + ftau * ptau + epsilon))
 
 
-def ctag_discriminant(jets, tagger, fb=0.2, epsilon=1e-10):
+def ctag_discriminant(jets, tagger, fb=0.2, ftau=0, epsilon=1e-10):
     pb, pc, pu = (jets[f"{tagger}_pb"], jets[f"{tagger}_pc"], jets[f"{tagger}_pu"])
-    return np.log((pc + epsilon) / ((1.0 - fb) * pu + fb * pb + epsilon))
+    ptau = jets[f"{tagger}_ptau"] if f"{tagger}_ptau" in jets.dtype.names else 0
+    if ftau > 0 and ptau == 0:
+        raise ValueError(
+            "Selected non zero ftau, but no tau probabilities found in the input array."
+        )
+    return np.log((pc + epsilon) / ((1.0 - fb - ftau) * pu + fb * pb + ftau * ptau + epsilon))
 
 
 def hbb_discriminant(jets, tagger, ftop=0.25, fhcc=0.02, epsilon=1e-10):
