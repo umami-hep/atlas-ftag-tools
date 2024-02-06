@@ -15,6 +15,13 @@ def ttbar_file():
 
 
 @pytest.fixture
+def ttbar_inc_tau_file():
+    f = get_mock_file(10_000, inc_tau=True)
+    print(f[1]["jets"].dtype.names)
+    yield get_mock_file(10_000, inc_tau=True)[0]
+
+
+@pytest.fixture
 def zprime_file():
     yield get_mock_file(10_000)[0]
 
@@ -36,7 +43,7 @@ def test_get_working_points(ttbar_file, eff_val="60"):
 
     assert "MockTagger" in output
     assert output["MockTagger"]["signal"] == "bjets"
-    assert output["MockTagger"]["fx"] == (0.01,)
+    assert output["MockTagger"]["fx"] == (0.01, 0)
     assert eff_val in output["MockTagger"]
     assert "cut_value" in output["MockTagger"][eff_val]
     assert "ttbar" in output["MockTagger"][eff_val]
@@ -66,7 +73,7 @@ def test_get_working_points_rejection(ttbar_file, rej_val="100"):
 
     assert "MockTagger" in output
     assert output["MockTagger"]["signal"] == "bjets"
-    assert output["MockTagger"]["fx"] == (0.01,)
+    assert output["MockTagger"]["fx"] == (0.01, 0)
     assert rej_val in output["MockTagger"]
     assert "cut_value" in output["MockTagger"][rej_val]
     assert "ttbar" in output["MockTagger"][rej_val]
@@ -96,7 +103,7 @@ def test_get_working_points_cjets(ttbar_file, eff_val="60"):
 
     assert "MockTagger" in output
     assert output["MockTagger"]["signal"] == "cjets"
-    assert output["MockTagger"]["fx"] == (0.01,)
+    assert output["MockTagger"]["fx"] == (0.01, 0)
     assert eff_val in output["MockTagger"]
     assert "cut_value" in output["MockTagger"][eff_val]
     assert "ttbar" in output["MockTagger"][eff_val]
@@ -126,7 +133,7 @@ def test_get_working_points_zprime(ttbar_file, zprime_file, eff_val="60"):
 
     assert "MockTagger" in output
     assert output["MockTagger"]["signal"] == "bjets"
-    assert output["MockTagger"]["fx"] == (0.15,)
+    assert output["MockTagger"]["fx"] == (0.15, 0)
     assert eff_val in output["MockTagger"]
     assert "cut_value" in output["MockTagger"][eff_val]
     assert "ttbar" in output["MockTagger"][eff_val]
@@ -135,6 +142,35 @@ def test_get_working_points_zprime(ttbar_file, zprime_file, eff_val="60"):
     assert "zprime" in output["MockTagger"][eff_val]
     assert "eff" in output["MockTagger"][eff_val]["zprime"]
     assert "rej" in output["MockTagger"][eff_val]["zprime"]
+    assert output["MockTagger"][eff_val]["ttbar"]["eff"]["bjets"] == pytest.approx(
+        float(eff_val) / 100, rel=1e-2
+    )
+
+
+def test_get_working_points_inc_tau(ttbar_inc_tau_file, eff_val="60"):
+    args = [
+        "--ttbar",
+        str(ttbar_inc_tau_file),
+        "-t",
+        "MockTagger",
+        "-f",
+        "0.01",
+        "0.02",
+        "-e",
+        eff_val,
+        "-n",
+        "10_000",
+    ]
+    output = main(args)
+
+    assert "MockTagger" in output
+    assert output["MockTagger"]["signal"] == "bjets"
+    assert output["MockTagger"]["fx"] == (0.01, 0.02)
+    assert eff_val in output["MockTagger"]
+    assert "cut_value" in output["MockTagger"][eff_val]
+    assert "ttbar" in output["MockTagger"][eff_val]
+    assert "eff" in output["MockTagger"][eff_val]["ttbar"]
+    assert "rej" in output["MockTagger"][eff_val]["ttbar"]
     assert output["MockTagger"][eff_val]["ttbar"]["eff"]["bjets"] == pytest.approx(
         float(eff_val) / 100, rel=1e-2
     )
@@ -180,14 +216,14 @@ def test_get_working_points_xbb(ttbar_file, eff_val="60"):
 def test_get_working_points_fx_length_check():
     # test with incorrect length of fx values for regular b-tagging
     with pytest.raises(ValueError):
-        main(["--ttbar", "path", "-t", "MockTagger", "-f", "0.1", "0.2"])
+        main(["--ttbar", "path", "-t", "MockTagger", "-f", "0.1", "0.2", "0.3"])
 
     # test with incorrect length of fx values for Xbb tagging
     with pytest.raises(ValueError):
         main(["--ttbar", "path", "--xbb", "-t", "MockXbbTagger", "-f", "0.25"])
 
     with pytest.raises(ValueError):
-        main(["--ttbar", "path", "-t", "MockTagger", "-f", "0.1", "0.2", "-d", "1.0"])
+        main(["--ttbar", "path", "-t", "MockTagger", "-f", "0.1", "0.2", "0.3", "-d", "1.0"])
 
 
 def test_get_rej_eff_at_disc_ttbar(ttbar_file, disc_vals=None):
@@ -209,7 +245,10 @@ def test_get_rej_eff_at_disc_ttbar(ttbar_file, disc_vals=None):
 
     assert "MockTagger" in output
     assert output["MockTagger"]["signal"] == "bjets"
-    assert output["MockTagger"]["fx"] == (0.01,)
+    assert output["MockTagger"]["fx"] == (
+        0.01,
+        0,
+    )
     assert "ttbar" in output["MockTagger"]
     ttbar = output["MockTagger"]["ttbar"]
     for dval in disc_vals:
@@ -241,7 +280,7 @@ def test_get_rej_eff_at_disc_zprime(ttbar_file, zprime_file, disc_vals=None):
 
     assert "MockTagger" in output
     assert output["MockTagger"]["signal"] == "bjets"
-    assert output["MockTagger"]["fx"] == (0.01,)
+    assert output["MockTagger"]["fx"] == (0.01, 0)
     assert "ttbar" in output["MockTagger"]
     assert "zprime" in output["MockTagger"]
 

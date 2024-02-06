@@ -14,9 +14,22 @@ def test_get_mock_scores():
     assert np.allclose(np.sum(s2u(scores), axis=-1), 1)
 
 
+def test_get_mock_scores_inc_tau():
+    labels = np.array([0, 4, 5, 15] * 10)
+    scores = get_mock_scores(labels, inc_tau=True)
+    assert scores.dtype.names == (
+        "MockTagger_pu",
+        "MockTagger_pc",
+        "MockTagger_pb",
+        "MockTagger_ptau",
+    )
+    assert scores.shape == (len(labels),)
+    assert np.allclose(np.sum(s2u(scores), axis=-1), 1)
+
+
 def test_get_mock_file():
     # test jets are correctly generated
-    fname, f = get_mock_file(num_jets=1000)
+    fname, f = get_mock_file(num_jets=1000, inc_tau=False)
     jets = f["jets"]
     assert len(jets) == 1000
     assert set(jets.dtype.names) == set(
@@ -52,3 +65,23 @@ def test_get_mock_file():
     # test custom fname
     fname, f = get_mock_file(fname="test.h5")
     assert fname == "test.h5"
+
+
+def test_get_mock_file_inc_taus():
+    # test jets are correctly generated
+    fname, f = get_mock_file(num_jets=1000, inc_tau=True)
+    jets = f["jets"]
+    assert len(jets) == 1000
+    assert set(jets.dtype.names) == set(
+        [name for name, dtype in JET_VARS]
+        + [
+            "MockTagger_pu",
+            "MockTagger_pc",
+            "MockTagger_pb",
+            "MockTagger_ptau",
+            "MockXbbTagger_phbb",
+            "MockXbbTagger_phcc",
+            "MockXbbTagger_ptop",
+            "MockXbbTagger_pqcd",
+        ]
+    )

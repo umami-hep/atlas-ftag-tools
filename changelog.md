@@ -1,6 +1,7 @@
 # Changelog
 
 ### [Latest]
+- Add option for tau outputs to b- and c-tagging discriminants [#74](https://github.com/umami-hep/atlas-ftag-tools/pull/74)
 
 ### [v0.1.16.1]
 - Re-release of broken v0.1.16
