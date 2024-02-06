@@ -122,14 +122,20 @@ def get_eff_rej(jets, disc, wp, flavs):
 
 
 def get_working_points(args=None):
+    inc_tau = False
     if args.xbb:
         if len(args.fx) != 2 * len(args.tagger):
             raise ValueError("For Xbb tagging, each tagger must have two fx values")
         fx_values = list(zip(args.fx[::2], args.fx[1::2]))
     else:
-        if len(args.fx) != len(args.tagger):
-            raise ValueError("Number of taggers must match number of fx values")
-        fx_values = [(fx,) for fx in args.fx]
+        if len(args.fx) == len(args.tagger):
+            fx_values = [(fx, 0, ) for fx in args.fx]
+        elif len(args.fx) == 2 * len(args.tagger):
+            fx_values = list(zip(args.fx[::2], args.fx[1::2]))
+            inc_tau = True
+        else:
+            raise ValueError(
+                "Number of fx values must either match number of taggers (if no tau output, or ftau=0), or be two times the number of taggers (to account for tau output)")
 
     # setup cuts and variables
     flavs = Flavours.by_category("single-btag") if not args.xbb else Flavours.by_category("xbb")
@@ -139,7 +145,7 @@ def get_working_points(args=None):
     zprime_cuts = Cuts.from_list(args.zprime_cuts) + default_cuts
     all_vars = next(iter(flavs)).cuts.variables
     for tagger in args.tagger:
-        all_vars += [f"{tagger}_{f.px}" for f in flavs if "tau" not in f.px]
+        all_vars += [f"{tagger}_{f.px}" for f in flavs if ("tau" not in f.px or inc_tau)]
 
     # load jets
     reader = H5Reader(args.ttbar)
@@ -199,10 +205,14 @@ def get_rej_eff_at_disc(jets, tagger, signal, fx, disc_cuts):
 
 
 def get_efficiencies(args=None):
-    if len(args.tagger) != len(args.fx):
-        raise ValueError("Must provide fb/fc for each tagger")
-
-    fx_values = [(fx,) for fx in args.fx]
+    if len(args.tagger) == len(args.fx):
+        fx_values = [(fx, 0, ) for fx in args.fx]
+    elif len(args.fx) == 2 * len(args.tagger):
+        fx_values = list(zip(args.fx[::2], args.fx[1::2]))
+    else:
+        raise ValueError(
+            "Number of fx values must either match number of taggers (if no tau output, or ftau=0), or be two times the number of taggers (to account for tau output)")
+    
     # setup cuts and variables
     flavs = Flavours.by_category("single-btag")
     default_cuts = Cuts.from_list(["eta > -2.5", "eta < 2.5"])
@@ -211,7 +221,7 @@ def get_efficiencies(args=None):
     all_vars = next(iter(flavs)).cuts.variables
     for tagger in args.tagger:
         all_vars += [f"{tagger}_{f.px}" for f in flavs if "tau" not in f.px]
-
+        
     # load jets
     reader = H5Reader(args.ttbar)
     jets = reader.load({"jets": all_vars}, args.num_jets, cuts=ttbar_cuts)["jets"]

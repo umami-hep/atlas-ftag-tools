@@ -8,7 +8,7 @@ from ftag.flavour import Flavour, Flavours
 def btag_discriminant(jets, tagger, fc=0.1, ftau=0, epsilon=1e-10):
     pb, pc, pu = (jets[f"{tagger}_pb"], jets[f"{tagger}_pc"], jets[f"{tagger}_pu"])
     ptau = jets[f"{tagger}_ptau"] if f"{tagger}_ptau" in jets.dtype.names else 0
-    if ftau > 0 and ptau == 0:
+    if ftau > 0 and isinstance(ptau, int):
         raise ValueError(
             "Selected non zero ftau, but no tau probabilities found in the input array."
         )
@@ -18,7 +18,7 @@ def btag_discriminant(jets, tagger, fc=0.1, ftau=0, epsilon=1e-10):
 def ctag_discriminant(jets, tagger, fb=0.2, ftau=0, epsilon=1e-10):
     pb, pc, pu = (jets[f"{tagger}_pb"], jets[f"{tagger}_pc"], jets[f"{tagger}_pu"])
     ptau = jets[f"{tagger}_ptau"] if f"{tagger}_ptau" in jets.dtype.names else 0
-    if ftau > 0 and ptau == 0:
+    if ftau > 0 and isinstance(ptau, int):
         raise ValueError(
             "Selected non zero ftau, but no tau probabilities found in the input array."
         )
@@ -81,4 +81,4 @@ def get_discriminant(
     if func is None:
         raise ValueError(f"Signal flavour must be among {list(tagger_funcs.keys())}, not {signal}")
 
-    return func(jets, tagger, *fx, epsilon)  # type: ignore
+    return func(jets, tagger, *fx, epsilon=epsilon)  # type: ignore
