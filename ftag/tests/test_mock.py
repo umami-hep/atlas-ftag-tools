@@ -7,20 +7,25 @@ from ftag.mock import JET_VARS, TRACK_VARS, get_mock_file, get_mock_scores
 
 
 def test_get_mock_scores():
-
     labels = np.array([0, 4, 5] * 10)
     scores = get_mock_scores(labels)
     assert scores.dtype.names == ("MockTagger_pu", "MockTagger_pc", "MockTagger_pb")
     assert scores.shape == (len(labels),)
     assert np.allclose(np.sum(s2u(scores), axis=-1), 1)
 
+
 def test_get_mock_scores_inc_tau():
-    
-        labels = np.array([0, 4, 5, 15] * 10)
-        scores = get_mock_scores(labels, inc_tau=True)
-        assert scores.dtype.names == ("MockTagger_pu", "MockTagger_pc", "MockTagger_pb", "MockTagger_ptau")
-        assert scores.shape == (len(labels),)
-        assert np.allclose(np.sum(s2u(scores), axis=-1), 1)
+    labels = np.array([0, 4, 5, 15] * 10)
+    scores = get_mock_scores(labels, inc_tau=True)
+    assert scores.dtype.names == (
+        "MockTagger_pu",
+        "MockTagger_pc",
+        "MockTagger_pb",
+        "MockTagger_ptau",
+    )
+    assert scores.shape == (len(labels),)
+    assert np.allclose(np.sum(s2u(scores), axis=-1), 1)
+
 
 def test_get_mock_file():
     # test jets are correctly generated
@@ -60,6 +65,7 @@ def test_get_mock_file():
     # test custom fname
     fname, f = get_mock_file(fname="test.h5")
     assert fname == "test.h5"
+
 
 def test_get_mock_file_inc_taus():
     # test jets are correctly generated

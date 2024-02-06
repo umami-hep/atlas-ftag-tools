@@ -13,10 +13,11 @@ from ftag.wps.working_points import main
 def ttbar_file():
     yield get_mock_file(10_000)[0]
 
+
 @pytest.fixture
 def ttbar_inc_tau_file():
     f = get_mock_file(10_000, inc_tau=True)
-    print(f[1]['jets'].dtype.names)
+    print(f[1]["jets"].dtype.names)
     yield get_mock_file(10_000, inc_tau=True)[0]
 
 
@@ -145,6 +146,7 @@ def test_get_working_points_zprime(ttbar_file, zprime_file, eff_val="60"):
         float(eff_val) / 100, rel=1e-2
     )
 
+
 def test_get_working_points_inc_tau(ttbar_inc_tau_file, eff_val="60"):
     args = [
         "--ttbar",
@@ -172,6 +174,7 @@ def test_get_working_points_inc_tau(ttbar_inc_tau_file, eff_val="60"):
     assert output["MockTagger"][eff_val]["ttbar"]["eff"]["bjets"] == pytest.approx(
         float(eff_val) / 100, rel=1e-2
     )
+
 
 def test_get_working_points_xbb(ttbar_file, eff_val="60"):
     # Assuming you're testing with two fx values for each tagger as required for Xbb
@@ -242,7 +245,10 @@ def test_get_rej_eff_at_disc_ttbar(ttbar_file, disc_vals=None):
 
     assert "MockTagger" in output
     assert output["MockTagger"]["signal"] == "bjets"
-    assert output["MockTagger"]["fx"] == (0.01, 0, )
+    assert output["MockTagger"]["fx"] == (
+        0.01,
+        0,
+    )
     assert "ttbar" in output["MockTagger"]
     ttbar = output["MockTagger"]["ttbar"]
     for dval in disc_vals:

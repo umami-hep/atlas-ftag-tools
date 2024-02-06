@@ -57,20 +57,28 @@ def softmax(x, axis=None):
     return e_x / e_x.sum(axis=axis, keepdims=True)
 
 
-def get_mock_scores(labels: np.ndarray, inc_tau: bool =False):
+def get_mock_scores(labels: np.ndarray, inc_tau: bool = False):
     rng = np.random.default_rng(42)
     nclass = 3 + inc_tau
     scores = np.zeros((len(labels), nclass))
-    
+
     for label, count in zip(*np.unique(labels, return_counts=True)):
         if label == 0:
-            scores[labels == label] = rng.normal(loc=[2, 0, 0] + [0]*inc_tau, scale=1, size=(count, nclass))
+            scores[labels == label] = rng.normal(
+                loc=[2, 0, 0] + [0] * inc_tau, scale=1, size=(count, nclass)
+            )
         elif label == 4:
-            scores[labels == label] = rng.normal(loc=[0, 1, 0] + [0]*inc_tau, scale=2.5, size=(count, nclass))
+            scores[labels == label] = rng.normal(
+                loc=[0, 1, 0] + [0] * inc_tau, scale=2.5, size=(count, nclass)
+            )
         elif label == 5:
-            scores[labels == label] = rng.normal(loc=[0, 0, 3.5] + [0]*inc_tau, scale=5, size=(count, nclass))
+            scores[labels == label] = rng.normal(
+                loc=[0, 0, 3.5] + [0] * inc_tau, scale=5, size=(count, nclass)
+            )
         elif label == 15:
-            scores[labels == label] = rng.normal(loc=[0, 0, 0] + [1]*inc_tau, scale=1, size=(count, nclass))
+            scores[labels == label] = rng.normal(
+                loc=[0, 0, 0] + [1] * inc_tau, scale=1, size=(count, nclass)
+            )
     scores = softmax(scores, axis=1)
     cols = [f"MockTagger_p{x}" for x in ["u", "c", "b"]] + (["MockTagger_ptau"] if inc_tau else [])
 
@@ -99,7 +107,7 @@ def get_mock_file(
     fname: str | None = None,
     tracks_name: str = "tracks",
     num_tracks: int = 40,
-    inc_tau: bool = False
+    inc_tau: bool = False,
 ) -> tuple[str, h5py.File]:
     # setup jets
     rng = np.random.default_rng(42)

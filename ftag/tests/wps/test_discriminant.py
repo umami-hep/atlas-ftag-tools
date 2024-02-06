@@ -30,39 +30,48 @@ def test_btag_discriminant():
     expected = np.log((pb + epsilon) / ((1.0 - fc) * pu + fc * pc + epsilon))
     assert np.allclose(disc, expected)
 
+
 def test_btag_discriminant_inc_tau():
     jets = np.array(
-    [
-        (0.2, 0.3, 0.9, 0.1),
-        (0.8, 0.5, 0.1, 0.2),
-        (0.6, 0.1, 0.7, 0.3),
-    ],
-    dtype=[("tagger_pb", "f4"), ("tagger_pc", "f4"), ("tagger_pu", "f4"), ("tagger_ptau", "f4")],
+        [
+            (0.2, 0.3, 0.9, 0.1),
+            (0.8, 0.5, 0.1, 0.2),
+            (0.6, 0.1, 0.7, 0.3),
+        ],
+        dtype=[
+            ("tagger_pb", "f4"),
+            ("tagger_pc", "f4"),
+            ("tagger_pu", "f4"),
+            ("tagger_ptau", "f4"),
+        ],
     )
     tagger = "tagger"
     fc = 0.1
-    
+
     epsilon = 1e-10
     for ftau in (0, 0.2):
         disc = btag_discriminant(jets, tagger, fc, ftau, epsilon=epsilon)
-        pb, pc, pu, ptau = [ jets[f"{tagger}_p{f}" ] for f in ("b", "c", "u", "tau") ]
-        expected = np.log((pb + epsilon) / ((1.0 - fc - ftau) * pu + fc * pc + ftau*ptau + epsilon))
+        pb, pc, pu, ptau = (jets[f"{tagger}_p{f}"] for f in ("b", "c", "u", "tau"))
+        expected = np.log(
+            (pb + epsilon) / ((1.0 - fc - ftau) * pu + fc * pc + ftau * ptau + epsilon)
+        )
     assert np.allclose(disc, expected)
+
 
 def test_no_tau_with_ftau():
     jets = np.array(
-    [
-        (0.2, 0.3, 0.9),
-        (0.8, 0.5, 0.1),
-        (0.6, 0.1, 0.7),
-    ],
-    dtype=[("tagger_pb", "f4"), ("tagger_pc", "f4"), ("tagger_pu", "f4")],
+        [
+            (0.2, 0.3, 0.9),
+            (0.8, 0.5, 0.1),
+            (0.6, 0.1, 0.7),
+        ],
+        dtype=[("tagger_pb", "f4"), ("tagger_pc", "f4"), ("tagger_pu", "f4")],
     )
     tagger = "tagger"
     fc = 0.1
-    ftau=0.2
+    ftau = 0.2
     epsilon = 1e-10
-    
+
     with pytest.raises(ValueError):
         btag_discriminant(jets, tagger, fc, ftau, epsilon=epsilon)
     with pytest.raises(ValueError):
@@ -168,4 +177,3 @@ def test_get_discriminant():
     # test invalid signal flavour
     with pytest.raises(ValueError):
         get_discriminant(jets, tagger, Flavours.hbb, (0.1,), epsilon=1e-10)
-
