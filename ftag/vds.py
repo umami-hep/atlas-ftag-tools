@@ -72,10 +72,6 @@ def create_virtual_file(
     if not common_groups:
         raise ValueError("No common groups found across files")
 
-    print("Common groups found:")
-    for group in common_groups:
-        print(f"  {group}")
-
     # create virtual file
     out_fname.parent.mkdir(exist_ok=True)
     with h5py.File(out_fname, "w") as f:
