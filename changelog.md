@@ -1,6 +1,8 @@
 # Changelog
 
 ### [Latest]
+
+### [v0.1.17]
 - Improve ftau support [#75](https://github.com/umami-hep/atlas-ftag-tools/pull/75)
 - Remove print statement in `vds.py`
 - Add option for tau outputs to b- and c-tagging discriminants [#74](https://github.com/umami-hep/atlas-ftag-tools/pull/74)
