@@ -66,11 +66,12 @@ The script is `working_points.py` and can be run after installing this package w
 ```
 wps \
     --ttbar "path/to/ttbar/*.h5" \
-    --tagger GN120220509 \
-    --fx 0.1
+    --tagger GN2v01 \
+    --fc 0.1
 ```
 
-Both the `--tagger` and `--fx` options accept a list if you want to get the WPs for multiple taggers.
+Both the `--tagger` and `--fc` options accept a list if you want to get the WPs for multiple taggers.
+If you are doing c-tagging or xbb-tagging, dedicated fx arguments are available ()you can find them all with `-h`.
 
 If you want to use the `ttbar` WPs get the efficiencies and rejections for the `zprime` sample, you can add `--zprime "path/to/zprime/*.h5"` to the command.
 Note that a default selection of $p_T > 250 ~GeV$ to jets in the `zprime` sample.
@@ -89,7 +90,7 @@ The script `working_points.py` can be run after intalling this package as follow
 ```
 wps \
     --ttbar "path/to/ttbar/*.h5" \
-    --tagger GN120220509 \
+    --tagger GN2v01 \
     --fx 0.1
     --disc_cuts 1.0 1.5
 ```

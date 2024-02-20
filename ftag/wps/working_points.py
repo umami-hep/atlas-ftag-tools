@@ -144,6 +144,8 @@ def parse_args(args):  # noqa: PLR0912
         raise ValueError("Must specify either --effs or --disc_cuts")
 
     if args.xbb:
+        if args.signal not in [Flavours.hbb, Flavours.hcc]:
+            raise ValueError("Xbb tagging only supports hbb or hcc signal flavours")
         if args.fb or args.fc or args.ftau:
             raise ValueError("For Xbb tagging, fb, fc and ftau should not be specified")
         if not args.ftop:
@@ -178,8 +180,7 @@ def get_fxs_from_args(args):
         fxs = {"ftop": args.ftop, "fhcc": args.fhcc}
     elif args.signal == Flavours.hcc:
         fxs = {"ftop": args.ftop, "fhbb": args.fhbb}
-    else:
-        raise ValueError(f"Invalid signal flavour: {args.signal}")
+    assert fxs is not None
     return [{k: v[i] for k, v in fxs.items()} for i in range(len(args.tagger))]
 
 
