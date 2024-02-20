@@ -2,6 +2,9 @@
 
 ### [Latest]
 
+### [v0.1.18]
+- Hotfix for Flavour frac_str
+
 ### [v0.1.17]
 - Improve ftau support [#75](https://github.com/umami-hep/atlas-ftag-tools/pull/75)
 - Remove print statement in `vds.py`

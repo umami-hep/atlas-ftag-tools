@@ -37,7 +37,7 @@ class Flavour:
 
     @property
     def frac_str(self) -> str:
-        return "f" + self.name.replace("jets", "jet")
+        return "f" + remove_suffix(self.name, "jets")
 
     def __str__(self) -> str:
         return self.name
