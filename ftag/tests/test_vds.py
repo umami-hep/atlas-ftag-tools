@@ -36,7 +36,7 @@ def test_create_virtual_file(test_h5_files):
     with tempfile.NamedTemporaryFile() as tmpfile:
         # create virtual file
         output_path = Path(tmpfile.name)
-        pattern = test_h5_files[0].replace("test_file_0", "test_file_*")
+        pattern = Path(test_h5_files[0]).parent / "test_file_*"
         create_virtual_file(pattern, output_path, overwrite=True)
         # check if file exists
         assert output_path.is_file()

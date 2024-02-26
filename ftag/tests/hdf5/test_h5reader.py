@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import ast
 from pathlib import Path
 from tempfile import NamedTemporaryFile, mkdtemp
 
@@ -145,7 +144,7 @@ def test_equal_jets_estimate(equal_jets, cuts_list):
             f.create_dataset("tracks", data=data)
 
             # record how many jets would remain after cuts
-            cut_condition = ast.literal_eval(cuts_list[0])
+            cut_condition = eval(cuts_list[0])
             actual_available_jets.append(x[cut_condition].shape[0])
 
     # calculate the actual number of available jets after cuts
