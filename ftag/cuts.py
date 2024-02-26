@@ -3,9 +3,10 @@ from __future__ import annotations
 import functools
 import operator
 from ast import literal_eval
-from collections import namedtuple
-from collections.abc import Generator
+from collections.abc import Iterator
 from dataclasses import dataclass
+from itertools import starmap
+from typing import NamedTuple
 
 import numpy as np
 
@@ -16,7 +17,7 @@ OPERATORS = {
     "<=": operator.le,
     ">": operator.gt,
     "<": operator.lt,
-    "in": lambda x, y: np.isin(x, y),
+    "in": np.isin,
     "notin": lambda x, y: ~np.isin(x, y),
 }
 
@@ -26,7 +27,10 @@ for i in range(2, 101):
     OPERATORS[f"%{i}<="] = functools.partial(lambda x, y, i: (x % i) <= y, i=i)
     OPERATORS[f"%{i}>="] = functools.partial(lambda x, y, i: (x % i) >= y, i=i)
 
-CutsResult = namedtuple("CutsResult", "idx values")
+
+class CutsResult(NamedTuple):
+    idx: np.ndarray
+    values: np.ndarray
 
 
 @dataclass(frozen=True)
@@ -58,7 +62,7 @@ class Cuts:
             cuts = [cut.split(" ") for cut in cuts]
         if cuts and isinstance(cuts[0], list):
             cuts = list(map(tuple, cuts))
-        return cls(tuple(Cut(*cut) for cut in dict.fromkeys(cuts)))
+        return cls(tuple(starmap(Cut, dict.fromkeys(cuts))))
 
     @classmethod
     def empty(cls) -> Cuts:
@@ -88,7 +92,7 @@ class Cuts:
     def __len__(self) -> int:
         return len(self.cuts)
 
-    def __iter__(self) -> Generator:
+    def __iter__(self) -> Iterator:
         yield from self.cuts
 
     def __getitem__(self, variable):

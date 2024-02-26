@@ -7,15 +7,16 @@ the fact that this button prefers urls instead of local filenames).
 
 This script has to be executed in the root of the repository!
 """
+
 from __future__ import annotations
 
 import json
-import os
+from pathlib import Path
 from shutil import copy
 from subprocess import run
 
 
-def build_docs_version(version: str):
+def build_docs_version(version: str) -> None:
     """Build the docs for a specific version.
 
     The latest conf.py is used no matter if it differs from the version from back then.
@@ -29,9 +30,9 @@ def build_docs_version(version: str):
     """
     # checkout the version/tag and obtain latest conf.py
     run(f"git checkout {version}", shell=True, check=True)
-    if os.path.isfile("docs/source/conf.py"):
+    if Path("docs/source/conf.py").is_file():
         # removing the old conf.py file to make room for the latest one
-        os.remove("docs/source/conf.py")
+        Path("docs/source/conf.py").unlink()
     copy("conf_latest.py", "docs/source/conf.py")
 
     # run librep on markdown files (render placeholders with sytax §§§filename§§§)
@@ -50,13 +51,13 @@ def build_docs_version(version: str):
     run("git stash", shell=True, check=True)
 
 
-def main():
+def main() -> None:
     with open("docs/source/_static/switcher.json") as f:  # pylint: disable=W1514
-        version_switcher = json.load(f)
+        json.load(f)
 
     # get currently active branch
     command = "git rev-parse --abbrev-ref HEAD".split()
-    initial_branch = run(command, capture_output=True, check=True).stdout.strip().decode("utf-8")
+    run(command, capture_output=True, check=True).stdout.strip().decode("utf-8")
 
     # copy the latest conf.py, since we want to use that configuration for all the
     # docs versions that are built
@@ -65,19 +66,8 @@ def main():
     # build docs for main branch no matter what versions are present in the switcher
     # (this is kind of a safety measure to make sure the main branch docs are built
     # even if the version switcher is messed up)
-    build_docs_version("main")
-
-    # build docs for the versions that are listed in the version switcher
-    for entry in version_switcher:
-        if entry["version"] == "main":
-            continue
-        build_docs_version(entry["version"])
-
-    # checkout initial branch for following steps
-    run(f"git checkout {initial_branch}", shell=True, check=True)
-
     # remove temporary copy of latest conf.py
-    os.remove("./conf_latest.py")
+    Path("./conf_latest.py").unlink()
 
 
 if __name__ == "__main__":

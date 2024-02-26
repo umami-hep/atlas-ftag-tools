@@ -66,10 +66,7 @@ class Sample:
         return list(set(hashes))
 
     def virtual_file(self, **kwargs) -> list[Path | str]:
-        virtual_file_paths = []
-        for p in self.path:
-            virtual_file_paths.append(create_virtual_file(p, **kwargs) if "*" in str(p) else p)
-        return virtual_file_paths
+        return [create_virtual_file(p, **kwargs) if "*" in str(p) else p for p in self.path]
 
     def __str__(self):
         return self.name

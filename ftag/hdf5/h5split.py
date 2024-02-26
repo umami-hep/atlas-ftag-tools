@@ -1,4 +1,5 @@
 """A script to split a large h5 file into smaller h5 files along the first index."""
+
 from __future__ import annotations
 
 import argparse
@@ -9,8 +10,7 @@ import h5py
 from ftag.hdf5 import H5Reader, H5Writer
 
 
-class HelpFormatter(argparse.RawTextHelpFormatter, argparse.ArgumentDefaultsHelpFormatter):
-    ...
+class HelpFormatter(argparse.RawTextHelpFormatter, argparse.ArgumentDefaultsHelpFormatter): ...
 
 
 def parse_args(args):

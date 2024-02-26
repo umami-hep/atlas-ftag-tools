@@ -9,15 +9,16 @@ class GitError(Exception):
     pass
 
 
-def is_git_repo(path):
+def is_git_repo(path) -> bool:
     try:
         subprocess.check_output(["git", "rev-parse", "--is-inside-work-tree", "HEAD"], cwd=path)
-        return True
     except CalledProcessError:
         return False
+    else:
+        return True
 
 
-def check_for_uncommitted_changes(path):
+def check_for_uncommitted_changes(path) -> None:
     if not is_git_repo(path):
         return
     if "pytest" in sys.modules:
@@ -31,7 +32,7 @@ def check_for_uncommitted_changes(path):
         ) from None
 
 
-def check_for_fork(path, upstream):
+def check_for_fork(path, upstream) -> None:
     cmd = ["git", "remote", "get-url", "origin"]
     if not is_git_repo(path):
         return
@@ -41,7 +42,7 @@ def check_for_fork(path, upstream):
         raise GitError(f"Your origin {origin} is not a fork of the upstream repo {upstream}")
 
 
-def create_and_push_tag(path, upstream, tagname, msg):
+def create_and_push_tag(path, upstream, tagname, msg) -> None:
     print(f"Pushing tag {tagname}")
     if not is_git_repo(path):
         return

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from collections.abc import Generator
+from collections.abc import Iterator
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -47,7 +47,7 @@ class Flavour:
 class FlavourContainer:
     flavours: dict[str, Flavour]
 
-    def __iter__(self) -> Generator:
+    def __iter__(self) -> Iterator:
         yield from self.flavours.values()
 
     def __getitem__(self, key) -> Flavour:
@@ -113,7 +113,7 @@ class FlavourContainer:
     def backgrounds(self, flavour: Flavour, keep_possible_signals: bool = True) -> FlavourContainer:
         bkg = [f for f in self if f.category == flavour.category and f != flavour]
         if not keep_possible_signals:
-            bkg = [f for f in bkg if f.name not in ["ujets", "qcd"]]
+            bkg = [f for f in bkg if f.name not in {"ujets", "qcd"}]
         return FlavourContainer.from_list(bkg)
 
 

@@ -30,7 +30,7 @@ def test_main(mock_h5_file, capsys):
     captured = capsys.readouterr()
 
     assert "Done!" in captured.out
-    assert captured.err == ""
+    assert not captured.err
     split_dir = mock_h5_file.parent / f"split_{mock_h5_file.stem}"
     assert split_dir.exists()
     num_output_files = len(list(split_dir.glob("*.h5")))
@@ -53,7 +53,7 @@ def test_remainder(mock_h5_file, capsys):
 
     captured = capsys.readouterr()
     assert "Done!" in captured.out
-    assert captured.err == ""
+    assert not captured.err
     split_dir = mock_h5_file.parent / f"split_{mock_h5_file.stem}"
     assert split_dir.exists()
     num_output_files = len(list(split_dir.glob("*.h5")))

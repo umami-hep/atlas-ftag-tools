@@ -10,7 +10,7 @@ class Region:
     name: str
     cuts: Cuts
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
     def __lt__(self, other):

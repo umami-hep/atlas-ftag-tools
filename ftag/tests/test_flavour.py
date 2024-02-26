@@ -92,16 +92,21 @@ def test_remove_suffix():
 def test_backgrounds():
     bjet_backgrounds = Flavours.backgrounds(Flavours.bjets)
     print(bjet_backgrounds)
-    assert bjet_backgrounds == FlavourContainer.from_list(
-        [Flavours.cjets, Flavours.ujets, Flavours.taujets]
-    )
+    assert bjet_backgrounds == FlavourContainer.from_list([
+        Flavours.cjets,
+        Flavours.ujets,
+        Flavours.taujets,
+    ])
 
     cjet_backgrounds = Flavours.backgrounds(Flavours.cjets)
-    assert cjet_backgrounds == FlavourContainer.from_list(
-        [Flavours.bjets, Flavours.ujets, Flavours.taujets]
-    )
+    assert cjet_backgrounds == FlavourContainer.from_list([
+        Flavours.bjets,
+        Flavours.ujets,
+        Flavours.taujets,
+    ])
 
     bjet_background_no_light = Flavours.backgrounds(Flavours.bjets, keep_possible_signals=False)
-    assert bjet_background_no_light == FlavourContainer.from_list(
-        [Flavours.cjets, Flavours.taujets]
-    )
+    assert bjet_background_no_light == FlavourContainer.from_list([
+        Flavours.cjets,
+        Flavours.taujets,
+    ])

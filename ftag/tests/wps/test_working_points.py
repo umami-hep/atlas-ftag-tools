@@ -11,12 +11,12 @@ from ftag.wps.working_points import main
 
 @pytest.fixture
 def test_file():
-    yield get_mock_file(10_000)[0]
+    return get_mock_file(10_000)[0]
 
 
 @pytest.fixture
 def zprime_file():
-    yield get_mock_file(10_000)[0]
+    return get_mock_file(10_000)[0]
 
 
 def test_get_working_points(test_file, eff_val="60"):
@@ -318,11 +318,11 @@ def test_output_file(test_file):
 
 def test_wps_args_check(test_file):
     base_args = ["--ttbar", str(test_file), "-t", "MockTagger", "--effs", "0.1"]
-    args = base_args + ["--disc_cuts", "0.2"]
+    args = [*base_args, "--disc_cuts", "0.2"]
     with pytest.raises(ValueError, match="both --effs and --disc_cuts"):
         main(args)
 
-    args = base_args + ["--fhcc", "0.2"]
+    args = [*base_args, "--fhcc", "0.2"]
     with pytest.raises(ValueError, match="For single-b tagging, ftop, fhbb and fhcc should not"):
         main(args)
 
@@ -331,12 +331,12 @@ def test_wps_args_check(test_file):
     with pytest.raises(ValueError, match="Xbb tagging only supports hbb or hcc signal flavours"):
         main(args)
 
-    args = base_args + ["-s", "hbb", "--fc", "0.1"]
+    args = [*base_args, "-s", "hbb", "--fc", "0.1"]
     with pytest.raises(
         ValueError, match="For Xbb tagging, fb, fc and ftau should not be specified"
     ):
         main(args)
 
-    args = base_args + ["-s", "hcc", "--fhcc", "0.25"]
+    args = [*base_args, "-s", "hcc", "--fhcc", "0.25"]
     with pytest.raises(ValueError, match="For Xbb tagging, ftop should be specified"):
         main(args)

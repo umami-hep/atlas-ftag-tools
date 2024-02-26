@@ -75,7 +75,7 @@ class H5Writer:
 
     def create_ds(self, name: str, dtype: np.dtype) -> None:
         if name == self.jets_name and self.add_flavour_label:
-            dtype = np.dtype(dtype.descr + [("flavour_label", "i4")])
+            dtype = np.dtype([*dtype.descr, ("flavour_label", "i4")])
 
         # optimal chunking is around 100 jets, only aply for track groups
         shape = self.shapes[name]

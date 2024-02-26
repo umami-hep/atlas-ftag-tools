@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import ast
 from pathlib import Path
 from tempfile import NamedTemporaryFile, mkdtemp
 
@@ -144,7 +145,7 @@ def test_equal_jets_estimate(equal_jets, cuts_list):
             f.create_dataset("tracks", data=data)
 
             # record how many jets would remain after cuts
-            cut_condition = eval(cuts_list[0])
+            cut_condition = ast.literal_eval(cuts_list[0])
             actual_available_jets.append(x[cut_condition].shape[0])
 
     # calculate the actual number of available jets after cuts
@@ -169,16 +170,14 @@ def test_equal_jets_estimate(equal_jets, cuts_list):
 
 
 def test_reader_transform():
-    fname, f = get_mock_file()
+    fname, _ = get_mock_file()
 
-    transform = Transform(
-        {
-            "jets": {
-                "pt": "pt_new",
-                "silent": "silent",
-            }
+    transform = Transform({
+        "jets": {
+            "pt": "pt_new",
+            "silent": "silent",
         }
-    )
+    })
 
     reader = H5Reader(fname, transform=transform, batch_size=1)
     data = reader.load(num_jets=10)
@@ -188,13 +187,13 @@ def test_reader_transform():
 
 @pytest.fixture
 def singlereader():
-    fname, f = get_mock_file()
+    fname, _ = get_mock_file()
     return H5SingleReader(fname, batch_size=10, do_remove_inf=True)
 
 
 @pytest.fixture
 def reader():
-    fname, f = get_mock_file()
+    fname, _ = get_mock_file()
     return H5Reader(fname, batch_size=10)
 
 
@@ -245,8 +244,8 @@ def test_remove_inf_all_inf_values(singlereader):
 
 
 def test_reader_shapes(reader):
-    assert {"jets": (10,)} == reader.shapes(10)
-    assert {"jets": (10,)} == reader.shapes(10, ["jets"])
+    assert reader.shapes(10) == {"jets": (10,)}
+    assert reader.shapes(10, ["jets"]) == {"jets": (10,)}
 
 
 def test_reader_dtypes(reader):

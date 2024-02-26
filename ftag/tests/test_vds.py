@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import os
 import tempfile
 from pathlib import Path
 
@@ -11,14 +10,14 @@ import pytest
 from ftag.vds import create_virtual_file, get_virtual_layout, main
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def test_h5_files():
     # create temporary directory
     with tempfile.TemporaryDirectory() as tmpdir:
         # create temporary h5 files
         file_paths = []
         for i in range(5):
-            filename = os.path.join(tmpdir, f"test_file_{i}.h5")
+            filename = Path(tmpdir) / f"test_file_{i}.h5"
             with h5py.File(filename, "w") as f:
                 f.create_dataset("data", data=[i] * 5)
             file_paths.append(filename)
@@ -53,13 +52,13 @@ def test_create_virtual_file_common_groups(test_h5_files):
     with tempfile.TemporaryDirectory() as tmpdir:
         extra_files = []
         for i in range(2):
-            filename = os.path.join(tmpdir, f"extra_file_{i}.h5")
+            filename = Path(tmpdir) / f"extra_file_{i}.h5"
             with h5py.File(filename, "w") as f:
                 f.create_dataset("extra_data", data=[i] * 5)
             extra_files.append(filename)
 
         all_files = test_h5_files + extra_files
-        pattern = os.path.join(os.path.dirname(all_files[0]), "*.h5")
+        pattern = Path(all_files[0]).parent / "*.h5"
 
         # create temporary output file
         with tempfile.NamedTemporaryFile() as tmpfile:
