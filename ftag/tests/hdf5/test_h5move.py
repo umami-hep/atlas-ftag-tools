@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from tempfile import NamedTemporaryFile
 
 import h5py
 import pytest
@@ -15,19 +16,22 @@ def get_fname():
 
 
 def test_parse_args():
-    # Test for the parse_args function
-    args = [
-        "--fname",
-        "/path/to/file.h5",
-        "--src",
-        "/source/dataset",
-        "--dst",
-        "/destination/dataset",
-    ]
-    parsed_args = parse_args(args)
-    assert parsed_args.fname == Path("/path/to/file.h5")
-    assert parsed_args.src == "/source/dataset"
-    assert parsed_args.dst == "/destination/dataset"
+    with NamedTemporaryFile() as f:
+        f.write(b"")
+        f.flush()
+
+        args = [
+            "--fname",
+            f.name,
+            "--src",
+            "/source/dataset",
+            "--dst",
+            "/destination/dataset",
+        ]
+        parsed_args = parse_args(args)
+        assert parsed_args.fname == Path(f.name)
+        assert parsed_args.src == "/source/dataset"
+        assert parsed_args.dst == "/destination/dataset"
 
 
 def test_main(get_fname):

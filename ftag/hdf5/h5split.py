@@ -7,10 +7,8 @@ from pathlib import Path
 
 import h5py
 
+from ftag.cli_utils import HelpFormatter
 from ftag.hdf5 import H5Reader, H5Writer
-
-
-class HelpFormatter(argparse.RawTextHelpFormatter, argparse.ArgumentDefaultsHelpFormatter): ...
 
 
 def parse_args(args):
