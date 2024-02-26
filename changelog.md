@@ -1,6 +1,7 @@
 # Changelog
 
 ### [Latest]
+- Add cli utils module [#78](https://github.com/umami-hep/atlas-ftag-tools/pull/78)
 
 ### [v0.1.19]
 - Update ruff and add more rules [#77](https://github.com/umami-hep/atlas-ftag-tools/pull/77)
