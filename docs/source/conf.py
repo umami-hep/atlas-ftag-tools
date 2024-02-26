@@ -11,15 +11,15 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 from __future__ import annotations
 
-import os
 import sys
 from subprocess import check_output
 
 import requests
+from Pathlib import Path
 
 import ftag
 
-sys.path.insert(0, os.path.abspath("../../ftag"))
+sys.path.insert(0, Path("../../ftag").resolve())
 
 
 # -- Project information -----------------------------------------------------

@@ -92,7 +92,7 @@ def create_virtual_file(
     return out_fname
 
 
-def main(args=None):
+def main(args=None) -> None:
     args = parse_args(args)
     print(f"Globbing {args.pattern}...")
     create_virtual_file(args.pattern, args.output, overwrite=True)

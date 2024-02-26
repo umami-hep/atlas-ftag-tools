@@ -26,7 +26,7 @@ def parse_args(args):
     return parser.parse_args(args)
 
 
-def main(args=None):
+def main(args=None) -> None:
     args = parse_args(args)
     print(f"Moving {args.src} to {args.dst} in {args.fname}")
     f = h5py.File(args.fname, "a")

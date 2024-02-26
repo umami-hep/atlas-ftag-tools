@@ -12,7 +12,7 @@ from ftag.hdf5 import H5Reader
 from ftag.wps.discriminant import get_discriminant
 
 
-def parse_args(args):  # noqa: PLR0912
+def parse_args(args):
     parser = argparse.ArgumentParser(
         description="Calculate tagger working points",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -144,7 +144,7 @@ def parse_args(args):  # noqa: PLR0912
         raise ValueError("Must specify either --effs or --disc_cuts")
 
     if args.xbb:
-        if args.signal not in [Flavours.hbb, Flavours.hcc]:
+        if args.signal not in {Flavours.hbb, Flavours.hcc}:
             raise ValueError("Xbb tagging only supports hbb or hcc signal flavours")
         if args.fb or args.fc or args.ftau:
             raise ValueError("For Xbb tagging, fb, fc and ftau should not be specified")
@@ -190,7 +190,7 @@ def get_eff_rej(jets, disc, wp, flavs):
         bkg_disc = disc[bkg.cuts(jets).idx]
         eff = sum(bkg_disc > wp) / len(bkg_disc)
         out["eff"][str(bkg)] = float(f"{eff:.3g}")
-        out["rej"][str(bkg)] = float(f"{1/eff:.3g}")
+        out["rej"][str(bkg)] = float(f"{1 / eff:.3g}")
     return out
 
 
@@ -248,7 +248,7 @@ def get_working_points(args=None):
 
             wp_flavour = args.signal
             if args.rejection:
-                eff = 100 / eff
+                eff = 100 / eff  # noqa: PLW2901
                 wp_flavour = args.rejection
 
             wp_disc = disc[flavs[wp_flavour].cuts(jets).idx]
@@ -271,7 +271,7 @@ def get_working_points(args=None):
 
 
 def get_efficiencies(args=None):
-    jets, zp_jets, flavs = setup_common_parts(args)
+    jets, zp_jets, _ = setup_common_parts(args)
     fxs = get_fxs_from_args(args)
 
     out = {}

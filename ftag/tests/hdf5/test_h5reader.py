@@ -169,16 +169,14 @@ def test_equal_jets_estimate(equal_jets, cuts_list):
 
 
 def test_reader_transform():
-    fname, f = get_mock_file()
+    fname, _ = get_mock_file()
 
-    transform = Transform(
-        {
-            "jets": {
-                "pt": "pt_new",
-                "silent": "silent",
-            }
+    transform = Transform({
+        "jets": {
+            "pt": "pt_new",
+            "silent": "silent",
         }
-    )
+    })
 
     reader = H5Reader(fname, transform=transform, batch_size=1)
     data = reader.load(num_jets=10)
@@ -188,13 +186,13 @@ def test_reader_transform():
 
 @pytest.fixture
 def singlereader():
-    fname, f = get_mock_file()
+    fname, _ = get_mock_file()
     return H5SingleReader(fname, batch_size=10, do_remove_inf=True)
 
 
 @pytest.fixture
 def reader():
-    fname, f = get_mock_file()
+    fname, _ = get_mock_file()
     return H5Reader(fname, batch_size=10)
 
 
@@ -245,8 +243,8 @@ def test_remove_inf_all_inf_values(singlereader):
 
 
 def test_reader_shapes(reader):
-    assert {"jets": (10,)} == reader.shapes(10)
-    assert {"jets": (10,)} == reader.shapes(10, ["jets"])
+    assert reader.shapes(10) == {"jets": (10,)}
+    assert reader.shapes(10, ["jets"]) == {"jets": (10,)}
 
 
 def test_reader_dtypes(reader):
