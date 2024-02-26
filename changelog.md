@@ -1,6 +1,7 @@
 # Changelog
 
 ### [Latest]
+- Always enable ptau output in mock file generation [#76](https://github.com/umami-hep/atlas-ftag-tools/pull/76)
 
 ### [v0.1.18]
 - Hotfix for Flavour frac_str

@@ -10,13 +10,8 @@ from ftag.wps.working_points import main
 
 
 @pytest.fixture
-def ttbar_file():
+def test_file():
     yield get_mock_file(10_000)[0]
-
-
-@pytest.fixture
-def ttbar_inc_tau_file():
-    yield get_mock_file(10_000, inc_tau=True)[0]
 
 
 @pytest.fixture
@@ -24,10 +19,10 @@ def zprime_file():
     yield get_mock_file(10_000)[0]
 
 
-def test_get_working_points(ttbar_file, eff_val="60"):
+def test_get_working_points(test_file, eff_val="60"):
     args = [
         "--ttbar",
-        str(ttbar_file),
+        str(test_file),
         "-t",
         "MockTagger",
         "--fc",
@@ -53,10 +48,10 @@ def test_get_working_points(ttbar_file, eff_val="60"):
     )
 
 
-def test_get_working_points_rejection(ttbar_file, rej_val="100"):
+def test_get_working_points_rejection(test_file, rej_val="100"):
     args = [
         "--ttbar",
-        str(ttbar_file),
+        str(test_file),
         "-t",
         "MockTagger",
         "--fc",
@@ -84,10 +79,10 @@ def test_get_working_points_rejection(ttbar_file, rej_val="100"):
     )
 
 
-def test_get_working_points_cjets(ttbar_file, eff_val="60"):
+def test_get_working_points_cjets(test_file, eff_val="60"):
     args = [
         "--ttbar",
-        str(ttbar_file),
+        str(test_file),
         "-t",
         "MockTagger",
         "-s",
@@ -115,10 +110,10 @@ def test_get_working_points_cjets(ttbar_file, eff_val="60"):
     )
 
 
-def test_get_working_points_zprime(ttbar_file, zprime_file, eff_val="60"):
+def test_get_working_points_zprime(test_file, zprime_file, eff_val="60"):
     args = [
         "--ttbar",
-        str(ttbar_file),
+        str(test_file),
         "--zprime",
         str(zprime_file),
         "-t",
@@ -149,10 +144,10 @@ def test_get_working_points_zprime(ttbar_file, zprime_file, eff_val="60"):
     )
 
 
-def test_get_working_points_inc_tau(ttbar_inc_tau_file, eff_val="60"):
+def test_get_working_points_inc_tau(test_file, eff_val="60"):
     args = [
         "--ttbar",
-        str(ttbar_inc_tau_file),
+        str(test_file),
         "-t",
         "MockTagger",
         "--fc",
@@ -180,14 +175,14 @@ def test_get_working_points_inc_tau(ttbar_inc_tau_file, eff_val="60"):
     )
 
 
-def test_get_working_points_xbb(ttbar_file, eff_val="60"):
+def test_get_working_points_xbb(test_file, eff_val="60"):
     # Assuming you're testing with two fx values for each tagger as required for Xbb
     ftop_value = "0.25"
     fhcc_value = "0.02"
 
     args = [
         "--ttbar",
-        str(ttbar_file),
+        str(test_file),
         "-t",
         "MockXbbTagger",
         "--ftop",
@@ -232,12 +227,12 @@ def test_get_working_points_fx_length_check():
         main(["--ttbar", "path", "-t", "MockTagger", "--fc", "0.1", "0.2", "0.3", "-d", "1.0"])
 
 
-def test_get_rej_eff_at_disc_ttbar(ttbar_file, disc_vals=None):
+def test_get_rej_eff_at_disc_ttbar(test_file, disc_vals=None):
     if disc_vals is None:
         disc_vals = [1.0, 1.5]
     args = [
         "--ttbar",
-        str(ttbar_file),
+        str(test_file),
         "-t",
         "MockTagger",
         "--fc",
@@ -263,12 +258,12 @@ def test_get_rej_eff_at_disc_ttbar(ttbar_file, disc_vals=None):
     assert "zprime" not in output["MockTagger"]
 
 
-def test_get_rej_eff_at_disc_zprime(ttbar_file, zprime_file, disc_vals=None):
+def test_get_rej_eff_at_disc_zprime(test_file, zprime_file, disc_vals=None):
     if disc_vals is None:
         disc_vals = [1.0, 1.5]
     args = [
         "--ttbar",
-        str(ttbar_file),
+        str(test_file),
         "--zprime",
         str(zprime_file),
         "-t",
@@ -299,12 +294,12 @@ def test_get_rej_eff_at_disc_zprime(ttbar_file, zprime_file, disc_vals=None):
             assert "rej" in out[str(dval)]
 
 
-def test_output_file(ttbar_file):
+def test_output_file(test_file):
     with tempfile.TemporaryDirectory() as tmpdir:
         output = str(tmpdir) + "/output.yaml"
         args = [
             "--ttbar",
-            str(ttbar_file),
+            str(test_file),
             "-t",
             "MockTagger",
             "--fc",
@@ -321,8 +316,8 @@ def test_output_file(ttbar_file):
         assert Path(output).exists()
 
 
-def test_wps_args_check(ttbar_file):
-    base_args = ["--ttbar", str(ttbar_file), "-t", "MockTagger", "--effs", "0.1"]
+def test_wps_args_check(test_file):
+    base_args = ["--ttbar", str(test_file), "-t", "MockTagger", "--effs", "0.1"]
     args = base_args + ["--disc_cuts", "0.2"]
     with pytest.raises(ValueError, match="both --effs and --disc_cuts"):
         main(args)
