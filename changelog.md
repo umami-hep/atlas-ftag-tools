@@ -1,6 +1,8 @@
 # Changelog
 
 ### [Latest]
+
+### [v0.1.19]
 - Update ruff and add more rules [#77](https://github.com/umami-hep/atlas-ftag-tools/pull/77)
 - Always enable ptau output in mock file generation [#76](https://github.com/umami-hep/atlas-ftag-tools/pull/76)
 
