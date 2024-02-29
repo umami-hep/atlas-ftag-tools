@@ -1,6 +1,8 @@
 # Changelog
 
 ### [Latest]
+
+### [v0.2.0]
 - Add cli utils module [#78](https://github.com/umami-hep/atlas-ftag-tools/pull/78)
 
 ### [v0.1.19]
