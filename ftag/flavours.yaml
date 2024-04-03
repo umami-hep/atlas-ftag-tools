@@ -140,6 +140,23 @@
   colour: "#e76f51"
   category: lepton-decay
 
+# PGID labelling
+- name: D0cjets
+  label: $D^0$ in $c$-hadron decay
+  cuts: ["HadronConeExclTruthLabelID == 4", "HadronConeExclTruthLabelPdgId in (421,-421)"]
+  colour: "#FFA500"
+  category: PGID
+- name: nonD0cjets
+  label: $D^+$, $Ds^+$ or baryon in $c$-hadron decay
+  cuts: ["HadronConeExclTruthLabelID == 4", "HadronConeExclTruthLabelPdgId notin (421,-421)"]
+  colour: "#800080"
+  category: PGID
+- name: Dpluscjets
+  label: $D^+$ or $Ds^+$ in $c$-hadron decay
+  cuts: ["HadronConeExclTruthLabelID == 4", "HadronConeExclTruthLabelPdgId in (411,-411, 431, -431)"]
+  colour: "#00FFFF"
+  category: PGID
+  
 # lepton isolation
 ## taken from https://gitlab.cern.ch/atlas/athena/-/blob/main/PhysicsAnalysis/AnalysisCommon/TruthClassification/README.md#4-details-about-the-lepton-categories
 - name: elxprompt
