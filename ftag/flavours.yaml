@@ -140,42 +140,42 @@
   colour: "#e76f51"
   category: lepton-decay
 
-# PGID labelling: taken from https://pdg.lbl.gov/2023/reviews/rpp2023-rev-monte-carlo-numbering.pdf
+# PDGID labelling: taken from https://pdg.lbl.gov/2023/reviews/rpp2023-rev-monte-carlo-numbering.pdf
 - name: D0meson
-  label: $D^0$ in $c$-hadron decay
+  label: $D^0$ in $c$-jet
   cuts: ["HadronConeExclTruthLabelID == 4", "HadronConeExclTruthLabelPdgId in (421,-421)"]
   colour: "#FFA500"
-  category: PGID
+  category: PDGID
 - name: nonD0meson
-  label: $D^+$, $Ds^+$ or baryon in $c$-hadron decay
+  label: $D^+$, $Ds^+$ or baryon in $c$-jet
   cuts: ["HadronConeExclTruthLabelID == 4", "HadronConeExclTruthLabelPdgId notin (421,-421)"]
   colour: "#800080"
-  category: PGID
+  category: PDGID
 - name: Dplusmeson
-  label: $D^+$ in $c$-hadron decay
+  label: $D^+$ in $c$-jet
   cuts: ["HadronConeExclTruthLabelID == 4", "HadronConeExclTruthLabelPdgId in (411,-411)"]
   colour: "#00FFFF"
-  category: PGID
+  category: PDGID
 - name: Dsplusmeson
-  label: $Ds^+$ in $c$-hadron decay
+  label: $Ds^+$ in $c$-jet
   cuts: ["HadronConeExclTruthLabelID == 4", "HadronConeExclTruthLabelPdgId in (431,-431)"]
   colour: "#781DC8"
-  category: PGID
+  category: PDGID
 - name: B0meson
-  label: $B^0$ in $b$-hadron decay
+  label: $B^0$ in $b$-jet
   cuts: ["HadronConeExclTruthLabelID == 5", "HadronConeExclTruthLabelPdgId in (511,-511)"]
   colour: "#702B1C"
-  category: PGID
+  category: PDGID
 - name: Bplusmeson
-  label: $B^0$ in $b$-hadron decay
+  label: $B^0$ in $b$-jet
   cuts: ["HadronConeExclTruthLabelID == 5", "HadronConeExclTruthLabelPdgId in (521,-521)"]
   colour: "#C81D4A"
-  category: PGID
+  category: PDGID
 - name: Bs0meson
-  label: $Bs^0$ in $b$-hadron decay
+  label: $Bs^0$ in $b$-jet
   cuts: ["HadronConeExclTruthLabelID == 5", "HadronConeExclTruthLabelPdgId in (531,-531)"]
   colour: "#1D62C8"
-  category: PGID
+  category: PDGID
 
 # lepton isolation
 ## taken from https://gitlab.cern.ch/atlas/athena/-/blob/main/PhysicsAnalysis/AnalysisCommon/TruthClassification/README.md#4-details-about-the-lepton-categories
