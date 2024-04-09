@@ -139,8 +139,9 @@
   cuts: ["LeptonDecayLabel == 3"]
   colour: "#e76f51"
   category: lepton-decay
-
+  
 # PGID labelling
+#taken from https://pdg.lbl.gov/2023/reviews/rpp2023-rev-monte-carlo-numbering.pdf
 - name: D0meson
   label: $D^0$ in $c$-hadron decay
   cuts: ["HadronConeExclTruthLabelID == 4", "HadronConeExclTruthLabelPdgId in (421,-421)"]
@@ -158,7 +159,7 @@
   category: PGID
 - name: Dsplusmeson
   label: $Ds^+$ in $c$-hadron decay
-  cuts: ["HadronConeExclTruthLabelID == 4", "HadronConeExclTruthLabelPdgId in (431, -431)"]
+  cuts: ["HadronConeExclTruthLabelID == 4", "HadronConeExclTruthLabelPdgId in (431,-431)"]
   colour: "#781DC8"
   category: PGID
 - name: B0meson
@@ -176,8 +177,7 @@
   cuts: ["HadronConeExclTruthLabelID == 5", "HadronConeExclTruthLabelPdgId in (531,-531)"]
   colour: "#1D62C8"
   category: PGID
-  
-  
+
 # lepton isolation
 ## taken from https://gitlab.cern.ch/atlas/athena/-/blob/main/PhysicsAnalysis/AnalysisCommon/TruthClassification/README.md#4-details-about-the-lepton-categories
 - name: elxprompt
