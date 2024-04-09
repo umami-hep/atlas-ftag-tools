@@ -64,6 +64,7 @@ def test_Flavours_categories():
         "xbb-extended",
         "partonic",
         "lepton-decay",
+        "PGID",
         "isolation",
     ]
     assert Flavours.categories == target
