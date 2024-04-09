@@ -140,8 +140,7 @@
   colour: "#e76f51"
   category: lepton-decay
   
-# PGID labelling
-#taken from https://pdg.lbl.gov/2023/reviews/rpp2023-rev-monte-carlo-numbering.pdf
+# PGID labelling: taken from https://pdg.lbl.gov/2023/reviews/rpp2023-rev-monte-carlo-numbering.pdf
 - name: D0meson
   label: $D^0$ in $c$-hadron decay
   cuts: ["HadronConeExclTruthLabelID == 4", "HadronConeExclTruthLabelPdgId in (421,-421)"]
