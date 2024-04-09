@@ -141,21 +141,42 @@
   category: lepton-decay
 
 # PGID labelling
-- name: D0cjets
+- name: D0meson
   label: $D^0$ in $c$-hadron decay
   cuts: ["HadronConeExclTruthLabelID == 4", "HadronConeExclTruthLabelPdgId in (421,-421)"]
   colour: "#FFA500"
   category: PGID
-- name: nonD0cjets
+- name: nonD0meson
   label: $D^+$, $Ds^+$ or baryon in $c$-hadron decay
   cuts: ["HadronConeExclTruthLabelID == 4", "HadronConeExclTruthLabelPdgId notin (421,-421)"]
   colour: "#800080"
   category: PGID
-- name: Dpluscjets
-  label: $D^+$ or $Ds^+$ in $c$-hadron decay
-  cuts: ["HadronConeExclTruthLabelID == 4", "HadronConeExclTruthLabelPdgId in (411,-411, 431, -431)"]
+- name: Dplusmeson
+  label: $D^+$ in $c$-hadron decay
+  cuts: ["HadronConeExclTruthLabelID == 4", "HadronConeExclTruthLabelPdgId in (411,-411)"]
   colour: "#00FFFF"
   category: PGID
+- name: Dsplusmeson
+  label: $Ds^+$ in $c$-hadron decay
+  cuts: ["HadronConeExclTruthLabelID == 4", "HadronConeExclTruthLabelPdgId in (431, -431)"]
+  colour: "#781DC8"
+  category: PGID
+- name: B0meson
+  label: $B^0$ in $b$-hadron decay
+  cuts: ["HadronConeExclTruthLabelID == 5", "HadronConeExclTruthLabelPdgId in (511,-511)"]
+  colour: "#702B1C"
+  category: PGID
+- name: Bplusmeson
+  label: $B^0$ in $b$-hadron decay
+  cuts: ["HadronConeExclTruthLabelID == 5", "HadronConeExclTruthLabelPdgId in (521,-521)"]
+  colour: "#C81D4A"
+  category: PGID
+- name: Bs0meson
+  label: $Bs^0$ in $b$-hadron decay
+  cuts: ["HadronConeExclTruthLabelID == 5", "HadronConeExclTruthLabelPdgId in (531,-531)"]
+  colour: "#1D62C8"
+  category: PGID
+  
   
 # lepton isolation
 ## taken from https://gitlab.cern.ch/atlas/athena/-/blob/main/PhysicsAnalysis/AnalysisCommon/TruthClassification/README.md#4-details-about-the-lepton-categories
