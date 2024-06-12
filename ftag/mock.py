@@ -57,35 +57,31 @@ def softmax(x, axis=None):
     return e_x / e_x.sum(axis=axis, keepdims=True)
 
 
-def get_mock_scores(labels: np.ndarray):
-    rng = np.random.default_rng(42)
-    scores = np.zeros((len(labels), 3))
-    for label, count in zip(*np.unique(labels, return_counts=True)):
-        if label in (0, 15):
-            scores[labels == label] = rng.normal(loc=[2, 0, 0], scale=1, size=(count, 3))
-        elif label == 4:
-            scores[labels == label] = rng.normal(loc=[0, 1, 0], scale=2.5, size=(count, 3))
-        elif label == 5:
-            scores[labels == label] = rng.normal(loc=[0, 0, 3.5], scale=5, size=(count, 3))
-    scores = softmax(scores, axis=1)
-    cols = [f"MockTagger_p{x}" for x in ["u", "c", "b"]]
-    return u2s(scores, dtype=np.dtype([(name, "f4") for name in cols]))
+def get_mock_scores(labels: np.ndarray, is_xbb: bool = False):
+    means = [
+        [2, 0, 0, 0],
+        [0, 1, 0, 0],
+        [0, 0, 3.5, 0],
+        [0, 0, 0, 1],
+    ]
+    if not is_xbb:
+        label_dict = {"u": 0, "c": 4, "b": 5, "tau": 15}
+        label_mapping = dict(zip(label_dict.values(), means))
+    else:
+        label_dict = {"hbb": 11, "hcc": 12, "top": 1, "qcd": 10}
+        label_mapping = dict(zip(label_dict.values(), means))
 
-
-def get_mock_xbb_scores(labels: np.ndarray):
     rng = np.random.default_rng(42)
-    scores = np.zeros((len(labels), 4))
-    for label, count in zip(*np.unique(labels, return_counts=True)):
-        if label == 11:
-            scores[labels == label] = rng.normal(loc=[1, 0, 0, 0], scale=1, size=(count, 4))
-        elif label == 12:
-            scores[labels == label] = rng.normal(loc=[0, 1, 0, 0], scale=1, size=(count, 4))
-        elif label == 1:
-            scores[labels == label] = rng.normal(loc=[0, 0, 1, 0], scale=1, size=(count, 4))
-        elif label == 10:
-            scores[labels == label] = rng.normal(loc=[0, 0, 0, 1], scale=1, size=(count, 4))
+    nclass = len(label_dict)
+    scores = np.zeros((len(labels), nclass))
+    scales = [1, 2.5, 5, 1]
+    for i, (label, count) in enumerate(zip(*np.unique(labels, return_counts=True))):
+        scores[labels == label] = rng.normal(
+            loc=label_mapping[label], scale=scales[i], size=(count, nclass)
+        )
     scores = softmax(scores, axis=1)
-    cols = [f"MockXbbTagger_p{x}" for x in ["hbb", "hcc", "top", "qcd"]]
+    name = "MockXbbTagger" if is_xbb else "MockTagger"
+    cols = [f"{name}_p{x}" for x in label_dict]
     return u2s(scores, dtype=np.dtype([(name, "f4") for name in cols]))
 
 
@@ -99,9 +95,7 @@ def get_mock_file(
     rng = np.random.default_rng(42)
     jets_dtype = np.dtype(JET_VARS)
     jets = u2s(rng.random((num_jets, len(JET_VARS))), jets_dtype)
-    jets["HadronConeExclTruthLabelID"] = rng.choice([0, 4, 5, 15], size=num_jets)
     jets["flavour_label"] = rng.choice([0, 4, 5], size=num_jets)
-    jets["R10TruthLabel_R22v1"] = rng.choice([1, 10, 11, 12], size=num_jets)
     jets["pt"] *= 400e3
     jets["mass"] *= 50e3
     jets["eta"] = (jets["eta"] - 0.5) * 6.0
@@ -109,8 +103,10 @@ def get_mock_file(
     jets["n_truth_promptLepton"] = 0
 
     # add tagger scores
+    jets["HadronConeExclTruthLabelID"] = rng.choice([0, 4, 5, 15], size=num_jets)
+    jets["R10TruthLabel_R22v1"] = rng.choice([1, 10, 11, 12], size=num_jets)
     scores = get_mock_scores(jets["HadronConeExclTruthLabelID"])
-    xbb_scores = get_mock_xbb_scores(jets["R10TruthLabel_R22v1"])
+    xbb_scores = get_mock_scores(jets["R10TruthLabel_R22v1"], is_xbb=True)
     jets = join_structured_arrays([jets, scores, xbb_scores])
 
     # create a tempfile in a new folder

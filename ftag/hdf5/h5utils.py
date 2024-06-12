@@ -5,7 +5,7 @@ from numpy.lib.recfunctions import unstructured_to_structured as u2s
 
 from ftag.transform import Transform
 
-__all__ = ["join_structured_arrays", "get_dtype", "cast_dtype"]
+__all__ = ["cast_dtype", "get_dtype", "join_structured_arrays"]
 
 
 def get_dtype(

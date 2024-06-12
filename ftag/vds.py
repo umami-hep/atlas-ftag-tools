@@ -62,10 +62,20 @@ def create_virtual_file(
     if not overwrite and out_fname.is_file():
         return out_fname
 
+    # identify common groups across all files
+    common_groups: set[str] = set()
+    for fname in fnames:
+        with h5py.File(fname) as f:
+            groups = set(f.keys())
+            common_groups = groups if not common_groups else common_groups.intersection(groups)
+
+    if not common_groups:
+        raise ValueError("No common groups found across files")
+
     # create virtual file
     out_fname.parent.mkdir(exist_ok=True)
     with h5py.File(out_fname, "w") as f:
-        for group in h5py.File(fnames[0]):
+        for group in common_groups:
             layout = get_virtual_layout(fnames, group)
             f.create_virtual_dataset(group, layout)
             attrs_dict: dict = {}
@@ -82,7 +92,7 @@ def create_virtual_file(
     return out_fname
 
 
-def main(args=None):
+def main(args=None) -> None:
     args = parse_args(args)
     print(f"Globbing {args.pattern}...")
     create_virtual_file(args.pattern, args.output, overwrite=True)

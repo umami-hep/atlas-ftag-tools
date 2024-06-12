@@ -7,8 +7,8 @@ from ftag.hdf5.h5writer import H5Writer
 __all__ = [
     "H5Reader",
     "H5Writer",
-    "get_dtype",
     "cast_dtype",
+    "get_dtype",
     "join_structured_arrays",
     "structured_from_dict",
 ]

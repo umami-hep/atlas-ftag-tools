@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from collections.abc import Generator
+from collections.abc import Iterator
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -35,6 +35,10 @@ class Flavour:
     def rej_str(self) -> str:
         return self.label.replace("jets", "jet") + " rejection"
 
+    @property
+    def frac_str(self) -> str:
+        return "f" + remove_suffix(self.name, "jets")
+
     def __str__(self) -> str:
         return self.name
 
@@ -43,7 +47,7 @@ class Flavour:
 class FlavourContainer:
     flavours: dict[str, Flavour]
 
-    def __iter__(self) -> Generator:
+    def __iter__(self) -> Iterator:
         yield from self.flavours.values()
 
     def __getitem__(self, key) -> Flavour:
@@ -61,6 +65,13 @@ class FlavourContainer:
         if isinstance(flavour, Flavour):
             flavour = flavour.name
         return flavour in self.flavours
+
+    def __eq__(self, other) -> bool:
+        if isinstance(other, FlavourContainer):
+            return self.flavours == other.flavours
+        if isinstance(other, list) and all(isinstance(f, str) for f in other):
+            return {f.name for f in self} == set(other)
+        return False
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({', '.join([f.name for f in self])})"
@@ -94,6 +105,16 @@ class FlavourContainer:
         assert len(flavours_dict) == len(flavours_yaml), "Duplicate flavour names detected"
 
         return cls(flavours_dict)
+
+    @classmethod
+    def from_list(cls, flavours: list[Flavour]) -> FlavourContainer:
+        return cls({f.name: f for f in flavours})
+
+    def backgrounds(self, flavour: Flavour, keep_possible_signals: bool = True) -> FlavourContainer:
+        bkg = [f for f in self if f.category == flavour.category and f != flavour]
+        if not keep_possible_signals:
+            bkg = [f for f in bkg if f.name not in {"ujets", "qcd"}]
+        return FlavourContainer.from_list(bkg)
 
 
 Flavours = FlavourContainer.from_yaml()

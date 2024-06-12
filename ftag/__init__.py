@@ -1,7 +1,8 @@
 """atlas-ftag-tools - Common tools for ATLAS flavour tagging software."""
+
 from __future__ import annotations
 
-__version__ = "v0.1.14"
+__version__ = "v0.2.0"
 
 
 from ftag import hdf5
@@ -19,9 +20,9 @@ __all__ = [
     "Flavours",
     "Sample",
     "Transform",
-    "hdf5",
-    "get_mock_file",
-    "get_discriminant",
-    "get_working_points",
     "__version__",
+    "get_discriminant",
+    "get_mock_file",
+    "get_working_points",
+    "hdf5",
 ]

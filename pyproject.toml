@@ -15,7 +15,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-  "ruff==0.1.6",
+  "ruff==0.2.2",
   "mypy==1.5.1",
   "pre-commit==3.1.1",
   "pytest==7.2.2",
@@ -45,20 +45,29 @@ version = {attr = "ftag.__version__"}
 requires = ["setuptools>=62"]
 build-backend = "setuptools.build_meta"
 
-[tool.black]
-line-length = 100
-preview = "True"
-
 [tool.ruff]
 target-version = "py38"
-select = ["A", "I", "E", "W", "F", "B", "UP", "PL", "ARG", "SIM", "TID", "RUF", "RET", "C4", "D2", "D3", "D4", "SIM"]
-ignore = ["D211", "D213", "RUF005", "PLR2004", "PTH123", "PLW2901"]
 line-length = 100
+preview = true
+lint.select = ["ALL"]
+lint.ignore = [
+    "COM", "D100", "D101", "D102", "D103", "D104", "D105", "D205", "D401", "EM", "FIX", "FBT",
+    "S101", "S404", "S602", "PLR2004", "PLR0912", "PLR0914", "CPY001", "TRY003",
+    "G004", "PD901", "N802", "C901", "DTZ005", "DTZ007", "INP", "EXE002",
+    "ANN001", "ANN002", "ANN003", "ANN101", "ANN201", "ANN202", "ANN204",
+    "T201", "PLW1514", "PTH123", "RUF017", "PLR6301", "ISC001", "S307",
+    "PT027", "NPY002", "PT009", "PLW1641", "PLR0904", "N817", "S603",
+    "S113", "TCH", "PT011", "PLR1702", "S108", "PTH207", "S607", "E203"
+]
 
-[tool.ruff.isort]
+[tool.ruff.lint.flake8-pytest-style]
+fixture-parentheses = false
+mark-parentheses = false
+
+[tool.ruff.lint.isort]
 required-imports = ["from __future__ import annotations"]
 
-[tool.ruff.pydocstyle]
+[tool.ruff.lint.pydocstyle]
 convention = "numpy"  # Accepts: "google", "numpy", or "pep257".
 
 [tool.pytest]

@@ -2,6 +2,32 @@
 
 ### [Latest]
 
+### [v0.2.0]
+- Add cli utils module [#78](https://github.com/umami-hep/atlas-ftag-tools/pull/78)
+
+### [v0.1.19]
+- Update ruff and add more rules [#77](https://github.com/umami-hep/atlas-ftag-tools/pull/77)
+- Always enable ptau output in mock file generation [#76](https://github.com/umami-hep/atlas-ftag-tools/pull/76)
+
+### [v0.1.18]
+- Hotfix for Flavour frac_str
+
+### [v0.1.17]
+- Improve ftau support [#75](https://github.com/umami-hep/atlas-ftag-tools/pull/75)
+- Remove print statement in `vds.py`
+- Add option for tau outputs to b- and c-tagging discriminants [#74](https://github.com/umami-hep/atlas-ftag-tools/pull/74)
+
+### [v0.1.16.1]
+- Re-release of broken v0.1.16
+
+### [v0.1.16]
+- Merge only common groups in virtual datasets [#63](https://github.com/umami-hep/atlas-ftag-tools/pull/63)
+- Bugfix of `get_discriminant` function [#70](https://github.com/umami-hep/atlas-ftag-tools/pull/70)
+
+### [v0.1.15]
+- Cache the estimated available jets [#67](https://github.com/umami-hep/atlas-ftag-tools/pull/67)
+- Introduce script to calculate efficiencies and rejections at a given discriminant cut value [#64](https://github.com/umami-hep/atlas-ftag-tools/pull/64)
+
 ### [v0.1.14]
 - Add option to set custom flavour yaml path [#65](https://github.com/umami-hep/atlas-ftag-tools/pull/65)
 - Extend working point script to Xbb [#55](https://github.com/umami-hep/atlas-ftag-tools/pull/55)
