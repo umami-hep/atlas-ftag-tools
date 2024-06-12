@@ -144,33 +144,43 @@
 ## taken from https://gitlab.cern.ch/atlas/athena/-/blob/main/PhysicsAnalysis/AnalysisCommon/TruthClassification/README.md#4-details-about-the-lepton-categories
 - name: elxprompt
   label: prompt electrons
-  cuts: ["iffClass == 2"]
+  cuts: ["iffClass in (2,3)"]
   colour: tab:red
+  category: isolation
+- name: elxnoflip
+  label: prompt electrons with no charge-flip
+  cuts: ["iffClass == 2"]
+  colour: darkorange
   category: isolation
 - name: elxflip
   label: prompt electrons with charge-flip
   cuts: ["iffClass == 3"]
   colour: tab:orange
   category: isolation
-- name: muxprompt
-  label: prompt muons
-  cuts: ["iffClass == 4"]
-  colour: tab:blue
-  category: isolation
-- name: muxflip
-  label: prompt muons with charge-flip
-  cuts: ["iffClass == 11"]
-  colour: aqua
-  category: isolation
 - name: elxphconv
   label: electrons from prompt photon-conversions
   cuts: ["iffClass == 5"]
   colour: tab:purple
   category: isolation
-- name: elxfrommu
-  label: electrons from muons
-  cuts: ["iffClass == 6"]
-  colour: salmon
+- name: elxnonprompt
+  label: non-prompt electrons
+  cuts: ["iffClass notin (2,3,5)"]
+  colour: "#264653"
+  category: isolation
+- name: muxprompt
+  label: prompt muons
+  cuts: ["iffClass in (4,11)"]
+  colour: tab:blue
+  category: isolation
+- name: muxnoflip
+  label: prompt muons with no charge-flip
+  cuts: ["iffClass == 4"]
+  colour: aqua
+  category: isolation
+- name: muxflip
+  label: prompt muons with charge-flip
+  cuts: ["iffClass == 11"]
+  colour: midnightblue
   category: isolation
 - name: npxall
   label: non-prompt lepton
