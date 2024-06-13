@@ -1,8 +1,7 @@
 # Changelog
 
 ### [Latest]
-
-### [v0.2.0]
+- Update labels for isolation studies [#80](https://github.com/umami-hep/atlas-ftag-tools/pull/80)
 - Add cli utils module [#78](https://github.com/umami-hep/atlas-ftag-tools/pull/78)
 
 ### [v0.1.19]
