@@ -7,10 +7,10 @@ from ftag.flavour import Flavours
 from ftag.wps.discriminant import (
     btag_discriminant,
     ctag_discriminant,
-    tautag_dicriminant,
     get_discriminant,
     hbb_discriminant,
     hcc_discriminant,
+    tautag_dicriminant,
 )
 
 
@@ -96,6 +96,7 @@ def test_ctag_discriminant():
     expected = np.log((pc + epsilon) / ((1.0 - fb) * pu + fb * pb + epsilon))
     assert np.allclose(disc, expected)
 
+
 def test_tautag_discriminant():
     jets = np.array(
         [
@@ -121,6 +122,7 @@ def test_tautag_discriminant():
                 (ptau + epsilon) / ((1.0 - fc - fb) * pu + fc * pc + fb * pb + epsilon)
             )
             assert np.allclose(disc, expected)
+
 
 def test_hbb_discriminant():
     jets = np.array(
