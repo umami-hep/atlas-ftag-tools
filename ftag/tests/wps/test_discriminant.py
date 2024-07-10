@@ -7,6 +7,7 @@ from ftag.flavour import Flavours
 from ftag.wps.discriminant import (
     btag_discriminant,
     ctag_discriminant,
+    tautag_dicriminant,
     get_discriminant,
     hbb_discriminant,
     hcc_discriminant,
@@ -95,6 +96,31 @@ def test_ctag_discriminant():
     expected = np.log((pc + epsilon) / ((1.0 - fb) * pu + fb * pb + epsilon))
     assert np.allclose(disc, expected)
 
+def test_tautag_discriminant():
+    jets = np.array(
+        [
+            (0.2, 0.3, 0.9, 0.1),
+            (0.8, 0.5, 0.1, 0.2),
+            (0.6, 0.1, 0.7, 0.3),
+        ],
+        dtype=[
+            ("tagger_pb", "f4"),
+            ("tagger_pc", "f4"),
+            ("tagger_pu", "f4"),
+            ("tagger_ptau", "f4"),
+        ],
+    )
+    tagger = "tagger"
+
+    epsilon = 1e-10
+    for fb in (0, 0.2):
+        for fc in (0, 0.2):
+            disc = tautag_dicriminant(jets, tagger, fb, fc, epsilon=epsilon)
+            pb, pc, pu, ptau = (jets[f"{tagger}_p{f}"] for f in ("b", "c", "u", "tau"))
+            expected = np.log(
+                (ptau + epsilon) / ((1.0 - fc - fb) * pu + fc * pc + fb * pb + epsilon)
+            )
+    assert np.allclose(disc, expected)
 
 def test_hbb_discriminant():
     jets = np.array(
