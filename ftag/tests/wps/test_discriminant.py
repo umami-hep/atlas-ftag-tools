@@ -56,7 +56,7 @@ def test_btag_discriminant_inc_tau():
         expected = np.log(
             (pb + epsilon) / ((1.0 - fc - ftau) * pu + fc * pc + ftau * ptau + epsilon)
         )
-    assert np.allclose(disc, expected)
+        assert np.allclose(disc, expected)
 
 
 def test_no_tau_with_ftau():
@@ -120,7 +120,7 @@ def test_tautag_discriminant():
             expected = np.log(
                 (ptau + epsilon) / ((1.0 - fc - fb) * pu + fc * pc + fb * pb + epsilon)
             )
-    assert np.allclose(disc, expected)
+            assert np.allclose(disc, expected)
 
 def test_hbb_discriminant():
     jets = np.array(
