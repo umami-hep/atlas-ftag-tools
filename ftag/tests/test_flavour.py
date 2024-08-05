@@ -60,6 +60,7 @@ def test_Flavours_categories():
     target = [
         "single-btag",
         "single-btag-extended",
+        "single-btag-ghost",
         "xbb",
         "xbb-extended",
         "partonic",
