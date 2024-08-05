@@ -47,6 +47,28 @@
   colour: gold
   category: single-btag-extended
 
+# single b-tagging (ghost association)
+- name: ghostbjets
+  label: $b$-jets
+  cuts: ["HadronGhostTruthLabelID == 5"]
+  colour: tab:blue
+  category: single-btag-ghost
+- name: ghostcjets
+  label: $c$-jets
+  cuts: ["HadronGhostTruthLabelID == 4"]
+  colour: tab:orange
+  category: single-btag-ghost
+- name: ghostujets
+  label: Light-jets
+  cuts: ["HadronGhostTruthLabelID == 0"]
+  colour: tab:green
+  category: single-btag-ghost
+- name: ghosttaujets
+  label: $\tau$-jets
+  cuts: ["HadronGhostTruthLabelID == 15"]
+  colour: tab:purple
+  category: single-btag-ghost
+
 # Xbb tagging
 - name: hbb
   label: $H \rightarrow b\bar{b}$
