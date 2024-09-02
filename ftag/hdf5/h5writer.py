@@ -87,7 +87,7 @@ class H5Writer:
         # adjust dtype based on specified precision
         dtype = np.dtype([
             (field, self.fp_dtype if np.issubdtype(dt, np.floating) else dt)
-            for field, dt in dtype.fields.items()
+            for field, dt in dtype.descr
         ])
 
         # optimal chunking is around 100 jets, only aply for track groups
