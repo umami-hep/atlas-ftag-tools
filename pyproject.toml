@@ -15,8 +15,8 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-  "ruff==0.2.2",
-  "mypy==1.5.1",
+  "ruff==0.6.2",
+  "mypy==1.11.2",
   "pre-commit==3.1.1",
   "pytest==7.2.2",
   "pytest-cov==4.0.0",
@@ -56,8 +56,8 @@ lint.ignore = [
     "G004", "PD901", "N802", "C901", "DTZ005", "DTZ007", "INP", "EXE002",
     "ANN001", "ANN002", "ANN003", "ANN101", "ANN201", "ANN202", "ANN204",
     "T201", "PLW1514", "PTH123", "RUF017", "PLR6301", "ISC001", "S307",
-    "PT027", "NPY002", "PT009", "PLW1641", "PLR0904", "N817", "S603",
-    "S113", "TCH", "PT011", "PLR1702", "S108", "PTH207", "S607", "E203"
+    "PT027", "NPY002", "PT009", "PLW1641", "PLR0904", "N817", "S603", "PD011",
+    "S113", "TCH", "PT011", "PLR1702", "S108", "PTH207", "S607", "E203", "SIM115"
 ]
 
 [tool.ruff.lint.flake8-pytest-style]

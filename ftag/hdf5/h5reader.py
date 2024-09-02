@@ -60,7 +60,7 @@ class H5SingleReader:
             for var in array.dtype.names:
                 isinf = np.isinf(array[var])
                 isinf = isinf if name == self.jets_name else isinf.any(axis=-1)
-                keep_idx = keep_idx & ~isinf
+                keep_idx &= ~isinf
                 if num_inf := isinf.sum():
                     log.warning(
                         f"{num_inf} inf values detected for variable {var} in"

@@ -52,7 +52,6 @@ TRACK_VARS = [
 
 
 def softmax(x, axis=None):
-    """Compute softmax values for each sets of scores in x."""
     e_x = np.exp(x - np.max(x, axis=axis, keepdims=True))
     return e_x / e_x.sum(axis=axis, keepdims=True)
 

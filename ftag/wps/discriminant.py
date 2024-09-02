@@ -100,6 +100,11 @@ def get_discriminant(
     -------
     np.ndarray
         Array of discriminant values.
+
+    Raises
+    ------
+    ValueError
+        If the signal flavour is not recognised.
     """
     tagger_funcs: dict[str, Callable] = {
         "bjets": btag_discriminant,
