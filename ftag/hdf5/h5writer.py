@@ -51,6 +51,13 @@ class H5Writer:
         assert len(set(self.num_jets)) == 1, "Must have same number of jets per group"
         self.num_jets = self.num_jets[0]
 
+        if self.precision == "full":
+            self.fp_dtype = np.float32
+        elif self.precision == "half":
+            self.fp_dtype = np.float16
+        else:
+            raise ValueError(f"Invalid precision: {self.precision}")
+
         self.dst = Path(self.dst)
         self.dst.parent.mkdir(parents=True, exist_ok=True)
         self.file = h5py.File(self.dst, "w")
@@ -77,11 +84,17 @@ class H5Writer:
         if name == self.jets_name and self.add_flavour_label:
             dtype = np.dtype([*dtype.descr, ("flavour_label", "i4")])
 
+        # adjust dtype based on specified precision
+        dtype = np.dtype([
+            (field, self.fp_dtype if np.issubdtype(dt, np.floating) else dt)
+            for field, dt in dtype.fields.items()
+        ])
+
         # optimal chunking is around 100 jets, only aply for track groups
         shape = self.shapes[name]
         chunks = (100,) + shape[1:] if shape[1:] else None
 
-        # note: enabling the hd5 shuffle filter doesn't improve anything
+        # note: enabling the hd5 shuffle filter doesn't improve write performance
         self.file.create_dataset(
             name, dtype=dtype, shape=shape, compression=self.compression, chunks=chunks
         )
