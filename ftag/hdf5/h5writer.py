@@ -41,7 +41,7 @@ class H5Writer:
     jets_name: str = "jets"
     add_flavour_label: bool = False
     compression: str = "lzf"
-    precision: str | None = None
+    precision: str = "full"
     shuffle: bool = True
 
     def __post_init__(self):
