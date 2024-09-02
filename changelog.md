@@ -2,6 +2,12 @@
 
 ### [Latest]
 
+### [v0.2.2]
+
+- Update ruff and mypy #85 [#85](https://github.com/umami-hep/atlas-ftag-tools/pull/85)
+- Fix precision setting for H5Writer [#84](https://github.com/umami-hep/atlas-ftag-tools/pull/84)
+- Added new flavour for ghost association labelling [#83](https://github.com/umami-hep/atlas-ftag-tools/pull/83)
+
 ### [v0.2.1]
 
 - Added Tau tagging discriminant [#81](https://github.com/umami-hep/atlas-ftag-tools/pull/81)
