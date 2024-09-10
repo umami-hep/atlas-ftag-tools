@@ -25,7 +25,10 @@ jobs:
       - name: Run tests
         run: pytest -v --junitxml=coverage.xml --cov-report=term-missing:skip-covered --cov=ftag --nb-force-regen ftag/tests/
       - name: Report coverage with Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
+        with:
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
       - uses: actions/upload-artifact@v3
         if: failure()
         with:
@@ -47,7 +50,10 @@ jobs:
       - name: Run tests
         run: coverage run --source ftag -m pytest --show-capture=stdout
       - name: Report coverage with Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
+        with:
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   publish:
     name: Publish to PyPI
