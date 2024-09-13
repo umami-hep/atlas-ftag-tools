@@ -42,6 +42,9 @@ class Flavour:
     def __str__(self) -> str:
         return self.name
 
+    def __lt__(self, other) -> bool:
+        return self.name < other.name
+
 
 @dataclass
 class FlavourContainer:
@@ -81,7 +84,10 @@ class FlavourContainer:
         return list(dict.fromkeys(f.category for f in self))
 
     def by_category(self, category: str) -> FlavourContainer:
-        return FlavourContainer({k: v for k, v in self.flavours.items() if v.category == category})
+        f = FlavourContainer({k: v for k, v in self.flavours.items() if v.category == category})
+        if not f.flavours:
+            raise KeyError(f"No flavours with category '{category}' found")
+        return f
 
     def from_cuts(self, cuts: list | Cuts) -> Flavour:
         if isinstance(cuts, list):
