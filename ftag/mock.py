@@ -84,12 +84,7 @@ def get_mock_scores(labels: np.ndarray, is_xbb: bool = False):
     return u2s(scores, dtype=np.dtype([(name, "f4") for name in cols]))
 
 
-def get_mock_file(
-    num_jets=1000,
-    fname: str | None = None,
-    tracks_name: str = "tracks",
-    num_tracks: int = 40,
-) -> tuple[str, h5py.File]:
+def mock_jets(num_jets=1000) -> np.ndarray:
     # setup jets
     rng = np.random.default_rng(42)
     jets_dtype = np.dtype(JET_VARS)
@@ -106,7 +101,25 @@ def get_mock_file(
     jets["R10TruthLabel_R22v1"] = rng.choice([1, 10, 11, 12], size=num_jets)
     scores = get_mock_scores(jets["HadronConeExclTruthLabelID"])
     xbb_scores = get_mock_scores(jets["R10TruthLabel_R22v1"], is_xbb=True)
-    jets = join_structured_arrays([jets, scores, xbb_scores])
+    return join_structured_arrays([jets, scores, xbb_scores])
+
+
+def mock_tracks(num_jets=1000, num_tracks=40) -> np.ndarray:
+    rng = np.random.default_rng(42)
+    tracks_dtype = np.dtype(TRACK_VARS)
+    tracks = u2s(rng.random((num_jets, num_tracks, len(TRACK_VARS))), tracks_dtype)
+    valid = rng.choice([True, False], size=(num_jets, num_tracks))
+    valid = valid.astype(bool).view(dtype=np.dtype([("valid", bool)]))
+    return join_structured_arrays([tracks, valid])
+
+
+def get_mock_file(
+    num_jets=1000,
+    fname: str | None = None,
+    tracks_name: str = "tracks",
+    num_tracks: int = 40,
+) -> tuple[str, h5py.File]:
+    jets = mock_jets(num_jets)
 
     # create a tempfile in a new folder
     if fname is None:
@@ -120,11 +133,7 @@ def get_mock_file(
 
     # setup tracks
     if tracks_name:
-        tracks_dtype = np.dtype(TRACK_VARS)
-        tracks = u2s(rng.random((num_jets, num_tracks, len(TRACK_VARS))), tracks_dtype)
-        valid = rng.choice([True, False], size=(num_jets, num_tracks))
-        valid = valid.astype(bool).view(dtype=np.dtype([("valid", bool)]))
-        tracks = join_structured_arrays([tracks, valid])
+        tracks = mock_tracks(num_jets, num_tracks)
         f.create_dataset(tracks_name, data=tracks)
 
     return fname, f
