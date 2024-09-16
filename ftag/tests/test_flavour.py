@@ -72,9 +72,8 @@ def test_Flavours_categories():
 
 
 def test_Flavours_by_category():
-    charm_flavours = Flavours.by_category("charm")
-    for flavour in charm_flavours:
-        assert flavour.category == "charm"
+    for flavour in Flavours.by_category("single-btag"):
+        assert flavour.category == "single-btag"
 
 
 def test_Flavours_from_cuts():
