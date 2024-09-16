@@ -19,7 +19,7 @@ class Labeller:
     Parameters
     ----------
     labels : FlavourContainer | list[str | Flavour]
-        The labels to be labelled.
+        The labels to be use.
     require_labels : bool
         Whether to require that all objects are labelled.
     """
@@ -27,7 +27,7 @@ class Labeller:
     labels: FlavourContainer | list[str | Flavour]
     require_labels: bool = True
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         if isinstance(self.labels, FlavourContainer):
             self.labels = list(self.labels)
         self.labels = sorted([Flavours[label] for label in self.labels])
