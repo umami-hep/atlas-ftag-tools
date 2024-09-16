@@ -2,9 +2,11 @@
 
 ### [Latest]
 
+-  Add tool to generate labels on the fly [#87](https://github.com/umami-hep/atlas-ftag-tools/pull/87)
+
 ### [v0.2.2]
 
-- Update ruff and mypy #85 [#85](https://github.com/umami-hep/atlas-ftag-tools/pull/85)
+- Update ruff and mypy [#85](https://github.com/umami-hep/atlas-ftag-tools/pull/85)
 - Fix precision setting for H5Writer [#84](https://github.com/umami-hep/atlas-ftag-tools/pull/84)
 - Added new flavour for ghost association labelling [#83](https://github.com/umami-hep/atlas-ftag-tools/pull/83)
 
