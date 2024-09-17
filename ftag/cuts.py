@@ -79,7 +79,9 @@ class Cuts:
     def ignore(self, variables: list[str]):
         return Cuts(tuple(c for c in self if c.variable not in variables))
 
-    def __call__(self, array) -> CutsResult:
+    def __call__(self, array: np.ndarray) -> CutsResult:
+        if array.ndim == 2:
+            raise ValueError("This interface only supports jet selections")
         keep = np.arange(len(array))
         for cut in self.cuts:
             idx = cut(array)

@@ -3,12 +3,11 @@
     "autoDocstring.docstringFormat": "numpy",
     "[python]": {
         "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.formatOnSave": true,
         "editor.codeActionsOnSave": {
-            "source.organizeImports": true,
-            "source.fixAll": true
+            "source.fixAll": "explicit"
         },
     },
-    "editor.formatOnSave": true,
     "files.watcherExclude": {
         "**/.git/objects/**": true,
         "**/.git/subtree-cache/**": true,

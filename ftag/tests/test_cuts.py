@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import numpy as np
+import pytest
 
 from ftag.cuts import Cut, Cuts, CutsResult
 
@@ -55,3 +56,10 @@ def test_Cuts_getitem_method():
     c_x = c["x"]
     assert len(c_x) == 2
     assert all(c.variable == "x" for c in c_x)
+
+
+def test_Cuts_ndim_error():
+    c = Cuts.from_list([("x", "==", "1")])
+    array = np.ones((2, 2))
+    with pytest.raises(ValueError, match="This interface only supports jet selections"):
+        c(array)
