@@ -2,6 +2,8 @@
 
 ### [Latest]
 
+### [v0.2.3]
+
 - Add track selector class based on cuts [#89](https://github.com/umami-hep/atlas-ftag-tools/pull/89)
 - Add tool to generate labels on the fly [#87](https://github.com/umami-hep/atlas-ftag-tools/pull/87)
 
