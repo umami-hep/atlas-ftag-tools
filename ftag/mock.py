@@ -108,6 +108,7 @@ def mock_tracks(num_jets=1000, num_tracks=40) -> np.ndarray:
     rng = np.random.default_rng(42)
     tracks_dtype = np.dtype(TRACK_VARS)
     tracks = u2s(rng.random((num_jets, num_tracks, len(TRACK_VARS))), tracks_dtype)
+    tracks["d0"] *= 5
     valid = rng.choice([True, False], size=(num_jets, num_tracks))
     valid = valid.astype(bool).view(dtype=np.dtype([("valid", bool)]))
     return join_structured_arrays([tracks, valid])
