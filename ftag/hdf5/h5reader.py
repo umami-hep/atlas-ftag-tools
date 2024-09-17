@@ -150,8 +150,13 @@ class H5Reader:
     transform : Transform | None, optional
         Transform to apply to data, by default None
     equal_jets : bool, optional
-        Take the same number of jets (weighted) from each sample, by default True
-        If False, use all jets in each sample.
+        Take the same number of jets (weighted) from each sample, by default True.
+        This is useful when you specify a list of DSIDs for the sample and they are
+        qualitatively different, and you want to ensure that you always return batches
+        with jets from all DSIDs. This is used for example in the QCD resampling for Xbb.
+        If False, use all jets in each sample, allowing for the full available statistics
+        to be used. Useful for example if you have multiple ttbar samples and you want to
+        use all available jets from each sample.
     """
 
     fname: Path | str | list[Path | str]
@@ -162,17 +167,10 @@ class H5Reader:
     weights: list[float] | None = None
     do_remove_inf: bool = False
     transform: Transform | None = None
-    equal_jets: bool = True
+    equal_jets: bool = False
 
     def __post_init__(self) -> None:
         self.rng = np.random.default_rng(42)
-        if not self.equal_jets:
-            log.warning(
-                "equal_jets is set to False, which will result in different number of jets taken"
-                " from each sample. Be aware that this can affect the resampling, so make sure you"
-                " know what you are doing."
-            )
-
         if isinstance(self.fname, (str, Path)):
             self.fname = [self.fname]
 
@@ -283,8 +281,8 @@ class H5Reader:
                     try:
                         samples.append(next(stream))
 
-                    # if equal_jets is True, we can stop when any stream is done
-                    # otherwise if sample is exhausted, mark it as done
+                    # if equal_jets is True, stop when any sample is done
+                    # otherwise if stream is exhausted, mark it as such and continue
                     except StopIteration:
                         if self.equal_jets:
                             return
