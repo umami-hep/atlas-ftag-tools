@@ -51,3 +51,22 @@ def test_selector_remove_some():
     idx = init_valid & (init_d0 > 3.5)
     assert np.all(np.isnan(selected[idx]["d0"]))
     assert np.all(selected[selected["valid"]]["d0"] < 3.5)
+
+
+def test_nshared_cut():
+    tracks = mock_tracks()
+
+    n_pix_shared = tracks["numberOfPixelSharedHits"]
+    n_sct_shared = tracks["numberOfSCTSharedHits"]
+    n_module_shared = n_pix_shared + n_sct_shared / 2
+    assert np.any(n_module_shared[tracks["valid"]] > 1)
+
+    cut = Cuts.from_list(["NSHARED < 1.1"])
+    selector = TrackSelector(cut)
+    selected = selector(tracks.copy())
+    n_pix_shared = tracks["numberOfPixelSharedHits"]
+    n_sct_shared = tracks["numberOfSCTSharedHits"]
+    n_module_shared = n_pix_shared + n_sct_shared / 2
+
+    print(n_module_shared[selected["valid"]])
+    assert not np.any(n_module_shared[selected["valid"]] > 1)

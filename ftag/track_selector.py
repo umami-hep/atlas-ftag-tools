@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from ftag import Cuts
+from ftag.cuts import Cut, Cuts
 
 
 @dataclass
@@ -34,7 +34,8 @@ class TrackSelector:
         # apply the cuts
         for cut in self.cuts.cuts:
             # remove valid track indices that do not pass the selection
-            rm_idx[tracks[self.valid_str] & ~cut(tracks)] = True
+            keep_idx = self._nshared_cut(cut, tracks) if cut.variable == "NSHARED" else cut(tracks)
+            rm_idx[tracks[self.valid_str] & ~keep_idx] = True
 
         # set the values of the tracks that do not pass the cuts to
         for var in tracks.dtype.names:
@@ -51,3 +52,19 @@ class TrackSelector:
         tracks[rm_idx][self.valid_str] = False
 
         return tracks
+
+    def _nshared_cut(self, cut: Cut, tracks: np.ndarray) -> np.ndarray:
+        # hack to apply the FTAG shared hit cut, which requires an intermediate step
+        if cut.variable == "NSHARED" and "NSHARED" in tracks.dtype.names:
+            raise ValueError("NSHARED is a reserved variable name")
+
+        # compute
+        n_pix_shared = tracks["numberOfPixelSharedHits"]
+        n_sct_shared = tracks["numberOfSCTSharedHits"]
+        n_module_shared = n_pix_shared + n_sct_shared / 2
+
+        # convert n_module_shared to structured array
+        n_module_shared = n_module_shared.view(dtype=[(cut.variable, n_module_shared.dtype)])
+
+        # select
+        return cut(n_module_shared)
