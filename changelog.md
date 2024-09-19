@@ -2,6 +2,8 @@
 
 ### [Latest]
 
+- Add nshared selection to track selector [#90](https://github.com/umami-hep/atlas-ftag-tools/pull/90)
+
 ### [v0.2.3]
 
 - Add track selector class based on cuts [#89](https://github.com/umami-hep/atlas-ftag-tools/pull/89)
