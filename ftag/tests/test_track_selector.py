@@ -68,5 +68,11 @@ def test_nshared_cut():
     n_sct_shared = tracks["numberOfSCTSharedHits"]
     n_module_shared = n_pix_shared + n_sct_shared / 2
 
-    print(n_module_shared[selected["valid"]])
     assert not np.any(n_module_shared[selected["valid"]] > 1)
+
+    # check an error is raised if NSHARED is already a track variable
+    with np.testing.assert_raises(ValueError):
+        cut = Cuts.from_list(["NSHARED < 1.1"])
+        tracks["NSHARED"] = 0
+        selector = TrackSelector(cut)
+        selector(tracks.copy())
