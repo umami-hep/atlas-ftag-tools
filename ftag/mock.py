@@ -109,6 +109,11 @@ def mock_tracks(num_jets=1000, num_tracks=40) -> np.ndarray:
     tracks_dtype = np.dtype(TRACK_VARS)
     tracks = u2s(rng.random((num_jets, num_tracks, len(TRACK_VARS))), tracks_dtype)
     tracks["d0"] *= 5
+
+    # for the shared hits, add some reasonable integer values
+    tracks["numberOfPixelSharedHits"] = rng.integers(0, 3, size=(num_jets, num_tracks))
+    tracks["numberOfSCTSharedHits"] = rng.integers(0, 3, size=(num_jets, num_tracks))
+
     valid = rng.choice([True, False], size=(num_jets, num_tracks))
     valid = valid.astype(bool).view(dtype=np.dtype([("valid", bool)]))
     return join_structured_arrays([tracks, valid])
