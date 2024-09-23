@@ -71,7 +71,7 @@ def test_nshared_cut():
     assert not np.any(n_module_shared[selected["valid"]] > 1)
 
     # check an error is raised if NSHARED is already a track variable
-    with np.testing.assert_raises(ValueError, match="NSHARED is a reserved variable name"):
+    with np.testing.assert_raises(ValueError):
         cut = Cuts.from_list(["NSHARED < 1.1"])
         nshared_array = np.zeros((10, 40), dtype=[("NSHARED", np.int32)])
         selector = TrackSelector(cut)
