@@ -73,6 +73,6 @@ def test_nshared_cut():
     # check an error is raised if NSHARED is already a track variable
     with np.testing.assert_raises(ValueError):
         cut = Cuts.from_list(["NSHARED < 1.1"])
-        tracks["NSHARED"] = 0
+        nshared_array = np.zeros((10, 40), dtype=[("NSHARED", np.int32)])
         selector = TrackSelector(cut)
-        selector(tracks.copy())
+        selector(nshared_array)
