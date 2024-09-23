@@ -3,14 +3,15 @@
 from __future__ import annotations
 
 import argparse
-from pathlib import Path
 
 import h5py
 
+from ftag.cli_utils import HelpFormatter, valid_path
+
 
 def parse_args(args):
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--fname", required=True, type=Path, help="path to h5 file")
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=HelpFormatter)
+    parser.add_argument("--fname", required=True, type=valid_path, help="path to h5 file")
     parser.add_argument(
         "--src",
         required=True,
@@ -26,7 +27,7 @@ def parse_args(args):
     return parser.parse_args(args)
 
 
-def main(args=None):
+def main(args=None) -> None:
     args = parse_args(args)
     print(f"Moving {args.src} to {args.dst} in {args.fname}")
     f = h5py.File(args.fname, "a")

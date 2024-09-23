@@ -47,6 +47,28 @@
   colour: gold
   category: single-btag-extended
 
+# single b-tagging (ghost association)
+- name: ghostbjets
+  label: $b$-jets
+  cuts: ["HadronGhostTruthLabelID == 5"]
+  colour: tab:blue
+  category: single-btag-ghost
+- name: ghostcjets
+  label: $c$-jets
+  cuts: ["HadronGhostTruthLabelID == 4"]
+  colour: tab:orange
+  category: single-btag-ghost
+- name: ghostujets
+  label: Light-jets
+  cuts: ["HadronGhostTruthLabelID == 0"]
+  colour: tab:green
+  category: single-btag-ghost
+- name: ghosttaujets
+  label: $\tau$-jets
+  cuts: ["HadronGhostTruthLabelID == 15"]
+  colour: tab:purple
+  category: single-btag-ghost
+
 # Xbb tagging
 - name: hbb
   label: $H \rightarrow b\bar{b}$
@@ -139,6 +161,43 @@
   cuts: ["LeptonDecayLabel == 3"]
   colour: "#e76f51"
   category: lepton-decay
+
+# PDGID labelling: taken from https://pdg.lbl.gov/2023/reviews/rpp2023-rev-monte-carlo-numbering.pdf
+- name: D0meson
+  label: $D^0$ in $c$-jet
+  cuts: ["HadronConeExclTruthLabelID == 4", "HadronConeExclTruthLabelPdgId in (421,-421)"]
+  colour: "#FFA500"
+  category: PDGID
+- name: nonD0meson
+  label: $D^+$, $Ds^+$ or baryon in $c$-jet
+  cuts: ["HadronConeExclTruthLabelID == 4", "HadronConeExclTruthLabelPdgId notin (421,-421)"]
+  colour: "#800080"
+  category: PDGID
+- name: Dplusmeson
+  label: $D^+$ in $c$-jet
+  cuts: ["HadronConeExclTruthLabelID == 4", "HadronConeExclTruthLabelPdgId in (411,-411)"]
+  colour: "#00FFFF"
+  category: PDGID
+- name: Dsplusmeson
+  label: $Ds^+$ in $c$-jet
+  cuts: ["HadronConeExclTruthLabelID == 4", "HadronConeExclTruthLabelPdgId in (431,-431)"]
+  colour: "#781DC8"
+  category: PDGID
+- name: B0meson
+  label: $B^0$ in $b$-jet
+  cuts: ["HadronConeExclTruthLabelID == 5", "HadronConeExclTruthLabelPdgId in (511,-511)"]
+  colour: "#702B1C"
+  category: PDGID
+- name: Bplusmeson
+  label: $B^0$ in $b$-jet
+  cuts: ["HadronConeExclTruthLabelID == 5", "HadronConeExclTruthLabelPdgId in (521,-521)"]
+  colour: "#C81D4A"
+  category: PDGID
+- name: Bs0meson
+  label: $Bs^0$ in $b$-jet
+  cuts: ["HadronConeExclTruthLabelID == 5", "HadronConeExclTruthLabelPdgId in (531,-531)"]
+  colour: "#1D62C8"
+  category: PDGID
 
 # lepton isolation
 ## taken from https://gitlab.cern.ch/atlas/athena/-/blob/main/PhysicsAnalysis/AnalysisCommon/TruthClassification/README.md#4-details-about-the-lepton-categories
