@@ -20,6 +20,7 @@ JET_VARS = [
     ("eta_btagJes", "f4"),
     ("n_tracks", "i4"),
     ("HadronConeExclTruthLabelID", "i4"),
+    ("PartonTruthLabelID", "i4"),
     ("HadronConeExclTruthLabelPt", "f4"),
     ("R10TruthLabel_R22v1", "i4"),
     ("n_truth_promptLepton", "i4"),
