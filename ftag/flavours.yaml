@@ -19,6 +19,22 @@
   cuts: ["HadronConeExclTruthLabelID == 15"]
   colour: tab:purple
   category: single-btag
+# The `ujets` class defined above is further split into these three classes
+- name: gjets
+  label: Gluon-jets
+  cuts: ["HadronConeExclTruthLabelID == 0", "PartonTruthLabelID == 21"]
+  colour: tab:yellow
+  category: single-btag
+- name: udjets
+  label: Light-quark-jets
+  cuts: ["HadronConeExclTruthLabelID == 0", "PartonTruthLabelID <= 2"]
+  colour: tab:olive
+  category: single-btag
+- name: sjets
+  label: $s$-jets
+  cuts: ["HadronConeExclTruthLabelID == 0", "PartonTruthLabelID == 3"]
+  colour: tab:red
+  category: single-btag
 
 # extended single b-tagging
 - name: singlebjets
@@ -67,6 +83,22 @@
   label: $\tau$-jets
   cuts: ["HadronGhostTruthLabelID == 15"]
   colour: tab:purple
+  category: single-btag-ghost
+# The `ghostujets` class defined above is further split into these three classes
+- name: ghostgjets
+  label: Gluon-jets
+  cuts: ["HadronGhostTruthLabelID == 0", "PartonTruthLabelID == 21"]
+  colour: tab:yellow
+  category: single-btag-ghost
+- name: ghostudjets
+  label: Light-quark-jets
+  cuts: ["HadronGhostTruthLabelID == 0", "PartonTruthLabelID <= 2"]
+  colour: tab:olive
+  category: single-btag-ghost
+- name: ghostsjets
+  label: $s$-jets
+  cuts: ["HadronGhostTruthLabelID == 0", "PartonTruthLabelID == 3"]
+  colour: tab:red
   category: single-btag-ghost
 
 # Xbb tagging
