@@ -218,11 +218,15 @@ def setup_common_parts(args):
     zprime_cuts = Cuts.from_list(args.zprime_cuts) + default_cuts
 
     # prepare to load jets
-    all_vars = next(iter(flavs)).cuts.variables
+    all_vars = set()
+    for f in flavs:
+        all_vars.update(f.cuts.variables)
+    print(f"all_vars: {all_vars}")
     reader = H5Reader(args.ttbar)
     jet_vars = reader.dtypes()["jets"].names
+    print(f"jet_vars: {jet_vars}")
     for tagger in args.tagger:
-        all_vars += [f"{tagger}_{f.px}" for f in flavs if (f"{tagger}_{f.px}" in jet_vars)]
+        all_vars.update([f"{tagger}_{f.px}" for f in flavs if (f"{tagger}_{f.px}" in jet_vars)])
 
     # load jets
     jets = reader.load({"jets": all_vars}, args.num_jets, cuts=ttbar_cuts)["jets"]
@@ -275,6 +279,8 @@ def get_working_points(args=None):
 
 def get_efficiencies(args=None):
     jets, zp_jets, _ = setup_common_parts(args)
+    print(f"jets: {jets}")
+    print(f"jets dtype: {jets.dtype}")
     fxs = get_fxs_from_args(args)
 
     out = {}
