@@ -98,6 +98,7 @@ def mock_jets(num_jets=1000) -> np.ndarray:
 
     # add tagger scores
     jets["HadronConeExclTruthLabelID"] = rng.choice([0, 4, 5, 15], size=num_jets)
+    jets["PartonTruthLabelID"] = rng.choice([-1, 1, 2, 3, 4, 5, 21], size=num_jets)
     jets["R10TruthLabel_R22v1"] = rng.choice([1, 10, 11, 12], size=num_jets)
     scores = get_mock_scores(jets["HadronConeExclTruthLabelID"])
     xbb_scores = get_mock_scores(jets["R10TruthLabel_R22v1"], is_xbb=True)
