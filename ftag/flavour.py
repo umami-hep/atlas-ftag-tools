@@ -122,7 +122,7 @@ class FlavourContainer:
             bkg = [
                 f
                 for f in self
-                if f.category == flavour.category and f != flavour and f.subclass_of is not None
+                if f.category == flavour.category and f != flavour and f.subclass_of is None
             ]
         else:
             raise NotImplementedError("The backgrounds() method is not implementes for sub-classes")
