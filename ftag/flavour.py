@@ -85,7 +85,11 @@ class FlavourContainer:
         return list(dict.fromkeys(f.category for f in self))
 
     def by_category(self, category: str) -> FlavourContainer:
-        f = FlavourContainer({k: v for k, v in self.flavours.items() if v.category == category})
+        f = FlavourContainer({
+            k: v
+            for k, v in self.flavours.items()
+            if v.category == category and v.subclass_of is None
+        })
         if not f.flavours:
             raise KeyError(f"No flavours with category '{category}' found")
         return f
