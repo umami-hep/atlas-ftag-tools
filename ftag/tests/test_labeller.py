@@ -17,7 +17,7 @@ def jets():
 def test_initialization():
     flavours = Flavours.by_category("single-btag")
     labeller = Labeller(flavours)
-    assert len(labeller.labels) == 4
+    assert len(labeller.labels) == 7
     assert all(isinstance(f, Flavour) for f in labeller.labels)
 
     flavours = ["bjets", "cjets"]
