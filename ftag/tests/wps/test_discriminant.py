@@ -216,15 +216,24 @@ def test_get_discriminant():
     expected = btag_discriminant(jets, tagger, fc=0.1)
     assert np.allclose(disc, expected)
 
+    signal = Flavours.cjets
+    disc = get_discriminant(jets, tagger, signal, fb=0.2)
+    expected = ctag_discriminant(jets, tagger, fb=0.2)
+    assert np.allclose(disc, expected)
+
+    jets = np.array(
+        [
+            (0.2, 0.3, 0.5),
+            (0.8, 0.5, 0.1),
+            (0.6, 0.1, 0.7),
+        ],
+        dtype=[("tagger_pghostb", "f4"), ("tagger_pghostc", "f4"), ("tagger_pghostu", "f4")],
+    )
+
     tagger = "tagger"
     signal = Flavours.ghostbjets
     disc = get_discriminant(jets, tagger, signal, fc=0.1)
     expected = ghostbtag_discriminant(jets, tagger, fc=0.1)
-    assert np.allclose(disc, expected)
-
-    signal = Flavours.cjets
-    disc = get_discriminant(jets, tagger, signal, fb=0.2)
-    expected = ctag_discriminant(jets, tagger, fb=0.2)
     assert np.allclose(disc, expected)
 
     jets = np.array(
