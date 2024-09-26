@@ -62,6 +62,9 @@ def btag_discriminant(jets, tagger, fc, ftau=0, epsilon=1e-10):
     fxs = {"pc": fc, "ptau": ftau, "pu": 1 - fc - ftau}
     return discriminant(jets, tagger, Flavours.bjets, fxs, epsilon=epsilon)
 
+def ghostbtag_discriminant(jets, tagger, fc, ftau=0, epsilon=1e-10):
+    fxs = {"pghostc": fc, "pghosttau": ftau, "pghostu": 1 - fc - ftau}
+    return discriminant(jets, tagger, Flavours.ghostbjets, fxs, epsilon=epsilon)
 
 def ctag_discriminant(jets, tagger, fb, ftau=0, epsilon=1e-10):
     fxs = {"pb": fb, "ptau": ftau, "pu": 1 - fb - ftau}
@@ -112,8 +115,9 @@ def get_discriminant(
         "taujets": tautag_dicriminant,
         "hbb": hbb_discriminant,
         "hcc": hcc_discriminant,
+        "ghostbjets": ghostbtag_discriminant,
     }
-
+    print(fxs)
     if str(signal) not in tagger_funcs:
         raise ValueError(f"Signal flavour must be one of {list(tagger_funcs.keys())}, not {signal}")
 
