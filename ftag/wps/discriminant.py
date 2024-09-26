@@ -117,6 +117,7 @@ def get_discriminant(
         "hcc": hcc_discriminant,
         "ghostbjets": ghostbtag_discriminant,
     }
+
     if str(signal) not in tagger_funcs:
         raise ValueError(f"Signal flavour must be one of {list(tagger_funcs.keys())}, not {signal}")
 
