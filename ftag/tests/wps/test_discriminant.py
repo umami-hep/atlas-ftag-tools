@@ -8,10 +8,10 @@ from ftag.wps.discriminant import (
     btag_discriminant,
     ctag_discriminant,
     get_discriminant,
+    ghostbtag_discriminant,
     hbb_discriminant,
     hcc_discriminant,
     tautag_dicriminant,
-    ghostbtag_discriminant
 )
 
 
@@ -79,6 +79,7 @@ def test_no_tau_with_ftau():
     with pytest.raises(ValueError):
         ctag_discriminant(jets, tagger, fc, ftau, epsilon=epsilon)
 
+
 def test_ghostbtag_discriminant():
     jets = np.array(
         [
@@ -95,6 +96,7 @@ def test_ghostbtag_discriminant():
     pb, pc, pu = jets[f"{tagger}_pghostb"], jets[f"{tagger}_pghostc"], jets[f"{tagger}_pghostu"]
     expected = np.log((pb + epsilon) / ((1.0 - fc) * pu + fc * pc + epsilon))
     assert np.allclose(disc, expected)
+
 
 def test_ctag_discriminant():
     jets = np.array(
