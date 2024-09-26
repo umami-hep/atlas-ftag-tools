@@ -2,6 +2,7 @@
 
 ### [Latest]
 
+- Add discriminant for ghost lablled jets [#94](https://github.com/umami-hep/atlas-ftag-tools/pull/94)
 - Add nshared selection to track selector [#90](https://github.com/umami-hep/atlas-ftag-tools/pull/90)
 
 ### [v0.2.3]
