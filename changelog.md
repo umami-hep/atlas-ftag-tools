@@ -2,9 +2,11 @@
 
 ### [Latest]
 
+- Add a script to copy datasets from one h5 file to another [#96](https://github.com/umami-hep/atlas-ftag-tools/pull/96)
+
 ### [v0.2.5]
 
-- Quick fix for add_flavour_label [#91](https://github.com/umami-hep/atlas-ftag-tools/pull/91)
+- Quick fix for add_flavour_label [#95](https://github.com/umami-hep/atlas-ftag-tools/pull/95)
 
 ### [v0.2.4]
 
