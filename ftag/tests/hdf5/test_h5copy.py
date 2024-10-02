@@ -100,7 +100,7 @@ def test_main_errors(get_fname):
             "/jets_copy",
         ])
 
-    with pytest.raises(FileExistsError, match="not found"):
+    with pytest.raises(KeyError, match="not found"):
         main([
             "--src_fname",
             src_fname,
