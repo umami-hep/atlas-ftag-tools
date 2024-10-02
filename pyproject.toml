@@ -33,7 +33,6 @@ vds = "ftag.vds:main"
 wps = "ftag.wps.working_points:main"
 h5move = "ftag.hdf5.h5move:main"
 h5split = "ftag.hdf5.h5split:main"
-h5copy = "ftag.hdf5.h5copy:main"
 
 [tool.setuptools]
 packages = ["ftag", "ftag.hdf5", "ftag.wps"]
