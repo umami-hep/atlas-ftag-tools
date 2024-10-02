@@ -2,6 +2,12 @@
 
 ### [Latest]
 
+### [v0.2.5]
+
+- Quick fix for add_flavour_label [#91](https://github.com/umami-hep/atlas-ftag-tools/pull/91)
+
+### [v0.2.4]
+
 - Add nshared selection to track selector [#90](https://github.com/umami-hep/atlas-ftag-tools/pull/90)
 
 ### [v0.2.3]
