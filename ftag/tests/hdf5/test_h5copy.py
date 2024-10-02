@@ -76,7 +76,7 @@ def test_main_default_dst(get_fname):
         assert all(f["/jets"][:] == old_data)
 
 
-def test_main_dst_exists_error(get_fname):
+def test_main_errors(get_fname):
     """Test that an error is raised when the destination dataset already exists."""
     src_fname = get_fname
     dst_fname = NamedTemporaryFile().name
@@ -94,6 +94,18 @@ def test_main_dst_exists_error(get_fname):
             src_fname,
             "--src",
             "/jets",
+            "--dst_fname",
+            dst_fname,
+            "--dst",
+            "/jets_copy",
+        ])
+
+    with pytest.raises(FileExistsError, match="not found"):
+        main([
+            "--src_fname",
+            src_fname,
+            "--src",
+            "/xyz",
             "--dst_fname",
             dst_fname,
             "--dst",
