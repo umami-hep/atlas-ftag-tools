@@ -9,6 +9,7 @@
 ### [v0.2.4]
 
 - Add nshared selection to track selector [#90](https://github.com/umami-hep/atlas-ftag-tools/pull/90)
+- Split Light-jets into Gluon-jets, Light-quark-jets and s-jets, for both single-btag and single-btag-ghost categories [#93](https://github.com/umami-hep/atlas-ftag-tools/pull/93)
 
 ### [v0.2.3]
 

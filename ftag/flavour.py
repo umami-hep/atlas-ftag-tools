@@ -22,6 +22,7 @@ class Flavour:
     cuts: Cuts
     colour: str
     category: str
+    subclass_of: str | None = None
 
     @property
     def px(self) -> str:
@@ -84,7 +85,11 @@ class FlavourContainer:
         return list(dict.fromkeys(f.category for f in self))
 
     def by_category(self, category: str) -> FlavourContainer:
-        f = FlavourContainer({k: v for k, v in self.flavours.items() if v.category == category})
+        f = FlavourContainer({
+            k: v
+            for k, v in self.flavours.items()
+            if v.category == category and v.subclass_of is None
+        })
         if not f.flavours:
             raise KeyError(f"No flavours with category '{category}' found")
         return f
@@ -117,7 +122,15 @@ class FlavourContainer:
         return cls({f.name: f for f in flavours})
 
     def backgrounds(self, flavour: Flavour, keep_possible_signals: bool = True) -> FlavourContainer:
-        bkg = [f for f in self if f.category == flavour.category and f != flavour]
+        if flavour.subclass_of is None:
+            bkg = [
+                f
+                for f in self
+                if f.category == flavour.category and f != flavour and f.subclass_of is None
+            ]
+        else:
+            raise NotImplementedError("The backgrounds() method is not implementes for sub-classes")
+
         if not keep_possible_signals:
             bkg = [f for f in bkg if f.name not in {"ujets", "qcd"}]
         return FlavourContainer.from_list(bkg)

@@ -41,7 +41,7 @@ You can set up and run pre-commit hooks with
 
 ```bash
 pre-commit install
-pre-commmit run --all-files
+pre-commit run --all-files
 ```
 
 To run the tests you can use the `pytest` or `coverage` command, for example
