@@ -41,7 +41,9 @@ class TrackSelector:
         for var in tracks.dtype.names:
             if issubclass(tracks[var].dtype.type, np.floating):
                 tracks[var][rm_idx] = np.nan
-            elif issubclass(tracks[var].dtype.type, np.integer):
+            elif issubclass(tracks[var].dtype.type, np.signedinteger):
+                tracks[var][rm_idx] = -1
+            elif issubclass(tracks[var].dtype.type, np.unsignedinteger):
                 tracks[var][rm_idx] = 0
             elif issubclass(tracks[var].dtype.type, np.bool_):
                 tracks[var][rm_idx] = False

@@ -34,8 +34,10 @@ def test_selector_remove_all():
         if issubclass(tracks[var].dtype.type, np.floating):
             print(selected[var])
             assert np.all(np.isnan(selected[var]))
-        elif issubclass(tracks[var].dtype.type, np.integer):
+        elif issubclass(tracks[var].dtype.type, np.signedinteger):
             assert np.all(selected[var] == -1)
+        elif issubclass(tracks[var].dtype.type, np.unsignedinteger):
+            assert np.all(selected[var] == 0)
         elif issubclass(tracks[var].dtype.type, np.bool_):
             assert np.all(~selected[var])
 
