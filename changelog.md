@@ -2,6 +2,8 @@
 
 ### [Latest]
 
+- Bugfix for track_selector [#98](https://github.com/umami-hep/atlas-ftag-tools/pull/98)
+
 ### [v0.2.5]
 
 - Quick fix for add_flavour_label [#91](https://github.com/umami-hep/atlas-ftag-tools/pull/91)
