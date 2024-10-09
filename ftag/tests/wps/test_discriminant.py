@@ -8,7 +8,6 @@ from ftag.wps.discriminant import (
     btag_discriminant,
     ctag_discriminant,
     get_discriminant,
-    ghostbtag_discriminant,
     hbb_discriminant,
     hcc_discriminant,
     tautag_dicriminant,
@@ -78,24 +77,6 @@ def test_no_tau_with_ftau():
         btag_discriminant(jets, tagger, fc, ftau, epsilon=epsilon)
     with pytest.raises(ValueError):
         ctag_discriminant(jets, tagger, fc, ftau, epsilon=epsilon)
-
-
-def test_ghostbtag_discriminant():
-    jets = np.array(
-        [
-            (0.2, 0.3, 0.9),
-            (0.8, 0.5, 0.1),
-            (0.6, 0.1, 0.7),
-        ],
-        dtype=[("tagger_pghostb", "f4"), ("tagger_pghostc", "f4"), ("tagger_pghostu", "f4")],
-    )
-    tagger = "tagger"
-    fc = 0.1
-    epsilon = 1e-10
-    disc = ghostbtag_discriminant(jets, tagger, fc, epsilon=epsilon)
-    pb, pc, pu = jets[f"{tagger}_pghostb"], jets[f"{tagger}_pghostc"], jets[f"{tagger}_pghostu"]
-    expected = np.log((pb + epsilon) / ((1.0 - fc) * pu + fc * pc + epsilon))
-    assert np.allclose(disc, expected)
 
 
 def test_ctag_discriminant():
@@ -227,13 +208,13 @@ def test_get_discriminant():
             (0.8, 0.5, 0.1),
             (0.6, 0.1, 0.7),
         ],
-        dtype=[("tagger_pghostb", "f4"), ("tagger_pghostc", "f4"), ("tagger_pghostu", "f4")],
+        dtype=[("tagger_pb", "f4"), ("tagger_pc", "f4"), ("tagger_pu", "f4")],
     )
 
     tagger = "tagger"
     signal = Flavours.ghostbjets
     disc = get_discriminant(jets, tagger, signal, fc=0.1)
-    expected = ghostbtag_discriminant(jets, tagger, fc=0.1)
+    expected = btag_discriminant(jets, tagger, fc=0.1)
     assert np.allclose(disc, expected)
 
     jets = np.array(
