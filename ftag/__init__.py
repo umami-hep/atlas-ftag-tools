@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-__version__ = "v0.2.4"
+__version__ = "v0.2.5"
 
 
 from ftag import hdf5

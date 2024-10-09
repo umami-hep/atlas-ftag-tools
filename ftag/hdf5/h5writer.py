@@ -81,7 +81,7 @@ class H5Writer:
         return cls(dtypes=dtypes, shapes=shapes, **kwargs)
 
     def create_ds(self, name: str, dtype: np.dtype) -> None:
-        if name == self.jets_name and self.add_flavour_label:
+        if name == self.jets_name and self.add_flavour_label and "flavour_label" not in dtype.names:
             dtype = np.dtype([*dtype.descr, ("flavour_label", "i4")])
 
         # adjust dtype based on specified precision

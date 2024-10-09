@@ -23,19 +23,32 @@ def test_selector_keep_all():
     assert np.all(selected == tracks)
 
 
+def test_selector_wrong_dtype():
+    tracks = mock_tracks()
+    cuts = Cuts.from_list(["d0 > 0"])
+    selector = TrackSelector(cuts)
+    dt = tracks.dtype.descr
+    dt[-1] = (dt[-1][0], "complex")
+    dt = np.dtype(dt)
+    tracks = tracks.astype(dt)
+    with np.testing.assert_raises(TypeError):
+        selector(tracks.copy())
+
+
 def test_selector_remove_all():
     tracks = mock_tracks()
     init_valid = tracks["valid"].copy()
-    cuts = Cuts.from_list(["numberOfPixelHits < -999"])
+    cuts = Cuts.from_list(["numberOfPixelHits > 100"])
     selector = TrackSelector(cuts)
     selected = selector(tracks.copy())
     selected = selected[init_valid]
     for var in tracks.dtype.names:
         if issubclass(tracks[var].dtype.type, np.floating):
-            print(selected[var])
             assert np.all(np.isnan(selected[var]))
-        elif issubclass(tracks[var].dtype.type, np.integer):
+        elif issubclass(tracks[var].dtype.type, np.signedinteger):
             assert np.all(selected[var] == -1)
+        elif issubclass(tracks[var].dtype.type, np.unsignedinteger):
+            assert np.all(selected[var] == 0)
         elif issubclass(tracks[var].dtype.type, np.bool_):
             assert np.all(~selected[var])
 
