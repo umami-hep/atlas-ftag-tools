@@ -112,6 +112,7 @@ def get_discriminant(
         "taujets": tautag_dicriminant,
         "hbb": hbb_discriminant,
         "hcc": hcc_discriminant,
+        "ghostbjets": btag_discriminant,
     }
 
     if str(signal) not in tagger_funcs:
