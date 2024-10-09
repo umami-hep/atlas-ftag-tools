@@ -22,10 +22,14 @@ class Flavour:
     cuts: Cuts
     colour: str
     category: str
+    _px: str = None
 
     @property
     def px(self) -> str:
-        return f"p{remove_suffix(self.name, 'jets')}"
+        if self._px is not None:
+            return self._px
+        else:
+            return f"p{remove_suffix(self.name, 'jets')}"
 
     @property
     def eff_str(self) -> str:

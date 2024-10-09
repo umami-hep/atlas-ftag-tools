@@ -53,21 +53,25 @@
   cuts: ["HadronGhostTruthLabelID == 5"]
   colour: tab:blue
   category: single-btag-ghost
+  _px: pb
 - name: ghostcjets
   label: $c$-jets
   cuts: ["HadronGhostTruthLabelID == 4"]
   colour: tab:orange
   category: single-btag-ghost
+  _px: pc
 - name: ghostujets
   label: Light-jets
   cuts: ["HadronGhostTruthLabelID == 0"]
   colour: tab:green
   category: single-btag-ghost
+  _px: pu
 - name: ghosttaujets
   label: $\tau$-jets
   cuts: ["HadronGhostTruthLabelID == 15"]
   colour: tab:purple
   category: single-btag-ghost
+  _px: ptau
 
 # Xbb tagging
 - name: hbb
