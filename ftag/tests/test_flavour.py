@@ -25,6 +25,16 @@ def test_flavour_attributes():
     assert flavour.frac_str == "ftest"
     assert str(flavour) == "test"
 
+    flavour = Flavour(
+        name="test",
+        label="test_label",
+        cuts=[(1, 1), (2, 2)],
+        colour="test_colour",
+        category="test_category",
+        _px="ptestdefined",
+    )
+    assert flavour.px == "ptestdefined"
+
 
 def test_Flavours_iteration():
     for flavour in Flavours:
