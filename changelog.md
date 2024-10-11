@@ -2,6 +2,7 @@
 
 ### [Latest]
 
+- Added temporary discriminant for ghost jets [#99](https://github.com/umami-hep/atlas-ftag-tools/pull/99)
 - Bugfix for track_selector [#98](https://github.com/umami-hep/atlas-ftag-tools/pull/98)
 
 ### [v0.2.5]
