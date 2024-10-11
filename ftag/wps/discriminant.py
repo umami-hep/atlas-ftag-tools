@@ -52,7 +52,7 @@ def discriminant(
         denominator += jets[name] * fx if name in jets.dtype.names else 0
     signal_field = f"{tagger}_{signal.px}"
     if signal_field not in jets.dtype.names:
-        signal_field = f"p{remove_suffix(signal.name, 'jets')}"
+        signal_field = f"{tagger}_p{remove_suffix(signal.name, 'jets')}"
     return np.log((jets[signal_field] + epsilon) / (denominator + epsilon))
 
 
