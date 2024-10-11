@@ -22,7 +22,7 @@ class Flavour:
     cuts: Cuts
     colour: str
     category: str
-    _px: str = ""
+    _px: str | None = None
 
     @property
     def px(self) -> str:
