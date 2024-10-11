@@ -4,7 +4,7 @@ from typing import Callable
 
 import numpy as np
 
-from ftag.flavour import Flavour, Flavours
+from ftag.flavour import Flavour, Flavours, remove_suffix
 
 
 def discriminant(
@@ -50,7 +50,10 @@ def discriminant(
         if fx > 0 and name not in jets.dtype.names:
             raise ValueError(f"Nonzero fx for {d}, but '{name}' not found in input array.")
         denominator += jets[name] * fx if name in jets.dtype.names else 0
-    return np.log((jets[f"{tagger}_{signal.px}"] + epsilon) / (denominator + epsilon))
+    signal_field = f"{tagger}_{signal.px}"
+    if signal_field not in jets.dtype.names:
+        signal_field = f"{tagger}_p{remove_suffix(signal.name, 'jets')}"
+    return np.log((jets[signal_field] + epsilon) / (denominator + epsilon))
 
 
 def tautag_dicriminant(jets, tagger, fb, fc, epsilon=1e-10):
