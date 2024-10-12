@@ -94,6 +94,31 @@
   cuts: ["R10TruthLabel_R22v1 == 10"]
   colour: "#38761D"
   category: xbb
+- name: qcdbb
+  label: QCD->bb
+  cuts: ["R10TruthLabel_R22v1 == 10", "GhostBHadronsFinalCount == 2"]
+  colour: "red"
+  category: xbb
+- name: qcdnonbb
+  label: QCD
+  cuts: ["R10TruthLabel_R22v1 == 10", "GhostBHadronsFinalCount != 2"]
+  colour: "silver"
+  category: xbb
+- name: qcdbl
+  label: QCD
+  cuts: ["R10TruthLabel_R22v1 == 10", "GhostBHadronsFinalCount == 1"]
+  colour: "gold"
+  category: xbb
+- name: qcdcl
+  label: QCD
+  cuts: ["R10TruthLabel_R22v1 == 10", "GhostCHadronsFinalCount >= 1", "GhostBHadronsFinalCount == 0"]
+  colour: "pink"
+  category: xbb
+- name: qcdll
+  label: QCD
+  cuts: ["R10TruthLabel_R22v1 == 10", "GhostBHadronsFinalCount == 0", "GhostCHadronsFinalCount == 0"]
+  colour: "green"
+  category: xbb
 
 # extended Xbb tagging
 - name: tqqb
