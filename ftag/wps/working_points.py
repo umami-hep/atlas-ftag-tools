@@ -222,7 +222,6 @@ def setup_common_parts(args):
     var_ls = []
     for flav in flavs:
         var_ls.append(flav.cuts.variables)
-        var_ls
 
     all_vars = list(set(chain(*var_ls)))
     reader = H5Reader(args.ttbar)
