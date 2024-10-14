@@ -4,8 +4,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from ftag import Flavours
-from ftag.flavour import Flavour, FlavourContainer
+from ftag.flavour import Flavour, FlavourContainer, Flavours
 from ftag.hdf5 import join_structured_arrays, structured_from_dict
 
 
