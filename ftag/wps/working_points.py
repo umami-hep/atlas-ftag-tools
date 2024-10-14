@@ -219,10 +219,6 @@ def setup_common_parts(args):
     zprime_cuts = Cuts.from_list(args.zprime_cuts) + default_cuts
 
     # prepare to load jets
-    #var_ls = []
-    #for flav in flavs:
-    #    var_ls.append(flav.cuts.variables)
-
     var_ls = [flav.cuts.variables for flav in flavs]
     all_vars = list(set(chain(*var_ls)))
     reader = H5Reader(args.ttbar)
