@@ -3,11 +3,11 @@
 from __future__ import annotations
 
 import argparse
+from itertools import chain
 from pathlib import Path
 
 import numpy as np
 import yaml
-from itertools import chain
 
 from ftag.cli_utils import HelpFormatter
 from ftag.cuts import Cuts
