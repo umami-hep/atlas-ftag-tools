@@ -71,9 +71,9 @@ def test_labeller_property():
     flavours = ["bjets", "cjets"]
     labeller = Labeller(flavours)
     label_vars = labeller.variables
-    assert(label_vars == ["HadronConeExclTruthLabelID", "HadronConeExclTruthLabelID"])
+    assert label_vars == ["HadronConeExclTruthLabelID", "HadronConeExclTruthLabelID"]
 
     flavours = ["qcdbb"]
     labeller = Labeller(flavours)
     label_vars = labeller.variables
-    assert(label_vars == ["R10TruthLabel_R22v1", "GhostBHadronsFinalCount"])
+    assert label_vars == ["R10TruthLabel_R22v1", "GhostBHadronsFinalCount"]
