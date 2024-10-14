@@ -22,6 +22,7 @@ JET_VARS = [
     ("HadronConeExclTruthLabelID", "i4"),
     ("HadronConeExclTruthLabelPt", "f4"),
     ("R10TruthLabel_R22v1", "i4"),
+    ("GhostBHadronsFinalCount", "i4"),
     ("n_truth_promptLepton", "i4"),
     ("flavour_label", "i4"),
 ]
