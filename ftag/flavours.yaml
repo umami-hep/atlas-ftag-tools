@@ -104,12 +104,12 @@
   cuts: ["R10TruthLabel_R22v1 == 10", "GhostBHadronsFinalCount != 2"]
   colour: "silver"
   category: xbb
-- name: qcdbl
+- name: qcdbx
   label: QCD
   cuts: ["R10TruthLabel_R22v1 == 10", "GhostBHadronsFinalCount == 1"]
   colour: "gold"
   category: xbb
-- name: qcdcl
+- name: qcdcx
   label: QCD
   cuts: ["R10TruthLabel_R22v1 == 10", "GhostCHadronsFinalCount >= 1", "GhostBHadronsFinalCount == 0"]
   colour: "pink"
