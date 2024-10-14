@@ -67,13 +67,13 @@ def test_add_labels(jets):
     with pytest.raises(ValueError, match="Cannot add labels if require_labels is set to False"):
         labeller.add_labels(jets)
 
-def test_labeller_property(jets):
+def test_labeller_property():
     flavours = ["bjets", "cjets"]
     labeller = Labeller(flavours)
-    vars = labeller.variables
-    assert(vars == ["HadronConeExclTruthLabelID", "HadronConeExclTruthLabelID"])
+    label_vars = labeller.variables
+    assert(label_vars == ["HadronConeExclTruthLabelID", "HadronConeExclTruthLabelID"])
 
     flavours = ["qcdbb"]
     labeller = Labeller(flavours)
-    vars = labeller.variables
-    assert(vars == ["R10TruthLabel_R22v1", "GhostBHadronsFinalCount"])
+    label_vars = labeller.variables
+    assert(label_vars == ["R10TruthLabel_R22v1", "GhostBHadronsFinalCount"])
