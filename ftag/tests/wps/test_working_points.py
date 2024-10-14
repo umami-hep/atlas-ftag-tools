@@ -11,7 +11,8 @@ from ftag.wps.working_points import main
 
 @pytest.fixture
 def test_file():
-    return get_mock_file(10_000)[0]
+    mock = get_mock_file(10_000)[0]
+    return mock
 
 
 @pytest.fixture

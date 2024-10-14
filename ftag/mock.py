@@ -23,6 +23,7 @@ JET_VARS = [
     ("HadronConeExclTruthLabelPt", "f4"),
     ("R10TruthLabel_R22v1", "i4"),
     ("GhostBHadronsFinalCount", "i4"),
+    ("GhostCHadronsFinalCount", "i4"),
     ("n_truth_promptLepton", "i4"),
     ("flavour_label", "i4"),
 ]
@@ -100,6 +101,8 @@ def mock_jets(num_jets=1000) -> np.ndarray:
 
     # add tagger scores
     jets["HadronConeExclTruthLabelID"] = rng.choice([0, 4, 5, 15], size=num_jets)
+    jets["GhostBHadronsFinalCount"] = rng.choice([0, 1, 2], size=num_jets)
+    jets["GhostCHadronsFinalCount"] = rng.choice([0, 1, 2], size=num_jets)
     jets["R10TruthLabel_R22v1"] = rng.choice([1, 10, 11, 12], size=num_jets)
     scores = get_mock_scores(jets["HadronConeExclTruthLabelID"])
     xbb_scores = get_mock_scores(jets["R10TruthLabel_R22v1"], is_xbb=True)

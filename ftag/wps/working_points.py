@@ -7,6 +7,7 @@ from pathlib import Path
 
 import numpy as np
 import yaml
+from itertools import chain
 
 from ftag.cli_utils import HelpFormatter
 from ftag.cuts import Cuts
@@ -218,7 +219,12 @@ def setup_common_parts(args):
     zprime_cuts = Cuts.from_list(args.zprime_cuts) + default_cuts
 
     # prepare to load jets
-    all_vars = next(iter(flavs)).cuts.variables
+    var_ls = []
+    for flav in flavs:
+        var_ls.append(flav.cuts.variables)
+        var_ls
+
+    all_vars = list(set(chain(*var_ls)))
     reader = H5Reader(args.ttbar)
     jet_vars = reader.dtypes()["jets"].names
     for tagger in args.tagger:
