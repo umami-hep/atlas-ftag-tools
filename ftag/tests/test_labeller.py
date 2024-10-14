@@ -67,6 +67,7 @@ def test_add_labels(jets):
     with pytest.raises(ValueError, match="Cannot add labels if require_labels is set to False"):
         labeller.add_labels(jets)
 
+
 def test_labeller_property():
     flavours = ["bjets", "cjets"]
     labeller = Labeller(flavours)
