@@ -4,8 +4,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from ftag import Flavours
-from ftag.flavour import Flavour, FlavourContainer
+from ftag.flavour import Flavour, FlavourContainer, Flavours
 from ftag.hdf5 import join_structured_arrays, structured_from_dict
 
 
@@ -26,6 +25,10 @@ class Labeller:
 
     labels: FlavourContainer | list[str | Flavour]
     require_labels: bool = True
+
+    @property
+    def variables(self):
+        return sum((label.cuts.variables for label in self.labels), [])
 
     def __post_init__(self) -> None:
         if isinstance(self.labels, FlavourContainer):
