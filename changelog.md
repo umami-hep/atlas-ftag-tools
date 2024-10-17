@@ -2,6 +2,10 @@
 
 ### [Latest]
 
+- Remove docker build workflow
+
+### [v0.2.6]
+
 - Add optional _px variable for ghost jets [#94](https://github.com/umami-hep/atlas-ftag-tools/pull/94)
 - Added temporary discriminant for ghost jets [#99](https://github.com/umami-hep/atlas-ftag-tools/pull/99)
 - Bugfix for track_selector [#98](https://github.com/umami-hep/atlas-ftag-tools/pull/98)
