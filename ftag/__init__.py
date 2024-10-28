@@ -6,6 +6,7 @@ __version__ = "v0.2.6"
 
 from ftag import hdf5
 from ftag.cuts import Cuts
+from ftag.flavours import Flavours
 from ftag.labeller import Labeller
 from ftag.labels import Label, LabelContainer
 from ftag.mock import get_mock_file
@@ -14,11 +15,11 @@ from ftag.transform import Transform
 from ftag.wps.discriminant import get_discriminant
 from ftag.wps.working_points import get_working_points
 
-Flavours = LabelContainer.from_yaml()
 __all__ = [
     "Cuts",
     "Flavours",
     "Label",
+    "LabelContainer",
     "Labeller",
     "Sample",
     "Transform",
