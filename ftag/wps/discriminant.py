@@ -4,13 +4,14 @@ from typing import Callable
 
 import numpy as np
 
-from ftag.flavour import Flavour, Flavours, remove_suffix
+from ftag import Flavours
+from ftag.labels import Label, remove_suffix
 
 
 def discriminant(
     jets: np.ndarray,
     tagger: str,
-    signal: Flavour,
+    signal: Label,
     fxs: dict[str, float],
     epsilon: float = 1e-10,
 ) -> np.ndarray:
@@ -87,7 +88,7 @@ def hcc_discriminant(jets, tagger, ftop=0.25, fhbb=0.3, epsilon=1e-10):
 
 
 def get_discriminant(
-    jets: np.ndarray, tagger: str, signal: Flavour | str, epsilon: float = 1e-10, **fxs
+    jets: np.ndarray, tagger: str, signal: Label | str, epsilon: float = 1e-10, **fxs
 ):
     """Calculate the b-tag or c-tag discriminant for a given tagger.
 
@@ -97,7 +98,7 @@ def get_discriminant(
         Structured array of jets containing tagger outputs
     tagger : str
         Name of the tagger
-    signal : Flavour
+    signal : Label
         Signal flavour (bjets/cjets or hbb/hcc)
     epsilon : float, optional
         Small number to avoid division by zero, by default 1e-10

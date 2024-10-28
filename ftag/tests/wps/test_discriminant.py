@@ -3,7 +3,7 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from ftag.flavour import Flavours
+from ftag import Flavours
 from ftag.wps.discriminant import (
     btag_discriminant,
     ctag_discriminant,

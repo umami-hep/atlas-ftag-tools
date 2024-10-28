@@ -3,8 +3,9 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from ftag import Flavour, Flavours
+from ftag import Flavours
 from ftag.labeller import Labeller
+from ftag.labels import Label
 from ftag.mock import mock_jets
 
 
@@ -15,23 +16,23 @@ def jets():
 
 
 def test_initialization():
-    flavours = Flavours.by_category("single-btag")
-    labeller = Labeller(flavours)
+    labels = Flavours.by_category("single-btag")
+    labeller = Labeller(labels)
     assert len(labeller.labels) == 4
-    assert all(isinstance(f, Flavour) for f in labeller.labels)
+    assert all(isinstance(f, Label) for f in labeller.labels)
 
-    flavours = ["bjets", "cjets"]
-    labeller = Labeller(flavours)
+    labels = ["bjets", "cjets"]
+    labeller = Labeller(labels)
     assert len(labeller.labels) == 2
-    assert all(isinstance(f, Flavour) for f in labeller.labels)
+    assert all(isinstance(f, Label) for f in labeller.labels)
 
-    with pytest.raises(KeyError, match="Flavour 'nonexistent' not found"):
+    with pytest.raises(KeyError, match="Label 'nonexistent' not found"):
         Labeller(["nonexistent"])
 
 
 def test_get_labels_valid_input(jets):
-    flavours = ["bjets", "cjets", "ujets", "taujets"]
-    labeller = Labeller(flavours)
+    labels = ["bjets", "cjets", "ujets", "taujets"]
+    labeller = Labeller(labels)
     labels = labeller.get_labels(jets)
 
     expected = np.zeros(len(jets), dtype=int)
@@ -44,26 +45,26 @@ def test_get_labels_valid_input(jets):
 
 
 def test_get_labels_unlabelled_objects(jets):
-    flavours = ["bjets"]
-    labeller = Labeller(flavours, require_labels=True)
+    labels = ["bjets"]
+    labeller = Labeller(labels, require_labels=True)
     with pytest.raises(ValueError, match="Some objects were not labelled"):
         labeller.get_labels(jets)
 
-    labeller = Labeller(flavours, require_labels=False)
-    labels = labeller.get_labels(jets)
+    labeller = Labeller(labels, require_labels=False)
+    ys = labeller.get_labels(jets)
     sel_jets = jets[jets["HadronConeExclTruthLabelID"] == 5]
-    assert len(labels) == len(sel_jets)
-    assert np.all(labels == 0)
+    assert len(ys) == len(sel_jets)
+    assert np.all(ys == 0)
 
 
 def test_add_labels(jets):
-    flavours = ["bjets", "cjets", "ujets", "taujets"]
-    labeller = Labeller(flavours)
+    labels = ["bjets", "cjets", "ujets", "taujets"]
+    labeller = Labeller(labels)
     jets = labeller.add_labels(jets)
-    labels = labeller.get_labels(jets)
-    assert np.array_equal(jets["labels"], labels)
+    ys = labeller.get_labels(jets)
+    assert np.array_equal(jets["labels"], ys)
 
-    labeller = Labeller(flavours, require_labels=False)
+    labeller = Labeller(labels, require_labels=False)
     with pytest.raises(ValueError, match="Cannot add labels if require_labels is set to False"):
         labeller.add_labels(jets)
 
