@@ -4,7 +4,7 @@ import glob
 from dataclasses import dataclass
 from pathlib import Path
 
-from ftag.flavour import remove_suffix
+from ftag.labels import remove_suffix
 from ftag.vds import create_virtual_file
 
 

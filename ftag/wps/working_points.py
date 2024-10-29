@@ -8,9 +8,9 @@ from pathlib import Path
 import numpy as np
 import yaml
 
+from ftag import Flavours
 from ftag.cli_utils import HelpFormatter
 from ftag.cuts import Cuts
-from ftag.flavour import Flavours
 from ftag.hdf5 import H5Reader
 from ftag.wps.discriminant import get_discriminant
 
