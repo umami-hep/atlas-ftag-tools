@@ -13,8 +13,10 @@ class Sample:
     pattern: Path | str | tuple[Path | str, ...]
     ntuple_dir: Path | str | None = None
     name: str | None = None
+    weights : list[float] | None = None
 
     def __post_init__(self) -> None:
+        object.__setattr__(self, 'weights', tuple(self.weights) if self.weights is not None else None)
         if not self.pattern:
             raise ValueError("Sample pattern cannot be empty")
         if "*" in str(self.pattern) and not self.files:
