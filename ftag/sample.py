@@ -18,7 +18,7 @@ class Sample:
     def __post_init__(self) -> None:
         object.__setattr__(
             self, 'weights', tuple(self.weights) if self.weights is not None else None
-            )
+        )
         if not self.pattern:
             raise ValueError("Sample pattern cannot be empty")
         if "*" in str(self.pattern) and not self.files:
