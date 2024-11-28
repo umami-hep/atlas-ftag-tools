@@ -5,8 +5,8 @@ from dataclasses import dataclass
 import numpy as np
 
 from ftag import Flavours
-from ftag.flavour import Flavour, FlavourContainer
 from ftag.hdf5 import join_structured_arrays, structured_from_dict
+from ftag.labels import Label, LabelContainer
 
 
 @dataclass
@@ -14,23 +14,35 @@ class Labeller:
     """
     Defines a labelling scheme.
 
-    Labels are [0, ..., n] and are assigned using pre-defined selections.
+    Classes are assigned integer labels in [0, ..., n] based on pre-defined selections.
 
     Parameters
     ----------
-    labels : FlavourContainer | list[str | Flavour]
+    labels : LabelContainer | list[str | Label]
         The labels to be use.
     require_labels : bool
         Whether to require that all objects are labelled.
     """
 
-    labels: FlavourContainer | list[str | Flavour]
+    labels: LabelContainer | list[str | Label]
     require_labels: bool = True
 
     def __post_init__(self) -> None:
-        if isinstance(self.labels, FlavourContainer):
+        if isinstance(self.labels, LabelContainer):
             self.labels = list(self.labels)
         self.labels = sorted([Flavours[label] for label in self.labels])
+
+    @property
+    def variables(self) -> list[str]:
+        """
+        Returns the variables used for labelling.
+
+        Returns
+        -------
+        list[str]
+            The variables used for labelling.
+        """
+        return sum((label.cuts.variables for label in self.labels), [])  # type: ignore[union-attr]
 
     def get_labels(self, array: np.ndarray) -> np.ndarray:
         """

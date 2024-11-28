@@ -8,9 +8,9 @@ from pathlib import Path
 import numpy as np
 import yaml
 
+from ftag import Flavours
 from ftag.cli_utils import HelpFormatter
 from ftag.cuts import Cuts
-from ftag.flavour import Flavours
 from ftag.hdf5 import H5Reader
 from ftag.wps.discriminant import get_discriminant
 
@@ -218,7 +218,7 @@ def setup_common_parts(args):
     zprime_cuts = Cuts.from_list(args.zprime_cuts) + default_cuts
 
     # prepare to load jets
-    all_vars = next(iter(flavs)).cuts.variables
+    all_vars = list(set(sum((flav.cuts.variables for flav in flavs), [])))
     reader = H5Reader(args.ttbar)
     jet_vars = reader.dtypes()["jets"].names
     for tagger in args.tagger:

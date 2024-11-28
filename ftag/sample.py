@@ -4,7 +4,7 @@ import glob
 from dataclasses import dataclass
 from pathlib import Path
 
-from ftag.flavour import remove_suffix
+from ftag.labels import remove_suffix
 from ftag.vds import create_virtual_file
 
 
@@ -13,6 +13,7 @@ class Sample:
     pattern: Path | str | tuple[Path | str, ...]
     ntuple_dir: Path | str | None = None
     name: str | None = None
+    weights: list[float] | None = None
 
     def __post_init__(self) -> None:
         if not self.pattern:

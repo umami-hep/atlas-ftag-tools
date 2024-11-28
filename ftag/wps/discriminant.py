@@ -4,13 +4,14 @@ from typing import Callable
 
 import numpy as np
 
-from ftag.flavour import Flavour, Flavours
+from ftag import Flavours
+from ftag.labels import Label, remove_suffix
 
 
 def discriminant(
     jets: np.ndarray,
     tagger: str,
-    signal: Flavour,
+    signal: Label,
     fxs: dict[str, float],
     epsilon: float = 1e-10,
 ) -> np.ndarray:
@@ -50,7 +51,10 @@ def discriminant(
         if fx > 0 and name not in jets.dtype.names:
             raise ValueError(f"Nonzero fx for {d}, but '{name}' not found in input array.")
         denominator += jets[name] * fx if name in jets.dtype.names else 0
-    return np.log((jets[f"{tagger}_{signal.px}"] + epsilon) / (denominator + epsilon))
+    signal_field = f"{tagger}_{signal.px}"
+    if signal_field not in jets.dtype.names:
+        signal_field = f"{tagger}_p{remove_suffix(signal.name, 'jets')}"
+    return np.log((jets[signal_field] + epsilon) / (denominator + epsilon))
 
 
 def tautag_dicriminant(jets, tagger, fb, fc, epsilon=1e-10):
@@ -61,6 +65,11 @@ def tautag_dicriminant(jets, tagger, fb, fc, epsilon=1e-10):
 def btag_discriminant(jets, tagger, fc, ftau=0, epsilon=1e-10):
     fxs = {"pc": fc, "ptau": ftau, "pu": 1 - fc - ftau}
     return discriminant(jets, tagger, Flavours.bjets, fxs, epsilon=epsilon)
+
+
+def ghostbtag_discriminant(jets, tagger, fc, ftau=0, epsilon=1e-10):
+    fxs = {"pghostc": fc, "pghosttau": ftau, "pghostu": 1 - fc - ftau}
+    return discriminant(jets, tagger, Flavours.ghostbjets, fxs, epsilon=epsilon)
 
 
 def ctag_discriminant(jets, tagger, fb, ftau=0, epsilon=1e-10):
@@ -79,7 +88,7 @@ def hcc_discriminant(jets, tagger, ftop=0.25, fhbb=0.3, epsilon=1e-10):
 
 
 def get_discriminant(
-    jets: np.ndarray, tagger: str, signal: Flavour | str, epsilon: float = 1e-10, **fxs
+    jets: np.ndarray, tagger: str, signal: Label | str, epsilon: float = 1e-10, **fxs
 ):
     """Calculate the b-tag or c-tag discriminant for a given tagger.
 
@@ -89,7 +98,7 @@ def get_discriminant(
         Structured array of jets containing tagger outputs
     tagger : str
         Name of the tagger
-    signal : Flavour
+    signal : Label
         Signal flavour (bjets/cjets or hbb/hcc)
     epsilon : float, optional
         Small number to avoid division by zero, by default 1e-10
@@ -112,6 +121,7 @@ def get_discriminant(
         "taujets": tautag_dicriminant,
         "hbb": hbb_discriminant,
         "hcc": hcc_discriminant,
+        "ghostbjets": ghostbtag_discriminant,
     }
 
     if str(signal) not in tagger_funcs:

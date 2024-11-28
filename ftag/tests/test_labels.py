@@ -2,46 +2,52 @@ from __future__ import annotations
 
 import pytest
 
+from ftag import Flavours
 from ftag.cuts import Cuts
-from ftag.flavour import (
-    Flavour,
-    FlavourContainer,
-    Flavours,
-    remove_suffix,
-)
+from ftag.labels import Label, LabelContainer, remove_suffix
 
 
-def test_flavour_attributes():
-    flavour = Flavour(
+def test_label_attributes():
+    label = Label(
         name="test",
         label="test_label",
         cuts=[(1, 1), (2, 2)],
         colour="test_colour",
         category="test_category",
     )
-    assert flavour.px == "ptest"
-    assert flavour.eff_str == "test_label efficiency"
-    assert flavour.rej_str == "test_label rejection"
-    assert flavour.frac_str == "ftest"
-    assert str(flavour) == "test"
+    assert label.px == "ptest"
+    assert label.eff_str == "test_label efficiency"
+    assert label.rej_str == "test_label rejection"
+    assert label.frac_str == "ftest"
+    assert str(label) == "test"
+
+    label = Label(
+        name="test",
+        label="test_label",
+        cuts=[(1, 1), (2, 2)],
+        colour="test_colour",
+        category="test_category",
+        _px="ptestdefined",
+    )
+    assert label.px == "ptestdefined"
 
 
 def test_Flavours_iteration():
-    for flavour in Flavours:
-        assert isinstance(flavour, Flavour)
+    for label in Flavours:
+        assert isinstance(label, Label)
 
 
 def test_Flavours_get_item():
-    flavour = Flavours["bjets"]
-    assert isinstance(flavour, Flavour)
-    flavour3 = Flavours[Flavours.bjets]
-    assert isinstance(flavour3, Flavour)
-    assert flavour == flavour3
+    label = Flavours["bjets"]
+    assert isinstance(label, Label)
+    label3 = Flavours[Flavours.bjets]
+    assert isinstance(label3, Label)
+    assert label == label3
 
 
 def test_Flavours_get_attr():
-    flavour = Flavours.bjets
-    assert isinstance(flavour, Flavour)
+    label = Flavours.bjets
+    assert isinstance(label, Label)
 
 
 def test_Flavours_contains():
@@ -51,7 +57,7 @@ def test_Flavours_contains():
 
 
 def test_Flavours_equals():
-    assert Flavours == FlavourContainer.from_list(Flavours)
+    assert Flavours == LabelContainer.from_list(Flavours)
     assert Flavours == [f.name for f in Flavours]
     assert Flavours != 1
 
@@ -72,15 +78,15 @@ def test_Flavours_categories():
 
 
 def test_Flavours_by_category():
-    for flavour in Flavours.by_category("single-btag"):
-        assert flavour.category == "single-btag"
+    for label in Flavours.by_category("single-btag"):
+        assert label.category == "single-btag"
 
 
 def test_Flavours_from_cuts():
     cuts = Cuts.from_list(["HadronConeExclTruthLabelID == 5"])
-    flavour = Flavours.from_cuts(cuts)
-    assert isinstance(flavour, Flavour)
-    assert flavour.name == "bjets"
+    label = Flavours.from_cuts(cuts)
+    assert isinstance(label, Label)
+    assert label.name == "bjets"
     with pytest.raises(KeyError):
         Flavours.from_cuts(["dummp == -1"])
 
@@ -93,21 +99,21 @@ def test_remove_suffix():
 def test_backgrounds():
     bjet_backgrounds = Flavours.backgrounds(Flavours.bjets)
     print(bjet_backgrounds)
-    assert bjet_backgrounds == FlavourContainer.from_list([
+    assert bjet_backgrounds == LabelContainer.from_list([
         Flavours.cjets,
         Flavours.ujets,
         Flavours.taujets,
     ])
 
     cjet_backgrounds = Flavours.backgrounds(Flavours.cjets)
-    assert cjet_backgrounds == FlavourContainer.from_list([
+    assert cjet_backgrounds == LabelContainer.from_list([
         Flavours.bjets,
         Flavours.ujets,
         Flavours.taujets,
     ])
 
-    bjet_background_no_light = Flavours.backgrounds(Flavours.bjets, keep_possible_signals=False)
-    assert bjet_background_no_light == FlavourContainer.from_list([
+    bjet_background_no_light = Flavours.backgrounds(Flavours.bjets, only_signals=False)
+    assert bjet_background_no_light == LabelContainer.from_list([
         Flavours.cjets,
         Flavours.taujets,
     ])

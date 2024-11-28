@@ -53,21 +53,25 @@
   cuts: ["HadronGhostTruthLabelID == 5"]
   colour: tab:blue
   category: single-btag-ghost
+  _px: pb
 - name: ghostcjets
   label: $c$-jets
   cuts: ["HadronGhostTruthLabelID == 4"]
   colour: tab:orange
   category: single-btag-ghost
+  _px: pc
 - name: ghostujets
   label: Light-jets
   cuts: ["HadronGhostTruthLabelID == 0"]
   colour: tab:green
   category: single-btag-ghost
+  _px: pu
 - name: ghosttaujets
   label: $\tau$-jets
   cuts: ["HadronGhostTruthLabelID == 15"]
   colour: tab:purple
   category: single-btag-ghost
+  _px: ptau
 
 
 # single b-tagging split (ghost association)
@@ -122,6 +126,31 @@
   label: QCD
   cuts: ["R10TruthLabel_R22v1 == 10"]
   colour: "#38761D"
+  category: xbb
+- name: qcdbb
+  label: QCD->bb
+  cuts: ["R10TruthLabel_R22v1 == 10", "GhostBHadronsFinalCount == 2"]
+  colour: "red"
+  category: xbb
+- name: qcdnonbb
+  label: QCD
+  cuts: ["R10TruthLabel_R22v1 == 10", "GhostBHadronsFinalCount != 2"]
+  colour: "silver"
+  category: xbb
+- name: qcdbx
+  label: QCD
+  cuts: ["R10TruthLabel_R22v1 == 10", "GhostBHadronsFinalCount == 1"]
+  colour: "gold"
+  category: xbb
+- name: qcdcx
+  label: QCD
+  cuts: ["R10TruthLabel_R22v1 == 10", "GhostCHadronsFinalCount >= 1", "GhostBHadronsFinalCount == 0"]
+  colour: "pink"
+  category: xbb
+- name: qcdll
+  label: QCD
+  cuts: ["R10TruthLabel_R22v1 == 10", "GhostBHadronsFinalCount == 0", "GhostCHadronsFinalCount == 0"]
+  colour: "green"
   category: xbb
 
 # extended Xbb tagging
