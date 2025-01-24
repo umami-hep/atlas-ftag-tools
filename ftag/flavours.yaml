@@ -272,7 +272,7 @@
   category: isolation
 - name: npxall
   label: non-prompt lepton
-  cuts: ["iffClass notin (2,3,4,11)"]
+  cuts: ["iffClass notin (0,1,2,3,4,11)"]
   colour: "#264653"
   category: isolation
 - name: npxtau
