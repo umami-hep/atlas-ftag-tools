@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-__version__ = "v0.2.7"
+__version__ = "v0.2.8"
 
 from ftag import hdf5
 from ftag.cuts import Cuts
