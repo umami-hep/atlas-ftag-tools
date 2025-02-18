@@ -2,6 +2,10 @@
 
 ### [Latest]
 
+### [v0.2.8]
+
+- Update isolation flavour labels [106](https://github.com/umami-hep/atlas-ftag-tools/pull/106)
+
 ### [v0.2.7]
 - Add weights to sample class [#104](https://github.com/umami-hep/atlas-ftag-tools/pull/104)
 - Rename flavours to labels [#103](https://github.com/umami-hep/atlas-ftag-tools/pull/103)
