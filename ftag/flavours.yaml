@@ -48,63 +48,42 @@
   category: single-btag-extended
 
 # single b-tagging (ghost association)
-- name: ghostbjets
+- name: ghostsplitbjets
   label: $b$-jets
   cuts: ["HadronGhostTruthLabelID == 5"]
   colour: tab:blue
   category: single-btag-ghost
   _px: pb
-- name: ghostcjets
+- name: ghostsplitcjets
   label: $c$-jets
   cuts: ["HadronGhostTruthLabelID == 4"]
   colour: tab:orange
   category: single-btag-ghost
   _px: pc
-- name: ghostujets
-  label: Light-jets
-  cuts: ["HadronGhostTruthLabelID == 0"]
+- name: ghostsplitsjets
+  label: $s$-jets
+  cuts: ["HadronGhostTruthLabelID == 0", "PartonTruthLabelID == 3"]
+  colour: tab:red
+  category: single-btag-ghost
+  _px: ps
+- name: ghostsplitudjets
+  label: Light-quark-jets
+  cuts: ["HadronGhostTruthLabelID == 0", "PartonTruthLabelID <= 2"]
   colour: tab:green
   category: single-btag-ghost
-  _px: pu
-- name: ghosttaujets
+  _px: pud
+- name: ghostsplitgjets
+  label: Gluon-jets
+  cuts: ["HadronGhostTruthLabelID == 0", "PartonTruthLabelID == 21"]
+  colour: tab:gray
+  category: single-btag-ghost
+  _px: pg
+- name: ghostsplittaujets
   label: $\tau$-jets
   cuts: ["HadronGhostTruthLabelID == 15"]
   colour: tab:purple
   category: single-btag-ghost
   _px: ptau
-
-
-# single b-tagging split (ghost association)
-- name: ghostsplitbjets
-  label: $b$-jets
-  cuts: ["HadronGhostTruthLabelID == 5"]
-  colour: tab:blue
-  category: single-btag-ghostsplit
-- name: ghostsplitcjets
-  label: $c$-jets
-  cuts: ["HadronGhostTruthLabelID == 4"]
-  colour: tab:orange
-  category: single-btag-ghostsplit
-- name: ghostsplitsjets
-  label: $s$-jets
-  cuts: ["HadronGhostTruthLabelID == 0", "PartonTruthLabelID == 3"]
-  colour: tab:red
-  category: single-btag-ghostsplit
-- name: ghostsplitudjets
-  label: Light-quark-jets
-  cuts: ["HadronGhostTruthLabelID == 0", "PartonTruthLabelID <= 2"]
-  colour: tab:green
-  category: single-btag-ghostsplit
-- name: ghostsplitgjets
-  label: Gluon-jets
-  cuts: ["HadronGhostTruthLabelID == 0", "PartonTruthLabelID == 21"]
-  colour: tab:gray
-  category: single-btag-ghostsplit
-- name: ghostsplittaujets
-  label: $\tau$-jets
-  cuts: ["HadronGhostTruthLabelID == 15"]
-  colour: tab:purple
-  category: single-btag-ghostsplit
 
 # Xbb tagging
 - name: hbb
