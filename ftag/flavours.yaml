@@ -48,37 +48,37 @@
   category: single-btag-extended
 
 # single b-tagging (ghost association)
-- name: ghostsplitbjets
+- name: ghostbjets
   label: $b$-jets
   cuts: ["HadronGhostTruthLabelID == 5"]
   colour: tab:blue
   category: single-btag-ghost
   _px: pb
-- name: ghostsplitcjets
+- name: ghostcjets
   label: $c$-jets
   cuts: ["HadronGhostTruthLabelID == 4"]
   colour: tab:orange
   category: single-btag-ghost
   _px: pc
-- name: ghostsplitsjets
+- name: ghostsjets
   label: $s$-jets
   cuts: ["HadronGhostTruthLabelID == 0", "PartonTruthLabelID == 3"]
   colour: tab:red
   category: single-btag-ghost
   _px: ps
-- name: ghostsplitudjets
+- name: ghostudjets
   label: Light-quark-jets
   cuts: ["HadronGhostTruthLabelID == 0", "PartonTruthLabelID <= 2"]
   colour: tab:green
   category: single-btag-ghost
   _px: pud
-- name: ghostsplitgjets
+- name: ghostgjets
   label: Gluon-jets
   cuts: ["HadronGhostTruthLabelID == 0", "PartonTruthLabelID == 21"]
   colour: tab:gray
   category: single-btag-ghost
   _px: pg
-- name: ghostsplittaujets
+- name: ghosttaujets
   label: $\tau$-jets
   cuts: ["HadronGhostTruthLabelID == 15"]
   colour: tab:purple
