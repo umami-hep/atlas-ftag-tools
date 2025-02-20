@@ -60,12 +60,24 @@
   colour: tab:orange
   category: single-btag-ghost
   _px: pc
-- name: ghostujets
-  label: Light-jets
-  cuts: ["HadronGhostTruthLabelID == 0"]
+- name: ghostsjets
+  label: $s$-jets
+  cuts: ["HadronGhostTruthLabelID == 0", "PartonTruthLabelID == 3"]
+  colour: tab:red
+  category: single-btag-ghost
+  _px: ps
+- name: ghostudjets
+  label: Light-quark-jets
+  cuts: ["HadronGhostTruthLabelID == 0", "PartonTruthLabelID <= 2"]
   colour: tab:green
   category: single-btag-ghost
-  _px: pu
+  _px: pud
+- name: ghostgjets
+  label: Gluon-jets
+  cuts: ["HadronGhostTruthLabelID == 0", "PartonTruthLabelID == 21"]
+  colour: tab:gray
+  category: single-btag-ghost
+  _px: pg
 - name: ghosttaujets
   label: $\tau$-jets
   cuts: ["HadronGhostTruthLabelID == 15"]
