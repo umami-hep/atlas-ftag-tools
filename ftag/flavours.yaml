@@ -131,17 +131,17 @@
   cuts: ["R10TruthLabel_R22v1 == 10", "GhostBHadronsFinalCount == 0", "GhostCHadronsFinalCount == 0"]
   colour: "green"
   category: xbb
-- name: htautauel
-  label: $H \rightarrow e\tau$
+- name: htauel
+  label: $H \rightarrow \tau e$
   cuts: ["R10TruthLabel_R22v1 == 14"]
   colour: "#b40612"
   category: xbb
-- name: htautaumu
-  label: $H \rightarrow \mu\tau$
+- name: htaumu
+  label: $H \rightarrow \tau\mu$
   cuts: ["R10TruthLabel_R22v1 == 15"]
   colour: "#b40657"
   category: xbb
-- name: htautauhad
+- name: htauhad
   label: $H \rightarrow \tau\tau$
   cuts: ["R10TruthLabel_R22v1 == 16"]
   colour: "#b406a0"
