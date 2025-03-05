@@ -54,33 +54,74 @@ TRACK_VARS = [
 ]
 
 
-def softmax(x, axis=None):
+def softmax(x: np.ndarray, axis: int | None = None) -> np.ndarray:
+    """Softmax function for numpy arrays.
+
+    Parameters
+    ----------
+    x : np.ndarray
+        Input array for the softmax
+    axis : int | None, optional
+        Axis along which the softmax is calculated, by default None
+
+    Returns
+    -------
+    np.ndarray
+        Output array with the softmax output
+    """
     e_x = np.exp(x - np.max(x, axis=axis, keepdims=True))
     return e_x / e_x.sum(axis=axis, keepdims=True)
 
 
-def get_mock_scores(labels: np.ndarray, is_xbb: bool = False):
-    means = [
-        [2, 0, 0, 0],
-        [0, 1, 0, 0],
-        [0, 0, 3.5, 0],
-        [0, 0, 0, 1],
-    ]
+def get_mock_scores(labels: np.ndarray, is_xbb: bool = False) -> np.ndarray:
     if not is_xbb:
         label_dict = {"u": 0, "c": 4, "b": 5, "tau": 15}
-        label_mapping = dict(zip(label_dict.values(), means))
-    else:
-        label_dict = {"hbb": 11, "hcc": 12, "top": 1, "qcd": 10}
-        label_mapping = dict(zip(label_dict.values(), means))
 
+    else:
+        label_dict = {
+            "hbb": 11,
+            "hcc": 12,
+            "top": 1,
+            "qcd": 10,
+            "htauel": 14,
+            "htaumu": 15,
+            "htauhad": 16,
+        }
+
+    # Set random seed
     rng = np.random.default_rng(42)
-    nclass = len(label_dict)
-    scores = np.zeros((len(labels), nclass))
-    scales = [1, 2.5, 5, 1]
+
+    # Set a list of possible means/scales
+    mean_scale_list = [1, 2, 2.5, 3.5]
+
+    # Get the number of classes
+    n_classes = len(label_dict)
+
+    # Init a scores array
+    scores = np.zeros((len(labels), n_classes))
+
+    # Generate means/scales
+    means = []
+    scales = []
+    for i in range(n_classes):
+        tmp_means = []
+        for j in range(n_classes):
+            tmp_means.append(
+                0 if j != i else mean_scale_list[np.random.randint(0, len(mean_scale_list))]
+            )
+        means.append(tmp_means)
+        scales.append(mean_scale_list[np.random.randint(0, len(mean_scale_list))])
+
+    # Map the labels to the means
+    label_mapping = dict(zip(label_dict.values(), means))
+
+    # Generate random mock scores
     for i, (label, count) in enumerate(zip(*np.unique(labels, return_counts=True))):
         scores[labels == label] = rng.normal(
-            loc=label_mapping[label], scale=scales[i], size=(count, nclass)
+            loc=label_mapping[label], scale=scales[i], size=(count, n_classes)
         )
+
+    # Pipe scores through softmax
     scores = softmax(scores, axis=1)
     name = "MockXbbTagger" if is_xbb else "MockTagger"
     cols = [f"{name}_p{x}" for x in label_dict]
@@ -103,7 +144,7 @@ def mock_jets(num_jets=1000) -> np.ndarray:
     jets["HadronConeExclTruthLabelID"] = rng.choice([0, 4, 5, 15], size=num_jets)
     jets["GhostBHadronsFinalCount"] = rng.choice([0, 1, 2], size=num_jets)
     jets["GhostCHadronsFinalCount"] = rng.choice([0, 1, 2], size=num_jets)
-    jets["R10TruthLabel_R22v1"] = rng.choice([1, 10, 11, 12], size=num_jets)
+    jets["R10TruthLabel_R22v1"] = rng.choice([1, 10, 11, 12, 14, 15, 16], size=num_jets)
     scores = get_mock_scores(jets["HadronConeExclTruthLabelID"])
     xbb_scores = get_mock_scores(jets["R10TruthLabel_R22v1"], is_xbb=True)
     return join_structured_arrays([jets, scores, xbb_scores])

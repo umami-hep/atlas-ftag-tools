@@ -11,12 +11,12 @@ from ftag.wps.working_points import main
 
 @pytest.fixture
 def test_file():
-    return get_mock_file(10_000)[0]
+    return get_mock_file(100_000)[0]
 
 
 @pytest.fixture
 def zprime_file():
-    return get_mock_file(10_000)[0]
+    return get_mock_file(100_000)[0]
 
 
 def test_get_working_points(test_file, eff_val="60"):
@@ -271,7 +271,7 @@ def test_get_rej_eff_at_disc_zprime(test_file, zprime_file, disc_vals=None):
         "--fc",
         "0.01",
         "-n",
-        "10_000",
+        "100_000",
     ]
     args.extend(["-d"] + [str(x) for x in disc_vals])
 
