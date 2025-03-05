@@ -105,10 +105,10 @@ def get_mock_scores(labels: np.ndarray, is_xbb: bool = False) -> np.ndarray:
     scales = []
     for i in range(n_classes):
         tmp_means = []
-        for j in range(n_classes):
-            tmp_means.append(
-                0 if j != i else mean_scale_list[np.random.randint(0, len(mean_scale_list))]
-            )
+        tmp_means = [
+            0 if j != i else mean_scale_list[np.random.randint(0, len(mean_scale_list))]
+            for j in range(n_classes)
+        ]
         means.append(tmp_means)
         scales.append(mean_scale_list[np.random.randint(0, len(mean_scale_list))])
 
