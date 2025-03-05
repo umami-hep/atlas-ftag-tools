@@ -35,6 +35,9 @@ def test_get_mock_file():
             "MockXbbTagger_phcc",
             "MockXbbTagger_ptop",
             "MockXbbTagger_pqcd",
+            "MockXbbTagger_phtauhad",
+            "MockXbbTagger_phtauel",
+            "MockXbbTagger_phtaumu",
         ]
     )
     assert all(jets["pt"] > 0)

@@ -2,9 +2,13 @@
 
 ### [Latest]
 
+- Fixing tests [#109](https://github.com/umami-hep/atlas-ftag-tools/pull/109)
+- Adding label for GN2XTau [#108](https://github.com/umami-hep/atlas-ftag-tools/pull/108)
+- Splitting light-jet class definition [#107](https://github.com/umami-hep/atlas-ftag-tools/pull/107)
+
 ### [v0.2.8]
 
-- Update isolation flavour labels [106](https://github.com/umami-hep/atlas-ftag-tools/pull/106)
+- Update isolation flavour labels [#106](https://github.com/umami-hep/atlas-ftag-tools/pull/106)
 
 ### [v0.2.7]
 - Add weights to sample class [#104](https://github.com/umami-hep/atlas-ftag-tools/pull/104)
