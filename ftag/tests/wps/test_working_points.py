@@ -537,6 +537,36 @@ def test_main_no_output_file(ttbar_file, zprime_file):
     assert out is not None
 
 
+def test_main_disc_cuts_no_output_file(ttbar_file, zprime_file):
+    """Minimal test for standard behaviour."""
+    args = [
+        "--category",
+        "single-btag",
+        "--signal",
+        "bjets",
+        "--fc",
+        "0.2",
+        "--fu",
+        "0.7",
+        "--ftau",
+        "0.1",
+        "--tagger",
+        "MockTagger",
+        "--ttbar",
+        ttbar_file,
+        "--zprime",
+        zprime_file,
+        "--disc_cuts",
+        "0",
+        "1",
+        "2",
+    ]
+
+    out = main(args=args)
+
+    assert out is not None
+
+
 def test_main_with_output_file(ttbar_file, zprime_file):
     """Minimal test for standard behaviour with outfile."""
     outfile = NamedTemporaryFile(suffix=".yaml", dir=mkdtemp()).name
