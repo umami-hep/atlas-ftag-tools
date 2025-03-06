@@ -2,6 +2,7 @@
 
 ### [Latest]
 
+- Adding new workingpoint calculation [#111](https://github.com/umami-hep/atlas-ftag-tools/pull/111)
 - Fixing tests [#109](https://github.com/umami-hep/atlas-ftag-tools/pull/109)
 - Adding label for GN2XTau [#108](https://github.com/umami-hep/atlas-ftag-tools/pull/108)
 - Splitting light-jet class definition [#107](https://github.com/umami-hep/atlas-ftag-tools/pull/107)
