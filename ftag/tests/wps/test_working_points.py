@@ -1,16 +1,29 @@
 from __future__ import annotations
 
-import tempfile
 from pathlib import Path
+from tempfile import NamedTemporaryFile, mkdtemp
+from types import SimpleNamespace
 
 import pytest
 
+from ftag import Flavours
+from ftag.hdf5 import H5Reader
 from ftag.mock import get_mock_file
-from ftag.wps.working_points import main
+from ftag.wps.working_points import (
+    get_discriminant,
+    get_eff_rej,
+    get_efficiencies,
+    get_fxs_from_args,
+    get_rej_eff_at_disc,
+    get_working_points,
+    main,
+    parse_args,
+    setup_common_parts,
+)
 
 
 @pytest.fixture
-def test_file():
+def ttbar_file():
     return get_mock_file(100_000)[0]
 
 
@@ -19,324 +32,540 @@ def zprime_file():
     return get_mock_file(100_000)[0]
 
 
-def test_get_working_points(test_file, eff_val="60"):
-    args = [
-        "--ttbar",
-        str(test_file),
-        "-t",
-        "MockTagger",
-        "--fc",
-        "0.01",
-        "-e",
-        eff_val,
-        "-n",
-        "10_000",
-    ]
-    output = main(args)
+def test_get_fxs_from_args():
+    """Test minimal scenario for get_fxs_from_args."""
+    flavours = Flavours.by_category("single-btag")
 
-    assert "MockTagger" in output
-    assert output["MockTagger"]["signal"] == "bjets"
-    assert output["MockTagger"]["fc"] == (0.01)
-    assert output["MockTagger"]["ftau"] == (0.00)
-    assert eff_val in output["MockTagger"]
-    assert "cut_value" in output["MockTagger"][eff_val]
-    assert "ttbar" in output["MockTagger"][eff_val]
-    assert "eff" in output["MockTagger"][eff_val]["ttbar"]
-    assert "rej" in output["MockTagger"][eff_val]["ttbar"]
-    assert output["MockTagger"][eff_val]["ttbar"]["eff"]["bjets"] == pytest.approx(
-        float(eff_val) / 100, rel=1e-2
+    # Prepare an argparse-like object
+    # signal is bjets
+    args = SimpleNamespace(
+        signal=flavours["bjets"],
+        fc=[0.2],
+        fu=[0.7],
+        ftau=[0.1],
+        tagger=["mytagger"],
     )
 
+    # Call the function
+    result = get_fxs_from_args(args=args, flavours=flavours)
 
-def test_get_working_points_rejection(test_file, rej_val="100"):
-    args = [
-        "--ttbar",
-        str(test_file),
-        "-t",
-        "MockTagger",
-        "--fc",
-        "0.01",
-        "-e",
-        rej_val,
-        "-n",
-        "10_000",
-        "-r",
-        "ujets",
-    ]
-    output = main(args)
+    # We expect a list with length = number of taggers (1).
+    # Each item is a dict with key 'fc' => 0.7
+    assert isinstance(result, list)
+    assert len(result) == 1
+    assert result[0] == {"fc": 0.2, "fu": 0.7, "ftau": 0.1}
 
-    assert "MockTagger" in output
-    assert output["MockTagger"]["signal"] == "bjets"
-    assert output["MockTagger"]["fc"] == (0.01)
-    assert output["MockTagger"]["ftau"] == (0.00)
-    assert rej_val in output["MockTagger"]
-    assert "cut_value" in output["MockTagger"][rej_val]
-    assert "ttbar" in output["MockTagger"][rej_val]
-    assert "eff" in output["MockTagger"][rej_val]["ttbar"]
-    assert "rej" in output["MockTagger"][rej_val]["ttbar"]
-    assert output["MockTagger"][rej_val]["ttbar"]["eff"]["ujets"] == pytest.approx(
-        1 / float(rej_val), rel=1e-1
+
+def test_get_eff_rej(ttbar_file):
+    """Test minimal scenario for get_eff_rej."""
+    flavours = Flavours.by_category("single-btag")
+    fraction_values = {
+        "fc": 0.2,
+        "fu": 0.7,
+        "ftau": 0.1,
+    }
+
+    # Setup the reading
+    reader = H5Reader(ttbar_file)
+    jets = reader.load()["jets"]
+
+    # Get the discriminant values
+    disc = get_discriminant(
+        jets=jets,
+        tagger="MockTagger",
+        signal=flavours["bjets"],
+        flavours=flavours,
+        fraction_values=fraction_values,
     )
 
-
-def test_get_working_points_cjets(test_file, eff_val="60"):
-    args = [
-        "--ttbar",
-        str(test_file),
-        "-t",
-        "MockTagger",
-        "-s",
-        "cjets",
-        "--fb",
-        "0.01",
-        "-e",
-        eff_val,
-        "-n",
-        "10_000",
-    ]
-    output = main(args)
-
-    assert "MockTagger" in output
-    assert output["MockTagger"]["signal"] == "cjets"
-    assert output["MockTagger"]["fb"] == 0.01
-    assert output["MockTagger"]["ftau"] == 0.00
-    assert eff_val in output["MockTagger"]
-    assert "cut_value" in output["MockTagger"][eff_val]
-    assert "ttbar" in output["MockTagger"][eff_val]
-    assert "eff" in output["MockTagger"][eff_val]["ttbar"]
-    assert "rej" in output["MockTagger"][eff_val]["ttbar"]
-    assert output["MockTagger"][eff_val]["ttbar"]["eff"]["cjets"] == pytest.approx(
-        float(eff_val) / 100, rel=1e-2
+    # Calculate efficiency/rejection
+    out = get_eff_rej(
+        jets=jets,
+        disc=disc,
+        wp=0,
+        flavours=flavours,
     )
 
+    assert "eff" in out
+    assert "rej" in out
+    for iter_flav in flavours:
+        assert iter_flav.name in out["eff"]
+        assert iter_flav.name in out["rej"]
 
-def test_get_working_points_zprime(test_file, zprime_file, eff_val="60"):
-    args = [
-        "--ttbar",
-        str(test_file),
-        "--zprime",
-        str(zprime_file),
-        "-t",
-        "MockTagger",
-        "--fc",
-        "0.15",
-        "-e",
-        eff_val,
-        "-n",
-        "10_000",
-    ]
-    output = main(args)
 
-    assert "MockTagger" in output
-    assert output["MockTagger"]["signal"] == "bjets"
-    assert output["MockTagger"]["fc"] == (0.15)
-    assert output["MockTagger"]["ftau"] == (0.00)
-    assert eff_val in output["MockTagger"]
-    assert "cut_value" in output["MockTagger"][eff_val]
-    assert "ttbar" in output["MockTagger"][eff_val]
-    assert "eff" in output["MockTagger"][eff_val]["ttbar"]
-    assert "rej" in output["MockTagger"][eff_val]["ttbar"]
-    assert "zprime" in output["MockTagger"][eff_val]
-    assert "eff" in output["MockTagger"][eff_val]["zprime"]
-    assert "rej" in output["MockTagger"][eff_val]["zprime"]
-    assert output["MockTagger"][eff_val]["ttbar"]["eff"]["bjets"] == pytest.approx(
-        float(eff_val) / 100, rel=1e-2
+def test_get_rej_eff_at_disc(ttbar_file):
+    """Test minimal scenario for get_rej_eff_at_disc."""
+    flavours = Flavours.by_category("single-btag")
+    fraction_values = {
+        "fc": 0.2,
+        "fu": 0.7,
+        "ftau": 0.1,
+    }
+
+    # Setup the reading
+    reader = H5Reader(ttbar_file)
+    jets = reader.load()["jets"]
+
+    out = get_rej_eff_at_disc(
+        jets=jets,
+        tagger="MockTagger",
+        signal=flavours["bjets"],
+        disc_cuts=[0, 1, 2],
+        flavours=flavours,
+        fraction_values=fraction_values,
     )
 
+    assert "0" in out
+    assert "1" in out
+    assert "2" in out
+    for iter_disc in ["0", "1", "2"]:
+        assert "eff" in out[iter_disc]
+        assert "rej" in out[iter_disc]
+        for iter_flav in flavours:
+            assert iter_flav.name in out[iter_disc]["eff"]
+            assert iter_flav.name in out[iter_disc]["rej"]
 
-def test_get_working_points_inc_tau(test_file, eff_val="60"):
+
+def test_setup_common_parts_with_zprime(ttbar_file, zprime_file):
+    """Test minimal scenario for setup_common_parts."""
+    # Prepare an argparse-like object
+    args = SimpleNamespace(
+        tagger=["MockTagger"],
+        category="single-btag",
+        ttbar=ttbar_file,
+        zprime=zprime_file,
+        num_jets=100_000,
+        ttbar_cuts=["pt > 20e3"],
+        zprime_cuts=["pt > 250e3"],
+    )
+
+    ttbar_jets, zprime_jets, flavours = setup_common_parts(args=args)
+
+    assert flavours == Flavours.by_category("single-btag")
+    assert ttbar_jets is not None
+    assert zprime_jets is not None
+
+
+def test_setup_common_parts_no_zprime(ttbar_file):
+    """Test minimal scenario for setup_common_parts."""
+    # Prepare an argparse-like object
+    args = SimpleNamespace(
+        tagger=["MockTagger"],
+        category="single-btag",
+        ttbar=ttbar_file,
+        zprime=None,
+        num_jets=100_000,
+        ttbar_cuts=["pt > 20e3"],
+        zprime_cuts=["pt > 250e3"],
+    )
+
+    ttbar_jets, zprime_jets, flavours = setup_common_parts(args=args)
+
+    assert flavours == Flavours.by_category("single-btag")
+    assert ttbar_jets is not None
+    assert zprime_jets is None
+
+
+def test_get_working_points_no_outfile_no_rejection(ttbar_file, zprime_file):
+    """Test minimal scenario for get_working_points."""
+    # Get Flavours for the single-btag category
+    flavours = Flavours.by_category("single-btag")
+
+    # Prepare an argparse-like object
+    args = SimpleNamespace(
+        fc=[0.2],
+        fu=[0.8],
+        ftau=[0.1],
+        tagger=["MockTagger"],
+        category="single-btag",
+        ttbar=ttbar_file,
+        zprime=zprime_file,
+        num_jets=100_000,
+        ttbar_cuts=["pt > 20e3"],
+        zprime_cuts=["pt > 250e3"],
+        signal=flavours["bjets"],
+        effs=[60, 70],
+        rejection=None,
+        outfile=None,
+    )
+
+    out = get_working_points(args=args)
+
+    assert "MockTagger" in out
+    for iter_var in ["signal", "fc", "fu", "ftau", "60", "70"]:
+        assert iter_var in out["MockTagger"]
+    assert out["MockTagger"]["signal"] == "bjets"
+    for wp_iter in ["60", "70"]:
+        for iter_var in ["cut_value", "ttbar", "zprime"]:
+            assert iter_var in out["MockTagger"][wp_iter]
+
+            if iter_var in {"ttbar", "zprime"}:
+                for eff_rej_iter in ["eff", "rej"]:
+                    assert eff_rej_iter in out["MockTagger"][wp_iter][iter_var]
+
+
+def test_get_working_points_no_outfile_with_rejection(ttbar_file, zprime_file):
+    """Test minimal scenario for get_working_points."""
+    # Get Flavours for the single-btag category
+    flavours = Flavours.by_category("single-btag")
+
+    # Prepare an argparse-like object
+    args = SimpleNamespace(
+        fc=[0.2],
+        fu=[0.8],
+        ftau=[0.1],
+        tagger=["MockTagger"],
+        category="single-btag",
+        ttbar=ttbar_file,
+        zprime=zprime_file,
+        num_jets=100_000,
+        ttbar_cuts=["pt > 20e3"],
+        zprime_cuts=["pt > 250e3"],
+        signal=flavours["bjets"],
+        effs=[60, 70],
+        rejection="cjets",
+        outfile=None,
+    )
+
+    out = get_working_points(args=args)
+
+    assert "MockTagger" in out
+    for iter_var in ["signal", "fc", "fu", "ftau", "60", "70"]:
+        assert iter_var in out["MockTagger"]
+    assert out["MockTagger"]["signal"] == "bjets"
+    for wp_iter in ["60", "70"]:
+        for iter_var in ["cut_value", "ttbar", "zprime"]:
+            assert iter_var in out["MockTagger"][wp_iter]
+
+            if iter_var in {"ttbar", "zprime"}:
+                for eff_rej_iter in ["eff", "rej"]:
+                    assert eff_rej_iter in out["MockTagger"][wp_iter][iter_var]
+
+
+def test_get_working_points_with_outfile_no_rejection(ttbar_file, zprime_file):
+    """Test minimal scenario for get_working_points."""
+    # Get Flavours for the single-btag category
+    flavours = Flavours.by_category("single-btag")
+    outfile = NamedTemporaryFile(suffix=".yaml", dir=mkdtemp()).name
+    outfile_path = Path(outfile)
+
+    # Prepare an argparse-like object
+    args = SimpleNamespace(
+        fc=[0.2],
+        fu=[0.8],
+        ftau=[0.1],
+        tagger=["MockTagger"],
+        category="single-btag",
+        ttbar=ttbar_file,
+        zprime=zprime_file,
+        num_jets=100_000,
+        ttbar_cuts=["pt > 20e3"],
+        zprime_cuts=["pt > 250e3"],
+        signal=flavours["bjets"],
+        effs=[60, 70],
+        rejection=None,
+        outfile=outfile,
+    )
+
+    out = get_working_points(args=args)
+
+    assert out is None
+    assert outfile_path.exists()
+
+
+def test_get_efficiencies_no_outfile_no_rejection(ttbar_file, zprime_file):
+    """Test minimal scenario for get_efficiencies."""
+    # Get Flavours for the single-btag category
+    flavours = Flavours.by_category("single-btag")
+
+    # Prepare an argparse-like object
+    args = SimpleNamespace(
+        fc=[0.2],
+        fu=[0.8],
+        ftau=[0.1],
+        tagger=["MockTagger"],
+        category="single-btag",
+        ttbar=ttbar_file,
+        zprime=zprime_file,
+        num_jets=100_000,
+        ttbar_cuts=["pt > 20e3"],
+        zprime_cuts=["pt > 250e3"],
+        signal=flavours["bjets"],
+        effs=[60, 70],
+        disc_cuts=[0, 1, 2],
+        rejection=None,
+        outfile=None,
+    )
+
+    out = get_efficiencies(args=args)
+
+    assert "MockTagger" in out
+    for iter_var in ["signal", "fc", "fu", "ftau", "ttbar", "zprime"]:
+        assert iter_var in out["MockTagger"]
+    assert out["MockTagger"]["signal"] == "bjets"
+    for sample_iter in ["ttbar", "zprime"]:
+        for disc_iter in ["0", "1", "2"]:
+            for iter_var in ["eff", "rej"]:
+                assert iter_var in out["MockTagger"][sample_iter][disc_iter]
+
+
+def test_get_efficiencies_no_outfile_with_rejection(ttbar_file, zprime_file):
+    """Test minimal scenario for get_efficiencies."""
+    # Get Flavours for the single-btag category
+    flavours = Flavours.by_category("single-btag")
+
+    # Prepare an argparse-like object
+    args = SimpleNamespace(
+        fc=[0.2],
+        fu=[0.8],
+        ftau=[0.1],
+        tagger=["MockTagger"],
+        category="single-btag",
+        ttbar=ttbar_file,
+        zprime=zprime_file,
+        num_jets=100_000,
+        ttbar_cuts=["pt > 20e3"],
+        zprime_cuts=["pt > 250e3"],
+        signal=flavours["bjets"],
+        effs=[60, 70],
+        disc_cuts=[0, 1, 2],
+        rejection="cjets",
+        outfile=None,
+    )
+
+    out = get_efficiencies(args=args)
+
+    assert "MockTagger" in out
+    for iter_var in ["signal", "fc", "fu", "ftau", "ttbar", "zprime"]:
+        assert iter_var in out["MockTagger"]
+    assert out["MockTagger"]["signal"] == "bjets"
+    for sample_iter in ["ttbar", "zprime"]:
+        for disc_iter in ["0", "1", "2"]:
+            for iter_var in ["eff", "rej"]:
+                assert iter_var in out["MockTagger"][sample_iter][disc_iter]
+
+
+def test_get_efficiencies_with_outfile_no_rejection(ttbar_file, zprime_file):
+    """Test minimal scenario for get_efficiencies."""
+    # Get Flavours for the single-btag category
+    flavours = Flavours.by_category("single-btag")
+    outfile = NamedTemporaryFile(suffix=".yaml", dir=mkdtemp()).name
+    outfile_path = Path(outfile)
+
+    # Prepare an argparse-like object
+    args = SimpleNamespace(
+        fc=[0.2],
+        fu=[0.8],
+        ftau=[0.1],
+        tagger=["MockTagger"],
+        category="single-btag",
+        ttbar=ttbar_file,
+        zprime=zprime_file,
+        num_jets=100_000,
+        ttbar_cuts=["pt > 20e3"],
+        zprime_cuts=["pt > 250e3"],
+        signal=flavours["bjets"],
+        effs=[60, 70],
+        disc_cuts=[0, 1, 2],
+        rejection=None,
+        outfile=outfile,
+    )
+
+    out = get_efficiencies(args=args)
+
+    assert out is None
+    assert outfile_path.exists()
+
+
+def test_parse_args_single_btag(ttbar_file):
+    """Minimal test for standard behaviour."""
     args = [
-        "--ttbar",
-        str(test_file),
-        "-t",
-        "MockTagger",
+        "--category",
+        "single-btag",
+        "--signal",
+        "bjets",
         "--fc",
-        "0.01",
+        "0.2",
+        "--fu",
+        "0.7",
         "--ftau",
-        "0.02",
-        "-e",
-        eff_val,
-        "-n",
-        "10_000",
-    ]
-    output = main(args)
-
-    assert "MockTagger" in output
-    assert output["MockTagger"]["signal"] == "bjets"
-    assert output["MockTagger"]["fc"] == (0.01)
-    assert output["MockTagger"]["ftau"] == (0.02)
-    assert eff_val in output["MockTagger"]
-    assert "cut_value" in output["MockTagger"][eff_val]
-    assert "ttbar" in output["MockTagger"][eff_val]
-    assert "eff" in output["MockTagger"][eff_val]["ttbar"]
-    assert "rej" in output["MockTagger"][eff_val]["ttbar"]
-    assert output["MockTagger"][eff_val]["ttbar"]["eff"]["bjets"] == pytest.approx(
-        float(eff_val) / 100, rel=1e-2
-    )
-
-
-def test_get_working_points_xbb(test_file, eff_val="60"):
-    # Assuming you're testing with two fx values for each tagger as required for Xbb
-    ftop_value = "0.25"
-    fhcc_value = "0.02"
-
-    args = [
-        "--ttbar",
-        str(test_file),
-        "-t",
-        "MockXbbTagger",
-        "--ftop",
-        ftop_value,
-        "--fhcc",
-        fhcc_value,
-        "-e",
-        eff_val,
-        "-n",
-        "10_000",
-        "--xbb",  # Enable Xbb tagging
-        "-s",
-        "hbb",  # Test for hbb signal
-    ]
-
-    output = main(args)
-
-    assert "MockXbbTagger" in output
-    assert output["MockXbbTagger"]["signal"] == "hbb"
-    assert output["MockXbbTagger"]["ftop"] == float(ftop_value)
-    assert output["MockXbbTagger"]["fhcc"] == float(fhcc_value)
-    assert eff_val in output["MockXbbTagger"]
-    assert "cut_value" in output["MockXbbTagger"][eff_val]
-    assert "ttbar" in output["MockXbbTagger"][eff_val]
-    assert "eff" in output["MockXbbTagger"][eff_val]["ttbar"]
-    assert "rej" in output["MockXbbTagger"][eff_val]["ttbar"]
-    assert output["MockXbbTagger"][eff_val]["ttbar"]["eff"]["hbb"] == pytest.approx(
-        float(eff_val) / 100, rel=1e-2
-    )
-
-
-def test_get_working_points_fx_length_check():
-    # test with incorrect length of fx values for regular b-tagging
-    with pytest.raises(ValueError):
-        main(["--ttbar", "path", "-t", "MockTagger", "--fc", "0.1", "0.2", "0.3"])
-
-    # test with incorrect length of fx values for Xbb tagging
-    with pytest.raises(ValueError):
-        main(["--ttbar", "path", "--xbb", "-t", "MockXbbTagger", "--fc", "0.25"])
-
-    with pytest.raises(ValueError):
-        main(["--ttbar", "path", "-t", "MockTagger", "--fc", "0.1", "0.2", "0.3", "-d", "1.0"])
-
-
-def test_get_rej_eff_at_disc_ttbar(test_file, disc_vals=None):
-    if disc_vals is None:
-        disc_vals = [1.0, 1.5]
-    args = [
-        "--ttbar",
-        str(test_file),
-        "-t",
+        "0.1",
+        "--tagger",
         "MockTagger",
-        "--fc",
-        "0.01",
-        "-n",
-        "10_000",
-    ]
-    args.extend(["-d"] + [str(x) for x in disc_vals])
-
-    output = main(args)
-
-    assert "MockTagger" in output
-    assert output["MockTagger"]["signal"] == "bjets"
-    assert output["MockTagger"]["fc"] == 0.01
-    assert output["MockTagger"]["ftau"] == 0.00
-    assert "ttbar" in output["MockTagger"]
-    ttbar = output["MockTagger"]["ttbar"]
-    for dval in disc_vals:
-        assert str(dval) in ttbar
-        assert "eff" in ttbar[str(dval)]
-        assert "rej" in ttbar[str(dval)]
-
-    assert "zprime" not in output["MockTagger"]
-
-
-def test_get_rej_eff_at_disc_zprime(test_file, zprime_file, disc_vals=None):
-    if disc_vals is None:
-        disc_vals = [1.0, 1.5]
-    args = [
         "--ttbar",
-        str(test_file),
-        "--zprime",
-        str(zprime_file),
-        "-t",
-        "MockTagger",
-        "--fc",
-        "0.01",
-        "-n",
-        "100_000",
+        ttbar_file,
+        "--effs",
+        "70",
     ]
-    args.extend(["-d"] + [str(x) for x in disc_vals])
 
-    output = main(args)
+    parsed_args = parse_args(args=args)
 
-    assert "MockTagger" in output
-    assert output["MockTagger"]["signal"] == "bjets"
-    assert output["MockTagger"]["fc"] == 0.01
-    assert output["MockTagger"]["ftau"] == 0.00
-    assert "ttbar" in output["MockTagger"]
-    assert "zprime" in output["MockTagger"]
-
-    ttbar = output["MockTagger"]["ttbar"]
-    zprime = output["MockTagger"]["zprime"]
-
-    for dval in disc_vals:
-        for out in [ttbar, zprime]:
-            assert str(dval) in out
-            assert "eff" in out[str(dval)]
-            assert "rej" in out[str(dval)]
+    assert parsed_args is not None
+    assert parsed_args.signal == Flavours["bjets"]
+    assert parsed_args.category == "single-btag"
 
 
-def test_output_file(test_file):
-    with tempfile.TemporaryDirectory() as tmpdir:
-        output = str(tmpdir) + "/output.yaml"
-        args = [
-            "--ttbar",
-            str(test_file),
-            "-t",
-            "MockTagger",
-            "--fc",
-            "0.01",
-            "-n",
-            "10_000",
-            "-d",
-            "1.0",
-            "-o",
-            str(output),
-        ]
+def test_parse_args_effs_and_disc_cuts(ttbar_file):
+    """Minimal test for ValueError of effs/disc_cuts."""
+    args = [
+        "--category",
+        "single-btag",
+        "--signal",
+        "bjets",
+        "--fc",
+        "0.2",
+        "--fu",
+        "0.7",
+        "--ftau",
+        "0.1",
+        "--tagger",
+        "MockTagger",
+        "--ttbar",
+        ttbar_file,
+        "--effs",
+        "70",
+        "--disc_cuts",
+        "50",
+    ]
 
-        main(args)
-        assert Path(output).exists()
+    with pytest.raises(ValueError, match="Cannot specify both --effs and --disc_cuts"):
+        parse_args(args=args)
 
 
-def test_wps_args_check(test_file):
-    base_args = ["--ttbar", str(test_file), "-t", "MockTagger", "--effs", "0.1"]
-    args = [*base_args, "--disc_cuts", "0.2"]
-    with pytest.raises(ValueError, match="both --effs and --disc_cuts"):
-        main(args)
+def test_parse_args_neither_effs_nor_disc_cuts(ttbar_file):
+    """Minimal test for ValueError of effs/disc_cuts."""
+    args = [
+        "--category",
+        "single-btag",
+        "--signal",
+        "bjets",
+        "--fc",
+        "0.2",
+        "--fu",
+        "0.7",
+        "--ftau",
+        "0.1",
+        "--tagger",
+        "MockTagger",
+        "--ttbar",
+        ttbar_file,
+    ]
 
-    args = [*base_args, "--fhcc", "0.2"]
-    with pytest.raises(ValueError, match="For single-b tagging, ftop, fhbb and fhcc should not"):
-        main(args)
+    with pytest.raises(ValueError, match="Must specify either --effs or --disc_cuts"):
+        parse_args(args=args)
 
-    base_args += ["--xbb"]
-    args = base_args
-    with pytest.raises(ValueError, match="Xbb tagging only supports hbb or hcc signal flavours"):
-        main(args)
 
-    args = [*base_args, "-s", "hbb", "--fc", "0.1"]
+def test_parse_args_unequal_number_of_fraction_values(ttbar_file):
+    """Minimal test for ValueError for unequal number of fraction values."""
+    args = [
+        "--category",
+        "single-btag",
+        "--signal",
+        "bjets",
+        "--fc",
+        "0.2",
+        "0.2",
+        "--fu",
+        "0.7",
+        "--ftau",
+        "0.1",
+        "--tagger",
+        "MockTagger",
+        "--ttbar",
+        ttbar_file,
+        "--effs",
+        "70",
+    ]
+
+    with pytest.raises(ValueError, match="Number of fc values must match number of taggers"):
+        parse_args(args=args)
+
+
+def test_parse_args_fraction_value_sum_unequal_to_one(ttbar_file):
+    """Minimal test for ValueError of the fraction value sum."""
+    args = [
+        "--category",
+        "single-btag",
+        "--signal",
+        "bjets",
+        "--fc",
+        "0.3",
+        "--fu",
+        "0.7",
+        "--ftau",
+        "0.1",
+        "--tagger",
+        "MockTagger",
+        "--ttbar",
+        ttbar_file,
+        "--effs",
+        "70",
+    ]
+
     with pytest.raises(
-        ValueError, match="For Xbb tagging, fb, fc and ftau should not be specified"
+        ValueError,
+        match=("Sum of the fraction values must be one! You gave " "1.1 for tagger MockTagger"),
     ):
-        main(args)
+        parse_args(args=args)
 
-    args = [*base_args, "-s", "hcc", "--fhcc", "0.25"]
-    with pytest.raises(ValueError, match="For Xbb tagging, ftop should be specified"):
-        main(args)
+
+def test_main_no_output_file(ttbar_file, zprime_file):
+    """Minimal test for standard behaviour."""
+    args = [
+        "--category",
+        "single-btag",
+        "--signal",
+        "bjets",
+        "--fc",
+        "0.2",
+        "--fu",
+        "0.7",
+        "--ftau",
+        "0.1",
+        "--tagger",
+        "MockTagger",
+        "--ttbar",
+        ttbar_file,
+        "--zprime",
+        zprime_file,
+        "--effs",
+        "70",
+    ]
+
+    out = main(args=args)
+
+    assert out is not None
+
+
+def test_main_with_output_file(ttbar_file, zprime_file):
+    """Minimal test for standard behaviour with outfile."""
+    outfile = NamedTemporaryFile(suffix=".yaml", dir=mkdtemp()).name
+    outfile_path = Path(outfile)
+
+    args = [
+        "--category",
+        "single-btag",
+        "--signal",
+        "bjets",
+        "--fc",
+        "0.2",
+        "--fu",
+        "0.7",
+        "--ftau",
+        "0.1",
+        "--tagger",
+        "MockTagger",
+        "--ttbar",
+        ttbar_file,
+        "--zprime",
+        zprime_file,
+        "--effs",
+        "70",
+        "--outfile",
+        outfile,
+    ]
+
+    out = main(args=args)
+
+    assert out is None
+    assert outfile_path.exists()
