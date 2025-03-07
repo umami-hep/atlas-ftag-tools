@@ -4,295 +4,199 @@ import numpy as np
 import pytest
 
 from ftag import Flavours
-from ftag.wps.discriminant import (
-    btag_discriminant,
-    ctag_discriminant,
-    get_discriminant,
-    ghostbtag_discriminant,
-    hbb_discriminant,
-    hcc_discriminant,
-    tautag_dicriminant,
-)
+from ftag.wps.discriminant import get_discriminant
 
 
-def test_btag_discriminant():
+def test_get_discriminant_nominal():
+    """
+    Test the nominal case, where all probability fields exist,
+    fraction values are nonzero, and the computation is straightforward.
+    """
+    # Get the flavours
+    flavours = Flavours.by_category("single-btag")
+    signal_flavour = flavours["bjets"]
+
+    # Define a simple structured array for jets
+    dtype = [
+        ("mytagger_pb", np.float64),
+        ("mytagger_pc", np.float64),
+        ("mytagger_pu", np.float64),
+        ("mytagger_ptau", np.float64),
+    ]
     jets = np.array(
         [
-            (0.2, 0.3, 0.9),
-            (0.8, 0.5, 0.1),
-            (0.6, 0.1, 0.7),
+            (0.1, 0.2, 0.6, 0.1),
+            (0.05, 0.1, 0.75, 0.1),
+            (0.3, 0.3, 0.3, 0.1),
         ],
-        dtype=[("tagger_pb", "f4"), ("tagger_pc", "f4"), ("tagger_pu", "f4")],
+        dtype=dtype,
     )
-    tagger = "tagger"
-    fc = 0.1
-    epsilon = 1e-10
-    disc = btag_discriminant(jets, tagger, fc, epsilon=epsilon)
-    pb, pc, pu = jets[f"{tagger}_pb"], jets[f"{tagger}_pc"], jets[f"{tagger}_pu"]
-    expected = np.log((pb + epsilon) / ((1.0 - fc) * pu + fc * pc + epsilon))
-    assert np.allclose(disc, expected)
 
+    # Fraction values for each flavour
+    fraction_values = {
+        "fc": 0.2,
+        "fu": 0.7,
+        "ftau": 0.1,
+    }
 
-def test_btag_discriminant_inc_tau():
-    jets = np.array(
-        [
-            (0.2, 0.3, 0.9, 0.1),
-            (0.8, 0.5, 0.1, 0.2),
-            (0.6, 0.1, 0.7, 0.3),
-        ],
-        dtype=[
-            ("tagger_pb", "f4"),
-            ("tagger_pc", "f4"),
-            ("tagger_pu", "f4"),
-            ("tagger_ptau", "f4"),
-        ],
+    # Compute discriminant (signal = bjets)
+    disc = get_discriminant(
+        jets=jets,
+        tagger="mytagger",
+        signal=signal_flavour,
+        flavours=flavours,
+        fraction_values=fraction_values,
+        epsilon=1e-10,
     )
-    tagger = "tagger"
-    fc = 0.1
 
-    epsilon = 1e-10
-    for ftau in (0, 0.2):
-        disc = btag_discriminant(jets, tagger, fc, ftau, epsilon=epsilon)
-        pb, pc, pu, ptau = (jets[f"{tagger}_p{f}"] for f in ("b", "c", "u", "tau"))
-        expected = np.log(
-            (pb + epsilon) / ((1.0 - fc - ftau) * pu + fc * pc + ftau * ptau + epsilon)
+    # By definition, discriminant = log( pb / (pc + pu ) ), ignoring epsilon for clarity
+    # We'll check the result using np.isclose for each row
+    expected = np.log([
+        0.1 / (0.2 * 0.2 + 0.7 * 0.6 + 0.1 * 0.1),
+        0.05 / (0.2 * 0.1 + 0.7 * 0.75 + 0.1 * 0.1),
+        0.3 / (0.2 * 0.3 + 0.7 * 0.3 + 0.1 * 0.1),
+    ])
+
+    assert np.allclose(disc, expected), f"Unexpected discriminant values: {disc}"
+
+
+def test_get_discriminant_with_epsilon():
+    """
+    Test that epsilon is used correctly by comparing the result
+    with a small 'pb' and zero denominator.
+    """
+    # Get the flavours
+    flavours = Flavours.by_category("single-btag")
+    signal_flavour = flavours["bjets"]
+
+    dtype = [
+        ("mytagger_pb", np.float64),
+        ("mytagger_pc", np.float64),
+        ("mytagger_pu", np.float64),
+        ("mytagger_ptau", np.float64),
+    ]
+    # Very small pb, zero denominator
+    jets = np.array([(1e-15, 0.0, 0.0, 0.0)], dtype=dtype)
+
+    fraction_values = {
+        "fc": 0.2,
+        "fu": 0.7,
+        "ftau": 0.1,
+    }
+
+    disc = get_discriminant(
+        jets=jets,
+        tagger="mytagger",
+        signal=signal_flavour,
+        flavours=flavours,
+        fraction_values=fraction_values,
+        epsilon=1e-10,
+    )
+
+    assert disc.shape == (1,)
+    assert abs(disc[0]) < 1e-4, f"Discriminant not close to zero, got {disc[0]}"
+
+
+def test_get_discriminant_zero_fraction():
+    """
+    Test that if one of the background flavours has zero fraction,
+    it is effectively skipped in the denominator.
+    """
+    # Get the flavours
+    flavours = Flavours.by_category("single-btag")
+    signal_flavour = flavours["bjets"]
+
+    dtype = [
+        ("mytagger_pb", np.float64),
+        ("mytagger_pc", np.float64),
+        ("mytagger_pu", np.float64),
+        ("mytagger_ptau", np.float64),
+    ]
+    jets = np.array([(0.1, 0.2, 0.6, 0.1), (0.2, 0.2, 0.5, 0.1)], dtype=dtype)
+
+    # Suppose we only want to consider cjets and light jets as the background
+    fraction_values = {
+        "fc": 0.2,
+        "fu": 0.8,
+        "ftau": 0.0,
+    }
+
+    disc = get_discriminant(
+        jets=jets,
+        tagger="mytagger",
+        signal=signal_flavour,
+        flavours=flavours,
+        fraction_values=fraction_values,
+        epsilon=1e-10,
+    )
+
+    # Now the denominator should only be pc and pu, ignoring ptau since fraction is 0
+    expected = np.log([0.1 / (0.2 * 0.2 + 0.8 * 0.6), 0.2 / (0.2 * 0.2 + 0.8 * 0.5)])
+    assert np.allclose(
+        disc, expected
+    ), f"Unexpected discriminant with zero-fraction skipping: {disc}"
+
+
+def test_get_discriminant_missing_signal_raises():
+    """Test that if the signal field is missing in the input array, a ValueError is raised."""
+    # Get the flavours
+    flavours = Flavours.by_category("single-btag")
+    signal_flavour = flavours["bjets"]
+
+    # Only background probabilities
+    dtype = [
+        ("mytagger_pc", np.float64),
+        ("mytagger_pu", np.float64),
+        ("mytagger_ptau", np.float64),
+    ]
+    jets = np.array([(0.2, 0.7, 0.1)], dtype=dtype)
+
+    fraction_values = {
+        "fc": 0.2,
+        "fu": 0.7,
+        "ftau": 0.1,
+    }
+
+    with pytest.raises(ValueError, match="Missing variable: mytagger_pb"):
+        get_discriminant(
+            jets=jets,
+            tagger="mytagger",
+            signal=signal_flavour,
+            flavours=flavours,
+            fraction_values=fraction_values,
         )
-        assert np.allclose(disc, expected)
 
 
-def test_no_tau_with_ftau():
-    jets = np.array(
-        [
-            (0.2, 0.3, 0.9),
-            (0.8, 0.5, 0.1),
-            (0.6, 0.1, 0.7),
-        ],
-        dtype=[("tagger_pb", "f4"), ("tagger_pc", "f4"), ("tagger_pu", "f4")],
-    )
-    tagger = "tagger"
-    fc = 0.1
-    ftau = 0.2
-    epsilon = 1e-10
+def test_get_discriminant_nonzero_fraction_but_missing_prob_raises():
+    """
+    If we have a nonzero fraction for a background flavour,
+    but the corresponding probability field is missing in jets,
+    the function should raise a ValueError.
+    """
+    # Get the flavours
+    flavours = Flavours.by_category("single-btag")
+    signal_flavour = flavours["bjets"]
 
-    with pytest.raises(ValueError):
-        btag_discriminant(jets, tagger, fc, ftau, epsilon=epsilon)
-    with pytest.raises(ValueError):
-        ctag_discriminant(jets, tagger, fc, ftau, epsilon=epsilon)
+    # This array only has b, c, and u probabilities, missing 'mytagger_ptau'
+    dtype = [
+        ("mytagger_pb", np.float64),
+        ("mytagger_pc", np.float64),
+        ("mytagger_pu", np.float64),
+    ]
+    jets = np.array([(0.2, 0.7, 0.1)], dtype=dtype)
 
+    # Nonzero fraction for 'ftau' but no 'mytagger_ptau' field
+    fraction_values = {
+        "fc": 0.2,
+        "fu": 0.7,
+        "ftau": 0.1,
+    }
 
-def test_ghostbtag_discriminant():
-    jets = np.array(
-        [
-            (0.2, 0.3, 0.9),
-            (0.8, 0.5, 0.1),
-            (0.6, 0.1, 0.7),
-        ],
-        dtype=[("tagger_pghostb", "f4"), ("tagger_pghostc", "f4"), ("tagger_pghostu", "f4")],
-    )
-    tagger = "tagger"
-    fc = 0.1
-    epsilon = 1e-10
-    disc = ghostbtag_discriminant(jets, tagger, fc, epsilon=epsilon)
-    pb, pc, pu = jets[f"{tagger}_pghostb"], jets[f"{tagger}_pghostc"], jets[f"{tagger}_pghostu"]
-    expected = np.log((pb + epsilon) / ((1.0 - fc) * pu + fc * pc + epsilon))
-    assert np.allclose(disc, expected)
-
-
-def test_ctag_discriminant():
-    jets = np.array(
-        [
-            (0.2, 0.3, 0.9),
-            (0.8, 0.5, 0.1),
-            (0.6, 0.1, 0.7),
-        ],
-        dtype=[("tagger_pb", "f4"), ("tagger_pc", "f4"), ("tagger_pu", "f4")],
-    )
-    tagger = "tagger"
-    fb = 0.2
-    epsilon = 1e-10
-    disc = ctag_discriminant(jets, tagger, fb, epsilon=epsilon)
-    pb, pc, pu = jets[f"{tagger}_pb"], jets[f"{tagger}_pc"], jets[f"{tagger}_pu"]
-    expected = np.log((pc + epsilon) / ((1.0 - fb) * pu + fb * pb + epsilon))
-    assert np.allclose(disc, expected)
-
-
-def test_tautag_discriminant():
-    jets = np.array(
-        [
-            (0.2, 0.3, 0.9, 0.1),
-            (0.8, 0.5, 0.1, 0.2),
-            (0.6, 0.1, 0.7, 0.3),
-        ],
-        dtype=[
-            ("tagger_pb", "f4"),
-            ("tagger_pc", "f4"),
-            ("tagger_pu", "f4"),
-            ("tagger_ptau", "f4"),
-        ],
-    )
-    tagger = "tagger"
-
-    epsilon = 1e-10
-    for fb in (0, 0.2):
-        for fc in (0, 0.2):
-            disc = tautag_dicriminant(jets, tagger, fb, fc, epsilon=epsilon)
-            pb, pc, pu, ptau = (jets[f"{tagger}_p{f}"] for f in ("b", "c", "u", "tau"))
-            expected = np.log(
-                (ptau + epsilon) / ((1.0 - fc - fb) * pu + fc * pc + fb * pb + epsilon)
-            )
-            assert np.allclose(disc, expected)
-
-
-def test_hbb_discriminant():
-    jets = np.array(
-        [
-            (0.2, 0.3, 0.1, 0.4),
-            (0.8, 0.5, 0.2, 0.3),
-            (0.6, 0.1, 0.6, 0.7),
-        ],
-        dtype=[
-            ("tagger_phbb", "f4"),
-            ("tagger_phcc", "f4"),
-            ("tagger_ptop", "f4"),
-            ("tagger_pqcd", "f4"),
-        ],
-    )
-    tagger = "tagger"
-    ftop = 0.25
-    fhcc = 0.02
-    epsilon = 1e-10
-    disc = hbb_discriminant(jets, tagger, ftop, fhcc, epsilon)
-    phbb, phcc, ptop, pqcd = (
-        jets[f"{tagger}_phbb"],
-        jets[f"{tagger}_phcc"],
-        jets[f"{tagger}_ptop"],
-        jets[f"{tagger}_pqcd"],
-    )
-    expected = np.log(phbb / (ftop * ptop + fhcc * phcc + (1 - ftop - fhcc) * pqcd + epsilon))
-    assert np.allclose(disc, expected)
-
-
-def test_hcc_discriminant():
-    jets = np.array(
-        [
-            (0.2, 0.3, 0.1, 0.4),
-            (0.8, 0.5, 0.2, 0.3),
-            (0.6, 0.1, 0.6, 0.7),
-        ],
-        dtype=[
-            ("tagger_phbb", "f4"),
-            ("tagger_phcc", "f4"),
-            ("tagger_ptop", "f4"),
-            ("tagger_pqcd", "f4"),
-        ],
-    )
-    tagger = "tagger"
-    ftop = 0.25
-    fhbb = 0.3
-    epsilon = 1e-10
-    disc = hcc_discriminant(jets, tagger, ftop, fhbb, epsilon)
-    phbb, phcc, ptop, pqcd = (
-        jets[f"{tagger}_phbb"],
-        jets[f"{tagger}_phcc"],
-        jets[f"{tagger}_ptop"],
-        jets[f"{tagger}_pqcd"],
-    )
-    expected = np.log(phcc / (ftop * ptop + fhbb * phbb + (1 - ftop - fhbb) * pqcd + epsilon))
-    assert np.allclose(disc, expected)
-
-
-def test_get_discriminant():
-    jets = np.array(
-        [
-            (0.2, 0.3, 0.5),
-            (0.8, 0.5, 0.1),
-            (0.6, 0.1, 0.7),
-        ],
-        dtype=[("tagger_pb", "f4"), ("tagger_pc", "f4"), ("tagger_pu", "f4")],
-    )
-    tagger = "tagger"
-    signal = Flavours.bjets
-    disc = get_discriminant(jets, tagger, signal, fc=0.1)
-    expected = btag_discriminant(jets, tagger, fc=0.1)
-    assert np.allclose(disc, expected)
-
-    signal = Flavours.cjets
-    disc = get_discriminant(jets, tagger, signal, fb=0.2)
-    expected = ctag_discriminant(jets, tagger, fb=0.2)
-    assert np.allclose(disc, expected)
-
-    jets = np.array(
-        [
-            (0.2, 0.3, 0.5),
-            (0.8, 0.5, 0.1),
-            (0.6, 0.1, 0.7),
-        ],
-        dtype=[("tagger_pghostb", "f4"), ("tagger_pghostc", "f4"), ("tagger_pghostu", "f4")],
-    )
-
-    tagger = "tagger"
-    signal = Flavours.ghostbjets
-    disc = get_discriminant(jets, tagger, signal, fc=0.1)
-    expected = ghostbtag_discriminant(jets, tagger, fc=0.1)
-    assert np.allclose(disc, expected)
-
-    jets = np.array(
-        [
-            (0.2, 0.3, 0.1, 0.4),
-            (0.8, 0.5, 0.2, 0.3),
-            (0.6, 0.1, 0.6, 0.7),
-        ],
-        dtype=[
-            ("tagger_phbb", "f4"),
-            ("tagger_phcc", "f4"),
-            ("tagger_ptop", "f4"),
-            ("tagger_pqcd", "f4"),
-        ],
-    )
-
-    signal = Flavours.hbb
-    disc = get_discriminant(jets, tagger, signal, ftop=0.2, fhcc=0.3)
-    expected = hbb_discriminant(jets, tagger, ftop=0.2, fhcc=0.3)
-    assert np.allclose(disc, expected)
-
-    signal = Flavours.hcc
-    disc = get_discriminant(jets, tagger, signal, ftop=0.2, fhbb=0.3)
-    expected = hcc_discriminant(jets, tagger, ftop=0.2, fhbb=0.3)
-    assert np.allclose(disc, expected)
-
-    with pytest.raises(ValueError):
-        get_discriminant(jets, tagger, "blah", ftop=0.2, fhcc=0.3)
-
-
-def test_get_discriminant_tau():
-    jets = np.array(
-        [
-            (0.2, 0.3, 0.5),
-            (0.8, 0.5, 0.1),
-            (0.6, 0.1, 0.7),
-        ],
-        dtype=[("tagger_pb", "f4"), ("tagger_pc", "f4"), ("tagger_pu", "f4")],
-    )
-
-    tagger = "tagger"
-    signal = Flavours.bjets
-    with pytest.raises(ValueError):
-        get_discriminant(jets, tagger, signal, fc=0.1, ftau=0.1)
-
-    jets = np.array(
-        [
-            (0.2, 0.3, 0.5, 0.1),
-            (0.8, 0.5, 0.1, 0.2),
-            (0.6, 0.1, 0.7, 0.3),
-        ],
-        dtype=[
-            ("tagger_pb", "f4"),
-            ("tagger_pc", "f4"),
-            ("tagger_pu", "f4"),
-            ("tagger_ptau", "f4"),
-        ],
-    )
-
-    disc = get_discriminant(jets, tagger, Flavours.bjets, fc=0.1, ftau=0.1)
-    expected = btag_discriminant(jets, tagger, fc=0.1, ftau=0.1)
-    assert np.allclose(disc, expected)
+    with pytest.raises(ValueError, match="Nonzero fraction value for taujets"):
+        get_discriminant(
+            jets=jets,
+            tagger="mytagger",
+            signal=signal_flavour,
+            flavours=flavours,
+            fraction_values=fraction_values,
+        )
