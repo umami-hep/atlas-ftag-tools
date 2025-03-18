@@ -2,6 +2,8 @@
 
 ### [Latest]
 
+### [v0.2.9]
+
 - Adding new workingpoint calculation [#111](https://github.com/umami-hep/atlas-ftag-tools/pull/111)
 - Fixing tests [#109](https://github.com/umami-hep/atlas-ftag-tools/pull/109)
 - Adding label for GN2XTau [#108](https://github.com/umami-hep/atlas-ftag-tools/pull/108)
