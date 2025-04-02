@@ -332,3 +332,19 @@
   cuts: ["iffClass == 0"]
   colour: tab:gray
   category: isolation
+# Trigger-Xbb tagging
+- name: dRMatchedHbb
+  label: $H \rightarrow b\bar{b}$
+  cuts: ["HadronConeExclExtendedTruthLabelID == 55", "n_truth_higgs > 0", "n_truth_top == 0"]
+  colour: tab:blue
+  category: trigger-xbb
+- name: dRMatchedTop
+  label: Inclusive Top
+  cuts: ["n_truth_higgs == 0", "n_truth_top > 0"]
+  colour: "#A300A3"
+  category: trigger-xbb
+- name: dRMatchedQCD
+  label: QCD
+  cuts: ["n_truth_higgs == 0", "n_truth_top == 0"]
+  colour: "#38761D"
+  category: trigger-xbb
