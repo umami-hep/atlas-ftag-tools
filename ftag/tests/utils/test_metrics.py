@@ -14,9 +14,82 @@ from ftag.utils.metrics import (
     calculate_rejection,
     calculate_rejection_error,
     get_discriminant,
+    save_divide,
 )
 
 set_log_level(logger, "DEBUG")
+
+
+class SaveDivideTestCase(unittest.TestCase):
+    """Test class for the save_divide function."""
+
+    def test_divide_float_no_zero(self):
+        """Test dividing two floats with no zero denominator."""
+        result = save_divide(10.0, 2.0)
+        self.assertEqual(result, 5.0, "Expected 10.0 / 2.0 to be 5.0")
+
+    def test_divide_float_with_zero_denominator(self):
+        """Test dividing two floats where denominator is zero."""
+        # The default is 1.0
+        result = save_divide(10.0, 0.0)
+        self.assertEqual(result, 1.0, "Expected default value for zero denominator")
+
+        # Custom default
+        result_custom_default = save_divide(10.0, 0.0, default=999.0)
+        self.assertEqual(
+            result_custom_default, 999.0, "Expected custom default value for zero denominator"
+        )
+
+    def test_divide_array_no_zero(self):
+        """Test dividing two arrays with no zero denominator."""
+        numerator = np.array([2, 4, 6])
+        denominator = np.array([1, 2, 3])
+        expected = np.array([2.0, 2.0, 2.0])
+        result = save_divide(numerator, denominator)
+        np.testing.assert_array_equal(result, expected, "Expected element-wise division result")
+
+    def test_divide_array_with_zero(self):
+        """Test dividing where some elements of the denominator are zero."""
+        numerator = np.array([10, 20, 0])
+        denominator = np.array([2, 0, 5])
+        expected = np.array([5.0, 1.0, 0.0])
+        result = save_divide(numerator, denominator)
+        np.testing.assert_array_almost_equal(
+            result, expected, err_msg="Unexpected element-wise division for zero denominators"
+        )
+
+    def test_divide_float_array(self):
+        """Test dividing a float by an array."""
+        numerator = 10.0
+        denominator = np.array([2, 0, 5])
+        expected = np.array([5.0, 1.0, 2.0])
+        result = save_divide(numerator, denominator)
+        np.testing.assert_array_almost_equal(
+            result, expected, err_msg="Unexpected division result for float / array"
+        )
+
+    def test_divide_array_float(self):
+        """Test dividing an array by a float."""
+        numerator = np.array([10, 20, 0])
+        denominator = 5.0
+        expected = np.array([2.0, 4.0, 0.0])
+        result = save_divide(numerator, denominator)
+        np.testing.assert_array_almost_equal(
+            result, expected, err_msg="Unexpected division result for array / float"
+        )
+
+    def test_output_shape_scalar(self):
+        """Test that output is a scalar float when both inputs are scalar."""
+        result = save_divide(5, 10)
+        self.assertIsInstance(result, float, "Expected output to be a float")
+        self.assertAlmostEqual(result, 0.5, msg="Expected 0.5 for 5/10")
+
+    def test_output_shape_array(self):
+        """Test that output is an array when either of the inputs is an array."""
+        numerator = np.array([1, 2, 3])
+        denominator = np.array([2, 4, 6])
+        result = save_divide(numerator, denominator)
+        self.assertIsInstance(result, np.ndarray, "Expected output to be a numpy array")
 
 
 class CalcEffTestCase(unittest.TestCase):
@@ -46,6 +119,15 @@ class CalcEffTestCase(unittest.TestCase):
         # the values here differ slightly from the values of the analytical integral,
         # since we use random numbers
         self.assertAlmostEqual(cut, 1.9956997)
+        self.assertAlmostEqual(bkg_eff, 0.02367)
+
+        # Test without returned cut values
+        bkg_eff = calculate_efficiency(
+            self.disc_sig,
+            self.disc_bkg,
+            target_eff=0.841345,
+            return_cuts=False,
+        )
         self.assertAlmostEqual(bkg_eff, 0.02367)
 
     def test_array_target(self):
@@ -84,6 +166,15 @@ class CalcRejTestCase(unittest.TestCase):
         self.assertAlmostEqual(cut, 1.9956997)
         self.assertAlmostEqual(bkg_rej, 1 / 0.02367)
 
+        # Test without returned cut values
+        bkg_rej = calculate_rejection(
+            self.disc_sig,
+            self.disc_bkg,
+            target_eff=0.841345,
+            return_cuts=False,
+        )
+        self.assertAlmostEqual(bkg_rej, 1 / 0.02367)
+
     def test_array_target(self):
         """Test efficiency and cut value calculation for list of target efficiencies."""
         # explanation is the same as above, now also cut the signal in the middle
@@ -96,6 +187,18 @@ class CalcRejTestCase(unittest.TestCase):
         )
         np.testing.assert_array_almost_equal(cut, np.array([1.9956997, 2.990996]))
         np.testing.assert_array_almost_equal(bkg_rej, 1 / np.array([0.02367, 0.00144]))
+
+    def test_with_smooth(self):
+        """Test efficiency and cut value calculation with smoothing."""
+        bkg_rej, cut = calculate_rejection(
+            self.disc_sig,
+            self.disc_bkg,
+            target_eff=[0.841345, 0.5],
+            return_cuts=True,
+            smooth=True,
+        )
+        np.testing.assert_array_almost_equal(cut, np.array([1.9956997, 2.990996]))
+        np.testing.assert_array_almost_equal(bkg_rej, np.array([237.052272, 499.639743]))
 
 
 class EffErrTestCase(unittest.TestCase):
@@ -120,6 +223,14 @@ class EffErrTestCase(unittest.TestCase):
         x_eff = np.array([0.25, 0.5, 0.75])
         error_eff = np.array([0.043301, 0.05, 0.043301])
         np.testing.assert_array_almost_equal(calculate_efficiency_error(x_eff, 100), error_eff)
+
+    def test_example_case_with_norm(self):
+        """Test calculate_efficiency_error function."""
+        x_eff = np.array([0.25, 0.5, 0.75])
+        error_eff = np.array([0.173205, 0.1, 0.057735])
+        np.testing.assert_array_almost_equal(
+            calculate_efficiency_error(x_eff, 100, norm=True), error_eff
+        )
 
 
 class RejErrTestCase(unittest.TestCase):
@@ -152,6 +263,14 @@ class RejErrTestCase(unittest.TestCase):
         x_rej = np.array([20, 50, 100])
         error_rej = np.array([8.717798, 35.0, 99.498744])
         np.testing.assert_array_almost_equal(calculate_rejection_error(x_rej, 100), error_rej)
+
+    def test_example_case_with_norm(self):
+        """Test calculate_rejection_error function."""
+        x_rej = np.array([20, 50, 100])
+        error_rej = np.array([0.43589, 0.7, 0.994987])
+        np.testing.assert_array_almost_equal(
+            calculate_rejection_error(x_rej, 100, norm=True), error_rej
+        )
 
 
 class GetDiscriminantTestCase(unittest.TestCase):
