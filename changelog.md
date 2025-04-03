@@ -2,6 +2,7 @@
 
 ### [Latest]
 
+- Add flavours for trigger Xbb tagging based on delta R matching [#115](https://github.com/umami-hep/atlas-ftag-tools/pull/115)
 - Moving big parts of the puma metrics into atlas-ftag-tools[#113](https://github.com/umami-hep/atlas-ftag-tools/pull/113)
 - Remove docker completely [#114](https://github.com/umami-hep/atlas-ftag-tools/pull/114)
 
