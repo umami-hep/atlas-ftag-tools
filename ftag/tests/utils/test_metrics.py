@@ -304,7 +304,7 @@ class GetDiscriminantTestCase(unittest.TestCase):
             "ftau": 0.1,
         }
 
-        with self.assertRaises(ValueError, match="Missing variable: mytagger_pb"):
+        with self.assertRaises(ValueError) as ctx:
             get_discriminant(
                 jets=jets,
                 tagger="mytagger",
@@ -312,6 +312,7 @@ class GetDiscriminantTestCase(unittest.TestCase):
                 flavours=flavours,
                 fraction_values=fraction_values,
             )
+        self.assertEqual("Missing variable: mytagger_pb", str(ctx.exception))
 
     def test_get_discriminant_nonzero_fraction_but_missing_prob_raises(self):
         """
@@ -338,7 +339,7 @@ class GetDiscriminantTestCase(unittest.TestCase):
             "ftau": 0.1,
         }
 
-        with self.assertRaises(ValueError, match="Nonzero fraction value for taujets"):
+        with self.assertRaises(ValueError) as ctx:
             get_discriminant(
                 jets=jets,
                 tagger="mytagger",
@@ -346,3 +347,4 @@ class GetDiscriminantTestCase(unittest.TestCase):
                 flavours=flavours,
                 fraction_values=fraction_values,
             )
+        self.assertEqual("Nonzero fraction value for taujets", str(ctx.context))
