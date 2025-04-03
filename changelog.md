@@ -2,6 +2,8 @@
 
 ### [Latest]
 
+- Add flavours for trigger Xbb tagging based on delta R matching [#115](https://github.com/umami-hep/atlas-ftag-tools/pull/115)
+
 ### [v0.2.9]
 
 - Adding new workingpoint calculation [#111](https://github.com/umami-hep/atlas-ftag-tools/pull/111)
