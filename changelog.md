@@ -3,6 +3,7 @@
 ### [Latest]
 
 - Moving big parts of the puma metrics into atlas-ftag-tools[#113](https://github.com/umami-hep/atlas-ftag-tools/pull/113)
+- Remove docker completely [#114](https://github.com/umami-hep/atlas-ftag-tools/pull/114)
 
 ### [v0.2.9]
 
