@@ -9,8 +9,9 @@ requires-python = ">=3.8,<3.12"
 
 dependencies = [
   "h5py>=3.0",
-  "numpy",
-  "PyYAML>=5.1"
+  "numpy>=2.2.3",
+  "PyYAML>=5.1",
+  "scipy>=1.15.2"
 ]
 
 [project.optional-dependencies]
@@ -30,12 +31,12 @@ dev = [
 
 [project.scripts]
 vds = "ftag.vds:main"
-wps = "ftag.wps.working_points:main"
+wps = "ftag.working_points:main"
 h5move = "ftag.hdf5.h5move:main"
 h5split = "ftag.hdf5.h5split:main"
 
 [tool.setuptools]
-packages = ["ftag", "ftag.hdf5", "ftag.wps"]
+packages = ["ftag", "ftag.hdf5", "ftag.utils"]
 include-package-data = true
 
 [tool.setuptools.dynamic]
@@ -58,7 +59,7 @@ lint.ignore = [
     "T201", "PLW1514", "PTH123", "RUF017", "PLR6301", "ISC001", "S307",
     "PT027", "NPY002", "PT009", "PLW1641", "PLR0904", "N817", "S603", "PD011",
     "S113", "TCH", "PT011", "PLR1702", "S108", "PTH207", "S607", "E203", "SIM115", "PLR0913",
-    "PLR0917"
+    "PLR0917", "A005"
 ]
 
 [tool.ruff.lint.flake8-pytest-style]

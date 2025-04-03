@@ -9,8 +9,8 @@ import pytest
 from ftag import Flavours
 from ftag.hdf5 import H5Reader
 from ftag.mock import get_mock_file
-from ftag.wps.working_points import (
-    get_discriminant,
+from ftag.utils import get_discriminant
+from ftag.working_points import (
     get_eff_rej,
     get_efficiencies,
     get_fxs_from_args,

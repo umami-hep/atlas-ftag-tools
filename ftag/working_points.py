@@ -14,7 +14,7 @@ from ftag import Flavours
 from ftag.cli_utils import HelpFormatter
 from ftag.cuts import Cuts
 from ftag.hdf5 import H5Reader
-from ftag.wps.discriminant import get_discriminant
+from ftag.utils import get_discriminant
 
 if TYPE_CHECKING:  # pragma: no cover
     from collections.abc import Sequence
