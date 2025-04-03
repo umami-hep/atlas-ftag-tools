@@ -2,6 +2,8 @@
 
 ### [Latest]
 
+- Remove docker completely [#114](https://github.com/umami-hep/atlas-ftag-tools/pull/114)
+
 ### [v0.2.9]
 
 - Adding new workingpoint calculation [#111](https://github.com/umami-hep/atlas-ftag-tools/pull/111)
