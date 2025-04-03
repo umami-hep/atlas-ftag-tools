@@ -73,7 +73,7 @@ def test_Flavours_categories():
         "lepton-decay",
         "PDGID",
         "isolation",
-        "trigger-xbb"
+        "trigger-xbb",
     ]
     assert Flavours.categories == target
 
