@@ -2,6 +2,8 @@
 
 ### [Latest]
 
+- Moving big parts of the puma metrics into atlas-ftag-tools[#113](https://github.com/umami-hep/atlas-ftag-tools/pull/113)
+
 ### [v0.2.9]
 
 - Adding new workingpoint calculation [#111](https://github.com/umami-hep/atlas-ftag-tools/pull/111)

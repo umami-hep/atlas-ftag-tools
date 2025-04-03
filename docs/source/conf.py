@@ -25,7 +25,7 @@ sys.path.insert(0, Path("../../ftag").resolve())
 # -- Project information -----------------------------------------------------
 
 project = "atlas-ftag-tools"
-_copyright = "2023, atlas-ftag-tools developers"
+_copyright = "2025, atlas-ftag-tools developers"
 author = "atlas-ftag-tools developers"
 
 # The full version, including alpha/beta/rc tags
