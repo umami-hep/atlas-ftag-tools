@@ -312,7 +312,11 @@ class GetDiscriminantTestCase(unittest.TestCase):
                 flavours=flavours,
                 fraction_values=fraction_values,
             )
-        self.assertEqual("Missing variable: mytagger_pb", str(ctx.exception))
+        self.assertEqual(
+            "No signal probability value(s) found for tagger mytagger. "
+            "Missing variable: mytagger_pb",
+            str(ctx.exception),
+        )
 
     def test_get_discriminant_nonzero_fraction_but_missing_prob_raises(self):
         """
@@ -347,4 +351,8 @@ class GetDiscriminantTestCase(unittest.TestCase):
                 flavours=flavours,
                 fraction_values=fraction_values,
             )
-        self.assertEqual("Nonzero fraction value for taujets", str(ctx.context))
+
+        self.assertEqual(
+            "Nonzero fraction value for taujets, but 'mytagger_ptau' not found in input array.",
+            str(ctx.exception),
+        )
