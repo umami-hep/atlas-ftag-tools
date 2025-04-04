@@ -5,6 +5,7 @@ import glob
 from pathlib import Path
 
 import h5py
+import os
 import re
 import sys
 
