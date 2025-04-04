@@ -72,8 +72,10 @@ def test_h5dir_files(test_h5_files):
     matched_reg = ["test_file_3.h5", "test_file_1.h5"]
     regex_path = str(Path(test_h5_files[0].parent))
     fnames = regex_files_from_dir(matched_reg, regex_path)
-    assert fnames == [str(Path(test_h5_files[0].parent)) + "/test_file_3.h5" ,
-                     str(Path(test_h5_files[0].parent)) + "/test_file_1.h5"]
+    assert fnames == [
+        str(Path(test_h5_files[0].parent)) + "/test_file_3.h5",
+        str(Path(test_h5_files[0].parent)) + "/test_file_1.h5",
+    ]
 
 
 def test_h5dir_dirs(test_h5_dirs):
@@ -82,11 +84,13 @@ def test_h5dir_dirs(test_h5_dirs):
     matched_reg = [test_match]
     regex_path = str(Path(test_h5_dirs[0].parent.parent))
     fnames = regex_files_from_dir(matched_reg, regex_path)
-    assert set(fnames) == set(str(Path(test_h5_dirs[0].parent)) + "/test_file_0.h5",
-                     str(Path(test_h5_dirs[0].parent)) + "/test_file_1.h5",
-                     str(Path(test_h5_dirs[0].parent)) + "/test_file_2.h5",
-                     str(Path(test_h5_dirs[0].parent)) + "/test_file_3.h5",
-                     str(Path(test_h5_dirs[0].parent)) + "/test_file_4.h5")
+    assert set(fnames) == set(
+        str(Path(test_h5_dirs[0].parent)) + "/test_file_0.h5",
+        str(Path(test_h5_dirs[0].parent)) + "/test_file_1.h5",
+        str(Path(test_h5_dirs[0].parent)) + "/test_file_2.h5",
+        str(Path(test_h5_dirs[0].parent)) + "/test_file_3.h5",
+        str(Path(test_h5_dirs[0].parent)) + "/test_file_4.h5",
+    )
 
 
 def test_get_virtual_layout(test_h5_files):
