@@ -5,7 +5,7 @@ import glob
 from pathlib import Path
 
 import h5py
-import os, re
+import re
 import sys
 
 
@@ -50,15 +50,21 @@ def glob_re(pattern, regex_path):
     return list(filter(re.compile(pattern).match, os.listdir(regex_path)))
 
 def create_virtual_file(
-    pattern: Path | str, out_fname: Path | None = None, use_regex: bool = False, regex_path: str = None, overwrite: bool = False
+    pattern: Path | str, 
+    out_fname: Path | None = None, 
+    use_regex: bool = False, 
+    regex_path: str | None = None, 
+    overwrite: bool = False
 ):
     # get list of filenames
     pattern_str = str(pattern)
     if use_regex:
         reg_matched_fnames = glob_re(pattern_str, regex_path)
         print("reg matched fnames: ", reg_matched_fnames)
-        fnames_if_dir = [fname + "/*.h5" if os.path.isdir(fname) else fname for fname in reg_matched_fnames]
-        parent_dir = regex_path if regex_path else os.getcwd()
+        fnames_if_dir = [fname + "/*.h5" if Path.isdir(fname) 
+                         else fname 
+                         for fname in reg_matched_fnames]
+        parent_dir = regex_path if regex_path else Path.cwd()
         paths_to_glob = [parent_dir + "/" + fname for fname in fnames_if_dir]
         nested_fnames = [glob.glob(fname) for fname in paths_to_glob]
         fnames = sum(nested_fnames, [])
@@ -113,7 +119,11 @@ def create_virtual_file(
 def main(args=None) -> None:
     args = parse_args(args)
     print(f"Globbing {args.pattern}...")
-    create_virtual_file(args.pattern, args.output, use_regex = args.use_regex, regex_path = args.regex_path, overwrite=True)
+    create_virtual_file(args.pattern, 
+                        args.output, 
+                        use_regex = args.use_regex, 
+                        regex_path = args.regex_path, 
+                        overwrite=True)
     with h5py.File(args.output) as f:
         key = next(iter(f.keys()))
         num = len(f[key])
