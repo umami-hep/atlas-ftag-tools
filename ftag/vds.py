@@ -67,7 +67,7 @@ def create_virtual_file(
         fnames_if_dir = [
             fname + "/*.h5" if Path(fname).is_dir() else fname for fname in reg_matched_fnames
         ]
-        parent_dir = regex_path or Path.cwd()
+        parent_dir = regex_path or str(Path.cwd())
         paths_to_glob = [parent_dir + "/" + fname for fname in fnames_if_dir]
         nested_fnames = [glob.glob(fname) for fname in paths_to_glob]
         fnames = sum(nested_fnames, [])
