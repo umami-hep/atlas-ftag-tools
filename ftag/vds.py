@@ -5,6 +5,8 @@ import glob
 from pathlib import Path
 
 import h5py
+import os, re
+import sys
 
 
 def parse_args(args):
@@ -13,6 +15,8 @@ def parse_args(args):
     )
     parser.add_argument("pattern", type=Path, help="quotes-enclosed glob pattern of files to merge")
     parser.add_argument("output", type=Path, help="path to output virtual file")
+    parser.add_argument("--use_regex", help="if provided pattern is a regex", action='store_true')
+    parser.add_argument("--regex_path", type=str, required="--regex" in sys.argv, default = None)
     return parser.parse_args(args)
 
 
@@ -42,14 +46,28 @@ def get_virtual_layout(fnames: list[str], group: str):
 
     return layout
 
+def glob_re(pattern, regex_path):
+    return list(filter(re.compile(pattern).match, os.listdir(regex_path)))
 
 def create_virtual_file(
-    pattern: Path | str, out_fname: Path | None = None, overwrite: bool = False
+    pattern: Path | str, out_fname: Path | None = None, use_regex: bool = False, regex_path: str = None, overwrite: bool = False
 ):
     # get list of filenames
-    fnames = glob.glob(str(pattern))
+    pattern_str = str(pattern)
+    if use_regex:
+        reg_matched_fnames = glob_re(pattern_str, regex_path)
+        print("reg matched fnames: ", reg_matched_fnames)
+        fnames_if_dir = [fname + "/*.h5" if os.path.isdir(fname) else fname for fname in reg_matched_fnames]
+        parent_dir = regex_path if regex_path else os.getcwd()
+        paths_to_glob = [parent_dir + "/" + fname for fname in fnames_if_dir]
+        nested_fnames = [glob.glob(fname) for fname in paths_to_glob]
+        fnames = sum(nested_fnames, [])
+    else:
+        fnames = glob.glob(pattern_str)
     if not fnames:
         raise FileNotFoundError(f"No files matched pattern {pattern}")
+    else:
+        print("Files to merge to vds: ", fnames)
 
     # infer output path if not given
     if out_fname is None:
@@ -95,7 +113,7 @@ def create_virtual_file(
 def main(args=None) -> None:
     args = parse_args(args)
     print(f"Globbing {args.pattern}...")
-    create_virtual_file(args.pattern, args.output, overwrite=True)
+    create_virtual_file(args.pattern, args.output, use_regex = args.use_regex, regex_path = args.regex_path, overwrite=True)
     with h5py.File(args.output) as f:
         key = next(iter(f.keys()))
         num = len(f[key])
