@@ -65,7 +65,7 @@ def create_virtual_file(
         reg_matched_fnames = glob_re(pattern_str, regex_path)
         print("reg matched fnames: ", reg_matched_fnames)
         fnames_if_dir = [
-            fname + "/*.h5" if Path(fname).isdir() else fname for fname in reg_matched_fnames
+            fname + "/*.h5" if Path(fname).is_dir() else fname for fname in reg_matched_fnames
         ]
         parent_dir = regex_path or Path.cwd()
         paths_to_glob = [parent_dir + "/" + fname for fname in fnames_if_dir]
