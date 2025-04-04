@@ -52,6 +52,15 @@ def glob_re(pattern, regex_path):
     return list(filter(re.compile(pattern).match, os.listdir(regex_path)))
 
 
+def regex_files_from_dir(reg_matched_fnames, regex_path):
+    parent_dir = regex_path or str(Path.cwd())
+    full_paths = [parent_dir + "/" + fname for fname in reg_matched_fnames]
+    paths_to_glob = [fname + "/*.h5" if Path(fname).is_dir() else fname for fname in full_paths]
+    nested_fnames = [glob.glob(fname) for fname in paths_to_glob]
+    fnames = sum(nested_fnames, [])
+    return fnames
+
+
 def create_virtual_file(
     pattern: Path | str,
     out_fname: Path | None = None,
@@ -64,13 +73,7 @@ def create_virtual_file(
     if use_regex:
         reg_matched_fnames = glob_re(pattern_str, regex_path)
         print("reg matched fnames: ", reg_matched_fnames)
-        fnames_if_dir = [
-            fname + "/*.h5" if Path(fname).is_dir() else fname for fname in reg_matched_fnames
-        ]
-        parent_dir = regex_path or str(Path.cwd())
-        paths_to_glob = [parent_dir + "/" + fname for fname in fnames_if_dir]
-        nested_fnames = [glob.glob(fname) for fname in paths_to_glob]
-        fnames = sum(nested_fnames, [])
+        fnames = regex_files_from_dir(reg_matched_fnames, regex_path)
     else:
         fnames = glob.glob(pattern_str)
     if not fnames:
