@@ -57,8 +57,7 @@ def regex_files_from_dir(reg_matched_fnames, regex_path):
     full_paths = [parent_dir + "/" + fname for fname in reg_matched_fnames]
     paths_to_glob = [fname + "/*.h5" if Path(fname).is_dir() else fname for fname in full_paths]
     nested_fnames = [glob.glob(fname) for fname in paths_to_glob]
-    fnames = sum(nested_fnames, [])
-    return fnames
+    return sum(nested_fnames, [])
 
 
 def create_virtual_file(
