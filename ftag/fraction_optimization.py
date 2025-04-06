@@ -20,10 +20,9 @@ def convert_dict(
         return np.array([fraction_values[iter_bkg.frac_str] for iter_bkg in backgrounds])
 
     if isinstance(fraction_values, np.ndarray):
-        if np.sum(fraction_values) != 1:
-            fraction_values = [
-                frac_value / np.sum(fraction_values) for frac_value in fraction_values
-            ]
+        fraction_values = [
+            float(frac_value / np.sum(fraction_values)) for frac_value in fraction_values
+        ]
 
         return dict(zip([iter_bkg.frac_str for iter_bkg in backgrounds], fraction_values))
 

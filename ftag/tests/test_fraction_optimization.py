@@ -8,6 +8,7 @@ from ftag import Flavours
 from ftag.fraction_optimization import (
     calculate_best_fraction_values,
     calculate_rejection_sum,
+    convert_dict,
     get_bkg_norm_dict,
 )
 from ftag.hdf5 import H5Reader
@@ -15,6 +16,39 @@ from ftag.mock import get_mock_file
 
 # Generate a mock file for reading jets
 TTBAR_FILE = get_mock_file(100_000)[0]
+
+
+class TestConvertDict(unittest.TestCase):
+    """Tests for the convert_dict function."""
+
+    def setUp(self) -> None:
+        """Setup test array and dict."""
+        self.backgrounds = Flavours.by_category("single-btag").backgrounds(Flavours["bjets"])
+        self.array = np.array([0.3, 0.4, 0.3])
+        self.dict = {
+            "fc": 0.3,
+            "fu": 0.4,
+            "ftau": 0.3,
+        }
+
+    def test_array_to_dict(self):
+        """Test array to dict conversion."""
+        out = convert_dict(fraction_values=self.array, backgrounds=self.backgrounds)
+        self.assertEqual(out, self.dict)
+
+    def test_dict_to_array(self):
+        """Test dict to array conversion."""
+        out = convert_dict(fraction_values=self.dict, backgrounds=self.backgrounds)
+        np.testing.assert_array_equal(out, self.array)
+
+    def test_wrong_input_type_value_error(self):
+        """Test raising of ValueError if wrong type is given."""
+        with self.assertRaises(ValueError) as ctx:
+            convert_dict(fraction_values="Error", backgrounds=self.backgrounds)
+        self.assertEqual(
+            "Only input of type `dict` or `np.ndarray` are accepted! You gave <class 'str'>",
+            str(ctx.exception),
+        )
 
 
 class TestGetBkgNormDict(unittest.TestCase):
@@ -131,7 +165,6 @@ class TestCalculateBestFractionValues(unittest.TestCase):
     def setUp(self) -> None:
         """Load mock jets data once for all tests in this class."""
         self.jets = H5Reader(fname=TTBAR_FILE).load()["jets"]
-        self.signal = Flavours["bjets"]
         self.flavours = Flavours.by_category("single-btag")
         self.tagger = "MockTagger"
         self.working_point = 0.70
@@ -144,7 +177,7 @@ class TestCalculateBestFractionValues(unittest.TestCase):
         final_dict = calculate_best_fraction_values(
             jets=self.jets,
             tagger=self.tagger,
-            signal=self.signal,
+            signal="bjets",
             flavours=self.flavours,
             working_point=self.working_point,
             rejection_weights=None,  # default = 1
