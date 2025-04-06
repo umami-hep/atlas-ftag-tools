@@ -178,7 +178,3 @@ class TestLabelContainer(unittest.TestCase):
         self.assertEqual(len(container), 2)
         self.assertIn("bjets", container)
         self.assertIn("cjets", container)
-
-
-if __name__ == "__main__":
-    unittest.main()
