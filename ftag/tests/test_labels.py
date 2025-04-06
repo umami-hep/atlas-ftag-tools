@@ -118,3 +118,7 @@ def test_backgrounds():
         Flavours.cjets,
         Flavours.taujets,
     ])
+
+
+def test_len():
+    assert len(Flavours.backgrounds(Flavours.bjets)) == 3

@@ -62,6 +62,9 @@ class LabelContainer:
         except KeyError as e:
             raise KeyError(f"Label '{key}' not found") from e
 
+    def __len__(self) -> int:
+        return len(self.labels.keys())
+
     def __getattr__(self, name) -> Label:
         return self[name]
 
@@ -120,8 +123,13 @@ class LabelContainer:
     def from_list(cls, labels: list[Label]) -> LabelContainer:
         return cls({f.name: f for f in labels})
 
-    def backgrounds(self, label: Label, only_signals: bool = True) -> LabelContainer:
-        bkg = [f for f in self if f.category == label.category and f != label]
+    def backgrounds(self, signal: Label, only_signals: bool = True) -> LabelContainer:
+        bkg = [f for f in self if f.category == signal.category and f != signal]
         if not only_signals:
             bkg = [f for f in bkg if f.name not in {"ujets", "qcd"}]
+        if len(bkg) == 0:
+            raise TypeError(
+                "No background flavour could be found in the flavours for signal "
+                f"flavour {signal.name}"
+            )
         return LabelContainer.from_list(bkg)
