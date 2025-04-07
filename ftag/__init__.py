@@ -7,6 +7,7 @@ __version__ = "v0.2.9"
 from ftag import hdf5, utils
 from ftag.cuts import Cuts
 from ftag.flavours import Flavours
+from ftag.fraction_optimization import calculate_best_fraction_values
 from ftag.labeller import Labeller
 from ftag.labels import Label, LabelContainer
 from ftag.mock import get_mock_file
@@ -23,6 +24,7 @@ __all__ = [
     "Sample",
     "Transform",
     "__version__",
+    "calculate_best_fraction_values",
     "get_mock_file",
     "get_working_points",
     "hdf5",
