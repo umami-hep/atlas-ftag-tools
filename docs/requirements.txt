@@ -7,3 +7,4 @@ Sphinx>=8.1
 requests>=2.31
 h5py>=3.13.0
 numpy>=2.2.3
+nbconvert>=7,<8
