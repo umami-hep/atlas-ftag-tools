@@ -53,20 +53,29 @@ def build_docs_version(version: str) -> None:
 
 def main() -> None:
     with open("docs/source/_static/switcher.json") as f:  # pylint: disable=W1514
-        json.load(f)
+        versions = json.load(f)
 
-    # get currently active branch
-    command = "git rev-parse --abbrev-ref HEAD".split()
-    run(command, capture_output=True, check=True).stdout.strip().decode("utf-8")
+    # remember which branch we started on
+    current_branch = (
+        run(["git", "rev-parse", "--abbrev-ref", "HEAD"], capture_output=True, check=True)
+        .stdout.decode()
+        .strip()
+    )
 
-    # copy the latest conf.py, since we want to use that configuration for all the
-    # docs versions that are built
+    # copy the latest conf.py, since we want to use that for *all* versions
     copy("docs/source/conf.py", "./conf_latest.py")
 
-    # build docs for main branch no matter what versions are present in the switcher
-    # (this is kind of a safety measure to make sure the main branch docs are built
-    # even if the version switcher is messed up)
-    # remove temporary copy of latest conf.py
+    # always build the main branch first
+    build_docs_version("main")
+
+    # then every tag/branch listed in switcher.json that is *not* “main”
+    for entry in versions:
+        ver = entry["version"]
+        if ver != "main":
+            build_docs_version(ver)
+
+    # go back to where we started and clean up
+    run(f"git checkout {current_branch}", shell=True, check=True)
     Path("./conf_latest.py").unlink()
 
 

@@ -2,6 +2,8 @@
 
 ### [Latest]
 
+- Adding new Sphinx Docs [#118](https://github.com/umami-hep/atlas-ftag-tools/pull/118)
+
 ### [v0.2.10]
 
 - Adding fraction optimization script [#117](https://github.com/umami-hep/atlas-ftag-tools/pull/117)
