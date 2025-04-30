@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Develop &#8212; atlas-ftag-tools v0.2.10 documentation</title>
+    <title>Developer Guidelines &#8212; atlas-ftag-tools v0.2.10 documentation</title>
   
   
   
@@ -48,7 +48,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'dev_guidelines/index';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
-        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://umami-hep.github.io/atlas-ftag-tools/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://umami-hep.github.io/atlas-ftag-tools/main/_static/switcher.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
@@ -56,7 +56,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="API Reference" href="../autoapi/index.html" />
-    <link rel="prev" title="Examples" href="../examples/index.html" />
+    <link rel="prev" title="Example Scripts" href="../examples/index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -144,14 +144,14 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../examples/index.html">
-    Examples
+    Example Scripts
   </a>
 </li>
 
 
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="#">
-    Develop
+    Developer Guidelines
   </a>
 </li>
 
@@ -287,14 +287,14 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../examples/index.html">
-    Examples
+    Example Scripts
   </a>
 </li>
 
 
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="#">
-    Develop
+    Developer Guidelines
   </a>
 </li>
 
@@ -414,7 +414,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Develop</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Developer Guidelines</span></li>
   </ul>
 </nav>
 </div>
@@ -431,10 +431,128 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="develop">
-<h1>Develop<a class="headerlink" href="#develop" title="Link to this heading">#</a></h1>
-<p>If you find a bug, have a feature request or similar, feel free to submit an issue.</p>
-<p>Pull requests are highly welcome!</p>
+  <section id="developer-guidelines">
+<h1>Developer Guidelines<a class="headerlink" href="#developer-guidelines" title="Link to this heading">#</a></h1>
+<section id="quick-local-setup">
+<h2>1  Quick local setup<a class="headerlink" href="#quick-local-setup" title="Link to this heading">#</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># clone and create a dev environment</span>
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/umami-hep/atlas-ftag-tools.git
+<span class="nb">cd</span><span class="w"> </span>atlas-ftag-tools
+python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv<span class="w"> </span><span class="c1"># or: conda create -n ftag python=3.11</span>
+<span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+
+<span class="c1"># install the library *and* dev extras</span>
+python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[dev]&quot;</span>
+
+<span class="c1"># install pre-commit hooks (formatting, linting, typing)</span>
+pre-commit<span class="w"> </span>install
+pre-commit<span class="w"> </span>run<span class="w"> </span>--all-files
+</pre></div>
+</div>
+<blockquote>
+<div><p><strong>Why use <code class="docutils literal notranslate"><span class="pre">-e</span></code>?</strong>
+The <em>editable</em> install means you can <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">ftag</span></code> from any directory while
+editing the source in place.</p>
+</div></blockquote>
+</section>
+<section id="branching-pr-policy">
+<h2>2  Branching &amp; PR policy<a class="headerlink" href="#branching-pr-policy" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Branch</p></th>
+<th class="head"><p>Purpose</p></th>
+<th class="head"><p>Protection rules</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong><code class="docutils literal notranslate"><span class="pre">main</span></code></strong></p></td>
+<td><p>always deployable; releases are tagged from here</p></td>
+<td><p>✓ CI must pass<br/>✓ linear-history</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>feature/</strong><code class="docutils literal notranslate"><span class="pre">xyz</span></code></p></td>
+<td><p>work in progress, short-lived</p></td>
+<td><p>none</p></td>
+</tr>
+<tr class="row-even"><td><p><strong><code class="docutils literal notranslate"><span class="pre">release/*</span></code></strong></p></td>
+<td><p>back-ports / hot-fixes after a tag</p></td>
+<td><p>same rules as <em>main</em></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<ol class="arabic simple">
+<li><p>Open a Pull Request early; mark it <strong>Draft</strong> if it’s not ready.</p></li>
+<li><p>At least <strong>one review</strong> from the <em>atlas-ftag-tools dev-team</em> is required.</p></li>
+<li><p>Squash-merge once <em>green</em>; avoid merge commits.</p></li>
+</ol>
+</section>
+<section id="code-style-static-checks">
+<h2>3  Code style &amp; static checks<a class="headerlink" href="#code-style-static-checks" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Tool</p></th>
+<th class="head"><p>Checked in CI</p></th>
+<th class="head"><p>Fix command</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>black</strong></p></td>
+<td><p>formatting</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">black</span> <span class="pre">.</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>ruff</strong> (<code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>)</p></td>
+<td><p>lint + simple refactors</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ruff</span> <span class="pre">check</span> <span class="pre">.</span> <span class="pre">--fix</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>mypy</strong></p></td>
+<td><p>type safety</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">mypy</span> <span class="pre">ftag</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>isort</strong> (via ruff)</p></td>
+<td><p>import order</p></td>
+<td><p>auto-fixed by <em>ruff</em></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>pre-commit</strong></p></td>
+<td><p>umbrella runner</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pre-commit</span> <span class="pre">run</span> <span class="pre">--all-files</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="how-the-hook-chain-works">
+<h3>How the hook chain works<a class="headerlink" href="#how-the-hook-chain-works" title="Link to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>pre-commit ➜ ruff ➜ black ➜ mypy
+</pre></div>
+</div>
+<p>If a stage fails the commit is rejected. Run the hook manually to fix issues
+before pushing:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pre-commit<span class="w"> </span>run<span class="w"> </span>--all-files
+</pre></div>
+</div>
+</section>
+</section>
+<section id="testing-strategy">
+<h2>4  Testing strategy<a class="headerlink" href="#testing-strategy" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Unit tests</strong> live in <code class="docutils literal notranslate"><span class="pre">ftag/tests/</span></code> and follow the <em>pytest</em> conventions.</p></li>
+<li><p>CI executes the suite on 3 Python versions (3.9, 3.11, 3.12) and uploads a coverage report.</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># local one-liner</span>
+pytest<span class="w"> </span>ftag/tests/
+</pre></div>
+</div>
+<p>Coverage <strong>must stay ≥ 90 %</strong>. If you add logic, add matching tests; if you
+change public behaviour, update the doc-strings <em>and</em> the examples.</p>
+</section>
+<section id="communication-channels">
+<h2>5  Communication channels<a class="headerlink" href="#communication-channels" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>GitHub Issues</strong> – bug reports &amp; feature requests</p></li>
+<li><p><strong>Mattermost <code class="docutils literal notranslate"><span class="pre">Umami</span> <span class="pre">/</span> <span class="pre">puma</span> <span class="pre">/</span> <span class="pre">upp</span></code></strong> – quick questions, coordination</p></li>
+</ul>
+<p>When in doubt, open an Issue and tag the maintainer team.
+Happy coding — and may your $b$-tagging be ever accurate! 🎉</p>
+</section>
 </section>
 
 
@@ -453,7 +571,7 @@
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Examples</p>
+        <p class="prev-next-title">Example Scripts</p>
       </div>
     </a>
     <a class="right-next"
@@ -477,10 +595,29 @@
 
 
   <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-local-setup">1  Quick local setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#branching-pr-policy">2  Branching &amp; PR policy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-style-static-checks">3  Code style &amp; static checks</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-the-hook-chain-works">How the hook chain works</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing-strategy">4  Testing strategy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#communication-channels">5  Communication channels</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/dev_guidelines/index.rst.txt"
+      <li><a href="../_sources/dev_guidelines/index.md.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div></div>
