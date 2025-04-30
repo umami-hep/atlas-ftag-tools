@@ -19,6 +19,9 @@ jobs:
       - run: python -m pip install -e ".[dev]" -r docs/requirements.txt
       - run: python docs/sphinx_build_multiversion.py
 
+      - name: Convert Notebooks
+        run: jupyter nbconvert ftag/example.ipynb --to markdown --output example --output-dir docs/source/examples
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         with:
