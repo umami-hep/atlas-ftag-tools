@@ -1,0 +1,231 @@
+ftag.hdf5.h5reader
+==================
+
+.. py:module:: ftag.hdf5.h5reader
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   ftag.hdf5.h5reader.H5SingleReader
+   ftag.hdf5.h5reader.H5Reader
+
+
+Module Contents
+---------------
+
+.. py:class:: H5SingleReader
+
+   .. py:attribute:: fname
+      :type:  pathlib.Path | str
+
+
+   .. py:attribute:: batch_size
+      :type:  int
+      :value: 100000
+
+
+
+   .. py:attribute:: jets_name
+      :type:  str
+      :value: 'jets'
+
+
+
+   .. py:attribute:: precision
+      :type:  str | None
+      :value: None
+
+
+
+   .. py:attribute:: shuffle
+      :type:  bool
+      :value: True
+
+
+
+   .. py:attribute:: do_remove_inf
+      :type:  bool
+      :value: False
+
+
+
+   .. py:attribute:: transform
+      :type:  ftag.transform.Transform | None
+      :value: None
+
+
+
+   .. py:method:: __post_init__() -> None
+
+
+   .. py:property:: num_jets
+      :type: int
+
+
+
+   .. py:method:: get_attr(name, group=None)
+
+
+   .. py:method:: empty(ds: h5py.Dataset, variables: list[str]) -> numpy.ndarray
+
+
+   .. py:method:: read_chunk(ds: h5py.Dataset, array: numpy.ndarray, low: int) -> numpy.ndarray
+
+
+   .. py:method:: remove_inf(data: dict) -> dict
+
+
+   .. py:method:: stream(variables: dict | None = None, num_jets: int | None = None, cuts: ftag.cuts.Cuts | None = None, start: int = 0) -> collections.abc.Generator
+
+
+.. py:class:: H5Reader
+
+   Reads data from multiple HDF5 files.
+
+   :param fname: Path to the HDF5 file or list of paths
+   :type fname: Path | str | list[Path | str]
+   :param batch_size: Number of jets to read at a time, by default 100_000
+   :type batch_size: int, optional
+   :param jets_name: Name of the jets dataset, by default "jets"
+   :type jets_name: str, optional
+   :param precision: Cast floats to given precision, by default None
+   :type precision: str | None, optional
+   :param shuffle: Read batches in a shuffled order, by default True
+   :type shuffle: bool, optional
+   :param weights: Weights for different input datasets, by default None
+   :type weights: list[float] | None, optional
+   :param do_remove_inf: Remove jets with inf values, by default False
+   :type do_remove_inf: bool, optional
+   :param transform: Transform to apply to data, by default None
+   :type transform: Transform | None, optional
+   :param equal_jets: Take the same number of jets (weighted) from each sample, by default True.
+                      This is useful when you specify a list of DSIDs for the sample and they are
+                      qualitatively different, and you want to ensure that you always return batches
+                      with jets from all DSIDs. This is used for example in the QCD resampling for Xbb.
+                      If False, use all jets in each sample, allowing for the full available statistics
+                      to be used. Useful for example if you have multiple ttbar samples and you want to
+                      use all available jets from each sample.
+   :type equal_jets: bool, optional
+
+
+   .. py:attribute:: fname
+      :type:  pathlib.Path | str | list[pathlib.Path | str]
+
+
+   .. py:attribute:: batch_size
+      :type:  int
+      :value: 100000
+
+
+
+   .. py:attribute:: jets_name
+      :type:  str
+      :value: 'jets'
+
+
+
+   .. py:attribute:: precision
+      :type:  str | None
+      :value: None
+
+
+
+   .. py:attribute:: shuffle
+      :type:  bool
+      :value: True
+
+
+
+   .. py:attribute:: weights
+      :type:  list[float] | None
+      :value: None
+
+
+
+   .. py:attribute:: do_remove_inf
+      :type:  bool
+      :value: False
+
+
+
+   .. py:attribute:: transform
+      :type:  ftag.transform.Transform | None
+      :value: None
+
+
+
+   .. py:attribute:: equal_jets
+      :type:  bool
+      :value: False
+
+
+
+   .. py:method:: __post_init__() -> None
+
+
+   .. py:property:: num_jets
+      :type: int
+
+
+
+   .. py:property:: files
+      :type: list[pathlib.Path]
+
+
+
+   .. py:method:: dtypes(variables: dict[str, list[str]] | None = None) -> dict[str, numpy.dtype]
+
+
+   .. py:method:: shapes(num_jets: int, groups: list[str] | None = None) -> dict[str, tuple[int, Ellipsis]]
+
+
+   .. py:method:: stream(variables: dict | None = None, num_jets: int | None = None, cuts: ftag.cuts.Cuts | None = None, start: int = 0) -> collections.abc.Generator
+
+      Generate batches of selected jets.
+
+      :param variables: Dictionary of variables to for each group, by default use all jet variables.
+      :type variables: dict | None, optional
+      :param num_jets: Total number of selected jets to generate, by default all.
+      :type num_jets: int | None, optional
+      :param cuts: Selection cuts to apply, by default None
+      :type cuts: Cuts | None, optional
+      :param start: Starting index of the first jet to read, by default 0
+      :type start: int, optional
+
+      :Yields: *Generator* -- Generator of batches of selected jets.
+
+
+
+   .. py:method:: load(variables: dict | None = None, num_jets: int | None = None, cuts: ftag.cuts.Cuts | None = None) -> dict
+
+      Load multiple batches of selected jets into memory.
+
+      :param variables: Dictionary of variables to for each group, by default use all jet variables.
+      :type variables: dict | None, optional
+      :param num_jets: Total number of selected jets to load, by default all.
+      :type num_jets: int | None, optional
+      :param cuts: Selection cuts to apply, by default None
+      :type cuts: Cuts | None, optional
+
+      :returns: Dictionary of arrays for each group.
+      :rtype: dict
+
+
+
+   .. py:method:: estimate_available_jets(cuts: ftag.cuts.Cuts, num: int = 1000000) -> int
+
+      Estimate the number of jets available after selection cuts.
+
+      :param cuts: Selection cuts to apply.
+      :type cuts: Cuts
+      :param num: Number of jets to use for the estimation, by default 1_000_000.
+      :type num: int, optional
+
+      :returns: Estimated number of jets available after selection cuts, rounded down.
+      :rtype: int
+
+
+

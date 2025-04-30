@@ -1,0 +1,141 @@
+ftag.wps.working_points
+=======================
+
+.. py:module:: ftag.wps.working_points
+
+.. autoapi-nested-parse::
+
+   Calculate tagger working points.
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   ftag.wps.working_points.parse_args
+   ftag.wps.working_points.get_fxs_from_args
+   ftag.wps.working_points.get_eff_rej
+   ftag.wps.working_points.get_rej_eff_at_disc
+   ftag.wps.working_points.setup_common_parts
+   ftag.wps.working_points.get_working_points
+   ftag.wps.working_points.get_efficiencies
+   ftag.wps.working_points.main
+
+
+Module Contents
+---------------
+
+.. py:function:: parse_args(args: collections.abc.Sequence[str]) -> argparse.Namespace
+
+   Parse the input arguments into a Namespace.
+
+   :param args: Sequence of string inputs to the script
+   :type args: Sequence[str] | None
+
+   :returns: Namespace with the parsed arguments
+   :rtype: argparse.Namespace
+
+   :raises ValueError: When both --effs and --disc_cuts are provided
+   :raises ValueError: When neither --effs nor --disc_cuts are provided
+   :raises ValueError: When the number of fraction values is not conistent
+   :raises ValueError: When the sum of fraction values for a tagger is not equal to one
+
+
+.. py:function:: get_fxs_from_args(args: argparse.Namespace, flavours: ftag.labels.LabelContainer) -> list
+
+   Get the fraction values for each tagger from the argparsed inputs.
+
+   :param args: Input arguments parsed by the argparser
+   :type args: argparse.Namespace
+   :param flavours: LabelContainer instance of the labels that are used
+   :type flavours: LabelContainer
+
+   :returns: List of dicts with the fraction values. Each dict is for one tagger.
+   :rtype: list
+
+
+.. py:function:: get_eff_rej(jets: numpy.ndarray, disc: numpy.ndarray, wp: float, flavours: ftag.labels.LabelContainer) -> dict
+
+   Calculate the efficiency/rejection for each flavour.
+
+   :param jets: Loaded jets
+   :type jets: np.ndarray
+   :param disc: Discriminant values of the jets
+   :type disc: np.ndarray
+   :param wp: Working point that is used
+   :type wp: float
+   :param flavours: LabelContainer instance of the flavours used
+   :type flavours: LabelContainer
+
+   :returns: Dict with the efficiency/rejection values for each flavour
+   :rtype: dict
+
+
+.. py:function:: get_rej_eff_at_disc(jets: numpy.ndarray, tagger: str, signal: ftag.labels.Label, disc_cuts: list, flavours: ftag.labels.LabelContainer, fraction_values: dict) -> dict
+
+   Calculate the efficiency/rejection at a certain discriminant values.
+
+   :param jets: Loaded jets used
+   :type jets: np.ndarray
+   :param tagger: Name of the tagger
+   :type tagger: str
+   :param signal: Label instance of the signal flavour
+   :type signal: Label
+   :param disc_cuts: List of discriminant cut values for which the efficiency/rejection is calculated
+   :type disc_cuts: list
+   :param flavours: LabelContainer instance of the flavours that are used
+   :type flavours: LabelContainer
+
+   :returns: Dict with the discriminant cut values and their respective efficiencies/rejections
+   :rtype: dict
+
+
+.. py:function:: setup_common_parts(args: argparse.Namespace) -> tuple[numpy.ndarray, numpy.ndarray | None, ftag.labels.LabelContainer]
+
+   Load the jets from the files and setup the taggers.
+
+   :param args: Input arguments from the argparser
+   :type args: argparse.Namespace
+
+   :returns: Outputs the ttbar jets, the zprime jets (if wanted, else None), and the flavours used.
+   :rtype: tuple[dict, dict | None, list]
+
+
+.. py:function:: get_working_points(args: argparse.Namespace) -> dict | None
+
+   Calculate the working points.
+
+   :param args: Input arguments from the argparser
+   :type args: argparse.Namespace
+
+   :returns: Dict with the working points. If args.outfile is given, the function returns None and
+             stored the resulting dict in a yaml file in args.outfile.
+   :rtype: dict | None
+
+
+.. py:function:: get_efficiencies(args: argparse.Namespace) -> dict | None
+
+   Calculate the efficiencies for the given jets.
+
+   :param args: Input arguments from the argparser
+   :type args: argparse.Namespace
+
+   :returns: Dict with the efficiencies. If args.outfile is given, the function returns None and
+             stored the resulting dict in a yaml file in args.outfile.
+   :rtype: dict | None
+
+
+.. py:function:: main(args: collections.abc.Sequence[str]) -> dict | None
+
+   Main function to run working point calculation.
+
+   :param args: Input arguments, by default None
+   :type args: Sequence[str] | None, optional
+
+   :returns: The output dict with the calculated values. When --outfile
+             was given, the return value is None
+   :rtype: dict | None
+
+

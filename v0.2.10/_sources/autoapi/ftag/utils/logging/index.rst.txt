@@ -1,0 +1,161 @@
+ftag.utils.logging
+==================
+
+.. py:module:: ftag.utils.logging
+
+.. autoapi-nested-parse::
+
+   Configuration for logger of atlas-ftag-tools.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   ftag.utils.logging.logger
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   ftag.utils.logging.CustomFormatter
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   ftag.utils.logging.get_log_level
+   ftag.utils.logging.initialise_logger
+   ftag.utils.logging.set_log_level
+
+
+Module Contents
+---------------
+
+.. py:class:: CustomFormatter(fmt=None, datefmt=None, style='%', validate=True, *, defaults=None)
+
+   Bases: :py:obj:`logging.Formatter`
+
+
+   Logging Formatter to add colours and count warning / errors using implementation
+   from
+   https://stackoverflow.com/questions/384076/how-can-i-color-python-logging-output.
+
+   Initialize the formatter with specified format strings.
+
+   Initialize the formatter either with the specified format string, or a
+   default as described above. Allow for specialized date formatting with
+   the optional datefmt argument. If datefmt is omitted, you get an
+   ISO8601-like (or RFC 3339-like) format.
+
+   Use a style parameter of '%', '{' or '$' to specify that you want to
+   use one of %-formatting, :meth:`str.format` (``{}``) formatting or
+   :class:`string.Template` formatting in your format string.
+
+   .. versionchanged:: 3.2
+      Added the ``style`` parameter.
+
+
+   .. py:attribute:: grey
+      :value: '\x1b[38;21m'
+
+
+
+   .. py:attribute:: yellow
+      :value: '\x1b[33;21m'
+
+
+
+   .. py:attribute:: green
+      :value: '\x1b[32;21m'
+
+
+
+   .. py:attribute:: red
+      :value: '\x1b[31;21m'
+
+
+
+   .. py:attribute:: bold_red
+      :value: '\x1b[31;1m'
+
+
+
+   .. py:attribute:: reset
+      :value: '\x1b[0m'
+
+
+
+   .. py:attribute:: debugformat
+      :value: '%(asctime)s - %(levelname)s:%(name)s: %(message)s (%(filename)s:%(lineno)d)'
+
+
+
+   .. py:attribute:: date_format
+      :value: '%(levelname)s:%(name)s: %(message)s'
+
+
+
+   .. py:attribute:: formats
+      :type:  ClassVar
+
+
+   .. py:method:: format(record)
+
+      Format the specified record as text.
+
+      The record's attribute dictionary is used as the operand to a
+      string formatting operation which yields the returned string.
+      Before formatting the dictionary, a couple of preparatory steps
+      are carried out. The message attribute of the record is computed
+      using LogRecord.getMessage(). If the formatting string uses the
+      time (as determined by a call to usesTime(), formatTime() is
+      called to format the event time. If there is exception information,
+      it is formatted using formatException() and appended to the message.
+
+
+
+.. py:function:: get_log_level(level: str)
+
+   Get logging levels with string key.
+
+   :param level: Log level as string.
+   :type level: str
+
+   :returns: logging object with log level info
+   :rtype: logging level
+
+   :raises ValueError: If non-valid option is given
+
+
+.. py:function:: initialise_logger(log_level: str | None = None)
+
+   Initialise.
+
+   :param log_level: Logging level defining the verbose level. Accepted values are:
+                     CRITICAL, ERROR, WARNING, INFO, DEBUG, NOTSET, by default None
+                     If the log_level is not set, it will be set to info
+   :type log_level: str, optional
+
+   :returns: logger object with new level set
+   :rtype: logger
+
+
+.. py:function:: set_log_level(tools_logger, log_level: str)
+
+   Setting log level.
+
+   :param tools_logger: logger object
+   :type tools_logger: logger
+   :param log_level: Logging level corresponding CRITICAL, ERROR, WARNING, INFO, DEBUG, NOTSET
+   :type log_level: str
+
+
+.. py:data:: logger
+

@@ -1,0 +1,638 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>ATLAS FTAG Python Tools &#8212; atlas-ftag-tools v0.2.10 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d75fae25" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="_static/documentation_options.js?v=269a13a8"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://umami-hep.github.io/atlas-ftag-tools/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Examples" href="examples/index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">atlas-ftag-tools documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="#">
+    Quickstart
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="dev_guidelines/index.html">
+    Develop
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="autoapi/index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://github.com/umami-hep/atlas-ftag-tools/blob/main/changelog.md">
+    Changelog
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/umami-hep/atlas-ftag-tools" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github-square fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="#">
+    Quickstart
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="dev_guidelines/index.html">
+    Develop
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="autoapi/index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://github.com/umami-hep/atlas-ftag-tools/blob/main/changelog.md">
+    Changelog
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/umami-hep/atlas-ftag-tools" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github-square fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none"></div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><a class="reference external" href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg" /></a>
+<a class="reference external" href="https://badge.fury.io/py/atlas-ftag-tools"><img alt="PyPI version" src="https://badge.fury.io/py/atlas-ftag-tools.svg" /></a>
+<a class="reference external" href="https://codecov.io/gh/umami-hep/atlas-ftag-tools"><img alt="codecov" src="https://codecov.io/gh/umami-hep/atlas-ftag-tools/branch/main/graph/badge.svg?token=MBHLIYYQ7I" /></a></p>
+<section id="atlas-ftag-python-tools">
+<h1>ATLAS FTAG Python Tools<a class="headerlink" href="#atlas-ftag-python-tools" title="Link to this heading">#</a></h1>
+<p>This is a collection of Python tools for working with files produced with the FTAG <a class="reference external" href="https://gitlab.cern.ch/atlas-flavor-tagging-tools/training-dataset-dumper/">ntuple dumper</a>.
+The code is intended to be used a <a class="reference external" href="https://iscinumpy.dev/post/app-vs-library/">library</a> for other projects.
+Please see the <a class="reference internal" href="#ftag/example.ipynb"><span class="xref myst">example notebook</span></a> for usage.</p>
+</section>
+<section id="quickstart">
+<h1>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading">#</a></h1>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h2>
+<p>If you want to use this package without modification, you can install from <a class="reference external" href="https://pypi.org/project/atlas-ftag-tools/">pypi</a> using <code class="docutils literal notranslate"><span class="pre">pip</span></code>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>atlas-ftag-tools
+</pre></div>
+</div>
+<p>To additionally install the development dependencies (for formatting and linting) use</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>atlas-ftag-tools<span class="o">[</span>dev<span class="o">]</span>
+</pre></div>
+</div>
+</section>
+<section id="development">
+<h2>Development<a class="headerlink" href="#development" title="Link to this heading">#</a></h2>
+<p>If you plan on making changes to teh code, instead clone the repository and install the package from source in editable mode with</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+</pre></div>
+</div>
+<p>Include development dependencies with</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[dev]&quot;</span>
+</pre></div>
+</div>
+<p>You can set up and run pre-commit hooks with</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pre-commit<span class="w"> </span>install
+pre-commmit<span class="w"> </span>run<span class="w"> </span>--all-files
+</pre></div>
+</div>
+<p>To run the tests you can use the <code class="docutils literal notranslate"><span class="pre">pytest</span></code> or <code class="docutils literal notranslate"><span class="pre">coverage</span></code> command, for example</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>coverage<span class="w"> </span>run<span class="w"> </span>--source<span class="w"> </span>ftag<span class="w"> </span>-m<span class="w"> </span>pytest<span class="w"> </span>--show-capture<span class="o">=</span>stdout
+</pre></div>
+</div>
+<p>Running <code class="docutils literal notranslate"><span class="pre">coverage</span> <span class="pre">report</span></code> will display the test coverage.</p>
+</section>
+</section>
+<section id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Link to this heading">#</a></h1>
+<p>Please see the <a class="reference internal" href="#ftag/example.ipynb"><span class="xref myst">example notebook</span></a> for full usage.
+Additional functionality is also documented below.</p>
+<section id="calculate-wps">
+<h2>Calculate WPs<a class="headerlink" href="#calculate-wps" title="Link to this heading">#</a></h2>
+<p>This package contains a script to calculate tagger working points (WPs).
+The script is <code class="docutils literal notranslate"><span class="pre">working_points.py</span></code> and can be run after installing this package with</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wps</span> \
+    <span class="o">--</span><span class="n">ttbar</span> <span class="s2">&quot;path/to/ttbar/*.h5&quot;</span> \
+    <span class="o">--</span><span class="n">tagger</span> <span class="n">GN2v01</span> \
+    <span class="o">--</span><span class="n">fc</span> <span class="mf">0.1</span>
+</pre></div>
+</div>
+<p>Both the <code class="docutils literal notranslate"><span class="pre">--tagger</span></code> and <code class="docutils literal notranslate"><span class="pre">--fc</span></code> options accept a list if you want to get the WPs for multiple taggers.
+If you are doing c-tagging or xbb-tagging, dedicated fx arguments are available ()you can find them all with <code class="docutils literal notranslate"><span class="pre">-h</span></code>.</p>
+<p>If you want to use the <code class="docutils literal notranslate"><span class="pre">ttbar</span></code> WPs get the efficiencies and rejections for the <code class="docutils literal notranslate"><span class="pre">zprime</span></code> sample, you can add <code class="docutils literal notranslate"><span class="pre">--zprime</span> <span class="pre">&quot;path/to/zprime/*.h5&quot;</span></code> to the command.
+Note that a default selection of $p_T &gt; 250 ~GeV$ to jets in the <code class="docutils literal notranslate"><span class="pre">zprime</span></code> sample.</p>
+<p>If instead of defining the working points for a series of signal efficiencies, you wish to calculate a WP corresponding to a specific background rejection, the <code class="docutils literal notranslate"><span class="pre">--rejection</span></code> option can be given along with the desired background.</p>
+<p>By default the working points are printed to the terminal, but you can save the results to a YAML file with the <code class="docutils literal notranslate"><span class="pre">--outfile</span></code> option.</p>
+<p>See <code class="docutils literal notranslate"><span class="pre">wps</span> <span class="pre">--help</span></code> for more options and information.</p>
+</section>
+<section id="calculate-efficiency-at-discriminant-cut">
+<h2>Calculate efficiency at discriminant cut<a class="headerlink" href="#calculate-efficiency-at-discriminant-cut" title="Link to this heading">#</a></h2>
+<p>The same script can be used to calculate the efficiency and rejection values at a given discriminant cut value.
+The script <code class="docutils literal notranslate"><span class="pre">working_points.py</span></code> can be run after intalling this package as follows</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wps</span> \
+    <span class="o">--</span><span class="n">ttbar</span> <span class="s2">&quot;path/to/ttbar/*.h5&quot;</span> \
+    <span class="o">--</span><span class="n">tagger</span> <span class="n">GN2v01</span> \
+    <span class="o">--</span><span class="n">fx</span> <span class="mf">0.1</span>
+    <span class="o">--</span><span class="n">disc_cuts</span> <span class="mf">1.0</span> <span class="mf">1.5</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">--tagger</span></code>, <code class="docutils literal notranslate"><span class="pre">--fx</span></code>, and <code class="docutils literal notranslate"><span class="pre">--outfile</span></code> follow the same procedure as in the ‘Calculate WPs’ script as described above.</p>
+</section>
+<section id="h5-utils">
+<h2>H5 Utils<a class="headerlink" href="#h5-utils" title="Link to this heading">#</a></h2>
+<section id="create-virtual-file">
+<h3>Create virtual file<a class="headerlink" href="#create-virtual-file" title="Link to this heading">#</a></h3>
+<p>This package contains a script to easily merge a set of H5 files.
+A virtual file is a fast and lightweight way to wrap a set of files.
+See the <a class="reference external" href="https://docs.h5py.org/en/stable/vds.html">h5py documentation</a> for more information on virtual datasets.</p>
+<p>The script is <code class="docutils literal notranslate"><span class="pre">vds.py</span></code> and can be run after installing this package with</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vds</span> <span class="o">&lt;</span><span class="n">pattern</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">output</span> <span class="n">path</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">&lt;pattern&gt;</span></code> argument should be a quotes enclosed <a class="reference external" href="https://en.wikipedia.org/wiki/Glob_(programming)">glob pattern</a>, for example <code class="docutils literal notranslate"><span class="pre">&quot;dsid/path/*.h5&quot;</span></code></p>
+<p>See <code class="docutils literal notranslate"><span class="pre">vds</span> <span class="pre">--help</span></code> for more options and information.</p>
+</section>
+<section id="h5move">
+<h3><a class="reference internal" href="#ftag/hdf5/h5move.py"><span class="xref myst">h5move</span></a><a class="headerlink" href="#h5move" title="Link to this heading">#</a></h3>
+<p>A script to move/rename datasets inside an h5file.
+Useful for correcting discrepancies between group names.
+See <a class="reference internal" href="#ftag/hdf5/h5move.py"><span class="xref myst">h5move.py</span></a> for more info.</p>
+</section>
+<section id="h5split">
+<h3><a class="reference internal" href="#ftag/hdf5/h5split.py"><span class="xref myst">h5split</span></a><a class="headerlink" href="#h5split" title="Link to this heading">#</a></h3>
+<p>A script to split a large h5 file into several smaller files.
+Useful if output files are too large for EOS/grid storage.
+See <a class="reference internal" href="#ftag/hdf5/h5split.py"><span class="xref myst">h5split.py</span></a> for more info.</p>
+</section>
+</section>
+</section>
+<div class="toctree-wrapper compound">
+</div>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading">#</a></h1>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/umami-hep/atlas-ftag-tools">Git repository</a></p></li>
+<li><p><a class="reference external" href="https://umami-hep.github.io/atlas-ftag-tools/">Documentation</a></p></li>
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="right-next"
+       href="examples/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Examples</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">ATLAS FTAG Python Tools</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#quickstart">Quickstart</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#development">Development</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-wps">Calculate WPs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-efficiency-at-discriminant-cut">Calculate efficiency at discriminant cut</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#h5-utils">H5 Utils</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-virtual-file">Create virtual file</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#h5move"><span class="xref myst">h5move</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#h5split"><span class="xref myst">h5split</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

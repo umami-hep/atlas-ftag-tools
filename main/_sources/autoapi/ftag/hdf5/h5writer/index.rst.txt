@@ -1,0 +1,109 @@
+ftag.hdf5.h5writer
+==================
+
+.. py:module:: ftag.hdf5.h5writer
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   ftag.hdf5.h5writer.H5Writer
+
+
+Module Contents
+---------------
+
+.. py:class:: H5Writer
+
+   Writes jets to an HDF5 file.
+
+   :param dst: Path to the output file.
+   :type dst: Path | str
+   :param dtypes: Dictionary of group names and their corresponding dtypes.
+   :type dtypes: dict[str, np.dtype]
+   :param num_jets: Number of jets to write.
+   :type num_jets: int
+   :param shapes: Dictionary of group names and their corresponding shapes.
+   :type shapes: dict[str, int], optional
+   :param jets_name: Name of the jets group. Default is "jets".
+   :type jets_name: str, optional
+   :param add_flavour_label: Whether to add a flavour label to the jets group. Default is False.
+   :type add_flavour_label: bool, optional
+   :param compression: Compression algorithm to use. Default is "lzf".
+   :type compression: str, optional
+   :param precision: Precision to use. Default is None.
+   :type precision: str | None, optional
+   :param shuffle: Whether to shuffle the jets before writing. Default is True.
+   :type shuffle: bool, optional
+
+
+   .. py:attribute:: dst
+      :type:  pathlib.Path | str
+
+
+   .. py:attribute:: dtypes
+      :type:  dict[str, numpy.dtype]
+
+
+   .. py:attribute:: shapes
+      :type:  dict[str, tuple[int, Ellipsis]]
+
+
+   .. py:attribute:: jets_name
+      :type:  str
+      :value: 'jets'
+
+
+
+   .. py:attribute:: add_flavour_label
+      :type:  bool
+      :value: False
+
+
+
+   .. py:attribute:: compression
+      :type:  str
+      :value: 'lzf'
+
+
+
+   .. py:attribute:: precision
+      :type:  str
+      :value: 'full'
+
+
+
+   .. py:attribute:: shuffle
+      :type:  bool
+      :value: True
+
+
+
+   .. py:method:: __post_init__()
+
+
+   .. py:method:: from_file(source: pathlib.Path, num_jets: int | None = None, **kwargs) -> H5Writer
+      :classmethod:
+
+
+
+   .. py:method:: create_ds(name: str, dtype: numpy.dtype) -> None
+
+
+   .. py:method:: close() -> None
+
+
+   .. py:method:: get_attr(name, group=None)
+
+
+   .. py:method:: add_attr(name, data, group=None) -> None
+
+
+   .. py:method:: copy_attrs(fname: pathlib.Path) -> None
+
+
+   .. py:method:: write(data: dict[str, numpy.array]) -> None
+
+

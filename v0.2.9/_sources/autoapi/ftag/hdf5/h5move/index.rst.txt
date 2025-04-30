@@ -1,0 +1,27 @@
+ftag.hdf5.h5move
+================
+
+.. py:module:: ftag.hdf5.h5move
+
+.. autoapi-nested-parse::
+
+   A script to move (i.e. rename) a dataset in an h5 file.
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   ftag.hdf5.h5move.parse_args
+   ftag.hdf5.h5move.main
+
+
+Module Contents
+---------------
+
+.. py:function:: parse_args(args)
+
+.. py:function:: main(args=None) -> None
+

@@ -1,0 +1,49 @@
+ftag.git_check
+==============
+
+.. py:module:: ftag.git_check
+
+
+Exceptions
+----------
+
+.. autoapisummary::
+
+   ftag.git_check.GitError
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   ftag.git_check.is_git_repo
+   ftag.git_check.check_for_uncommitted_changes
+   ftag.git_check.check_for_fork
+   ftag.git_check.create_and_push_tag
+   ftag.git_check.get_git_hash
+
+
+Module Contents
+---------------
+
+.. py:exception:: GitError
+
+   Bases: :py:obj:`Exception`
+
+
+   Common base class for all non-exit exceptions.
+
+   Initialize self.  See help(type(self)) for accurate signature.
+
+
+.. py:function:: is_git_repo(path) -> bool
+
+.. py:function:: check_for_uncommitted_changes(path) -> None
+
+.. py:function:: check_for_fork(path, upstream) -> None
+
+.. py:function:: create_and_push_tag(path, upstream, tagname, msg) -> None
+
+.. py:function:: get_git_hash(path)
+

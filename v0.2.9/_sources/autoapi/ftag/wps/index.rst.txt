@@ -1,0 +1,16 @@
+ftag.wps
+========
+
+.. py:module:: ftag.wps
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/ftag/wps/discriminant/index
+   /autoapi/ftag/wps/working_points/index
+
+

@@ -1,0 +1,19 @@
+ftag.mock
+=========
+
+.. py:module:: ftag.mock
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   ftag.mock.get_mock_file
+
+
+Module Contents
+---------------
+
+.. py:function:: get_mock_file(num_jets=1000, fname: str | None = None, tracks_name: str = 'tracks', num_tracks: int = 40) -> tuple[str, h5py.File]
+

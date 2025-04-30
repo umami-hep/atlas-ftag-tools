@@ -1,0 +1,66 @@
+ftag.hdf5.h5utils
+=================
+
+.. py:module:: ftag.hdf5.h5utils
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   ftag.hdf5.h5utils.get_dtype
+   ftag.hdf5.h5utils.cast_dtype
+   ftag.hdf5.h5utils.join_structured_arrays
+
+
+Module Contents
+---------------
+
+.. py:function:: get_dtype(ds, variables: list[str] | None = None, precision: str | None = None, transform: ftag.transform.Transform | None = None) -> numpy.dtype
+
+   Return a dtype based on an existing dataset and requested variables.
+
+   :param ds: Input h5 dataset
+   :type ds: h5py.Dataset
+   :param variables: List of variables to include in dtype, by default None
+   :type variables: list[str] | None, optional
+   :param precision: Precision to cast floats to, "half" or "full", by default None
+   :type precision: str | None, optional
+   :param transform: Transform to apply to variables names, by default None
+   :type transform: Transform | None, optional
+
+   :returns: Output dtype
+   :rtype: np.dtype
+
+   :raises ValueError: If variables are not found in dataset
+
+
+.. py:function:: cast_dtype(typestr: str, precision: str) -> numpy.dtype
+
+   Cast float type to half or full precision.
+
+   :param typestr: Input type string
+   :type typestr: str
+   :param precision: Precision to cast to, "half" or "full"
+   :type precision: str
+
+   :returns: Output dtype
+   :rtype: np.dtype
+
+   :raises ValueError: If precision is not "half" or "full"
+
+
+.. py:function:: join_structured_arrays(arrays: list)
+
+   Join a list of structured numpy arrays.
+
+   See https://github.com/numpy/numpy/issues/7811
+
+   :param arrays: List of structured numpy arrays to join
+   :type arrays: list
+
+   :returns: A merged structured array
+   :rtype: np.array
+
+

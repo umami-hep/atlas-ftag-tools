@@ -1,0 +1,85 @@
+ftag.transform
+==============
+
+.. py:module:: ftag.transform
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   ftag.transform.Transform
+
+
+Module Contents
+---------------
+
+.. py:class:: Transform
+
+   .. py:attribute:: variable_map
+      :type:  dict[str, dict[str, str]] | None
+      :value: None
+
+
+
+   .. py:attribute:: ints_map
+      :type:  dict[str, dict[str, dict[int, int]]] | None
+      :value: None
+
+
+
+   .. py:attribute:: floats_map
+      :type:  dict[str, dict[str, str | Callable]] | None
+      :value: None
+
+
+
+   .. py:method:: __post_init__()
+
+
+   .. py:method:: __call__(batch: Batch) -> Batch
+
+
+   .. py:method:: map_variables(batch: Batch) -> Batch
+
+      Rename variables in a batch of data.
+
+      :param batch: Dict of structured numpy arrays.
+      :type batch: Batch
+
+      :returns: Dict of structured numpy arrays with renamed variables.
+      :rtype: Batch
+
+
+
+   .. py:method:: map_ints(batch: Batch) -> Batch
+
+      Map integer values to new values.
+
+      :param batch: Dict of structured numpy arrays.
+      :type batch: Batch
+
+      :returns: Dict of structured numpy arrays with mapped integer values.
+      :rtype: Batch
+
+
+
+   .. py:method:: map_floats(batch: Batch) -> Batch
+
+      Transform float values.
+
+      :param batch: Dict of structured numpy arrays.
+      :type batch: Batch
+
+      :returns: Dict of structured numpy arrays with transformed float values.
+      :rtype: Batch
+
+
+
+   .. py:method:: map_dtype(name: str, dtype: numpy.dtype) -> numpy.dtype
+
+
+   .. py:method:: map_variable_names(name: str, variables: list[str], inverse=False) -> list[str]
+
+

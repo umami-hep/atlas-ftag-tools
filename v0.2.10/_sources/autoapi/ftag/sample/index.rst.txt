@@ -1,0 +1,101 @@
+ftag.sample
+===========
+
+.. py:module:: ftag.sample
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   ftag.sample.Sample
+
+
+Module Contents
+---------------
+
+.. py:class:: Sample
+
+   .. py:attribute:: pattern
+      :type:  pathlib.Path | str | tuple[pathlib.Path | str, Ellipsis]
+
+
+   .. py:attribute:: ntuple_dir
+      :type:  pathlib.Path | str | None
+      :value: None
+
+
+
+   .. py:attribute:: name
+      :type:  str | None
+      :value: None
+
+
+
+   .. py:attribute:: weights
+      :type:  list[float] | None
+      :value: None
+
+
+
+   .. py:method:: __post_init__() -> None
+
+
+   .. py:property:: path
+      :type: tuple[pathlib.Path, Ellipsis]
+
+
+
+   .. py:property:: files
+      :type: list[str]
+
+
+
+   .. py:property:: num_files
+      :type: int
+
+
+
+   .. py:property:: dsid
+      :type: list[str]
+
+
+
+   .. py:property:: sample_id
+      :type: list[str]
+
+
+
+   .. py:property:: tags
+      :type: list[str]
+
+
+
+   .. py:property:: ptag
+      :type: list[str]
+
+
+
+   .. py:property:: rtag
+      :type: list[str]
+
+
+
+   .. py:property:: dumper_tag
+      :type: list[str]
+
+
+
+   .. py:method:: virtual_file(**kwargs) -> list[pathlib.Path | str]
+
+
+   .. py:method:: __str__()
+
+
+   .. py:method:: __lt__(other)
+
+
+   .. py:method:: __eq__(other)
+
+

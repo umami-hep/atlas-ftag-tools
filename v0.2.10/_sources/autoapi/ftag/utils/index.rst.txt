@@ -1,0 +1,210 @@
+ftag.utils
+==========
+
+.. py:module:: ftag.utils
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/ftag/utils/logging/index
+   /autoapi/ftag/utils/metrics/index
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   ftag.utils.logger
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   ftag.utils.set_log_level
+   ftag.utils.calculate_efficiency
+   ftag.utils.calculate_efficiency_error
+   ftag.utils.calculate_rejection
+   ftag.utils.calculate_rejection_error
+   ftag.utils.get_discriminant
+   ftag.utils.save_divide
+   ftag.utils.weighted_percentile
+
+
+Package Contents
+----------------
+
+.. py:data:: logger
+
+.. py:function:: set_log_level(tools_logger, log_level: str)
+
+   Setting log level.
+
+   :param tools_logger: logger object
+   :type tools_logger: logger
+   :param log_level: Logging level corresponding CRITICAL, ERROR, WARNING, INFO, DEBUG, NOTSET
+   :type log_level: str
+
+
+.. py:function:: calculate_efficiency(sig_disc: numpy.ndarray, bkg_disc: numpy.ndarray, target_eff: float | list | numpy.ndarray, return_cuts: bool = False, sig_weights: numpy.ndarray = None, bkg_weights: numpy.ndarray = None)
+
+   Calculate efficiency.
+
+   :param sig_disc: Signal discriminant
+   :type sig_disc: np.ndarray
+   :param bkg_disc: Background discriminant
+   :type bkg_disc: np.ndarray
+   :param target_eff: Working point which is used for discriminant calculation
+   :type target_eff: float or list or np.ndarray
+   :param return_cuts: Specifies if the cut values corresponding to the provided WPs are returned.
+                       If target_eff is a float, only one cut value will be returned. If target_eff
+                       is an array, target_eff is an array as well.
+   :type return_cuts: bool
+   :param sig_weights: Weights for signal events
+   :type sig_weights: np.ndarray
+   :param bkg_weights: Weights for background events
+   :type bkg_weights: np.ndarray
+
+   :returns: * **eff** (*float or np.ndarray*) -- Efficiency.
+               Return float if target_eff is a float, else np.ndarray
+             * **cutvalue** (*float or np.ndarray*) -- Cutvalue if return_cuts is True.
+               Return float if target_eff is a float, else np.ndarray
+
+
+.. py:function:: calculate_efficiency_error(arr: numpy.ndarray, n_counts: int, suppress_zero_divison_error: bool = False, norm: bool = False) -> numpy.ndarray
+
+   Calculate statistical efficiency uncertainty.
+
+   :param arr: Efficiency values
+   :type arr: numpy.array
+   :param n_counts: Number of used statistics to calculate efficiency
+   :type n_counts: int
+   :param suppress_zero_divison_error: Not raising Error for zero division
+   :type suppress_zero_divison_error: bool
+   :param norm: If True, normed (relative) error is being calculated, by default False
+   :type norm: bool, optional
+
+   :returns: Efficiency uncertainties
+   :rtype: numpy.array
+
+   :raises ValueError: If n_counts <=0
+
+   .. rubric:: Notes
+
+   This method uses binomial errors as described in section 2.2 of
+   https://inspirehep.net/files/57287ac8e45a976ab423f3dd456af694
+
+
+.. py:function:: calculate_rejection(sig_disc: numpy.ndarray, bkg_disc: numpy.ndarray, target_eff, return_cuts: bool = False, sig_weights: numpy.ndarray = None, bkg_weights: numpy.ndarray = None, smooth: bool = False)
+
+   Calculate rejection.
+
+   :param sig_disc: Signal discriminant
+   :type sig_disc: np.ndarray
+   :param bkg_disc: Background discriminant
+   :type bkg_disc: np.ndarray
+   :param target_eff: Working point which is used for discriminant calculation
+   :type target_eff: float or list
+   :param return_cuts: Specifies if the cut values corresponding to the provided WPs are returned.
+                       If target_eff is a float, only one cut value will be returned. If target_eff
+                       is an array, target_eff is an array as well.
+   :type return_cuts: bool
+   :param sig_weights: Weights for signal events, by default None
+   :type sig_weights: np.ndarray
+   :param bkg_weights: Weights for background events, by default None
+   :type bkg_weights: np.ndarray
+
+   :returns: * **rej** (*float or np.ndarray*) -- Rejection.
+               If target_eff is a float, a float is returned if it's a list a np.ndarray
+             * **cut_value** (*float or np.ndarray*) -- Cutvalue if return_cuts is True.
+               If target_eff is a float, a float is returned if it's a list a np.ndarray
+
+
+.. py:function:: calculate_rejection_error(arr: numpy.ndarray, n_counts: int, norm: bool = False) -> numpy.ndarray
+
+   Calculate the rejection uncertainties.
+
+   :param arr: Rejection values
+   :type arr: numpy.array
+   :param n_counts: Number of used statistics to calculate rejection
+   :type n_counts: int
+   :param norm: If True, normed (relative) error is being calculated, by default False
+   :type norm: bool, optional
+
+   :returns: Rejection uncertainties
+   :rtype: numpy.array
+
+   :raises ValueError: If n_counts <=0
+   :raises ValueError: If any rejection value is 0
+
+   .. rubric:: Notes
+
+   Special case of `eff_err()`
+
+
+.. py:function:: get_discriminant(jets: numpy.ndarray, tagger: str, signal: ftag.labels.Label, flavours: ftag.labels.LabelContainer, fraction_values: dict[str, float], epsilon: float = 1e-10) -> numpy.ndarray
+
+   Calculate the tagging discriminant for a given tagger.
+
+   Calculated as the logarithm of the ratio of a specified signal probability
+   to a weighted sum ofbackground probabilities.
+
+   :param jets: Structured array of jets containing tagger outputs
+   :type jets: np.ndarray
+   :param tagger: Name of the tagger
+   :type tagger: str
+   :param signal: Signal flavour (bjets/cjets or hbb/hcc)
+   :type signal: Label
+   :param fraction_values: Dict with the fraction values for the background classes for the given tagger
+   :type fraction_values: dict
+   :param epsilon: Small number to avoid division by zero, by default 1e-10
+   :type epsilon: float, optional
+
+   :returns: Array of discriminant values.
+   :rtype: np.ndarray
+
+   :raises ValueError: If the signal flavour is not recognised.
+
+
+.. py:function:: save_divide(numerator: numpy.ndarray | float, denominator: numpy.ndarray | float, default: float = 1.0)
+
+   Save divide for denominator equal to 0.
+
+   Division using numpy divide function returning default value in cases where
+   denominator is 0.
+
+   :param numerator: Numerator in the ratio calculation.
+   :type numerator: np.ndarray | float,
+   :param denominator: Denominator in the ratio calculation.
+   :type denominator: np.ndarray | float,
+   :param default: Default value which is returned if denominator is 0.
+   :type default: float
+
+   :returns: **ratio** -- Result of the division
+   :rtype: np.ndarray | float
+
+
+.. py:function:: weighted_percentile(arr: numpy.ndarray, percentile: numpy.ndarray, weights: numpy.ndarray = None)
+
+   Calculate weighted percentile.
+
+   Implementation according to https://stackoverflow.com/a/29677616/11509698
+   (https://en.wikipedia.org/wiki/Percentile#The_weighted_percentile_method)
+
+   :param arr: Data array
+   :type arr: np.ndarray
+   :param percentile: Percentile array
+   :type percentile: np.ndarray
+   :param weights: Weights array, by default None
+   :type weights: np.ndarray
+
+   :returns: Weighted percentile array
+   :rtype: np.ndarray
+
+

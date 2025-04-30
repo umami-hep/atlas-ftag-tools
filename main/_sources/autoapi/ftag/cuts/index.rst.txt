@@ -1,0 +1,112 @@
+ftag.cuts
+=========
+
+.. py:module:: ftag.cuts
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   ftag.cuts.OPERATORS
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   ftag.cuts.CutsResult
+   ftag.cuts.Cut
+   ftag.cuts.Cuts
+
+
+Module Contents
+---------------
+
+.. py:data:: OPERATORS
+
+.. py:class:: CutsResult
+
+   Bases: :py:obj:`NamedTuple`
+
+
+   .. py:attribute:: idx
+      :type:  numpy.ndarray
+
+
+   .. py:attribute:: values
+      :type:  numpy.ndarray
+
+
+.. py:class:: Cut
+
+   .. py:attribute:: variable
+      :type:  str
+
+
+   .. py:attribute:: operator
+      :type:  str
+
+
+   .. py:attribute:: _value
+      :type:  str | int | float
+
+
+   .. py:property:: value
+      :type: int | float
+
+
+
+   .. py:method:: __call__(array)
+
+
+   .. py:method:: __str__() -> str
+
+
+.. py:class:: Cuts
+
+   .. py:attribute:: cuts
+      :type:  tuple[Cut, Ellipsis]
+
+
+   .. py:method:: from_list(cuts: list) -> Cuts
+      :classmethod:
+
+
+
+   .. py:method:: empty() -> Cuts
+      :classmethod:
+
+
+
+   .. py:method:: __post_init__()
+
+
+   .. py:property:: variables
+      :type: list[str]
+
+
+
+   .. py:method:: ignore(variables: list[str])
+
+
+   .. py:method:: __call__(array: numpy.ndarray) -> CutsResult
+
+
+   .. py:method:: __add__(other: Cuts)
+
+
+   .. py:method:: __len__() -> int
+
+
+   .. py:method:: __iter__() -> collections.abc.Iterator
+
+
+   .. py:method:: __getitem__(variable)
+
+
+   .. py:method:: __repr__() -> str
+
+

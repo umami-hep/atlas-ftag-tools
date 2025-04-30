@@ -1,0 +1,27 @@
+ftag.hdf5.h5split
+=================
+
+.. py:module:: ftag.hdf5.h5split
+
+.. autoapi-nested-parse::
+
+   A script to split a large h5 file into smaller h5 files along the first index.
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   ftag.hdf5.h5split.parse_args
+   ftag.hdf5.h5split.main
+
+
+Module Contents
+---------------
+
+.. py:function:: parse_args(args)
+
+.. py:function:: main(args=None)
+

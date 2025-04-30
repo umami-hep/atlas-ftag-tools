@@ -1,0 +1,340 @@
+ftag.hdf5
+=========
+
+.. py:module:: ftag.hdf5
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/ftag/hdf5/h5move/index
+   /autoapi/ftag/hdf5/h5reader/index
+   /autoapi/ftag/hdf5/h5split/index
+   /autoapi/ftag/hdf5/h5utils/index
+   /autoapi/ftag/hdf5/h5writer/index
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   ftag.hdf5.H5Reader
+   ftag.hdf5.H5Writer
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   ftag.hdf5.cast_dtype
+   ftag.hdf5.get_dtype
+   ftag.hdf5.join_structured_arrays
+   ftag.hdf5.structured_from_dict
+
+
+Package Contents
+----------------
+
+.. py:class:: H5Reader
+
+   Reads data from multiple HDF5 files.
+
+   :param fname: Path to the HDF5 file or list of paths
+   :type fname: Path | str | list[Path | str]
+   :param batch_size: Number of jets to read at a time, by default 100_000
+   :type batch_size: int, optional
+   :param jets_name: Name of the jets dataset, by default "jets"
+   :type jets_name: str, optional
+   :param precision: Cast floats to given precision, by default None
+   :type precision: str | None, optional
+   :param shuffle: Read batches in a shuffled order, by default True
+   :type shuffle: bool, optional
+   :param weights: Weights for different input datasets, by default None
+   :type weights: list[float] | None, optional
+   :param do_remove_inf: Remove jets with inf values, by default False
+   :type do_remove_inf: bool, optional
+   :param transform: Transform to apply to data, by default None
+   :type transform: Transform | None, optional
+   :param equal_jets: Take the same number of jets (weighted) from each sample, by default True.
+                      This is useful when you specify a list of DSIDs for the sample and they are
+                      qualitatively different, and you want to ensure that you always return batches
+                      with jets from all DSIDs. This is used for example in the QCD resampling for Xbb.
+                      If False, use all jets in each sample, allowing for the full available statistics
+                      to be used. Useful for example if you have multiple ttbar samples and you want to
+                      use all available jets from each sample.
+   :type equal_jets: bool, optional
+
+
+   .. py:attribute:: fname
+      :type:  pathlib.Path | str | list[pathlib.Path | str]
+
+
+   .. py:attribute:: batch_size
+      :type:  int
+      :value: 100000
+
+
+
+   .. py:attribute:: jets_name
+      :type:  str
+      :value: 'jets'
+
+
+
+   .. py:attribute:: precision
+      :type:  str | None
+      :value: None
+
+
+
+   .. py:attribute:: shuffle
+      :type:  bool
+      :value: True
+
+
+
+   .. py:attribute:: weights
+      :type:  list[float] | None
+      :value: None
+
+
+
+   .. py:attribute:: do_remove_inf
+      :type:  bool
+      :value: False
+
+
+
+   .. py:attribute:: transform
+      :type:  ftag.transform.Transform | None
+      :value: None
+
+
+
+   .. py:attribute:: equal_jets
+      :type:  bool
+      :value: False
+
+
+
+   .. py:method:: __post_init__() -> None
+
+
+   .. py:property:: num_jets
+      :type: int
+
+
+
+   .. py:property:: files
+      :type: list[pathlib.Path]
+
+
+
+   .. py:method:: dtypes(variables: dict[str, list[str]] | None = None) -> dict[str, numpy.dtype]
+
+
+   .. py:method:: shapes(num_jets: int, groups: list[str] | None = None) -> dict[str, tuple[int, Ellipsis]]
+
+
+   .. py:method:: stream(variables: dict | None = None, num_jets: int | None = None, cuts: ftag.cuts.Cuts | None = None, start: int = 0) -> collections.abc.Generator
+
+      Generate batches of selected jets.
+
+      :param variables: Dictionary of variables to for each group, by default use all jet variables.
+      :type variables: dict | None, optional
+      :param num_jets: Total number of selected jets to generate, by default all.
+      :type num_jets: int | None, optional
+      :param cuts: Selection cuts to apply, by default None
+      :type cuts: Cuts | None, optional
+      :param start: Starting index of the first jet to read, by default 0
+      :type start: int, optional
+
+      :Yields: *Generator* -- Generator of batches of selected jets.
+
+
+
+   .. py:method:: load(variables: dict | None = None, num_jets: int | None = None, cuts: ftag.cuts.Cuts | None = None) -> dict
+
+      Load multiple batches of selected jets into memory.
+
+      :param variables: Dictionary of variables to for each group, by default use all jet variables.
+      :type variables: dict | None, optional
+      :param num_jets: Total number of selected jets to load, by default all.
+      :type num_jets: int | None, optional
+      :param cuts: Selection cuts to apply, by default None
+      :type cuts: Cuts | None, optional
+
+      :returns: Dictionary of arrays for each group.
+      :rtype: dict
+
+
+
+   .. py:method:: estimate_available_jets(cuts: ftag.cuts.Cuts, num: int = 1000000) -> int
+
+      Estimate the number of jets available after selection cuts.
+
+      :param cuts: Selection cuts to apply.
+      :type cuts: Cuts
+      :param num: Number of jets to use for the estimation, by default 1_000_000.
+      :type num: int, optional
+
+      :returns: Estimated number of jets available after selection cuts, rounded down.
+      :rtype: int
+
+
+
+.. py:function:: cast_dtype(typestr: str, precision: str) -> numpy.dtype
+
+   Cast float type to half or full precision.
+
+   :param typestr: Input type string
+   :type typestr: str
+   :param precision: Precision to cast to, "half" or "full"
+   :type precision: str
+
+   :returns: Output dtype
+   :rtype: np.dtype
+
+   :raises ValueError: If precision is not "half" or "full"
+
+
+.. py:function:: get_dtype(ds, variables: list[str] | None = None, precision: str | None = None, transform: ftag.transform.Transform | None = None) -> numpy.dtype
+
+   Return a dtype based on an existing dataset and requested variables.
+
+   :param ds: Input h5 dataset
+   :type ds: h5py.Dataset
+   :param variables: List of variables to include in dtype, by default None
+   :type variables: list[str] | None, optional
+   :param precision: Precision to cast floats to, "half" or "full", by default None
+   :type precision: str | None, optional
+   :param transform: Transform to apply to variables names, by default None
+   :type transform: Transform | None, optional
+
+   :returns: Output dtype
+   :rtype: np.dtype
+
+   :raises ValueError: If variables are not found in dataset
+
+
+.. py:function:: join_structured_arrays(arrays: list)
+
+   Join a list of structured numpy arrays.
+
+   See https://github.com/numpy/numpy/issues/7811
+
+   :param arrays: List of structured numpy arrays to join
+   :type arrays: list
+
+   :returns: A merged structured array
+   :rtype: np.array
+
+
+.. py:function:: structured_from_dict(d: dict[str, numpy.ndarray]) -> numpy.ndarray
+
+   Convert a dict to a structured array.
+
+   :param d: Input dict of numpy arrays
+   :type d: dict
+
+   :returns: Structured array
+   :rtype: np.ndarray
+
+
+.. py:class:: H5Writer
+
+   Writes jets to an HDF5 file.
+
+   :param dst: Path to the output file.
+   :type dst: Path | str
+   :param dtypes: Dictionary of group names and their corresponding dtypes.
+   :type dtypes: dict[str, np.dtype]
+   :param num_jets: Number of jets to write.
+   :type num_jets: int
+   :param shapes: Dictionary of group names and their corresponding shapes.
+   :type shapes: dict[str, int], optional
+   :param jets_name: Name of the jets group. Default is "jets".
+   :type jets_name: str, optional
+   :param add_flavour_label: Whether to add a flavour label to the jets group. Default is False.
+   :type add_flavour_label: bool, optional
+   :param compression: Compression algorithm to use. Default is "lzf".
+   :type compression: str, optional
+   :param precision: Precision to use. Default is None.
+   :type precision: str | None, optional
+   :param shuffle: Whether to shuffle the jets before writing. Default is True.
+   :type shuffle: bool, optional
+
+
+   .. py:attribute:: dst
+      :type:  pathlib.Path | str
+
+
+   .. py:attribute:: dtypes
+      :type:  dict[str, numpy.dtype]
+
+
+   .. py:attribute:: shapes
+      :type:  dict[str, tuple[int, Ellipsis]]
+
+
+   .. py:attribute:: jets_name
+      :type:  str
+      :value: 'jets'
+
+
+
+   .. py:attribute:: add_flavour_label
+      :type:  bool
+      :value: False
+
+
+
+   .. py:attribute:: compression
+      :type:  str
+      :value: 'lzf'
+
+
+
+   .. py:attribute:: precision
+      :type:  str
+      :value: 'full'
+
+
+
+   .. py:attribute:: shuffle
+      :type:  bool
+      :value: True
+
+
+
+   .. py:method:: __post_init__()
+
+
+   .. py:method:: from_file(source: pathlib.Path, num_jets: int | None = None, **kwargs) -> H5Writer
+      :classmethod:
+
+
+
+   .. py:method:: create_ds(name: str, dtype: numpy.dtype) -> None
+
+
+   .. py:method:: close() -> None
+
+
+   .. py:method:: get_attr(name, group=None)
+
+
+   .. py:method:: add_attr(name, data, group=None) -> None
+
+
+   .. py:method:: copy_attrs(fname: pathlib.Path) -> None
+
+
+   .. py:method:: write(data: dict[str, numpy.array]) -> None
+
+

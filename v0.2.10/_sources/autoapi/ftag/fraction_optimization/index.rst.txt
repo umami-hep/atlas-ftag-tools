@@ -1,0 +1,28 @@
+ftag.fraction_optimization
+==========================
+
+.. py:module:: ftag.fraction_optimization
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   ftag.fraction_optimization.convert_dict
+   ftag.fraction_optimization.get_bkg_norm_dict
+   ftag.fraction_optimization.calculate_rejection_sum
+   ftag.fraction_optimization.calculate_best_fraction_values
+
+
+Module Contents
+---------------
+
+.. py:function:: convert_dict(fraction_values: dict | numpy.ndarray, backgrounds: ftag.labels.LabelContainer) -> numpy.ndarray | dict
+
+.. py:function:: get_bkg_norm_dict(jets: numpy.ndarray, tagger: str, signal: ftag.labels.Label, flavours: ftag.labels.LabelContainer, working_point: float) -> dict
+
+.. py:function:: calculate_rejection_sum(fraction_dict: dict | numpy.ndarray, jets: numpy.ndarray, tagger: str, signal: ftag.labels.Label, flavours: ftag.labels.LabelContainer, working_point: float, bkg_norm_dict: dict, rejection_weights: dict) -> float
+
+.. py:function:: calculate_best_fraction_values(jets: numpy.ndarray, tagger: str, signal: ftag.labels.Label, flavours: ftag.labels.LabelContainer, working_point: float, rejection_weights: dict | None = None, optimizer_method: str = 'Powell') -> dict
+

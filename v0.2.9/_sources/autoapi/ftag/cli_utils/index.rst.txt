@@ -1,0 +1,38 @@
+ftag.cli_utils
+==============
+
+.. py:module:: ftag.cli_utils
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   ftag.cli_utils.HelpFormatter
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   ftag.cli_utils.valid_path
+
+
+Module Contents
+---------------
+
+.. py:function:: valid_path(string)
+
+.. py:class:: HelpFormatter(prog, indent_increment=2, max_help_position=24, width=None)
+
+   Bases: :py:obj:`argparse.RawTextHelpFormatter`, :py:obj:`argparse.ArgumentDefaultsHelpFormatter`
+
+
+   Help message formatter which retains formatting of all help text.
+
+   Only the name of this class is considered a public API. All the methods
+   provided by the class are considered an implementation detail.
+
+

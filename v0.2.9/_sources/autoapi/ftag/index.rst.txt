@@ -1,0 +1,303 @@
+ftag
+====
+
+.. py:module:: ftag
+
+.. autoapi-nested-parse::
+
+   atlas-ftag-tools - Common tools for ATLAS flavour tagging software.
+
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/ftag/cli_utils/index
+   /autoapi/ftag/cuts/index
+   /autoapi/ftag/flavours/index
+   /autoapi/ftag/git_check/index
+   /autoapi/ftag/hdf5/index
+   /autoapi/ftag/labeller/index
+   /autoapi/ftag/mock/index
+   /autoapi/ftag/sample/index
+   /autoapi/ftag/transform/index
+   /autoapi/ftag/vds/index
+   /autoapi/ftag/wps/index
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   ftag.__version__
+   ftag.Flavours
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   ftag.Cuts
+   ftag.Sample
+   ftag.Transform
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   ftag.get_mock_file
+   ftag.get_discriminant
+   ftag.get_working_points
+
+
+Package Contents
+----------------
+
+.. py:data:: __version__
+   :value: 'v0.2.9'
+
+
+.. py:class:: Cuts
+
+   .. py:attribute:: cuts
+      :type:  tuple[Cut, Ellipsis]
+
+
+   .. py:method:: from_list(cuts: list) -> Cuts
+      :classmethod:
+
+
+
+   .. py:method:: empty() -> Cuts
+      :classmethod:
+
+
+
+   .. py:method:: __post_init__()
+
+
+   .. py:property:: variables
+      :type: list[str]
+
+
+
+   .. py:method:: ignore(variables: list[str])
+
+
+   .. py:method:: __call__(array: numpy.ndarray) -> CutsResult
+
+
+   .. py:method:: __add__(other: Cuts)
+
+
+   .. py:method:: __len__() -> int
+
+
+   .. py:method:: __iter__() -> collections.abc.Iterator
+
+
+   .. py:method:: __getitem__(variable)
+
+
+   .. py:method:: __repr__() -> str
+
+
+.. py:data:: Flavours
+
+.. py:function:: get_mock_file(num_jets=1000, fname: str | None = None, tracks_name: str = 'tracks', num_tracks: int = 40) -> tuple[str, h5py.File]
+
+.. py:class:: Sample
+
+   .. py:attribute:: pattern
+      :type:  pathlib.Path | str | tuple[pathlib.Path | str, Ellipsis]
+
+
+   .. py:attribute:: ntuple_dir
+      :type:  pathlib.Path | str | None
+      :value: None
+
+
+
+   .. py:attribute:: name
+      :type:  str | None
+      :value: None
+
+
+
+   .. py:attribute:: weights
+      :type:  list[float] | None
+      :value: None
+
+
+
+   .. py:method:: __post_init__() -> None
+
+
+   .. py:property:: path
+      :type: tuple[pathlib.Path, Ellipsis]
+
+
+
+   .. py:property:: files
+      :type: list[str]
+
+
+
+   .. py:property:: num_files
+      :type: int
+
+
+
+   .. py:property:: dsid
+      :type: list[str]
+
+
+
+   .. py:property:: sample_id
+      :type: list[str]
+
+
+
+   .. py:property:: tags
+      :type: list[str]
+
+
+
+   .. py:property:: ptag
+      :type: list[str]
+
+
+
+   .. py:property:: rtag
+      :type: list[str]
+
+
+
+   .. py:property:: dumper_tag
+      :type: list[str]
+
+
+
+   .. py:method:: virtual_file(**kwargs) -> list[pathlib.Path | str]
+
+
+   .. py:method:: __str__()
+
+
+   .. py:method:: __lt__(other)
+
+
+   .. py:method:: __eq__(other)
+
+
+.. py:class:: Transform
+
+   .. py:attribute:: variable_map
+      :type:  dict[str, dict[str, str]] | None
+      :value: None
+
+
+
+   .. py:attribute:: ints_map
+      :type:  dict[str, dict[str, dict[int, int]]] | None
+      :value: None
+
+
+
+   .. py:attribute:: floats_map
+      :type:  dict[str, dict[str, str | Callable]] | None
+      :value: None
+
+
+
+   .. py:method:: __post_init__()
+
+
+   .. py:method:: __call__(batch: Batch) -> Batch
+
+
+   .. py:method:: map_variables(batch: Batch) -> Batch
+
+      Rename variables in a batch of data.
+
+      :param batch: Dict of structured numpy arrays.
+      :type batch: Batch
+
+      :returns: Dict of structured numpy arrays with renamed variables.
+      :rtype: Batch
+
+
+
+   .. py:method:: map_ints(batch: Batch) -> Batch
+
+      Map integer values to new values.
+
+      :param batch: Dict of structured numpy arrays.
+      :type batch: Batch
+
+      :returns: Dict of structured numpy arrays with mapped integer values.
+      :rtype: Batch
+
+
+
+   .. py:method:: map_floats(batch: Batch) -> Batch
+
+      Transform float values.
+
+      :param batch: Dict of structured numpy arrays.
+      :type batch: Batch
+
+      :returns: Dict of structured numpy arrays with transformed float values.
+      :rtype: Batch
+
+
+
+   .. py:method:: map_dtype(name: str, dtype: numpy.dtype) -> numpy.dtype
+
+
+   .. py:method:: map_variable_names(name: str, variables: list[str], inverse=False) -> list[str]
+
+
+.. py:function:: get_discriminant(jets: numpy.ndarray, tagger: str, signal: ftag.labels.Label, flavours: ftag.labels.LabelContainer, fraction_values: dict[str, float], epsilon: float = 1e-10) -> numpy.ndarray
+
+   Calculate the tagging discriminant for a given tagger.
+
+   Calculated as the logarithm of the ratio of a specified signal probability
+   to a weighted sum ofbackground probabilities.
+
+   :param jets: Structured array of jets containing tagger outputs
+   :type jets: np.ndarray
+   :param tagger: Name of the tagger
+   :type tagger: str
+   :param signal: Signal flavour (bjets/cjets or hbb/hcc)
+   :type signal: Label
+   :param fraction_values: Dict with the fraction values for the background classes for the given tagger
+   :type fraction_values: dict
+   :param epsilon: Small number to avoid division by zero, by default 1e-10
+   :type epsilon: float, optional
+
+   :returns: Array of discriminant values.
+   :rtype: np.ndarray
+
+   :raises ValueError: If the signal flavour is not recognised.
+
+
+.. py:function:: get_working_points(args: argparse.Namespace) -> dict | None
+
+   Calculate the working points.
+
+   :param args: Input arguments from the argparser
+   :type args: argparse.Namespace
+
+   :returns: Dict with the working points. If args.outfile is given, the function returns None and
+             stored the resulting dict in a yaml file in args.outfile.
+   :rtype: dict | None
+
+

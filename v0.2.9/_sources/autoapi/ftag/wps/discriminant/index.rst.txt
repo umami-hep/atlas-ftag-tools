@@ -1,0 +1,41 @@
+ftag.wps.discriminant
+=====================
+
+.. py:module:: ftag.wps.discriminant
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   ftag.wps.discriminant.get_discriminant
+
+
+Module Contents
+---------------
+
+.. py:function:: get_discriminant(jets: numpy.ndarray, tagger: str, signal: ftag.labels.Label, flavours: ftag.labels.LabelContainer, fraction_values: dict[str, float], epsilon: float = 1e-10) -> numpy.ndarray
+
+   Calculate the tagging discriminant for a given tagger.
+
+   Calculated as the logarithm of the ratio of a specified signal probability
+   to a weighted sum ofbackground probabilities.
+
+   :param jets: Structured array of jets containing tagger outputs
+   :type jets: np.ndarray
+   :param tagger: Name of the tagger
+   :type tagger: str
+   :param signal: Signal flavour (bjets/cjets or hbb/hcc)
+   :type signal: Label
+   :param fraction_values: Dict with the fraction values for the background classes for the given tagger
+   :type fraction_values: dict
+   :param epsilon: Small number to avoid division by zero, by default 1e-10
+   :type epsilon: float, optional
+
+   :returns: Array of discriminant values.
+   :rtype: np.ndarray
+
+   :raises ValueError: If the signal flavour is not recognised.
+
+

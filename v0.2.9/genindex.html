@@ -1,0 +1,1436 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Index &#8212; atlas-ftag-tools v0.2.9 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d75fae25" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="_static/documentation_options.js?v=efd3c4f5"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'genindex';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://umami-hep.github.io/atlas-ftag-tools/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'vv0.2.9';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">atlas-ftag-tools documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="index.html">
+    Quickstart
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="dev_guidelines/index.html">
+    Develop
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="autoapi/index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://github.com/umami-hep/atlas-ftag-tools/blob/main/changelog.md">
+    Changelog
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/umami-hep/atlas-ftag-tools" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github-square fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="index.html">
+    Quickstart
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="dev_guidelines/index.html">
+    Develop
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="autoapi/index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://github.com/umami-hep/atlas-ftag-tools/blob/main/changelog.md">
+    Changelog
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/umami-hep/atlas-ftag-tools" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github-square fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none"></div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+
+<h1 id="index">Index</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#_"><strong>_</strong></a>
+ | <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
+ | <a href="#I"><strong>I</strong></a>
+ | <a href="#J"><strong>J</strong></a>
+ | <a href="#L"><strong>L</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#O"><strong>O</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#V"><strong>V</strong></a>
+ | <a href="#W"><strong>W</strong></a>
+ 
+</div>
+<h2 id="_">_</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/index.html#ftag.Cuts.__add__">__add__() (ftag.Cuts method)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.Cuts.__add__">(ftag.cuts.Cuts method)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/index.html#ftag.Cuts.__call__">__call__() (ftag.Cuts method)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.Cut.__call__">(ftag.cuts.Cut method)</a>
+</li>
+        <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.Cuts.__call__">(ftag.cuts.Cuts method)</a>
+</li>
+        <li><a href="autoapi/ftag/index.html#ftag.Transform.__call__">(ftag.Transform method)</a>
+</li>
+        <li><a href="autoapi/ftag/transform/index.html#ftag.transform.Transform.__call__">(ftag.transform.Transform method)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/index.html#ftag.Sample.__eq__">__eq__() (ftag.Sample method)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/sample/index.html#ftag.sample.Sample.__eq__">(ftag.sample.Sample method)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/index.html#ftag.Cuts.__getitem__">__getitem__() (ftag.Cuts method)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.Cuts.__getitem__">(ftag.cuts.Cuts method)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/index.html#ftag.Cuts.__iter__">__iter__() (ftag.Cuts method)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.Cuts.__iter__">(ftag.cuts.Cuts method)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/index.html#ftag.Cuts.__len__">__len__() (ftag.Cuts method)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.Cuts.__len__">(ftag.cuts.Cuts method)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/index.html#ftag.Sample.__lt__">__lt__() (ftag.Sample method)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/sample/index.html#ftag.sample.Sample.__lt__">(ftag.sample.Sample method)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/index.html#ftag.Cuts.__post_init__">__post_init__() (ftag.Cuts method)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.Cuts.__post_init__">(ftag.cuts.Cuts method)</a>
+</li>
+        <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Reader.__post_init__">(ftag.hdf5.H5Reader method)</a>
+</li>
+        <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5Reader.__post_init__">(ftag.hdf5.h5reader.H5Reader method)</a>
+</li>
+        <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5SingleReader.__post_init__">(ftag.hdf5.h5reader.H5SingleReader method)</a>
+</li>
+        <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Writer.__post_init__">(ftag.hdf5.H5Writer method)</a>
+</li>
+        <li><a href="autoapi/ftag/hdf5/h5writer/index.html#ftag.hdf5.h5writer.H5Writer.__post_init__">(ftag.hdf5.h5writer.H5Writer method)</a>
+</li>
+        <li><a href="autoapi/ftag/labeller/index.html#ftag.labeller.Labeller.__post_init__">(ftag.labeller.Labeller method)</a>
+</li>
+        <li><a href="autoapi/ftag/index.html#ftag.Sample.__post_init__">(ftag.Sample method)</a>
+</li>
+        <li><a href="autoapi/ftag/sample/index.html#ftag.sample.Sample.__post_init__">(ftag.sample.Sample method)</a>
+</li>
+        <li><a href="autoapi/ftag/index.html#ftag.Transform.__post_init__">(ftag.Transform method)</a>
+</li>
+        <li><a href="autoapi/ftag/transform/index.html#ftag.transform.Transform.__post_init__">(ftag.transform.Transform method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/index.html#ftag.Cuts.__repr__">__repr__() (ftag.Cuts method)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.Cuts.__repr__">(ftag.cuts.Cuts method)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.Cut.__str__">__str__() (ftag.cuts.Cut method)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/index.html#ftag.Sample.__str__">(ftag.Sample method)</a>
+</li>
+        <li><a href="autoapi/ftag/sample/index.html#ftag.sample.Sample.__str__">(ftag.sample.Sample method)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/index.html#ftag.__version__">__version__ (in module ftag)</a>
+</li>
+      <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.Cut._value">_value (ftag.cuts.Cut attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="A">A</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Writer.add_attr">add_attr() (ftag.hdf5.H5Writer method)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5writer/index.html#ftag.hdf5.h5writer.H5Writer.add_attr">(ftag.hdf5.h5writer.H5Writer method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Writer.add_flavour_label">add_flavour_label (ftag.hdf5.H5Writer attribute)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5writer/index.html#ftag.hdf5.h5writer.H5Writer.add_flavour_label">(ftag.hdf5.h5writer.H5Writer attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/labeller/index.html#ftag.labeller.Labeller.add_labels">add_labels() (ftag.labeller.Labeller method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Reader.batch_size">batch_size (ftag.hdf5.H5Reader attribute)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5Reader.batch_size">(ftag.hdf5.h5reader.H5Reader attribute)</a>
+</li>
+        <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5SingleReader.batch_size">(ftag.hdf5.h5reader.H5SingleReader attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.cast_dtype">cast_dtype() (in module ftag.hdf5)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5utils/index.html#ftag.hdf5.h5utils.cast_dtype">(in module ftag.hdf5.h5utils)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/git_check/index.html#ftag.git_check.check_for_fork">check_for_fork() (in module ftag.git_check)</a>
+</li>
+      <li><a href="autoapi/ftag/git_check/index.html#ftag.git_check.check_for_uncommitted_changes">check_for_uncommitted_changes() (in module ftag.git_check)</a>
+</li>
+      <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Writer.close">close() (ftag.hdf5.H5Writer method)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5writer/index.html#ftag.hdf5.h5writer.H5Writer.close">(ftag.hdf5.h5writer.H5Writer method)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Writer.compression">compression (ftag.hdf5.H5Writer attribute)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5writer/index.html#ftag.hdf5.h5writer.H5Writer.compression">(ftag.hdf5.h5writer.H5Writer attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Writer.copy_attrs">copy_attrs() (ftag.hdf5.H5Writer method)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5writer/index.html#ftag.hdf5.h5writer.H5Writer.copy_attrs">(ftag.hdf5.h5writer.H5Writer method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/git_check/index.html#ftag.git_check.create_and_push_tag">create_and_push_tag() (in module ftag.git_check)</a>
+</li>
+      <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Writer.create_ds">create_ds() (ftag.hdf5.H5Writer method)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5writer/index.html#ftag.hdf5.h5writer.H5Writer.create_ds">(ftag.hdf5.h5writer.H5Writer method)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/vds/index.html#ftag.vds.create_virtual_file">create_virtual_file() (in module ftag.vds)</a>
+</li>
+      <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.Cut">Cut (class in ftag.cuts)</a>
+</li>
+      <li><a href="autoapi/ftag/index.html#ftag.Cuts">Cuts (class in ftag)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.Cuts">(class in ftag.cuts)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/index.html#ftag.Cuts.cuts">cuts (ftag.Cuts attribute)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.Cuts.cuts">(ftag.cuts.Cuts attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.CutsResult">CutsResult (class in ftag.cuts)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Reader.do_remove_inf">do_remove_inf (ftag.hdf5.H5Reader attribute)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5Reader.do_remove_inf">(ftag.hdf5.h5reader.H5Reader attribute)</a>
+</li>
+        <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5SingleReader.do_remove_inf">(ftag.hdf5.h5reader.H5SingleReader attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/index.html#ftag.Sample.dsid">dsid (ftag.Sample property)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/sample/index.html#ftag.sample.Sample.dsid">(ftag.sample.Sample property)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Writer.dst">dst (ftag.hdf5.H5Writer attribute)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5writer/index.html#ftag.hdf5.h5writer.H5Writer.dst">(ftag.hdf5.h5writer.H5Writer attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Writer.dtypes">dtypes (ftag.hdf5.H5Writer attribute)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5writer/index.html#ftag.hdf5.h5writer.H5Writer.dtypes">(ftag.hdf5.h5writer.H5Writer attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Reader.dtypes">dtypes() (ftag.hdf5.H5Reader method)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5Reader.dtypes">(ftag.hdf5.h5reader.H5Reader method)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/index.html#ftag.Sample.dumper_tag">dumper_tag (ftag.Sample property)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/sample/index.html#ftag.sample.Sample.dumper_tag">(ftag.sample.Sample property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/index.html#ftag.Cuts.empty">empty() (ftag.Cuts class method)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.Cuts.empty">(ftag.cuts.Cuts class method)</a>
+</li>
+        <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5SingleReader.empty">(ftag.hdf5.h5reader.H5SingleReader method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Reader.equal_jets">equal_jets (ftag.hdf5.H5Reader attribute)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5Reader.equal_jets">(ftag.hdf5.h5reader.H5Reader attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Reader.estimate_available_jets">estimate_available_jets() (ftag.hdf5.H5Reader method)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5Reader.estimate_available_jets">(ftag.hdf5.h5reader.H5Reader method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Reader.files">files (ftag.hdf5.H5Reader property)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5Reader.files">(ftag.hdf5.h5reader.H5Reader property)</a>
+</li>
+        <li><a href="autoapi/ftag/index.html#ftag.Sample.files">(ftag.Sample property)</a>
+</li>
+        <li><a href="autoapi/ftag/sample/index.html#ftag.sample.Sample.files">(ftag.sample.Sample property)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/index.html#ftag.Flavours">Flavours (in module ftag)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/flavours/index.html#ftag.flavours.Flavours">(in module ftag.flavours)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/index.html#ftag.Transform.floats_map">floats_map (ftag.Transform attribute)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/transform/index.html#ftag.transform.Transform.floats_map">(ftag.transform.Transform attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Reader.fname">fname (ftag.hdf5.H5Reader attribute)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5Reader.fname">(ftag.hdf5.h5reader.H5Reader attribute)</a>
+</li>
+        <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5SingleReader.fname">(ftag.hdf5.h5reader.H5SingleReader attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Writer.from_file">from_file() (ftag.hdf5.H5Writer class method)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5writer/index.html#ftag.hdf5.h5writer.H5Writer.from_file">(ftag.hdf5.h5writer.H5Writer class method)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/index.html#ftag.Cuts.from_list">from_list() (ftag.Cuts class method)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.Cuts.from_list">(ftag.cuts.Cuts class method)</a>
+</li>
+      </ul></li>
+      <li>
+    ftag
+
+      <ul>
+        <li><a href="autoapi/ftag/index.html#module-ftag">module</a>
+</li>
+      </ul></li>
+      <li>
+    ftag.cli_utils
+
+      <ul>
+        <li><a href="autoapi/ftag/cli_utils/index.html#module-ftag.cli_utils">module</a>
+</li>
+      </ul></li>
+      <li>
+    ftag.cuts
+
+      <ul>
+        <li><a href="autoapi/ftag/cuts/index.html#module-ftag.cuts">module</a>
+</li>
+      </ul></li>
+      <li>
+    ftag.flavours
+
+      <ul>
+        <li><a href="autoapi/ftag/flavours/index.html#module-ftag.flavours">module</a>
+</li>
+      </ul></li>
+      <li>
+    ftag.git_check
+
+      <ul>
+        <li><a href="autoapi/ftag/git_check/index.html#module-ftag.git_check">module</a>
+</li>
+      </ul></li>
+      <li>
+    ftag.hdf5
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/index.html#module-ftag.hdf5">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    ftag.hdf5.h5move
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5move/index.html#module-ftag.hdf5.h5move">module</a>
+</li>
+      </ul></li>
+      <li>
+    ftag.hdf5.h5reader
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5reader/index.html#module-ftag.hdf5.h5reader">module</a>
+</li>
+      </ul></li>
+      <li>
+    ftag.hdf5.h5split
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5split/index.html#module-ftag.hdf5.h5split">module</a>
+</li>
+      </ul></li>
+      <li>
+    ftag.hdf5.h5utils
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5utils/index.html#module-ftag.hdf5.h5utils">module</a>
+</li>
+      </ul></li>
+      <li>
+    ftag.hdf5.h5writer
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5writer/index.html#module-ftag.hdf5.h5writer">module</a>
+</li>
+      </ul></li>
+      <li>
+    ftag.labeller
+
+      <ul>
+        <li><a href="autoapi/ftag/labeller/index.html#module-ftag.labeller">module</a>
+</li>
+      </ul></li>
+      <li>
+    ftag.mock
+
+      <ul>
+        <li><a href="autoapi/ftag/mock/index.html#module-ftag.mock">module</a>
+</li>
+      </ul></li>
+      <li>
+    ftag.sample
+
+      <ul>
+        <li><a href="autoapi/ftag/sample/index.html#module-ftag.sample">module</a>
+</li>
+      </ul></li>
+      <li>
+    ftag.transform
+
+      <ul>
+        <li><a href="autoapi/ftag/transform/index.html#module-ftag.transform">module</a>
+</li>
+      </ul></li>
+      <li>
+    ftag.vds
+
+      <ul>
+        <li><a href="autoapi/ftag/vds/index.html#module-ftag.vds">module</a>
+</li>
+      </ul></li>
+      <li>
+    ftag.wps
+
+      <ul>
+        <li><a href="autoapi/ftag/wps/index.html#module-ftag.wps">module</a>
+</li>
+      </ul></li>
+      <li>
+    ftag.wps.discriminant
+
+      <ul>
+        <li><a href="autoapi/ftag/wps/discriminant/index.html#module-ftag.wps.discriminant">module</a>
+</li>
+      </ul></li>
+      <li>
+    ftag.wps.working_points
+
+      <ul>
+        <li><a href="autoapi/ftag/wps/working_points/index.html#module-ftag.wps.working_points">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5SingleReader.get_attr">get_attr() (ftag.hdf5.h5reader.H5SingleReader method)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Writer.get_attr">(ftag.hdf5.H5Writer method)</a>
+</li>
+        <li><a href="autoapi/ftag/hdf5/h5writer/index.html#ftag.hdf5.h5writer.H5Writer.get_attr">(ftag.hdf5.h5writer.H5Writer method)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/index.html#ftag.get_discriminant">get_discriminant() (in module ftag)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/wps/discriminant/index.html#ftag.wps.discriminant.get_discriminant">(in module ftag.wps.discriminant)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.get_dtype">get_dtype() (in module ftag.hdf5)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5utils/index.html#ftag.hdf5.h5utils.get_dtype">(in module ftag.hdf5.h5utils)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/wps/working_points/index.html#ftag.wps.working_points.get_eff_rej">get_eff_rej() (in module ftag.wps.working_points)</a>
+</li>
+      <li><a href="autoapi/ftag/wps/working_points/index.html#ftag.wps.working_points.get_efficiencies">get_efficiencies() (in module ftag.wps.working_points)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/wps/working_points/index.html#ftag.wps.working_points.get_fxs_from_args">get_fxs_from_args() (in module ftag.wps.working_points)</a>
+</li>
+      <li><a href="autoapi/ftag/git_check/index.html#ftag.git_check.get_git_hash">get_git_hash() (in module ftag.git_check)</a>
+</li>
+      <li><a href="autoapi/ftag/labeller/index.html#ftag.labeller.Labeller.get_labels">get_labels() (ftag.labeller.Labeller method)</a>
+</li>
+      <li><a href="autoapi/ftag/index.html#ftag.get_mock_file">get_mock_file() (in module ftag)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/mock/index.html#ftag.mock.get_mock_file">(in module ftag.mock)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/wps/working_points/index.html#ftag.wps.working_points.get_rej_eff_at_disc">get_rej_eff_at_disc() (in module ftag.wps.working_points)</a>
+</li>
+      <li><a href="autoapi/ftag/vds/index.html#ftag.vds.get_virtual_layout">get_virtual_layout() (in module ftag.vds)</a>
+</li>
+      <li><a href="autoapi/ftag/index.html#ftag.get_working_points">get_working_points() (in module ftag)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/wps/working_points/index.html#ftag.wps.working_points.get_working_points">(in module ftag.wps.working_points)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/git_check/index.html#ftag.git_check.GitError">GitError</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Reader">H5Reader (class in ftag.hdf5)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5Reader">(class in ftag.hdf5.h5reader)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5SingleReader">H5SingleReader (class in ftag.hdf5.h5reader)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Writer">H5Writer (class in ftag.hdf5)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5writer/index.html#ftag.hdf5.h5writer.H5Writer">(class in ftag.hdf5.h5writer)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/cli_utils/index.html#ftag.cli_utils.HelpFormatter">HelpFormatter (class in ftag.cli_utils)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.CutsResult.idx">idx (ftag.cuts.CutsResult attribute)</a>
+</li>
+      <li><a href="autoapi/ftag/index.html#ftag.Cuts.ignore">ignore() (ftag.Cuts method)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.Cuts.ignore">(ftag.cuts.Cuts method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/index.html#ftag.Transform.ints_map">ints_map (ftag.Transform attribute)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/transform/index.html#ftag.transform.Transform.ints_map">(ftag.transform.Transform attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/git_check/index.html#ftag.git_check.is_git_repo">is_git_repo() (in module ftag.git_check)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="J">J</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Reader.jets_name">jets_name (ftag.hdf5.H5Reader attribute)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5Reader.jets_name">(ftag.hdf5.h5reader.H5Reader attribute)</a>
+</li>
+        <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5SingleReader.jets_name">(ftag.hdf5.h5reader.H5SingleReader attribute)</a>
+</li>
+        <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Writer.jets_name">(ftag.hdf5.H5Writer attribute)</a>
+</li>
+        <li><a href="autoapi/ftag/hdf5/h5writer/index.html#ftag.hdf5.h5writer.H5Writer.jets_name">(ftag.hdf5.h5writer.H5Writer attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.join_structured_arrays">join_structured_arrays() (in module ftag.hdf5)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5utils/index.html#ftag.hdf5.h5utils.join_structured_arrays">(in module ftag.hdf5.h5utils)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/labeller/index.html#ftag.labeller.Labeller">Labeller (class in ftag.labeller)</a>
+</li>
+      <li><a href="autoapi/ftag/labeller/index.html#ftag.labeller.Labeller.labels">labels (ftag.labeller.Labeller attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Reader.load">load() (ftag.hdf5.H5Reader method)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5Reader.load">(ftag.hdf5.h5reader.H5Reader method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/hdf5/h5move/index.html#ftag.hdf5.h5move.main">main() (in module ftag.hdf5.h5move)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5split/index.html#ftag.hdf5.h5split.main">(in module ftag.hdf5.h5split)</a>
+</li>
+        <li><a href="autoapi/ftag/vds/index.html#ftag.vds.main">(in module ftag.vds)</a>
+</li>
+        <li><a href="autoapi/ftag/wps/working_points/index.html#ftag.wps.working_points.main">(in module ftag.wps.working_points)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/index.html#ftag.Transform.map_dtype">map_dtype() (ftag.Transform method)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/transform/index.html#ftag.transform.Transform.map_dtype">(ftag.transform.Transform method)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/index.html#ftag.Transform.map_floats">map_floats() (ftag.Transform method)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/transform/index.html#ftag.transform.Transform.map_floats">(ftag.transform.Transform method)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/index.html#ftag.Transform.map_ints">map_ints() (ftag.Transform method)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/transform/index.html#ftag.transform.Transform.map_ints">(ftag.transform.Transform method)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/index.html#ftag.Transform.map_variable_names">map_variable_names() (ftag.Transform method)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/transform/index.html#ftag.transform.Transform.map_variable_names">(ftag.transform.Transform method)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/index.html#ftag.Transform.map_variables">map_variables() (ftag.Transform method)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/transform/index.html#ftag.transform.Transform.map_variables">(ftag.transform.Transform method)</a>
+</li>
+      </ul></li>
+      <li>
+    module
+
+      <ul>
+        <li><a href="autoapi/ftag/index.html#module-ftag">ftag</a>
+</li>
+        <li><a href="autoapi/ftag/cli_utils/index.html#module-ftag.cli_utils">ftag.cli_utils</a>
+</li>
+        <li><a href="autoapi/ftag/cuts/index.html#module-ftag.cuts">ftag.cuts</a>
+</li>
+        <li><a href="autoapi/ftag/flavours/index.html#module-ftag.flavours">ftag.flavours</a>
+</li>
+        <li><a href="autoapi/ftag/git_check/index.html#module-ftag.git_check">ftag.git_check</a>
+</li>
+        <li><a href="autoapi/ftag/hdf5/index.html#module-ftag.hdf5">ftag.hdf5</a>
+</li>
+        <li><a href="autoapi/ftag/hdf5/h5move/index.html#module-ftag.hdf5.h5move">ftag.hdf5.h5move</a>
+</li>
+        <li><a href="autoapi/ftag/hdf5/h5reader/index.html#module-ftag.hdf5.h5reader">ftag.hdf5.h5reader</a>
+</li>
+        <li><a href="autoapi/ftag/hdf5/h5split/index.html#module-ftag.hdf5.h5split">ftag.hdf5.h5split</a>
+</li>
+        <li><a href="autoapi/ftag/hdf5/h5utils/index.html#module-ftag.hdf5.h5utils">ftag.hdf5.h5utils</a>
+</li>
+        <li><a href="autoapi/ftag/hdf5/h5writer/index.html#module-ftag.hdf5.h5writer">ftag.hdf5.h5writer</a>
+</li>
+        <li><a href="autoapi/ftag/labeller/index.html#module-ftag.labeller">ftag.labeller</a>
+</li>
+        <li><a href="autoapi/ftag/mock/index.html#module-ftag.mock">ftag.mock</a>
+</li>
+        <li><a href="autoapi/ftag/sample/index.html#module-ftag.sample">ftag.sample</a>
+</li>
+        <li><a href="autoapi/ftag/transform/index.html#module-ftag.transform">ftag.transform</a>
+</li>
+        <li><a href="autoapi/ftag/vds/index.html#module-ftag.vds">ftag.vds</a>
+</li>
+        <li><a href="autoapi/ftag/wps/index.html#module-ftag.wps">ftag.wps</a>
+</li>
+        <li><a href="autoapi/ftag/wps/discriminant/index.html#module-ftag.wps.discriminant">ftag.wps.discriminant</a>
+</li>
+        <li><a href="autoapi/ftag/wps/working_points/index.html#module-ftag.wps.working_points">ftag.wps.working_points</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/index.html#ftag.Sample.name">name (ftag.Sample attribute)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/sample/index.html#ftag.sample.Sample.name">(ftag.sample.Sample attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/index.html#ftag.Sample.ntuple_dir">ntuple_dir (ftag.Sample attribute)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/sample/index.html#ftag.sample.Sample.ntuple_dir">(ftag.sample.Sample attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/index.html#ftag.Sample.num_files">num_files (ftag.Sample property)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/sample/index.html#ftag.sample.Sample.num_files">(ftag.sample.Sample property)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Reader.num_jets">num_jets (ftag.hdf5.H5Reader property)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5Reader.num_jets">(ftag.hdf5.h5reader.H5Reader property)</a>
+</li>
+        <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5SingleReader.num_jets">(ftag.hdf5.h5reader.H5SingleReader property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.Cut.operator">operator (ftag.cuts.Cut attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.OPERATORS">OPERATORS (in module ftag.cuts)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/hdf5/h5move/index.html#ftag.hdf5.h5move.parse_args">parse_args() (in module ftag.hdf5.h5move)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5split/index.html#ftag.hdf5.h5split.parse_args">(in module ftag.hdf5.h5split)</a>
+</li>
+        <li><a href="autoapi/ftag/vds/index.html#ftag.vds.parse_args">(in module ftag.vds)</a>
+</li>
+        <li><a href="autoapi/ftag/wps/working_points/index.html#ftag.wps.working_points.parse_args">(in module ftag.wps.working_points)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/index.html#ftag.Sample.path">path (ftag.Sample property)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/sample/index.html#ftag.sample.Sample.path">(ftag.sample.Sample property)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/index.html#ftag.Sample.pattern">pattern (ftag.Sample attribute)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/sample/index.html#ftag.sample.Sample.pattern">(ftag.sample.Sample attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Reader.precision">precision (ftag.hdf5.H5Reader attribute)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5Reader.precision">(ftag.hdf5.h5reader.H5Reader attribute)</a>
+</li>
+        <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5SingleReader.precision">(ftag.hdf5.h5reader.H5SingleReader attribute)</a>
+</li>
+        <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Writer.precision">(ftag.hdf5.H5Writer attribute)</a>
+</li>
+        <li><a href="autoapi/ftag/hdf5/h5writer/index.html#ftag.hdf5.h5writer.H5Writer.precision">(ftag.hdf5.h5writer.H5Writer attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/index.html#ftag.Sample.ptag">ptag (ftag.Sample property)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/sample/index.html#ftag.sample.Sample.ptag">(ftag.sample.Sample property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5SingleReader.read_chunk">read_chunk() (ftag.hdf5.h5reader.H5SingleReader method)</a>
+</li>
+      <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5SingleReader.remove_inf">remove_inf() (ftag.hdf5.h5reader.H5SingleReader method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/labeller/index.html#ftag.labeller.Labeller.require_labels">require_labels (ftag.labeller.Labeller attribute)</a>
+</li>
+      <li><a href="autoapi/ftag/index.html#ftag.Sample.rtag">rtag (ftag.Sample property)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/sample/index.html#ftag.sample.Sample.rtag">(ftag.sample.Sample property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/index.html#ftag.Sample">Sample (class in ftag)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/sample/index.html#ftag.sample.Sample">(class in ftag.sample)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/index.html#ftag.Sample.sample_id">sample_id (ftag.Sample property)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/sample/index.html#ftag.sample.Sample.sample_id">(ftag.sample.Sample property)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/wps/working_points/index.html#ftag.wps.working_points.setup_common_parts">setup_common_parts() (in module ftag.wps.working_points)</a>
+</li>
+      <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Writer.shapes">shapes (ftag.hdf5.H5Writer attribute)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5writer/index.html#ftag.hdf5.h5writer.H5Writer.shapes">(ftag.hdf5.h5writer.H5Writer attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Reader.shapes">shapes() (ftag.hdf5.H5Reader method)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5Reader.shapes">(ftag.hdf5.h5reader.H5Reader method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Reader.shuffle">shuffle (ftag.hdf5.H5Reader attribute)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5Reader.shuffle">(ftag.hdf5.h5reader.H5Reader attribute)</a>
+</li>
+        <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5SingleReader.shuffle">(ftag.hdf5.h5reader.H5SingleReader attribute)</a>
+</li>
+        <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Writer.shuffle">(ftag.hdf5.H5Writer attribute)</a>
+</li>
+        <li><a href="autoapi/ftag/hdf5/h5writer/index.html#ftag.hdf5.h5writer.H5Writer.shuffle">(ftag.hdf5.h5writer.H5Writer attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Reader.stream">stream() (ftag.hdf5.H5Reader method)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5Reader.stream">(ftag.hdf5.h5reader.H5Reader method)</a>
+</li>
+        <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5SingleReader.stream">(ftag.hdf5.h5reader.H5SingleReader method)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.structured_from_dict">structured_from_dict() (in module ftag.hdf5)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/index.html#ftag.Sample.tags">tags (ftag.Sample property)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/sample/index.html#ftag.sample.Sample.tags">(ftag.sample.Sample property)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/index.html#ftag.Transform">Transform (class in ftag)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/transform/index.html#ftag.transform.Transform">(class in ftag.transform)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Reader.transform">transform (ftag.hdf5.H5Reader attribute)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5Reader.transform">(ftag.hdf5.h5reader.H5Reader attribute)</a>
+</li>
+        <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5SingleReader.transform">(ftag.hdf5.h5reader.H5SingleReader attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/cli_utils/index.html#ftag.cli_utils.valid_path">valid_path() (in module ftag.cli_utils)</a>
+</li>
+      <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.Cut.value">value (ftag.cuts.Cut property)</a>
+</li>
+      <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.CutsResult.values">values (ftag.cuts.CutsResult attribute)</a>
+</li>
+      <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.Cut.variable">variable (ftag.cuts.Cut attribute)</a>
+</li>
+      <li><a href="autoapi/ftag/index.html#ftag.Transform.variable_map">variable_map (ftag.Transform attribute)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/transform/index.html#ftag.transform.Transform.variable_map">(ftag.transform.Transform attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/index.html#ftag.Cuts.variables">variables (ftag.Cuts property)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.Cuts.variables">(ftag.cuts.Cuts property)</a>
+</li>
+        <li><a href="autoapi/ftag/labeller/index.html#ftag.labeller.Labeller.variables">(ftag.labeller.Labeller property)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/index.html#ftag.Sample.virtual_file">virtual_file() (ftag.Sample method)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/sample/index.html#ftag.sample.Sample.virtual_file">(ftag.sample.Sample method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Reader.weights">weights (ftag.hdf5.H5Reader attribute)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5Reader.weights">(ftag.hdf5.h5reader.H5Reader attribute)</a>
+</li>
+        <li><a href="autoapi/ftag/index.html#ftag.Sample.weights">(ftag.Sample attribute)</a>
+</li>
+        <li><a href="autoapi/ftag/sample/index.html#ftag.sample.Sample.weights">(ftag.sample.Sample attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Writer.write">write() (ftag.hdf5.H5Writer method)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/hdf5/h5writer/index.html#ftag.hdf5.h5writer.H5Writer.write">(ftag.hdf5.h5writer.H5Writer method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
