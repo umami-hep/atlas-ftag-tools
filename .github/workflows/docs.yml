@@ -1,0 +1,27 @@
+name: docs-multiversion
+
+on:
+  push:
+    branches: [main]
+  release:
+    types: [published]
+
+permissions: {contents: write}
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}      # *all* tags are needed!
+
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+
+      - run: python -m pip install -e ".[dev]" -r docs/requirements.txt
+      - run: python docs/sphinx_build_multiversion.py
+
+      - name: Deploy to Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          publish_dir: docs/_build/html

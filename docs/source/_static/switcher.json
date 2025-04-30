@@ -2,6 +2,11 @@
     {
         "name": "latest",
         "version": "main",
-        "url": "https://umami-hep.github.io/puma/main/"
+        "url": "https://umami-hep.github.io/atlas-ftag-tools/main/"
+    },
+    {
+        "name": "v0.2.10",
+        "version": "v0.2.10",
+        "url": "https://umami-hep.github.io/atlas-ftag-tools/v0.2.10/"
     }
 ]
