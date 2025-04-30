@@ -1,4 +1,4 @@
-# Example Scripts
+# Examples
 
 On the following page, examples will be given how the code can be used. The first part
 covers scripts and functions that can be used directly from the terminal while the second
@@ -74,10 +74,10 @@ A script to split a large h5 file into several smaller files.
 Useful if output files are too large for EOS/grid storage.
 See [h5split.py](ftag/hdf5/h5split.py) for more info.
 
-# Extensive Examples
+## Extensive Examples
 
 The content below is generated automatically from `ftag/example.ipynb`.
 
 ```{include} example.md
-:level: 2
+:level: 3
 ```

@@ -1,0 +1,332 @@
+```python
+from __future__ import annotations
+
+%load_ext autoreload
+%autoreload 2
+```
+
+# Example Usage
+
+This notebooks demonstrates how to use this package.
+The main features are:
+
+- A `Cuts` class that can be used to select jets.
+- A set of `Flavours` defining common jet flavours.
+- An `H5Reader` class allowing for batched reading of jets across multiple files.
+- An `H5Writer` class allowing for batched writing of jets.
+
+We can start by getting some dummy data to work with.
+
+
+```python
+from ftag import get_mock_file
+
+fname, f = get_mock_file()
+jets = f["jets"]
+```
+
+### Cuts
+
+The `Cuts` class provides an interface for applying selections to structured nummpy arrays loaded from HDF5 files.
+To take a look, first import the `Cuts`:
+
+
+
+```python
+from ftag import Cuts
+```
+
+Instances of `Cuts` can be defined from lists of strings or tuples of strings and values. For example
+
+
+```python
+kinematic_cuts = Cuts.from_list(["pt > 20e3", "abs_eta < 2.5"])
+flavour_cuts = Cuts.from_list([("HadronConeExclTruthLabelID", "==", 5)])
+```
+
+It's easy to combine cuts
+
+
+```python
+combined_cuts = kinematic_cuts + flavour_cuts
+```
+
+And then apply them to a a structured array with 
+
+
+```python
+idx, selected_jets = combined_cuts(jets)
+```
+
+Both the selected indices and the selected jets are returned. The indices can be used to reapply the same selection to another array (e.g. tracks). The return values `idx` and `values` can also be accessed by name:
+
+
+```python
+idx = combined_cuts(jets).idx
+selected_jets = combined_cuts(jets).values
+```
+
+### Flavours
+
+A list of flavours is provided.
+
+
+```python
+from ftag import Flavours
+
+Flavours.bjets
+```
+
+
+
+
+    Flavour(name='bjets', label='$b$-jets', cuts=['HadronConeExclTruthLabelID == 5'], colour='tab:blue', category='single-btag')
+
+
+
+`dict` like access is also supported:
+
+
+```python
+Flavours["qcd"]
+```
+
+
+
+
+    Flavour(name='qcd', label='QCD', cuts=['R10TruthLabel_R22v1 == 10'], colour='#38761D', category='xbb')
+
+
+
+As you can see from the output, each flavour has a `name`, a `label` and `colour` (used for plotting), and a `Cuts` instance, which can be used to select jets of the given flavour.
+For example:
+
+
+```python
+bjets = Flavours.bjets.cuts(jets).values
+```
+
+Each flavour is also assigned to a category, which can be used to group flavours together. For example:
+
+
+```python
+Flavours.categories
+```
+
+
+
+
+    ['single-btag', 'single-btag-extended', 'xbb', 'partonic', 'lepton-decay']
+
+
+
+
+```python
+Flavours.by_category("xbb")
+```
+
+
+
+
+    FlavourContainer(hbb, hcc, top, inclusive_top, qcd)
+
+
+
+Probability names are also accessible using `.px`:
+
+
+```python
+[f.px for f in Flavours.by_category("single-btag")]
+```
+
+
+
+
+    ['pb', 'pc', 'pu', 'ptau']
+
+
+
+And you can also access a flavour from it's definition
+
+
+```python
+Flavours.from_cuts(["HadronConeExclTruthLabelID == 5"])
+```
+
+
+
+
+    Flavour(name='bjets', label='$b$-jets', cuts=['HadronConeExclTruthLabelID == 5'], colour='tab:blue', category='single-btag')
+
+
+
+### H5Reader
+
+The `H5Reader` class allows you to read (batches) of jets from one or more HDF5 files.
+
+- Variables are specified as `dict[str, list[str]]`.
+- By default the reader will randomly access chunks in the file, giving you a weakly shuffled set of jets.
+- By default the reader will load all variables for all available jets if `variables` and `num_jets` are not specified respectively.
+
+For example to load 300 jets using three batches of size 100:
+
+
+
+```python
+from ftag.hdf5 import H5Reader
+
+reader = H5Reader(fname, batch_size=100)
+data = reader.load({"jets": ["pt", "eta"]}, num_jets=300)
+len(data["jets"])
+```
+
+
+
+
+    300
+
+
+
+To transparently load jets across several files `fname` can also be a pattern including wildcards (`*`).
+Behind the scenes files are globbed and merged into a [virtual dataset](https://docs.h5py.org/en/stable/vds.html).
+So the following also works:
+
+
+```python
+from pathlib import Path
+
+reader = H5Reader(Path(fname).parent / "*.h5", batch_size=100)
+```
+
+If you have globbed several files, you can easily get the total number of jets across all files with
+
+
+```python
+reader.num_jets
+```
+
+
+
+
+    1000
+
+
+
+You can also load tracks alongside jets (or by themselves) by specifying an additional entry in the `variables` dict:
+
+
+```python
+data = reader.load({"jets": ["pt", "eta"], "tracks": ["deta", "dphi"]}, num_jets=100)
+data["tracks"].dtype
+```
+
+
+
+
+    dtype([('dphi', '<f4'), ('deta', '<f4')])
+
+
+
+You can apply cuts to the jets as they are loaded. For example, to load 1000 jets which satisfy $p_T > 20$ GeV:
+
+
+```python
+data = reader.load({"jets": ["pt"]}, num_jets=100, cuts=Cuts.from_list(["pt > 20e3"]))
+assert data["jets"]["pt"].min() > 20e3
+```
+
+Rather than return a single `dict` of arrays, the reader can also return a generator of batches.
+This is useful when you want to work with a large number of jets, but don't want to load them all into memory at once.
+
+
+```python
+reader = H5Reader(fname, batch_size=100)
+stream = reader.stream({"jets": ["pt", "eta"]}, num_jets=300)
+for batch in stream:
+    jets = batch["jets"]
+    # do processing on batch...
+```
+
+### H5Writer
+
+
+The `H5Writer` class complents the reader class by allowing you to easily write batches of jets to a target file.
+
+
+```python
+from tempfile import NamedTemporaryFile
+
+from ftag.hdf5 import H5Writer
+
+reader = H5Reader(fname, batch_size=100, shuffle=False)
+variables = {"jets": None}  # "None" means "all variables"
+out_fname = NamedTemporaryFile(suffix=".h5").name
+writer = H5Writer(
+    dst=out_fname,
+    dtypes=reader.dtypes(variables),
+    shapes=reader.shapes(1000),
+    shuffle=False,
+)
+```
+
+To write jets in batches to the output file, you can use the `write` method:
+
+
+```python
+for batch in reader.stream(variables=variables, num_jets=1000):
+    writer.write(batch)
+writer.close()
+```
+
+When you are finished you need to manually close the file using `H5Writer.close()`.
+The two files will now have the same contents (since we disabled shuffling):
+
+
+```python
+import h5py
+
+assert (h5py.File(fname)["jets"][:] == h5py.File(out_fname)["jets"][:]).all()
+```
+
+### Data Transform
+
+The `transform.py` module allows for data to be transformed as it is loaded.
+Three operations are supported:
+
+- Renaming variables
+- Mapping integer values
+- Functional transforms on floating point values
+
+See below for an example. First, we can make a transform config (which in this case just log scales the jet pt).
+
+
+```python
+from ftag.transform import Transform
+
+transform_config = {
+    "floats_map": {
+        "jets": {
+            "pt": "log",
+        },
+    },
+}
+
+transform = Transform(**transform_config)
+```
+
+This object can be passed to the `H5Reader` constructor.
+The resulting object will return transformed values.
+
+
+```python
+reader = H5Reader(fname, batch_size=100, transform=transform)
+data = reader.load({"jets": ["pt", "eta"]}, num_jets=300)
+data["jets"]["pt"].min(), data["jets"]["pt"].max()
+```
+
+
+
+
+    (6.871671, 12.899197)
+
+

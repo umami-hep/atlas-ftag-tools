@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Examples &#8212; atlas-ftag-tools v0.2.10 documentation</title>
+    <title>Example Usage &#8212; atlas-ftag-tools v0.2.10 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'examples/index';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'examples/example';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://umami-hep.github.io/atlas-ftag-tools/main/_static/switcher.json';
@@ -55,8 +55,6 @@
         </script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Develop" href="../dev_guidelines/index.html" />
-    <link rel="prev" title="ATLAS FTAG Python Tools" href="../index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -142,8 +140,8 @@
 </li>
 
 
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="index.html">
     Examples
   </a>
 </li>
@@ -262,8 +260,10 @@
       
       
       
+        
+      
       <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
   
@@ -285,8 +285,8 @@
 </li>
 
 
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="index.html">
     Examples
   </a>
 </li>
@@ -370,15 +370,6 @@
     
   </div>
   
-    <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item">
-<nav class="bd-docs-nav bd-links"
-     aria-label="Section Navigation">
-  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"></div>
-</nav></div>
-    </div>
-  
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
       <div class="sidebar-primary-item">
@@ -414,7 +405,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Examples</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Example Usage</span></li>
   </ul>
 </nav>
 </div>
@@ -431,80 +422,12 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="examples">
-<h1>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h1>
-<p>On the following page, examples will be given how the code can be used. The first part
-covers scripts and functions that can be used directly from the terminal while the second
-part gives a more detailed look on the different functionalities.</p>
-<section id="calculate-wps">
-<h2>Calculate WPs<a class="headerlink" href="#calculate-wps" title="Link to this heading">#</a></h2>
-<p>This package contains a script to calculate tagger working points (WPs).
-The script is <code class="docutils literal notranslate"><span class="pre">working_points.py</span></code> and can be run after installing this package with</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wps</span> \
-    <span class="o">--</span><span class="n">ttbar</span> <span class="s2">&quot;path/to/ttbar/*.h5&quot;</span> \
-    <span class="o">--</span><span class="n">tagger</span> <span class="n">GN2v01</span> \
-    <span class="o">--</span><span class="n">fc</span> <span class="mf">0.1</span>
-</pre></div>
-</div>
-<p>Both the <code class="docutils literal notranslate"><span class="pre">--tagger</span></code> and <code class="docutils literal notranslate"><span class="pre">--fc</span></code> options accept a list if you want to get the WPs for multiple taggers.
-If you are doing c-tagging or xbb-tagging, dedicated fx arguments are available ()you can find them all with <code class="docutils literal notranslate"><span class="pre">-h</span></code>.</p>
-<p>If you want to use the <code class="docutils literal notranslate"><span class="pre">ttbar</span></code> WPs get the efficiencies and rejections for the <code class="docutils literal notranslate"><span class="pre">zprime</span></code> sample, you can add <code class="docutils literal notranslate"><span class="pre">--zprime</span> <span class="pre">&quot;path/to/zprime/*.h5&quot;</span></code> to the command.
-Note that a default selection of $p_T &gt; 250 ~GeV$ to jets in the <code class="docutils literal notranslate"><span class="pre">zprime</span></code> sample.</p>
-<p>If instead of defining the working points for a series of signal efficiencies, you wish to calculate a WP corresponding to a specific background rejection, the <code class="docutils literal notranslate"><span class="pre">--rejection</span></code> option can be given along with the desired background.</p>
-<p>By default the working points are printed to the terminal, but you can save the results to a YAML file with the <code class="docutils literal notranslate"><span class="pre">--outfile</span></code> option.</p>
-<p>See <code class="docutils literal notranslate"><span class="pre">wps</span> <span class="pre">--help</span></code> for more options and information.</p>
-</section>
-<section id="calculate-efficiency-at-discriminant-cut">
-<h2>Calculate efficiency at discriminant cut<a class="headerlink" href="#calculate-efficiency-at-discriminant-cut" title="Link to this heading">#</a></h2>
-<p>The same script can be used to calculate the efficiency and rejection values at a given discriminant cut value.
-The script <code class="docutils literal notranslate"><span class="pre">working_points.py</span></code> can be run after intalling this package as follows</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wps</span> \
-    <span class="o">--</span><span class="n">ttbar</span> <span class="s2">&quot;path/to/ttbar/*.h5&quot;</span> \
-    <span class="o">--</span><span class="n">tagger</span> <span class="n">GN2v01</span> \
-    <span class="o">--</span><span class="n">fx</span> <span class="mf">0.1</span>
-    <span class="o">--</span><span class="n">disc_cuts</span> <span class="mf">1.0</span> <span class="mf">1.5</span>
-</pre></div>
-</div>
-<p>The <code class="docutils literal notranslate"><span class="pre">--tagger</span></code>, <code class="docutils literal notranslate"><span class="pre">--fx</span></code>, and <code class="docutils literal notranslate"><span class="pre">--outfile</span></code> follow the same procedure as in the ‘Calculate WPs’ script as described above.</p>
-</section>
-<section id="h5-utils">
-<h2>H5 Utils<a class="headerlink" href="#h5-utils" title="Link to this heading">#</a></h2>
-<section id="create-virtual-file">
-<h3>Create virtual file<a class="headerlink" href="#create-virtual-file" title="Link to this heading">#</a></h3>
-<p>This package contains a script to easily merge a set of H5 files.
-A virtual file is a fast and lightweight way to wrap a set of files.
-See the <a class="reference external" href="https://docs.h5py.org/en/stable/vds.html">h5py documentation</a> for more information on virtual datasets.</p>
-<p>The script is <code class="docutils literal notranslate"><span class="pre">vds.py</span></code> and can be run after installing this package with</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vds</span> <span class="o">&lt;</span><span class="n">pattern</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">output</span> <span class="n">path</span><span class="o">&gt;</span>
-</pre></div>
-</div>
-<p>The <code class="docutils literal notranslate"><span class="pre">&lt;pattern&gt;</span></code> argument should be a quotes enclosed <a class="reference external" href="https://en.wikipedia.org/wiki/Glob_(programming)">glob pattern</a>, for example <code class="docutils literal notranslate"><span class="pre">&quot;dsid/path/*.h5&quot;</span></code></p>
-<p>See <code class="docutils literal notranslate"><span class="pre">vds</span> <span class="pre">--help</span></code> for more options and information.</p>
-</section>
-<section id="h5move">
-<h3><a class="reference internal" href="#ftag/hdf5/h5move.py"><span class="xref myst">h5move</span></a><a class="headerlink" href="#h5move" title="Link to this heading">#</a></h3>
-<p>A script to move/rename datasets inside an h5file.
-Useful for correcting discrepancies between group names.
-See <a class="reference internal" href="#ftag/hdf5/h5move.py"><span class="xref myst">h5move.py</span></a> for more info.</p>
-</section>
-<section id="h5split">
-<h3><a class="reference internal" href="#ftag/hdf5/h5split.py"><span class="xref myst">h5split</span></a><a class="headerlink" href="#h5split" title="Link to this heading">#</a></h3>
-<p>A script to split a large h5 file into several smaller files.
-Useful if output files are too large for EOS/grid storage.
-See <a class="reference internal" href="#ftag/hdf5/h5split.py"><span class="xref myst">h5split.py</span></a> for more info.</p>
-</section>
-</section>
-<section id="extensive-examples">
-<h2>Extensive Examples<a class="headerlink" href="#extensive-examples" title="Link to this heading">#</a></h2>
-<p>The content below is generated automatically from <code class="docutils literal notranslate"><span class="pre">ftag/example.ipynb</span></code>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+  <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="o">%</span><span class="n">load_ext</span> <span class="n">autoreload</span>
 <span class="o">%</span><span class="n">autoreload</span> <span class="mi">2</span>
 </pre></div>
 </div>
-</section>
-</section>
 <section id="example-usage">
 <h1>Example Usage<a class="headerlink" href="#example-usage" title="Link to this heading">#</a></h1>
 <p>This notebooks demonstrates how to use this package.
@@ -734,24 +657,6 @@ The resulting object will return transformed values.</p>
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="../index.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">ATLAS FTAG Python Tools</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="../dev_guidelines/index.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Develop</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
 </div>
                 </footer>
               
@@ -771,35 +676,19 @@ The resulting object will return transformed values.</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Examples</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-wps">Calculate WPs</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-efficiency-at-discriminant-cut">Calculate efficiency at discriminant cut</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#h5-utils">H5 Utils</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-virtual-file">Create virtual file</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#h5move"><span class="xref myst">h5move</span></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#h5split"><span class="xref myst">h5split</span></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extensive-examples">Extensive Examples</a></li>
-</ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#example-usage">Example Usage</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cuts">Cuts</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flavours">Flavours</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#h5reader">H5Reader</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#h5writer">H5Writer</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-transform">Data Transform</a></li>
 </ul>
-</li>
-</ul>
-
   </nav></div>
 
   <div class="sidebar-secondary-item">
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/examples/index.md.txt"
+      <li><a href="../_sources/examples/example.md.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div></div>
