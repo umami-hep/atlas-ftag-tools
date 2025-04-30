@@ -1,4 +1,4 @@
-# Developer Guidelines
+# Develop
 
 ## 1  Quick local setup
 
