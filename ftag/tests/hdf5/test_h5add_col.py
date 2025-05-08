@@ -1,20 +1,18 @@
-import pytest
-import numpy as np
-import h5py
+from __future__ import annotations
+
 from pathlib import Path
 
-from ftag.hdf5.h5add_col import h5_add_column, merge_dicts, get_shape, get_all_groups
-
-
+import h5py
+import numpy as np
+import pytest
 
 from ftag import get_mock_file
+from ftag.hdf5.h5add_col import get_all_groups, get_shape, h5_add_column, merge_dicts
 
 
 @pytest.fixture
 def input_file():
-    """Create a mock HDF5 file for testing."""
-    fname, f = get_mock_file()
-    
+    fname, _ = get_mock_file()
     return fname
 
 
@@ -26,11 +24,14 @@ def append_func():
                 "new_phi": batch["jets"]["pt"] * 0.1  # some dummy computation
             }
         }
+
     return add_phi
+
 
 def test_file_not_found():
     with pytest.raises(FileNotFoundError):
         h5_add_column("nonexistent.h5", None, lambda x: x)
+
 
 def test_merge_dicts_success():
     d1 = {"jets": {"pt": np.array([1, 2, 3])}}
@@ -85,7 +86,7 @@ def test_h5_add_column_allows_overwrite(tmp_path, input_file, append_func):
     h5_add_column(input_file, output_file, append_func, overwrite=True)
 
 
-def test_h5_add_column_default_output_path(tmp_path, input_file, append_func):
+def test_h5_add_column_default_output_path(input_file, append_func):
     out_path = Path(str(input_file).replace(".h5", "_additional.h5"))
     if out_path.exists():
         out_path.unlink()
@@ -96,8 +97,10 @@ def test_h5_add_column_default_output_path(tmp_path, input_file, append_func):
 def test_h5_add_column_batch_printing(tmp_path, input_file, append_func, capsys):
     output_file = tmp_path / "printed.h5"
     h5_add_column(
-        input_file, output_file, append_func, 
-        reader_kwargs={"batch_size": 1}  # ensures lots of batches
+        input_file,
+        output_file,
+        append_func,
+        reader_kwargs={"batch_size": 1},  # ensures lots of batches
     )
     out = capsys.readouterr().out
     assert "Processing batch" in out
@@ -112,7 +115,7 @@ def test_h5_add_column_rejects_existing_field(tmp_path, input_file):
 
 
 def test_h5_add_column_rejects_wrong_shape(tmp_path, input_file):
-    def bad_shape_func(batch):
+    def bad_shape_func(batch):  # noqa: ARG001
         return {"jets": {"wrong": np.ones((123,))}}  # bad shape
 
     with pytest.raises(ValueError, match="shape is not correct"):
@@ -126,8 +129,8 @@ def test_h5_add_column_rejects_wrong_output_group(tmp_path, input_file):
     with pytest.raises(ValueError, match="Trying to append phi to tracks"):
         h5_add_column(input_file, tmp_path / "wronggroup.h5", other_group)
 
+
 def test_output_to_non_writen_group(tmp_path, input_file, append_func):
-    
     with pytest.raises(ValueError, match="Trying to output to jets but only "):
         h5_add_column(
             input_file,
@@ -137,8 +140,8 @@ def test_output_to_non_writen_group(tmp_path, input_file, append_func):
             input_groups=["jets", "tracks"],  # only allow reading from jets
         )
 
+
 def test_skip_tracks(tmp_path, input_file, append_func):
-    
     h5_add_column(
         input_file,
         tmp_path / "non_writen_group.h5",
