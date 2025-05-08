@@ -3,9 +3,9 @@ import numpy as np
 from ftag.hdf5.h5reader import H5Reader
 from ftag.hdf5.h5writer import H5Writer
 import h5py
-from tqdm import tqdm
 from pathlib import Path
 from typing import Callable
+
 def merge_dicts(dicts):
     """
     Merges a list of dictionaries whre each dict is of the form:
