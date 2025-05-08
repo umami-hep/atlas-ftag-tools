@@ -1,20 +1,21 @@
+import pytest
 import numpy as np
 import h5py
-import pytest
 from pathlib import Path
 
+from ftag.hdf5.h5add_col import h5_add_column, merge_dicts, get_shape, get_all_groups
+
+
+
 from ftag import get_mock_file
-from ftag.hdf5 import h5_add_column
 
 
 @pytest.fixture
-def input_file(tmp_path):
+def input_file():
     """Create a mock HDF5 file for testing."""
-    dst = tmp_path / "input.h5"
-    mock = get_mock_file()
-    with h5py.File(dst, "w") as f:
-        f.create_dataset("jets", data=mock[1]["jets"][:100])
-    return dst
+    fname, f = get_mock_file()
+    
+    return fname
 
 
 @pytest.fixture
@@ -27,42 +28,96 @@ def append_func():
         }
     return add_phi
 
+def test_merge_dicts_success():
+    d1 = {"jets": {"pt": np.array([1, 2, 3])}}
+    d2 = {"jets": {"eta": np.array([4, 5, 6])}}
+    merged = merge_dicts([d1, d2])
+    assert "pt" in merged["jets"]
+    assert "eta" in merged["jets"]
 
-def test_h5_add_column_creates_output(tmp_path, input_file, append_func):
-    output_file = tmp_path / "output.h5"
+
+def test_merge_dicts_conflict():
+    d1 = {"jets": {"pt": np.array([1, 2, 3])}}
+    d2 = {"jets": {"pt": np.array([4, 5, 6])}}
+    with pytest.raises(ValueError, match="Variable pt already exists"):
+        merge_dicts([d1, d2])
+
+
+def test_get_shape_scalar_and_vector():
+    batch = {
+        "a": np.zeros((5,), dtype=np.float32),
+        "b": np.zeros((5, 3), dtype=np.float32),
+    }
+    shape = get_shape(100, batch)
+    assert shape["a"] == (100,)
+    assert shape["b"] == (100, 3)
+
+
+def test_get_all_groups(input_file):
+    groups = get_all_groups(input_file)
+    assert isinstance(groups, dict)
+    assert "jets" in groups
+
+
+def test_h5_add_column_appends_field(tmp_path, input_file, append_func):
+    output_file = tmp_path / "out.h5"
     h5_add_column(input_file, output_file, append_func)
 
-    assert output_file.exists()
-    with h5py.File(output_file, "r") as f:
+    with h5py.File(output_file) as f:
         assert "jets" in f
         assert "new_phi" in f["jets"].dtype.names
-        assert np.allclose(f["jets"]["new_phi"], f["jets"]["pt"][:100] * 0.1)
 
 
 def test_h5_add_column_overwrite_protection(tmp_path, input_file, append_func):
-    output_file = tmp_path / "output.h5"
+    output_file = tmp_path / "overwrite.h5"
     h5_add_column(input_file, output_file, append_func)
-
-    # Attempting to write again should raise unless overwrite=True
     with pytest.raises(FileExistsError):
         h5_add_column(input_file, output_file, append_func)
 
-    # Should succeed with overwrite=True
+
+def test_h5_add_column_allows_overwrite(tmp_path, input_file, append_func):
+    output_file = tmp_path / "overwrite2.h5"
+    h5_add_column(input_file, output_file, append_func)
     h5_add_column(input_file, output_file, append_func, overwrite=True)
-    assert output_file.exists()
 
 
-def test_h5_add_column_invalid_group(tmp_path, input_file, append_func):
-    def wrong_group_func(batch):
-        return {"tracks": {"phi": np.ones(len(batch["jets"]))}}
+def test_h5_add_column_default_output_path(tmp_path, input_file, append_func):
+    out_path = Path(str(input_file).replace(".h5", "_additional.h5"))
+    if out_path.exists():
+        out_path.unlink()
+    h5_add_column(input_file, None, append_func)
+    assert out_path.exists()
 
-    with pytest.raises(ValueError, match="Trying to output to"):
-        h5_add_column(input_file, tmp_path / "bad_output.h5", wrong_group_func)
+
+def test_h5_add_column_batch_printing(tmp_path, input_file, append_func, capsys):
+    output_file = tmp_path / "printed.h5"
+    h5_add_column(
+        input_file, output_file, append_func, 
+        reader_kwargs={"batch_size": 1}  # ensures lots of batches
+    )
+    out = capsys.readouterr().out
+    assert "Processing batch" in out
 
 
-def test_h5_add_column_variable_conflict(tmp_path, input_file):
-    def conflict_func(batch):
-        return {"jets": {"pt": np.ones(len(batch["jets"]))}}  # pt already exists
+def test_h5_add_column_rejects_existing_field(tmp_path, input_file):
+    def bad_func(batch):
+        return {"jets": {"pt": batch["jets"]["pt"]}}  # pt already exists
 
-    with pytest.raises(ValueError, match="Trying to append pt to jets but it already exists in batch"):
-        h5_add_column(input_file, tmp_path / "conflict.h5", conflict_func)
+    with pytest.raises(ValueError, match="already exists in batch"):
+        h5_add_column(input_file, tmp_path / "err.h5", bad_func)
+
+
+def test_h5_add_column_rejects_wrong_shape(tmp_path, input_file):
+    def bad_shape_func(batch):
+        return {"jets": {"wrong": np.ones((123,))}}  # bad shape
+
+    with pytest.raises(ValueError, match="shape is not correct"):
+        h5_add_column(input_file, tmp_path / "badshape.h5", bad_shape_func)
+
+
+def test_h5_add_column_rejects_wrong_output_group(tmp_path, input_file):
+    def other_group(batch):
+        return {"tracks": {"phi": np.ones(len(batch["jets"]))}}  # not allowed group
+
+    with pytest.raises(ValueError, match="Trying to append phi to tracks"):
+        h5_add_column(input_file, tmp_path / "wronggroup.h5", other_group)

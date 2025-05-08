@@ -168,7 +168,7 @@ def h5_add_column(
         raise FileExistsError(f"Output file {output_file} already exists. Please choose a different name.")
     
     if output_file is None:
-        output_file = input_file.replace(".h5", "_additional.h5")
+        output_file = input_file.with_name(input_file.name.replace(".h5", "_additional.h5"))
 
     if not isinstance(append_function, list):
         append_function = [append_function]
