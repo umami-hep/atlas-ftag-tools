@@ -28,6 +28,10 @@ def append_func():
         }
     return add_phi
 
+def test_file_not_found():
+    with pytest.raises(FileNotFoundError):
+        h5_add_column("nonexistent.h5", None, lambda x: x)
+
 def test_merge_dicts_success():
     d1 = {"jets": {"pt": np.array([1, 2, 3])}}
     d2 = {"jets": {"eta": np.array([4, 5, 6])}}
@@ -121,3 +125,24 @@ def test_h5_add_column_rejects_wrong_output_group(tmp_path, input_file):
 
     with pytest.raises(ValueError, match="Trying to append phi to tracks"):
         h5_add_column(input_file, tmp_path / "wronggroup.h5", other_group)
+
+def test_output_to_non_writen_group(tmp_path, input_file, append_func):
+    
+    with pytest.raises(ValueError, match="Trying to output to jets but only "):
+        h5_add_column(
+            input_file,
+            tmp_path / "non_writen_group.h5",
+            append_func,
+            output_groups=["tracks"],  # only allow writing to tracks
+            input_groups=["jets", "tracks"],  # only allow reading from jets
+        )
+
+def test_skip_tracks(tmp_path, input_file, append_func):
+    
+    h5_add_column(
+        input_file,
+        tmp_path / "non_writen_group.h5",
+        append_func,
+        output_groups=["jets"],  # only allow writing to tracks
+        input_groups=["jets", "tracks"],  # only allow reading from jets
+    )
