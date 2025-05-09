@@ -3,9 +3,11 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import Callable
+import importlib.util
 
 import h5py
 import numpy as np
+import argparse 
 
 from ftag.hdf5.h5reader import H5Reader
 from ftag.hdf5.h5writer import H5Writer
@@ -274,3 +276,112 @@ def h5_add_column(
             )
 
         writer.write(to_write)
+
+def parse_append_function(func_path: str) -> Callable:
+    """Attempts to load the function specified by func_path.
+    The function should be specified as 'path/to/file.py:function_name'.
+
+    Parameters
+    ----------
+    func_path : str
+        Path to the function to load. Should be of the form 'path/to/file.py:function_name'.
+
+    Returns
+    -------
+    Callable
+        The function specified by func_path.
+
+    Raises
+    ------
+    ValueError
+        If the function path is not of the form 'path/to/file.py:function_name'.
+    FileNotFoundError
+        If the file does not exist.
+    ImportError
+        If the file cannot be imported.
+    AttributeError
+        If the function does not exist in the file.
+    """
+    if isinstance(func_path, Path):
+        func_path = str(func_path)
+    if ':' not in func_path:
+        print(func_path)
+        raise ValueError("Function should be specified as 'path/to/file.py:function_name'")
+    
+    file_str, func_name = func_path.split(':')
+    file_path = Path(file_str).resolve()
+
+    if not file_path.is_file():
+        raise FileNotFoundError(f"No such file: {file_path}")
+
+    module_name = file_path.stem  # Just the filename without extension
+
+    spec = importlib.util.spec_from_file_location(module_name, str(file_path))
+    if spec is None or spec.loader is None:
+        raise ImportError(f"Cannot load spec for {file_path}")
+    
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+
+    if not hasattr(module, func_name):
+        raise AttributeError(f"Module {module_name} has no attribute {func_name}")
+    
+    return getattr(module, func_name)
+
+def get_args(args):
+    parser = argparse.ArgumentParser(description="Append columns to an h5 file.")
+    parser.add_argument("--input", "-i", type=str, required=True, help="Input h5 file")
+    parser.add_argument(
+        "--append_function",
+        type=str,
+        nargs="+",
+        help="Function to append to the h5 file. Can be a list of functions.",
+        required=True,
+    )
+    parser.add_argument("--output", type=str, help="Output h5 file")
+    parser.add_argument(
+        "--num_jets", type=int, default=-1, help="Number of jets to read from the input file"
+    )
+    parser.add_argument(
+        "--input_groups",
+        type=str,
+        nargs="+",
+        default=None,
+        help="List of groups to read from the input file",
+    )
+    parser.add_argument(
+        "--output_groups",
+        type=str,
+        nargs="+",
+        default=None,
+        help="List of groups to write to the output file",
+    )
+    parser.add_argument(
+        "--reader_kwargs", type=dict, default=None, help="Additional arguments for H5Reader"
+    )
+    parser.add_argument(
+        "--writer_kwargs", type=dict, default=None, help="Additional arguments for H5Writer"
+    )
+    parser.add_argument(
+        "--overwrite", action="store_true", help="Overwrite the output file if it exists"
+    )
+
+    return parser.parse_args(args)
+
+def main(args=None):
+    args = get_args(args)
+    append_function = []
+    for func_path in args.append_function:
+        append_function.append(parse_append_function(func_path))
+    h5_add_column(
+        args.input,
+        args.output,
+        append_function,
+        num_jets=args.num_jets,
+        input_groups=args.input_groups,
+        output_groups=args.output_groups,
+        reader_kwargs=args.reader_kwargs,
+        writer_kwargs=args.writer_kwargs,
+        overwrite=args.overwrite,
+    )
+    
