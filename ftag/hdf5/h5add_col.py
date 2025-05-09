@@ -11,7 +11,7 @@ from ftag.hdf5.h5reader import H5Reader
 from ftag.hdf5.h5writer import H5Writer
 
 
-def merge_dicts(dicts):
+def merge_dicts(dicts: list[dict[str, dict[str, np.ndarray]]]) -> dict[str, dict[str, np.ndarray]]:
     """Merges a list of dictionaries.
 
     Each dict is of the form:
@@ -88,12 +88,12 @@ def merge_dicts(dicts):
     return merged
 
 
-def get_shape(n, batch):
+def get_shape(num_jets: int, batch: dict[str, np.ndarray]) -> dict[str, tuple[int]]:
     """Returns a dictionary with the correct output shapes for the H5Writer.
 
     Parameters
     ----------
-    N : int
+    num_jets : int
         Number of jets to write in total
     batch : dict[str, np.ndarray]
         Dictionary representing the batch
@@ -107,13 +107,26 @@ def get_shape(n, batch):
 
     for key in batch:
         if batch[key].ndim == 1:
-            shape[key] = (n,)
+            shape[key] = (num_jets,)
         else:
-            shape[key] = (n,) + batch[key].shape[1:]
+            shape[key] = (num_jets,) + batch[key].shape[1:]
     return shape
 
 
-def get_all_groups(file) -> dict[str, None]:
+def get_all_groups(file : Path | str) -> dict[str, None]:
+    """_summary_
+
+    Parameters
+    ----------
+    file : Path | str
+        Path to the h5 file
+
+    Returns
+    -------
+    dict[str, None]
+        A dictionary with all the groups in the h5 file as keys and None as values,
+        such that h5read.stream(all_groups) will return all the groups in the file.
+    """
     with h5py.File(file, "r") as f:
         groups = list(f.keys())
         return dict.fromkeys(groups)
@@ -129,7 +142,7 @@ def h5_add_column(
     reader_kwargs: dict | None = None,
     writer_kwargs: dict | None = None,
     overwrite: bool = False,
-):
+) -> None:
     """Appends one or more columns to one or more groups in an h5 file.
 
     Parameters
