@@ -1,13 +1,13 @@
 # Utils to take an input h5 file, and append one or more columns to it
 from __future__ import annotations
 
+import argparse
+import importlib.util
 from pathlib import Path
 from typing import Callable
-import importlib.util
 
 import h5py
 import numpy as np
-import argparse 
 
 from ftag.hdf5.h5reader import H5Reader
 from ftag.hdf5.h5writer import H5Writer
@@ -77,7 +77,7 @@ def merge_dicts(dicts: list[dict[str, dict[str, np.ndarray]]]) -> dict[str, dict
     ValueError
         If a variable already exists in the merged dictionary.
     """
-    merged = {}
+    merged: dict[str, dict[str, np.ndarray]] = {}
     for d in dicts:
         for group, variables in d.items():
             if group not in merged:
@@ -90,7 +90,7 @@ def merge_dicts(dicts: list[dict[str, dict[str, np.ndarray]]]) -> dict[str, dict
     return merged
 
 
-def get_shape(num_jets: int, batch: dict[str, np.ndarray]) -> dict[str, tuple[int]]:
+def get_shape(num_jets: int, batch: dict[str, np.ndarray]) -> dict[str, tuple[int, ...]]:
     """Returns a dictionary with the correct output shapes for the H5Writer.
 
     Parameters
@@ -102,21 +102,21 @@ def get_shape(num_jets: int, batch: dict[str, np.ndarray]) -> dict[str, tuple[in
 
     Returns
     -------
-    dict[str, tuple[int]]
+    dict[str, tuple[int, ...]]
         Dictionary with the shapes of the output arrays
     """
-    shape = {}
+    shape: dict[str, tuple[int, ...]] = {}
 
-    for key in batch:
-        if batch[key].ndim == 1:
+    for key, values in batch.items():
+        if values.ndim == 1:
             shape[key] = (num_jets,)
         else:
-            shape[key] = (num_jets,) + batch[key].shape[1:]
+            shape[key] = (num_jets,) + values.shape[1:]
     return shape
 
 
-def get_all_groups(file : Path | str) -> dict[str, None]:
-    """_summary_
+def get_all_groups(file: Path | str) -> dict[str, None]:
+    """Returns a dictionary with all the groups in the h5 file.
 
     Parameters
     ----------
@@ -277,6 +277,7 @@ def h5_add_column(
 
         writer.write(to_write)
 
+
 def parse_append_function(func_path: str) -> Callable:
     """Attempts to load the function specified by func_path.
     The function should be specified as 'path/to/file.py:function_name'.
@@ -304,11 +305,11 @@ def parse_append_function(func_path: str) -> Callable:
     """
     if isinstance(func_path, Path):
         func_path = str(func_path)
-    if ':' not in func_path:
+    if ":" not in func_path:
         print(func_path)
         raise ValueError("Function should be specified as 'path/to/file.py:function_name'")
-    
-    file_str, func_name = func_path.split(':')
+
+    file_str, func_name = func_path.split(":")
     file_path = Path(file_str).resolve()
 
     if not file_path.is_file():
@@ -319,14 +320,15 @@ def parse_append_function(func_path: str) -> Callable:
     spec = importlib.util.spec_from_file_location(module_name, str(file_path))
     if spec is None or spec.loader is None:
         raise ImportError(f"Cannot load spec for {file_path}")
-    
+
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
 
     if not hasattr(module, func_name):
         raise AttributeError(f"Module {module_name} has no attribute {func_name}")
-    
+
     return getattr(module, func_name)
+
 
 def get_args(args):
     parser = argparse.ArgumentParser(description="Append columns to an h5 file.")
@@ -368,11 +370,14 @@ def get_args(args):
 
     return parser.parse_args(args)
 
+
 def main(args=None):
     args = get_args(args)
-    append_function = []
-    for func_path in args.append_function:
-        append_function.append(parse_append_function(func_path))
+    append_function = [
+        parse_append_function(func_path) if isinstance(func_path, str) else func_path
+        for func_path in args.append_function
+    ]
+
     h5_add_column(
         args.input,
         args.output,
@@ -384,4 +389,3 @@ def main(args=None):
         writer_kwargs=args.writer_kwargs,
         overwrite=args.overwrite,
     )
-    
