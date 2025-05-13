@@ -2,11 +2,12 @@ from __future__ import annotations
 
 import subprocess
 from pathlib import Path
+from unittest import mock
 
 import h5py
 import numpy as np
 import pytest
-from unittest import mock
+
 from ftag import get_mock_file
 from ftag.hdf5.h5add_col import (
     get_all_groups,
@@ -188,6 +189,7 @@ def test_invalid_python(tmp_path):
     with pytest.raises(SyntaxError):
         parse_append_function(f"{file}:good")
 
+
 def test_func_path_as_path_object(tmp_path):
     file = tmp_path / "pathfunc.py"
     file.write_text("def test_fn():\n    return 42")
@@ -196,13 +198,17 @@ def test_func_path_as_path_object(tmp_path):
     func = parse_append_function(func_path)
     assert func() == 42
 
+
 def test_spec_is_none(tmp_path):
     file = tmp_path / "fake.py"
     file.write_text("def f(): pass")
 
-    with mock.patch("importlib.util.spec_from_file_location", return_value=None):
-        with pytest.raises(ImportError, match="Cannot load spec"):
-            parse_append_function(f"{file}:f")
+    with (
+        mock.patch("importlib.util.spec_from_file_location", return_value=None),
+        pytest.raises(ImportError, match="Cannot load spec"),
+    ):
+        parse_append_function(f"{file}:f")
+
 
 def test_cli(tmp_path, input_file):
     # Gets the path in here
