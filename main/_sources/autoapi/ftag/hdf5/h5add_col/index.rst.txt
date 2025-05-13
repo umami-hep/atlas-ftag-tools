@@ -1,0 +1,174 @@
+ftag.hdf5.h5add_col
+===================
+
+.. py:module:: ftag.hdf5.h5add_col
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   ftag.hdf5.h5add_col.merge_dicts
+   ftag.hdf5.h5add_col.get_shape
+   ftag.hdf5.h5add_col.get_all_groups
+   ftag.hdf5.h5add_col.h5_add_column
+   ftag.hdf5.h5add_col.parse_append_function
+   ftag.hdf5.h5add_col.get_args
+   ftag.hdf5.h5add_col.main
+
+
+Module Contents
+---------------
+
+.. py:function:: merge_dicts(dicts: list[dict[str, dict[str, numpy.ndarray]]]) -> dict[str, dict[str, numpy.ndarray]]
+
+   Merges a list of dictionaries.
+
+   Each dict is of the form:
+    {
+       group1: {
+           variable_1: np.array
+           variable_2: np.array
+       },
+       group2: {
+           variable_1: np.array
+           variable_2: np.array
+       }
+    }
+
+    E.g.
+
+    dict1 = {
+       "jets": {
+           "pt": np.array([1, 2, 3]),
+           "eta": np.array([4, 5, 6])
+       },
+   }
+   dict2 = {
+       "jets": {
+           "phi": np.array([7, 8, 9]),
+           "energy": np.array([10, 11, 12])
+       },
+   }
+
+   merged = {
+       "jets": {
+           "pt": np.array([1, 2, 3]),
+           "eta": np.array([4, 5, 6]),
+           "phi": np.array([7, 8, 9]),
+           "energy": np.array([10, 11, 12])
+       }
+   }
+
+   :param dicts: List of dictionaries to merge. Each dictionary should be of the form:
+   :type dicts: list[dict[str, dict[str, np.ndarray]]]
+
+   :returns: Merged dictionary of the form:
+             {
+                 group1: {
+                     variable_1: np.array
+                     variable_2: np.array
+                 },
+                 group2: {
+                     variable_1: np.array
+                     variable_2: np.array
+                 }
+             }
+   :rtype: dict[str, dict[str, np.ndarray]]
+
+   :raises ValueError: If a variable already exists in the merged dictionary.
+
+
+.. py:function:: get_shape(num_jets: int, batch: dict[str, numpy.ndarray]) -> dict[str, tuple[int, Ellipsis]]
+
+   Returns a dictionary with the correct output shapes for the H5Writer.
+
+   :param num_jets: Number of jets to write in total
+   :type num_jets: int
+   :param batch: Dictionary representing the batch
+   :type batch: dict[str, np.ndarray]
+
+   :returns: Dictionary with the shapes of the output arrays
+   :rtype: dict[str, tuple[int, ...]]
+
+
+.. py:function:: get_all_groups(file: pathlib.Path | str) -> dict[str, None]
+
+   Returns a dictionary with all the groups in the h5 file.
+
+   :param file: Path to the h5 file
+   :type file: Path | str
+
+   :returns: A dictionary with all the groups in the h5 file as keys and None as values,
+             such that h5read.stream(all_groups) will return all the groups in the file.
+   :rtype: dict[str, None]
+
+
+.. py:function:: h5_add_column(input_file: str | pathlib.Path, output_file: str | pathlib.Path, append_function: Callable | list[Callable], num_jets: int = -1, input_groups: list[str] | None = None, output_groups: list[str] | None = None, reader_kwargs: dict | None = None, writer_kwargs: dict | None = None, overwrite: bool = False) -> None
+
+   Appends one or more columns to one or more groups in an h5 file.
+
+   :param input_file: Input h5 file to read from.
+   :type input_file: str | Path
+   :param output_file: Output h5 file to write to.
+   :type output_file: str | Path
+   :param append_function: A function, or list of functions, which take a batch from H5Reader and returns a dictionary
+                           of the form:
+                               {
+                                   group1 : {
+                                       new_column1 : data,
+                                       new_column2 : data,
+                                   },
+                                   group2 : {
+                                       new_column3 : data,
+                                       new_column4 : data,
+                                   },
+                                   ...
+                               }
+   :type append_function: callable | list[callable]
+   :param num_jets: Number of jets to read from the input file. If -1, reads all jets. By default -1.
+   :type num_jets: int, optional
+   :param input_groups: List of groups to read from the input file. If None, reads all groups. By default None.
+   :type input_groups: list[str] | None, optional
+   :param output_groups: List of groups to write to the output file. If None, writes all groups. By default None.
+                         Note that this is a subset of the input groups, and must include all groups that the
+                         append functions wish to write to.
+   :type output_groups: list[str] | None, optional
+   :param reader_kwargs: Additional arguments to pass to the H5Reader. By default None.
+   :type reader_kwargs: dict, optional
+   :param writer_kwargs: Additional arguments to pass to the H5Writer. By default None.
+   :type writer_kwargs: dict, optional
+   :param overwrite: If True, will overwrite the output file if it exists. By default False.
+                     If False, will raise a FileExistsError if the output file exists.
+                     If None, will check if the output file exists and raise an error if it does unless
+                     overwrite is True.
+   :type overwrite: bool, optional
+
+   :raises FileNotFoundError: If the input file does not exist.
+   :raises FileExistsError: If the output file exists and overwrite is False.
+   :raises ValueError: If the new variable already exists, shape is incorrect, or the output group is not in
+       the input groups.
+
+
+.. py:function:: parse_append_function(func_path: str) -> Callable
+
+   Attempts to load the function specified by func_path.
+   The function should be specified as 'path/to/file.py:function_name'.
+
+   :param func_path: Path to the function to load. Should be of the form 'path/to/file.py:function_name'.
+   :type func_path: str
+
+   :returns: The function specified by func_path.
+   :rtype: Callable
+
+   :raises ValueError: If the function path is not of the form 'path/to/file.py:function_name'.
+   :raises FileNotFoundError: If the file does not exist.
+   :raises ImportError: If the file cannot be imported.
+   :raises AttributeError: If the function does not exist in the file.
+
+
+.. py:function:: get_args(args)
+
+.. py:function:: main(args=None)
+

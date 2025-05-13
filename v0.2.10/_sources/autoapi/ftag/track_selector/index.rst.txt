@@ -1,0 +1,47 @@
+ftag.track_selector
+===================
+
+.. py:module:: ftag.track_selector
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   ftag.track_selector.TrackSelector
+
+
+Module Contents
+---------------
+
+.. py:class:: TrackSelector
+
+   Apply track selections to a set of tracks stored in a structured numpy array.
+
+   The array is assumed to have shape (n_jets, n_tracks, n_features).
+   Applying cuts will NaN out the tracks that do not pass the cuts,
+   but leave the shape of the array unchanged.
+
+   :param cuts: The cuts to apply to the tracks
+   :type cuts: Cuts
+   :param valid_str: The name of the field in the tracks that indicates whether the track is
+   :type valid_str: str
+
+
+   .. py:attribute:: cuts
+      :type:  ftag.cuts.Cuts
+
+
+   .. py:attribute:: valid_str
+      :type:  str
+      :value: 'valid'
+
+
+
+   .. py:method:: __call__(tracks: numpy.ndarray) -> numpy.ndarray
+
+
+   .. py:method:: _nshared_cut(cut: ftag.cuts.Cut, tracks: numpy.ndarray) -> numpy.ndarray
+
+

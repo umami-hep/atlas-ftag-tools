@@ -556,14 +556,14 @@ To take a look, first import the <code class="docutils literal notranslate"><spa
 <span class="n">Flavours</span><span class="o">.</span><span class="n">bjets</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Flavour(name=&#39;bjets&#39;, label=&#39;$b$-jets&#39;, cuts=[&#39;HadronConeExclTruthLabelID == 5&#39;], colour=&#39;tab:blue&#39;, category=&#39;single-btag&#39;)
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Label(name=&#39;bjets&#39;, label=&#39;$b$-jets&#39;, cuts=[&#39;HadronConeExclTruthLabelID == 5&#39;], colour=&#39;tab:blue&#39;, category=&#39;single-btag&#39;, _px=None)
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">dict</span></code> like access is also supported:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Flavours</span><span class="p">[</span><span class="s2">&quot;qcd&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Flavour(name=&#39;qcd&#39;, label=&#39;QCD&#39;, cuts=[&#39;R10TruthLabel_R22v1 == 10&#39;], colour=&#39;#38761D&#39;, category=&#39;xbb&#39;)
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Label(name=&#39;qcd&#39;, label=&#39;QCD&#39;, cuts=[&#39;R10TruthLabel_R22v1 == 10&#39;], colour=&#39;#38761D&#39;, category=&#39;xbb&#39;, _px=None)
 </pre></div>
 </div>
 <p>As you can see from the output, each flavour has a <code class="docutils literal notranslate"><span class="pre">name</span></code>, a <code class="docutils literal notranslate"><span class="pre">label</span></code> and <code class="docutils literal notranslate"><span class="pre">colour</span></code> (used for plotting), and a <code class="docutils literal notranslate"><span class="pre">Cuts</span></code> instance, which can be used to select jets of the given flavour.
@@ -575,13 +575,22 @@ For example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Flavours</span><span class="o">.</span><span class="n">categories</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;single-btag&#39;, &#39;single-btag-extended&#39;, &#39;xbb&#39;, &#39;partonic&#39;, &#39;lepton-decay&#39;]
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;single-btag&#39;,
+ &#39;single-btag-extended&#39;,
+ &#39;single-btag-ghost&#39;,
+ &#39;xbb&#39;,
+ &#39;xbb-extended&#39;,
+ &#39;partonic&#39;,
+ &#39;lepton-decay&#39;,
+ &#39;PDGID&#39;,
+ &#39;isolation&#39;,
+ &#39;trigger-xbb&#39;]
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Flavours</span><span class="o">.</span><span class="n">by_category</span><span class="p">(</span><span class="s2">&quot;xbb&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>FlavourContainer(hbb, hcc, top, inclusive_top, qcd)
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>LabelContainer(hbb, hcc, top, qcd, qcdbb, qcdnonbb, qcdbx, qcdcx, qcdll, htauel, htaumu, htauhad)
 </pre></div>
 </div>
 <p>Probability names are also accessible using <code class="docutils literal notranslate"><span class="pre">.px</span></code>:</p>
@@ -595,7 +604,7 @@ For example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Flavours</span><span class="o">.</span><span class="n">from_cuts</span><span class="p">([</span><span class="s2">&quot;HadronConeExclTruthLabelID == 5&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Flavour(name=&#39;bjets&#39;, label=&#39;$b$-jets&#39;, cuts=[&#39;HadronConeExclTruthLabelID == 5&#39;], colour=&#39;tab:blue&#39;, category=&#39;single-btag&#39;)
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Label(name=&#39;bjets&#39;, label=&#39;$b$-jets&#39;, cuts=[&#39;HadronConeExclTruthLabelID == 5&#39;], colour=&#39;tab:blue&#39;, category=&#39;single-btag&#39;, _px=None)
 </pre></div>
 </div>
 </section>
@@ -718,9 +727,58 @@ The resulting object will return transformed values.</p>
 <span class="n">data</span><span class="p">[</span><span class="s2">&quot;jets&quot;</span><span class="p">][</span><span class="s2">&quot;pt&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;jets&quot;</span><span class="p">][</span><span class="s2">&quot;pt&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(6.871671, 12.899197)
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(np.float32(8.156475), np.float32(12.896797))
 </pre></div>
 </div>
+</section>
+<section id="adding-columns-to-an-h5-file">
+<h2>Adding columns to an h5 file.<a class="headerlink" href="#adding-columns-to-an-h5-file" title="Link to this heading">#</a></h2>
+<p>Quite often we wish to make minor changes to h5 files, e.g. adding a single new jet or track variable. A helper function, <code class="docutils literal notranslate"><span class="pre">h5_add_column</span></code> is available to aid here.
+The function requires an input file, and output file, and a function (or list of functions) which return a dictionary detailing what needs to be appended. An example is included below</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">ftag.hdf5</span><span class="w"> </span><span class="kn">import</span> <span class="n">h5_add_column</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">add_number_of_tracks</span><span class="p">(</span><span class="n">batch</span><span class="p">):</span>
+    <span class="n">num_tracks</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;tracks&quot;</span><span class="p">][</span><span class="s2">&quot;valid&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;jets&quot;</span><span class="p">:</span> <span class="p">{</span>  <span class="c1"># Add to the &#39;jets&#39; group</span>
+            <span class="s2">&quot;number_of_tracks&quot;</span><span class="p">:</span> <span class="n">num_tracks</span><span class="p">,</span>  <span class="c1"># ... a new variable called &#39;number_of_tracks&#39;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+
+<span class="n">dummy_file</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+<span class="c1"># Should be False</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Input has &#39;number_of_tracks&#39;? &quot;</span><span class="p">,</span> <span class="s2">&quot;number_of_tracks&quot;</span> <span class="ow">in</span> <span class="n">dummy_file</span><span class="p">[</span><span class="s2">&quot;jets&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span><span class="p">)</span>
+
+<span class="c1"># Create a temporary file path for output</span>
+<span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tmpdir</span><span class="p">:</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;output.h5&quot;</span>
+    <span class="n">h5_add_column</span><span class="p">(</span>
+        <span class="n">fname</span><span class="p">,</span>
+        <span class="n">output</span><span class="p">,</span>
+        <span class="n">add_number_of_tracks</span><span class="p">,</span>
+        <span class="n">num_jets</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="c1"># Check if the new column was added</span>
+    <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="c1"># Should be True</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;Output has &#39;number_of_tracks&#39;? &quot;</span><span class="p">,</span> <span class="s2">&quot;number_of_tracks&quot;</span> <span class="ow">in</span> <span class="n">dummy_file</span><span class="p">[</span><span class="s2">&quot;jets&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Input has &#39;number_of_tracks&#39;?  False
+Output has &#39;number_of_tracks&#39;?  False
+</pre></div>
+</div>
+<p>You ccan also use the above as a script from the terminal</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>h5addcol<span class="w"> </span>--input<span class="w"> </span><span class="o">[</span>input<span class="w"> </span>file<span class="o">]</span><span class="w"> </span>--append_function<span class="w"> </span>/a/path/to/a/python/script.py:a_function1<span class="w"> </span>/a/differentpath/to/a/python/script.py:a_function2
+</pre></div>
+</div>
+<p>Which will then <code class="docutils literal notranslate"><span class="pre">a_function1</span></code> from <code class="docutils literal notranslate"><span class="pre">/a/path/to/a/python/script.py</span></code> and  <code class="docutils literal notranslate"><span class="pre">a_function2</span></code> from <code class="docutils literal notranslate"><span class="pre">/a/differentpath/to/a/python/script.py</span></code></p>
 </section>
 </section>
 
@@ -789,6 +847,7 @@ The resulting object will return transformed values.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#h5reader">H5Reader</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#h5writer">H5Writer</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-transform">Data Transform</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-columns-to-an-h5-file">Adding columns to an h5 file.</a></li>
 </ul>
 </li>
 </ul>

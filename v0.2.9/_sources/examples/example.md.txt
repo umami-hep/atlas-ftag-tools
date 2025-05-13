@@ -80,7 +80,7 @@ Flavours.bjets
 
 
 
-    Flavour(name='bjets', label='$b$-jets', cuts=['HadronConeExclTruthLabelID == 5'], colour='tab:blue', category='single-btag')
+    Label(name='bjets', label='$b$-jets', cuts=['HadronConeExclTruthLabelID == 5'], colour='tab:blue', category='single-btag', _px=None)
 
 
 
@@ -94,7 +94,7 @@ Flavours["qcd"]
 
 
 
-    Flavour(name='qcd', label='QCD', cuts=['R10TruthLabel_R22v1 == 10'], colour='#38761D', category='xbb')
+    Label(name='qcd', label='QCD', cuts=['R10TruthLabel_R22v1 == 10'], colour='#38761D', category='xbb', _px=None)
 
 
 
@@ -116,7 +116,16 @@ Flavours.categories
 
 
 
-    ['single-btag', 'single-btag-extended', 'xbb', 'partonic', 'lepton-decay']
+    ['single-btag',
+     'single-btag-extended',
+     'single-btag-ghost',
+     'xbb',
+     'xbb-extended',
+     'partonic',
+     'lepton-decay',
+     'PDGID',
+     'isolation',
+     'trigger-xbb']
 
 
 
@@ -128,7 +137,7 @@ Flavours.by_category("xbb")
 
 
 
-    FlavourContainer(hbb, hcc, top, inclusive_top, qcd)
+    LabelContainer(hbb, hcc, top, qcd, qcdbb, qcdnonbb, qcdbx, qcdcx, qcdll, htauel, htaumu, htauhad)
 
 
 
@@ -156,7 +165,7 @@ Flavours.from_cuts(["HadronConeExclTruthLabelID == 5"])
 
 
 
-    Flavour(name='bjets', label='$b$-jets', cuts=['HadronConeExclTruthLabelID == 5'], colour='tab:blue', category='single-btag')
+    Label(name='bjets', label='$b$-jets', cuts=['HadronConeExclTruthLabelID == 5'], colour='tab:blue', category='single-btag', _px=None)
 
 
 
@@ -327,6 +336,60 @@ data["jets"]["pt"].min(), data["jets"]["pt"].max()
 
 
 
-    (6.871671, 12.899197)
+    (np.float32(8.156475), np.float32(12.896797))
 
 
+
+## Adding columns to an h5 file.
+
+Quite often we wish to make minor changes to h5 files, e.g. adding a single new jet or track variable. A helper function, `h5_add_column` is available to aid here.
+The function requires an input file, and output file, and a function (or list of functions) which return a dictionary detailing what needs to be appended. An example is included below
+
+
+```python
+import tempfile
+
+from ftag.hdf5 import h5_add_column
+
+
+def add_number_of_tracks(batch):
+    num_tracks = batch["tracks"]["valid"].sum(axis=1)
+    return {
+        "jets": {  # Add to the 'jets' group
+            "number_of_tracks": num_tracks,  # ... a new variable called 'number_of_tracks'
+        }
+    }
+
+
+dummy_file = h5py.File(fname, "r")
+# Should be False
+print("Input has 'number_of_tracks'? ", "number_of_tracks" in dummy_file["jets"].dtype.names)
+
+# Create a temporary file path for output
+with tempfile.TemporaryDirectory() as tmpdir:
+    output = Path(tmpdir) / "output.h5"
+    h5_add_column(
+        fname,
+        output,
+        add_number_of_tracks,
+        num_jets=1000,
+    )
+    # Check if the new column was added
+    with h5py.File(output, "r") as f:
+        # Should be True
+        print(
+            "Output has 'number_of_tracks'? ", "number_of_tracks" in dummy_file["jets"].dtype.names
+        )
+```
+
+    Input has 'number_of_tracks'?  False
+    Output has 'number_of_tracks'?  False
+
+
+You ccan also use the above as a script from the terminal
+
+```bash
+h5addcol --input [input file] --append_function /a/path/to/a/python/script.py:a_function1 /a/differentpath/to/a/python/script.py:a_function2
+```
+
+Which will then `a_function1` from `/a/path/to/a/python/script.py` and  `a_function2` from `/a/differentpath/to/a/python/script.py`
