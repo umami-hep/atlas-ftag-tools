@@ -132,7 +132,7 @@
   colour: "green"
   category: xbb
 - name: htautauel
-  label: $H \rightarrow \tau\tau \rightarrow e$
+  label: $H \rightarrow \tau_{\mathrm{had}} \tau_{e}$
   cuts: ["R10TruthLabel_R22v1 == 14"]
   colour: "#b40612"
   category: xbb
