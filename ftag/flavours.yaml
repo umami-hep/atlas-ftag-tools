@@ -117,7 +117,7 @@
   colour: "silver"
   category: xbb
 - name: qcdbx
-  label: QCD->bx
+  label: $\mathrm{QCD} \rightarrow bX$
   cuts: ["R10TruthLabel_R22v1 == 10", "GhostBHadronsFinalCount == 1"]
   colour: "gold"
   category: xbb
