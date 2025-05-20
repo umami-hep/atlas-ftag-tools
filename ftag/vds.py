@@ -122,7 +122,8 @@ def create_virtual_file(
 
 def main(args=None) -> None:
     args = parse_args(args)
-    print(f"Globbing {args.pattern}...")
+    matching_mode = "Applying regex to" if args.use_regex else "Globbing"
+    print(f"{matching_mode} {args.pattern}...")
     create_virtual_file(
         args.pattern,
         args.output,

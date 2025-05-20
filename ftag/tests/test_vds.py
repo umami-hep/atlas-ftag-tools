@@ -106,6 +106,8 @@ def test_create_virtual_file(test_h5_files):
         # create virtual file
         output_path = Path(tmpfile.name)
         pattern = Path(test_h5_files[0]).parent / "test_file_*"
+        print("pattern", pattern)
+        print("file create:", test_h5_files)
         create_virtual_file(pattern, output_path, overwrite=True)
         # check if file exists
         assert output_path.is_file()
@@ -114,6 +116,24 @@ def test_create_virtual_file(test_h5_files):
             assert "data" in f
             print(f["data"])
             assert len(f["data"]) == 25
+
+
+def test_create_virtual_file_regex(test_h5_files):
+    # create temporary output file
+    use_regex=True
+    with tempfile.NamedTemporaryFile() as tmpfile:
+        # create virtual file
+        output_path = Path(tmpfile.name)
+        regex_path = str(Path(test_h5_files[0].parent))
+        pattern = "(test_file_0|test_file_1|test_file_2).h5"
+        create_virtual_file(pattern, output_path, use_regex, regex_path, overwrite=True)
+        # check if file exists
+        assert output_path.is_file()
+        # check if file has expected content
+        with h5py.File(output_path) as f:
+            assert "data" in f
+            print(f["data"])
+            assert len(f["data"]) == 15
 
 
 def test_create_virtual_file_common_groups(test_h5_files):
