@@ -2,17 +2,18 @@
 
 from __future__ import annotations
 
-__version__ = "v0.2.9"
+__version__ = "v0.2.10"
 
-from ftag import hdf5, utils
-from ftag.cuts import Cuts
-from ftag.flavours import Flavours
-from ftag.labeller import Labeller
-from ftag.labels import Label, LabelContainer
-from ftag.mock import get_mock_file
-from ftag.sample import Sample
-from ftag.transform import Transform
-from ftag.working_points import get_working_points
+from . import hdf5, utils
+from .cuts import Cuts
+from .flavours import Flavours
+from .fraction_optimization import calculate_best_fraction_values
+from .labeller import Labeller
+from .labels import Label, LabelContainer
+from .mock import get_mock_file
+from .sample import Sample
+from .transform import Transform
+from .working_points import get_working_points
 
 __all__ = [
     "Cuts",
@@ -23,6 +24,7 @@ __all__ = [
     "Sample",
     "Transform",
     "__version__",
+    "calculate_best_fraction_values",
     "get_mock_file",
     "get_working_points",
     "hdf5",

@@ -12,14 +12,14 @@
 from __future__ import annotations
 
 import sys
+from pathlib import Path
 from subprocess import check_output
 
 import requests
-from Pathlib import Path
 
-import ftag
+from ftag import __version__
 
-sys.path.insert(0, Path("../../ftag").resolve())
+sys.path.insert(0, Path("../../ftag").resolve())  # type: ignore[arg-type]
 
 
 # -- Project information -----------------------------------------------------
@@ -67,7 +67,7 @@ default_role = "code"
 # a list of builtin themes.
 #
 json_url = "https://umami-hep.github.io/atlas-ftag-tools/main/_static/switcher.json"
-release = ftag.__version__
+release = __version__
 
 # get git hash we are currently on (when building the docs)
 current_hash = check_output(["git", "rev-parse", "HEAD"]).decode("ascii").split("\n")[0]

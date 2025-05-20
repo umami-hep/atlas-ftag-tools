@@ -2,6 +2,13 @@
 
 ### [Latest]
 
+- Fixing Issues in the Imports & Update Docs [#120](https://github.com/umami-hep/atlas-ftag-tools/pull/120)
+- Updating new Sphinx Docs [#119](https://github.com/umami-hep/atlas-ftag-tools/pull/119)
+- Adding new Sphinx Docs [#118](https://github.com/umami-hep/atlas-ftag-tools/pull/118)
+
+### [v0.2.10]
+
+- Adding fraction optimization script [#117](https://github.com/umami-hep/atlas-ftag-tools/pull/117)
 - Add flavours for trigger Xbb tagging based on delta R matching [#115](https://github.com/umami-hep/atlas-ftag-tools/pull/115)
 - Moving big parts of the puma metrics into atlas-ftag-tools[#113](https://github.com/umami-hep/atlas-ftag-tools/pull/113)
 - Remove docker completely [#114](https://github.com/umami-hep/atlas-ftag-tools/pull/114)

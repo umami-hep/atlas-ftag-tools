@@ -1,0 +1,32 @@
+name: docs-multiversion
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+
+      - name: Install Requirements
+        run: python -m pip install -e ".[dev]" -r docs/requirements.txt
+
+      - name: Convert Notebooks
+        run: jupyter nbconvert ftag/example.ipynb --to markdown --output example --output-dir docs/source/examples
+
+      - name: Create docs
+        run: python docs/sphinx_build_multiversion.py
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/_build/html

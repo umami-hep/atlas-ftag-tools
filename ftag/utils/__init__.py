@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from ftag.utils.logging import logger, set_log_level
-from ftag.utils.metrics import (
+from .logging import logger, set_log_level
+from .metrics import (
     calculate_efficiency,
     calculate_efficiency_error,
     calculate_rejection,
