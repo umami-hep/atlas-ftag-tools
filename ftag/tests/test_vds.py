@@ -120,7 +120,7 @@ def test_create_virtual_file(test_h5_files):
 
 def test_create_virtual_file_regex(test_h5_files):
     # create temporary output file
-    use_regex=True
+    use_regex = True
     with tempfile.NamedTemporaryFile() as tmpfile:
         # create virtual file
         output_path = Path(tmpfile.name)
