@@ -112,7 +112,7 @@
   colour: "red"
   category: xbb
 - name: qcdnonbb
-  label: QCD->non-bb
+  label: $\mathrm{QCD} \rightarrow \mathrm{non-} b \bar{b}$
   cuts: ["R10TruthLabel_R22v1 == 10", "GhostBHadronsFinalCount != 2"]
   colour: "silver"
   category: xbb
