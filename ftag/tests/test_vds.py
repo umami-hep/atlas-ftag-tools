@@ -106,8 +106,6 @@ def test_create_virtual_file(test_h5_files):
         # create virtual file
         output_path = Path(tmpfile.name)
         pattern = Path(test_h5_files[0]).parent / "test_file_*"
-        print("pattern", pattern)
-        print("file create:", test_h5_files)
         create_virtual_file(pattern, output_path, overwrite=True)
         # check if file exists
         assert output_path.is_file()
