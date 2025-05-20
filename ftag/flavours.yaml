@@ -132,7 +132,7 @@
   colour: "green"
   category: xbb
 - name: Wqq
-  label: Wqq
+  label: $W \rightarrow q\bar{q}$
   cuts: ["R10TruthLabel_R22v1 == 2", "GhostBHadronsFinalCount < 2", "GhostCHadronsFinalCount < 2"]
   colour: "purple"
   category: xbb
