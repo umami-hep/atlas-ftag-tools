@@ -137,7 +137,7 @@
   colour: "#b40612"
   category: xbb
 - name: htautaumu
-  label: $H \rightarrow \tau\tau \rightarrow \mu$
+  label: $H \rightarrow \tau_{\mathrm{had}} \tau_{\mu}$
   cuts: ["R10TruthLabel_R22v1 == 15"]
   colour: "#b40657"
   category: xbb
