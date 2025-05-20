@@ -122,7 +122,7 @@
   colour: "gold"
   category: xbb
 - name: qcdcx
-  label: QCD->cx
+  label: $\mathrm{QCD} \rightarrow cX$
   cuts: ["R10TruthLabel_R22v1 == 10", "GhostCHadronsFinalCount >= 1", "GhostBHadronsFinalCount == 0"]
   colour: "pink"
   category: xbb
