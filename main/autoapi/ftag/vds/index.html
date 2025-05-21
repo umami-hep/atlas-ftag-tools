@@ -480,7 +480,13 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#ftag.vds.get_virtual_layout" title="ftag.vds.get_virtual_layout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_virtual_layout</span></code></a>(fnames, group)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.vds.create_virtual_file" title="ftag.vds.create_virtual_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_virtual_file</span></code></a>(pattern[, out_fname, overwrite])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.vds.glob_re" title="ftag.vds.glob_re"><code class="xref py py-obj docutils literal notranslate"><span class="pre">glob_re</span></code></a>(pattern, regex_path)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ftag.vds.regex_files_from_dir" title="ftag.vds.regex_files_from_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">regex_files_from_dir</span></code></a>(reg_matched_fnames, regex_path)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.vds.create_virtual_file" title="ftag.vds.create_virtual_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_virtual_file</span></code></a>(pattern[, out_fname, use_regex, ...])</p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ftag.vds.main" title="ftag.vds.main"><code class="xref py py-obj docutils literal notranslate"><span class="pre">main</span></code></a>(→ None)</p></td>
@@ -503,8 +509,18 @@
 <dd></dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="ftag.vds.glob_re">
+<span class="sig-prename descclassname"><span class="pre">ftag.vds.</span></span><span class="sig-name descname"><span class="pre">glob_re</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regex_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ftag.vds.glob_re" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ftag.vds.regex_files_from_dir">
+<span class="sig-prename descclassname"><span class="pre">ftag.vds.</span></span><span class="sig-name descname"><span class="pre">regex_files_from_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reg_matched_fnames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regex_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ftag.vds.regex_files_from_dir" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="ftag.vds.create_virtual_file">
-<span class="sig-prename descclassname"><span class="pre">ftag.vds.</span></span><span class="sig-name descname"><span class="pre">create_virtual_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_fname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ftag.vds.create_virtual_file" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">ftag.vds.</span></span><span class="sig-name descname"><span class="pre">create_virtual_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_fname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_regex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regex_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ftag.vds.create_virtual_file" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
@@ -566,6 +582,8 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">Module Contents</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.vds.parse_args"><code class="docutils literal notranslate"><span class="pre">parse_args()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.vds.get_virtual_layout"><code class="docutils literal notranslate"><span class="pre">get_virtual_layout()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.vds.glob_re"><code class="docutils literal notranslate"><span class="pre">glob_re()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.vds.regex_files_from_dir"><code class="docutils literal notranslate"><span class="pre">regex_files_from_dir()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.vds.create_virtual_file"><code class="docutils literal notranslate"><span class="pre">create_virtual_file()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.vds.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 </ul>

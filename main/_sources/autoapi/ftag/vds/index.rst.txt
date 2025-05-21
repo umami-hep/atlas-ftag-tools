@@ -11,6 +11,8 @@ Functions
 
    ftag.vds.parse_args
    ftag.vds.get_virtual_layout
+   ftag.vds.glob_re
+   ftag.vds.regex_files_from_dir
    ftag.vds.create_virtual_file
    ftag.vds.main
 
@@ -22,7 +24,11 @@ Module Contents
 
 .. py:function:: get_virtual_layout(fnames: list[str], group: str)
 
-.. py:function:: create_virtual_file(pattern: pathlib.Path | str, out_fname: pathlib.Path | None = None, overwrite: bool = False)
+.. py:function:: glob_re(pattern, regex_path)
+
+.. py:function:: regex_files_from_dir(reg_matched_fnames, regex_path)
+
+.. py:function:: create_virtual_file(pattern: pathlib.Path | str, out_fname: pathlib.Path | None = None, use_regex: bool = False, regex_path: str | None = None, overwrite: bool = False)
 
 .. py:function:: main(args=None) -> None
 
