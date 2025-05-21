@@ -390,11 +390,10 @@
 <li class="toctree-l3"><a class="reference internal" href="hdf5/h5writer/index.html">ftag.hdf5.h5writer</a></li>
 </ul>
 </details></li>
+<li class="toctree-l2"><a class="reference internal" href="labeller/index.html">ftag.labeller</a></li>
 <li class="toctree-l2"><a class="reference internal" href="labels/index.html">ftag.labels</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mock/index.html">ftag.mock</a></li>
-<li class="toctree-l2"><a class="reference internal" href="region/index.html">ftag.region</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sample/index.html">ftag.sample</a></li>
-<li class="toctree-l2"><a class="reference internal" href="track_selector/index.html">ftag.track_selector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transform/index.html">ftag.transform</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="utils/index.html">ftag.utils</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="utils/logging/index.html">ftag.utils.logging</a></li>
@@ -478,11 +477,10 @@
 <li class="toctree-l1"><a class="reference internal" href="fraction_optimization/index.html">ftag.fraction_optimization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="git_check/index.html">ftag.git_check</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hdf5/index.html">ftag.hdf5</a></li>
+<li class="toctree-l1"><a class="reference internal" href="labeller/index.html">ftag.labeller</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labels/index.html">ftag.labels</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mock/index.html">ftag.mock</a></li>
-<li class="toctree-l1"><a class="reference internal" href="region/index.html">ftag.region</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sample/index.html">ftag.sample</a></li>
-<li class="toctree-l1"><a class="reference internal" href="track_selector/index.html">ftag.track_selector</a></li>
 <li class="toctree-l1"><a class="reference internal" href="transform/index.html">ftag.transform</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utils/index.html">ftag.utils</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vds/index.html">ftag.vds</a></li>
@@ -511,16 +509,19 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#ftag.Cuts" title="ftag.Cuts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cuts</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ftag.Label" title="ftag.Label"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Label</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ftag.Labeller" title="ftag.Labeller"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Labeller</span></code></a></p></td>
+<td><p>Defines a labelling scheme.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.Label" title="ftag.Label"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Label</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.LabelContainer" title="ftag.LabelContainer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LabelContainer</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ftag.LabelContainer" title="ftag.LabelContainer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LabelContainer</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ftag.Sample" title="ftag.Sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sample</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.Sample" title="ftag.Sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sample</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.Transform" title="ftag.Transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Transform</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ftag.Transform" title="ftag.Transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Transform</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -617,6 +618,93 @@
 <dt class="sig sig-object py" id="ftag.Flavours">
 <span class="sig-prename descclassname"><span class="pre">ftag.</span></span><span class="sig-name descname"><span class="pre">Flavours</span></span><a class="headerlink" href="#ftag.Flavours" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ftag.Labeller">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ftag.</span></span><span class="sig-name descname"><span class="pre">Labeller</span></span><a class="headerlink" href="#ftag.Labeller" title="Link to this definition">#</a></dt>
+<dd><p>Defines a labelling scheme.</p>
+<p>Classes are assigned integer labels in [0, …, n] based on pre-defined selections.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>labels</strong> (<a class="reference internal" href="#ftag.LabelContainer" title="ftag.LabelContainer"><em>LabelContainer</em></a><em> | </em><em>list</em><em>[</em><em>str</em><em> | </em><a class="reference internal" href="#ftag.Label" title="ftag.Label"><em>Label</em></a><em>]</em>) – The labels to be use.</p></li>
+<li><p><strong>require_labels</strong> (<em>bool</em>) – Whether to require that all objects are labelled.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ftag.Labeller.labels">
+<span class="sig-name descname"><span class="pre">labels</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="labels/index.html#ftag.labels.LabelContainer" title="ftag.labels.LabelContainer"><span class="pre">ftag.labels.LabelContainer</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="labels/index.html#ftag.labels.Label" title="ftag.labels.Label"><span class="pre">ftag.labels.Label</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ftag.Labeller.labels" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ftag.Labeller.require_labels">
+<span class="sig-name descname"><span class="pre">require_labels</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#ftag.Labeller.require_labels" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ftag.Labeller.__post_init__">
+<span class="sig-name descname"><span class="pre">__post_init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.Labeller.__post_init__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ftag.Labeller.variables">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">variables</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ftag.Labeller.variables" title="Link to this definition">#</a></dt>
+<dd><p>Returns the variables used for labelling.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The variables used for labelling.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ftag.Labeller.get_labels">
+<span class="sig-name descname"><span class="pre">get_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#ftag.Labeller.get_labels" title="Link to this definition">#</a></dt>
+<dd><p>Returns the labels for the given array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>array</strong> (<em>np.ndarray</em>) – The array to label.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The labels for the given array.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the <code class="code docutils literal notranslate"><span class="pre">require_labels</span></code> attribute is set to <code class="code docutils literal notranslate"><span class="pre">True</span></code> and some objects were not labelled.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ftag.Labeller.add_labels">
+<span class="sig-name descname"><span class="pre">add_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'labels'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#ftag.Labeller.add_labels" title="Link to this definition">#</a></dt>
+<dd><p>Adds the labels to the given array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>array</strong> (<em>np.ndarray</em>) – The array to label.</p></li>
+<li><p><strong>label_name</strong> (<em>str</em>) – The name of the label column.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The array with the labels added.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the <code class="code docutils literal notranslate"><span class="pre">require_labels</span></code> attribute is set to <code class="code docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ftag.Label">
@@ -1039,6 +1127,15 @@ stored the resulting dict in a yaml file in args.outfile.</p>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Flavours"><code class="docutils literal notranslate"><span class="pre">Flavours</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Labeller"><code class="docutils literal notranslate"><span class="pre">Labeller</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Labeller.labels"><code class="docutils literal notranslate"><span class="pre">Labeller.labels</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Labeller.require_labels"><code class="docutils literal notranslate"><span class="pre">Labeller.require_labels</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Labeller.__post_init__"><code class="docutils literal notranslate"><span class="pre">Labeller.__post_init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Labeller.variables"><code class="docutils literal notranslate"><span class="pre">Labeller.variables</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Labeller.get_labels"><code class="docutils literal notranslate"><span class="pre">Labeller.get_labels()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Labeller.add_labels"><code class="docutils literal notranslate"><span class="pre">Labeller.add_labels()</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Label"><code class="docutils literal notranslate"><span class="pre">Label</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Label.name"><code class="docutils literal notranslate"><span class="pre">Label.name</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Label.label"><code class="docutils literal notranslate"><span class="pre">Label.label</span></code></a></li>

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>ftag.region &#8212; atlas-ftag-tools v0.2.9 documentation</title>
+    <title>ftag.labeller &#8212; atlas-ftag-tools v0.2.9 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'autoapi/ftag/region/index';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'autoapi/ftag/labeller/index';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://umami-hep.github.io/atlas-ftag-tools/main/_static/switcher.json';
@@ -55,8 +55,8 @@
         </script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="ftag.sample" href="../sample/index.html" />
-    <link rel="prev" title="ftag.mock" href="../mock/index.html" />
+    <link rel="next" title="ftag.labels" href="../labels/index.html" />
+    <link rel="prev" title="ftag.hdf5.h5writer" href="../hdf5/h5writer/index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -389,11 +389,10 @@
 <li class="toctree-l3"><a class="reference internal" href="../hdf5/h5writer/index.html">ftag.hdf5.h5writer</a></li>
 </ul>
 </details></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">ftag.labeller</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../labels/index.html">ftag.labels</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mock/index.html">ftag.mock</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">ftag.region</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../sample/index.html">ftag.sample</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../track_selector/index.html">ftag.track_selector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../transform/index.html">ftag.transform</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../vds/index.html">ftag.vds</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../wps/index.html">ftag.wps</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -449,7 +448,7 @@
     
     <li class="breadcrumb-item"><a href="../index.html" class="nav-link">ftag</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">ftag.region</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">ftag.labeller</span></li>
   </ul>
 </nav>
 </div>
@@ -466,14 +465,14 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="module-ftag.region">
-<span id="ftag-region"></span><h1>ftag.region<a class="headerlink" href="#module-ftag.region" title="Link to this heading">#</a></h1>
+  <section id="module-ftag.labeller">
+<span id="ftag-labeller"></span><h1>ftag.labeller<a class="headerlink" href="#module-ftag.labeller" title="Link to this heading">#</a></h1>
 <section id="classes">
 <h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.region.Region" title="ftag.region.Region"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Region</span></code></a></p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.labeller.Labeller" title="ftag.labeller.Labeller"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Labeller</span></code></a></p></td>
+<td><p>Defines a labelling scheme.</p></td>
 </tr>
 </tbody>
 </table>
@@ -482,32 +481,89 @@
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">#</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="ftag.region.Region">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ftag.region.</span></span><span class="sig-name descname"><span class="pre">Region</span></span><a class="headerlink" href="#ftag.region.Region" title="Link to this definition">#</a></dt>
-<dd><dl class="py attribute">
-<dt class="sig sig-object py" id="ftag.region.Region.name">
-<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ftag.region.Region.name" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ftag.labeller.Labeller">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ftag.labeller.</span></span><span class="sig-name descname"><span class="pre">Labeller</span></span><a class="headerlink" href="#ftag.labeller.Labeller" title="Link to this definition">#</a></dt>
+<dd><p>Defines a labelling scheme.</p>
+<p>Classes are assigned integer labels in [0, …, n] based on pre-defined selections.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>labels</strong> (<a class="reference internal" href="../index.html#ftag.LabelContainer" title="ftag.LabelContainer"><em>LabelContainer</em></a><em> | </em><em>list</em><em>[</em><em>str</em><em> | </em><a class="reference internal" href="../index.html#ftag.Label" title="ftag.Label"><em>Label</em></a><em>]</em>) – The labels to be use.</p></li>
+<li><p><strong>require_labels</strong> (<em>bool</em>) – Whether to require that all objects are labelled.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ftag.labeller.Labeller.labels">
+<span class="sig-name descname"><span class="pre">labels</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../labels/index.html#ftag.labels.LabelContainer" title="ftag.labels.LabelContainer"><span class="pre">ftag.labels.LabelContainer</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="../labels/index.html#ftag.labels.Label" title="ftag.labels.Label"><span class="pre">ftag.labels.Label</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ftag.labeller.Labeller.labels" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="ftag.region.Region.cuts">
-<span class="sig-name descname"><span class="pre">cuts</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><span class="pre">ftag.cuts.Cuts</span></a></em><a class="headerlink" href="#ftag.region.Region.cuts" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ftag.labeller.Labeller.require_labels">
+<span class="sig-name descname"><span class="pre">require_labels</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#ftag.labeller.Labeller.require_labels" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ftag.region.Region.__str__">
-<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#ftag.region.Region.__str__" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ftag.labeller.Labeller.__post_init__">
+<span class="sig-name descname"><span class="pre">__post_init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.labeller.Labeller.__post_init__" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="ftag.region.Region.__lt__">
-<span class="sig-name descname"><span class="pre">__lt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ftag.region.Region.__lt__" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ftag.labeller.Labeller.variables">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">variables</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ftag.labeller.Labeller.variables" title="Link to this definition">#</a></dt>
+<dd><p>Returns the variables used for labelling.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The variables used for labelling.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ftag.region.Region.__eq__">
-<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ftag.region.Region.__eq__" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="ftag.labeller.Labeller.get_labels">
+<span class="sig-name descname"><span class="pre">get_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#ftag.labeller.Labeller.get_labels" title="Link to this definition">#</a></dt>
+<dd><p>Returns the labels for the given array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>array</strong> (<em>np.ndarray</em>) – The array to label.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The labels for the given array.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the <code class="code docutils literal notranslate"><span class="pre">require_labels</span></code> attribute is set to <code class="code docutils literal notranslate"><span class="pre">True</span></code> and some objects were not labelled.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ftag.labeller.Labeller.add_labels">
+<span class="sig-name descname"><span class="pre">add_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'labels'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#ftag.labeller.Labeller.add_labels" title="Link to this definition">#</a></dt>
+<dd><p>Adds the labels to the given array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>array</strong> (<em>np.ndarray</em>) – The array to label.</p></li>
+<li><p><strong>label_name</strong> (<em>str</em>) – The name of the label column.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The array with the labels added.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the <code class="code docutils literal notranslate"><span class="pre">require_labels</span></code> attribute is set to <code class="code docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -525,20 +581,20 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../mock/index.html"
+       href="../hdf5/h5writer/index.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">ftag.mock</p>
+        <p class="prev-next-title">ftag.hdf5.h5writer</p>
       </div>
     </a>
     <a class="right-next"
-       href="../sample/index.html"
+       href="../labels/index.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">ftag.sample</p>
+        <p class="prev-next-title">ftag.labels</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -563,12 +619,13 @@
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classes">Classes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">Module Contents</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.region.Region"><code class="docutils literal notranslate"><span class="pre">Region</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.region.Region.name"><code class="docutils literal notranslate"><span class="pre">Region.name</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.region.Region.cuts"><code class="docutils literal notranslate"><span class="pre">Region.cuts</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.region.Region.__str__"><code class="docutils literal notranslate"><span class="pre">Region.__str__()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.region.Region.__lt__"><code class="docutils literal notranslate"><span class="pre">Region.__lt__()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.region.Region.__eq__"><code class="docutils literal notranslate"><span class="pre">Region.__eq__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.labeller.Labeller"><code class="docutils literal notranslate"><span class="pre">Labeller</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.labeller.Labeller.labels"><code class="docutils literal notranslate"><span class="pre">Labeller.labels</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.labeller.Labeller.require_labels"><code class="docutils literal notranslate"><span class="pre">Labeller.require_labels</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.labeller.Labeller.__post_init__"><code class="docutils literal notranslate"><span class="pre">Labeller.__post_init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.labeller.Labeller.variables"><code class="docutils literal notranslate"><span class="pre">Labeller.variables</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.labeller.Labeller.get_labels"><code class="docutils literal notranslate"><span class="pre">Labeller.get_labels()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.labeller.Labeller.add_labels"><code class="docutils literal notranslate"><span class="pre">Labeller.add_labels()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -580,7 +637,7 @@
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../../../_sources/autoapi/ftag/region/index.rst.txt"
+      <li><a href="../../../_sources/autoapi/ftag/labeller/index.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div></div>
