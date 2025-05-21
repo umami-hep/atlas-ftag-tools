@@ -107,42 +107,47 @@
   colour: "#38761D"
   category: xbb
 - name: qcdbb
-  label: QCD->bb
-  cuts: ["R10TruthLabel_R22v1 == 10", "GhostBHadronsFinalCount == 2"]
+  label: $\mathrm{QCD} \rightarrow b \bar{b}$
+  cuts: ["R10TruthLabel_R22v1 == 10", "GhostBHadronsFinalCount >= 2"]
   colour: "red"
   category: xbb
 - name: qcdnonbb
-  label: QCD
+  label: $\mathrm{QCD} \rightarrow \mathrm{non-} b \bar{b}$
   cuts: ["R10TruthLabel_R22v1 == 10", "GhostBHadronsFinalCount != 2"]
   colour: "silver"
   category: xbb
 - name: qcdbx
-  label: QCD
+  label: $\mathrm{QCD} \rightarrow bX$
   cuts: ["R10TruthLabel_R22v1 == 10", "GhostBHadronsFinalCount == 1"]
   colour: "gold"
   category: xbb
 - name: qcdcx
-  label: QCD
+  label: $\mathrm{QCD} \rightarrow cX$
   cuts: ["R10TruthLabel_R22v1 == 10", "GhostCHadronsFinalCount >= 1", "GhostBHadronsFinalCount == 0"]
   colour: "pink"
   category: xbb
 - name: qcdll
-  label: QCD
+  label: $\mathrm{QCD} \rightarrow ll$
   cuts: ["R10TruthLabel_R22v1 == 10", "GhostBHadronsFinalCount == 0", "GhostCHadronsFinalCount == 0"]
   colour: "green"
   category: xbb
-- name: htauel
-  label: $H \rightarrow \tau e$
+- name: Wqq
+  label: $W \rightarrow q\bar{q}$
+  cuts: ["R10TruthLabel_R22v1 == 2", "GhostBHadronsFinalCount < 2", "GhostCHadronsFinalCount < 2"]
+  colour: "purple"
+  category: xbb
+- name: htautauel
+  label: $H \rightarrow \tau_{\mathrm{had}} \tau_{e}$
   cuts: ["R10TruthLabel_R22v1 == 14"]
   colour: "#b40612"
   category: xbb
-- name: htaumu
-  label: $H \rightarrow \tau\mu$
+- name: htautaumu
+  label: $H \rightarrow \tau_{\mathrm{had}} \tau_{\mu}$
   cuts: ["R10TruthLabel_R22v1 == 15"]
   colour: "#b40657"
   category: xbb
-- name: htauhad
-  label: $H \rightarrow \tau\tau$
+- name: htautauhad
+  label: $H \rightarrow \tau_{\mathrm{had}} \tau_{\mathrm{had}}$
   cuts: ["R10TruthLabel_R22v1 == 16"]
   colour: "#b406a0"
   category: xbb
