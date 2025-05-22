@@ -108,3 +108,33 @@ def test_from_file(tmp_path, mock_data_path):
     writer.write({"jets": jets, "tracks": tracks})
     with h5py.File(dst_path) as f:
         assert np.array_equal(f["jets"][:], jets)
+
+
+def test_half_full_precision(tmp_path, mock_data_path):
+    f_old = get_mock_file()[1]
+
+    dst_path = Path(tmp_path) / "test.h5"
+    full_precision_vars = ["pt"]
+    writer = H5Writer.from_file(
+        source=mock_data_path,
+        dst=dst_path,
+        shuffle=False,
+        precision="half",
+        full_precision_vars=full_precision_vars,
+    )
+
+    writer.write(f_old)
+    with h5py.File(dst_path) as f:
+        for key in ["jets", "tracks"]:
+            for v in f[key].dtype.names:
+                dt = np.dtype(f_old[key].dtype[v])
+                dt_writer = np.dtype(f[key].dtype[v])
+                if not np.issubdtype(dt, np.floating):
+                    continue
+
+                if v in full_precision_vars:
+                    assert dt == np.float32
+                    assert dt_writer == np.float32
+                else:
+                    assert dt == np.float32
+                    assert dt_writer == np.float16
