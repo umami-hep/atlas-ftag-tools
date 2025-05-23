@@ -314,6 +314,8 @@ Package Contents
    :type compression: str, optional
    :param precision: Precision to use. Default is None.
    :type precision: str | None, optional
+   :param full_precision_vars: List of variables to store in full precision. Default is None.
+   :type full_precision_vars: list[str] | None, optional
    :param shuffle: Whether to shuffle the jets before writing. Default is True.
    :type shuffle: bool, optional
 
@@ -351,6 +353,12 @@ Package Contents
    .. py:attribute:: precision
       :type:  str
       :value: 'full'
+
+
+
+   .. py:attribute:: full_precision_vars
+      :type:  list[str] | None
+      :value: None
 
 
 

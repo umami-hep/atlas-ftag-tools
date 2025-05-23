@@ -830,6 +830,7 @@ use all available jets from each sample.</p></li>
 <li><p><strong>add_flavour_label</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to add a flavour label to the jets group. Default is False.</p></li>
 <li><p><strong>compression</strong> (<em>str</em><em>, </em><em>optional</em>) – Compression algorithm to use. Default is “lzf”.</p></li>
 <li><p><strong>precision</strong> (<em>str</em><em> | </em><em>None</em><em>, </em><em>optional</em>) – Precision to use. Default is None.</p></li>
+<li><p><strong>full_precision_vars</strong> (<em>list</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em><em>, </em><em>optional</em>) – List of variables to store in full precision. Default is None.</p></li>
 <li><p><strong>shuffle</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to shuffle the jets before writing. Default is True.</p></li>
 </ul>
 </dd>
@@ -867,6 +868,11 @@ use all available jets from each sample.</p></li>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.hdf5.H5Writer.precision">
 <span class="sig-name descname"><span class="pre">precision</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'full'</span></em><a class="headerlink" href="#ftag.hdf5.H5Writer.precision" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ftag.hdf5.H5Writer.full_precision_vars">
+<span class="sig-name descname"><span class="pre">full_precision_vars</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ftag.hdf5.H5Writer.full_precision_vars" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1003,6 +1009,7 @@ use all available jets from each sample.</p></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.H5Writer.add_flavour_label"><code class="docutils literal notranslate"><span class="pre">H5Writer.add_flavour_label</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.H5Writer.compression"><code class="docutils literal notranslate"><span class="pre">H5Writer.compression</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.H5Writer.precision"><code class="docutils literal notranslate"><span class="pre">H5Writer.precision</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.H5Writer.full_precision_vars"><code class="docutils literal notranslate"><span class="pre">H5Writer.full_precision_vars</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.H5Writer.shuffle"><code class="docutils literal notranslate"><span class="pre">H5Writer.shuffle</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.H5Writer.__post_init__"><code class="docutils literal notranslate"><span class="pre">H5Writer.__post_init__()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.H5Writer.from_file"><code class="docutils literal notranslate"><span class="pre">H5Writer.from_file()</span></code></a></li>
