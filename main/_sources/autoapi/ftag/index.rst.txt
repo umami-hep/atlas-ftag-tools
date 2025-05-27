@@ -66,7 +66,7 @@ Package Contents
 ----------------
 
 .. py:data:: __version__
-   :value: 'v0.2.10'
+   :value: 'v0.2.11'
 
 
 .. py:class:: Cuts
