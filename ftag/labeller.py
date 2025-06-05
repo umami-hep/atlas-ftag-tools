@@ -30,8 +30,8 @@ class Labeller:
     def __post_init__(self) -> None:
         if isinstance(self.labels, LabelContainer):
             self.labels = list(self.labels)
-        self.labels = sorted([Flavours[label] for label in self.labels])
-
+        self.labels = [Flavours[label] for label in self.labels]
+        
     @property
     def variables(self) -> list[str]:
         """
