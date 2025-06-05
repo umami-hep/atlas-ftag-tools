@@ -38,8 +38,8 @@ def test_get_labels_valid_input(jets):
     expected = np.zeros(len(jets), dtype=int)
     expected[jets["HadronConeExclTruthLabelID"] == 5] = 0
     expected[jets["HadronConeExclTruthLabelID"] == 4] = 1
-    expected[jets["HadronConeExclTruthLabelID"] == 15] = 2
-    expected[jets["HadronConeExclTruthLabelID"] == 0] = 3
+    expected[jets["HadronConeExclTruthLabelID"] == 15] = 3
+    expected[jets["HadronConeExclTruthLabelID"] == 0] = 2
 
     assert np.array_equal(labels, expected)
 
