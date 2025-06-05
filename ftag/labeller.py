@@ -31,7 +31,7 @@ class Labeller:
         if isinstance(self.labels, LabelContainer):
             self.labels = list(self.labels)
         self.labels = [Flavours[label] for label in self.labels]
-        
+
     @property
     def variables(self) -> list[str]:
         """
