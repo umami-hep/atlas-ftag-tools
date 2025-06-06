@@ -325,3 +325,30 @@ def test_weighting_two_files_100_vs_900(tmp_path):
     # Check the source 0 (file with 100 jets) contributes ~100
     assert 80 <= counts[0] <= 120
     assert 880 <= counts[1] <= 920
+
+
+def test_skip_batches(tmp_path):
+    # Create a file with 500 jets and identifiable indices
+    num_jets = 500
+    batch_size = 100
+
+    jets = np.zeros(num_jets, dtype=[("pt", "f4"), ("index", "i4")])
+    jets["pt"] = 42.0
+    jets["index"] = np.arange(num_jets)
+
+    fpath = tmp_path / "skip_test.h5"
+    with h5py.File(fpath, "w") as f:
+        f.create_dataset("jets", data=jets)
+
+    reader = H5Reader(fpath, batch_size=batch_size, shuffle=False)
+
+    # Skip first 2 batches (i.e., skip jets 0–199)
+    skip_batches = 2
+    indices_seen = []
+    for batch in reader.stream({"jets": ["index"]}, skip_batches=skip_batches):
+        indices_seen.extend(batch["jets"]["index"])
+
+    # Check that skipped jets are not in the result
+    assert all(i >= skip_batches * batch_size for i in indices_seen)
+    assert len(indices_seen) == num_jets - skip_batches * batch_size
+    assert indices_seen[0] == skip_batches * batch_size
