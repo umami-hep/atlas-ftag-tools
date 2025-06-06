@@ -193,6 +193,6 @@ def test_precision_none_preserves_dtypes(tmp_path, mock_data):
             for field in dtypes[name].names:
                 expected_dtype = dtypes[name][field]
                 actual_dtype = f[name].dtype[field]
-                assert actual_dtype == expected_dtype, (
-                    f"{name}.{field} was {actual_dtype}, expected {expected_dtype}"
-                )
+                assert (
+                    actual_dtype == expected_dtype
+                ), f"{name}.{field} was {actual_dtype}, expected {expected_dtype}"

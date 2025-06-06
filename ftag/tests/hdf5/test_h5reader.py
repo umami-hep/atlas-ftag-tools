@@ -21,7 +21,7 @@ np.random.seed(42)
 @pytest.mark.parametrize("num", [1, 2, 3])
 @pytest.mark.parametrize("length", [200, 301])
 @pytest.mark.parametrize("equal_jets", [True, False])
-def test_H5Reader(num, length, equal_jets):
+def test_H5Reader(num, length, equal_jets):  # noqa: PLR0915
     # calculate all possible effective batch sizes, from single file batch sizes and remainders
     batch_size = 100
     effective_bs_file = batch_size // num

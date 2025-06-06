@@ -79,7 +79,7 @@ class H5SingleReader:
         if num_jets is None:
             num_jets = self.num_jets
         if skip_batches > 0:
-            assert self.shuffle == False, "Cannot skip batches if shuffle is True"
+            assert not self.shuffle, "Cannot skip batches if shuffle is True"
         if num_jets > self.num_jets:
             log.warning(
                 f"{num_jets:,} jets requested but only {self.num_jets:,} available in {self.fname}."

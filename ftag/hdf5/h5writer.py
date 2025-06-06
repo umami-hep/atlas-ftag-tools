@@ -72,8 +72,6 @@ class H5Writer:
         else:
             raise ValueError(f"Invalid precision: {self.precision}")
 
-        if self.full_precision_vars is None:
-            self.full_precision_vars = []
         self.dst = Path(self.dst)
         self.dst.parent.mkdir(parents=True, exist_ok=True)
         self.file = h5py.File(self.dst, "w")
@@ -118,6 +116,7 @@ class H5Writer:
         if name == self.jets_name and self.add_flavour_label and "flavour_label" not in dtype.names:
             dtype = np.dtype([*dtype.descr, ("flavour_label", "i4")])
 
+        fp_vars = self.full_precision_vars or []
         # If no precision is defined, or the field is in full_precision_vars, or its non-float,
         # keep it at the original dtype
         dtype = np.dtype([
@@ -125,11 +124,7 @@ class H5Writer:
                 field,
                 (
                     self.fp_dtype
-                    if (
-                        self.fp_dtype
-                        and field not in self.full_precision_vars
-                        and np.issubdtype(dt, np.floating)
-                    )
+                    if (self.fp_dtype and field not in fp_vars and np.issubdtype(dt, np.floating))
                     else dt
                 ),
             )
