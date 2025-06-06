@@ -31,16 +31,18 @@ def test_H5Reader(num, length, equal_jets):
 
     # create test files (of different lengths)
     tmpdirs = []
+    file_lengths = []
     for i in range(num):
         fname = NamedTemporaryFile(suffix=".h5", dir=mkdtemp()).name
         tmpdirs.append(Path(fname).parent)
-
+        jets_length = length * (i + 1)
+        file_lengths.append(jets_length)
         with h5py.File(fname, "w") as f:
-            data = i * np.ones((length * (i + 1), 2))
+            data = i * np.ones((jets_length, 2))
             data = u2s(data, dtype=[("x", "f4"), ("y", "f4")])
             f.create_dataset("jets", data=data)
 
-            data = i * np.ones((length * (i + 1), 40, 2))
+            data = i * np.ones((jets_length, 40, 2))
             data = u2s(data, dtype=[("a", "f4"), ("b", "f4")])
             f.create_dataset("tracks", data=data)
 
@@ -49,7 +51,23 @@ def test_H5Reader(num, length, equal_jets):
 
     # test reading from multiple paths
     reader = H5Reader(sample.path, batch_size=batch_size, equal_jets=equal_jets)
-    assert reader.num_jets == num * (num + 1) / 2 * length
+    # dynamically compute valid total batch sizes (sum over per-file batch_sizes)
+    total_jets = sum(file_lengths)
+    weights = [n / total_jets for n in file_lengths]
+    per_file_bs = [int(batch_size * w) for w in weights]
+
+    # all combinations of n * per_file_bs[i] + remainders (as original test tried to capture)
+    effective_bs_options = []
+    for i in range(num + 1):
+        for r in range(batch_size):
+            total_bs = sum(per_file_bs)
+            val = i * total_bs + r
+            if 0 < val <= batch_size:
+                effective_bs_options.append(val)
+    effective_bs_options = list(set(effective_bs_options))  # remove duplicates
+
+    assert reader.num_jets == total_jets
+
     variables = {"jets": ["x", "y"], "tracks": None}
     for data in reader.stream(variables=variables):
         assert "jets" in data

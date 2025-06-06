@@ -79,7 +79,10 @@ def test_add_attr(tmp_path, jet_dtype):
 
 def test_post_init(tmp_path, jet_dtype):
     writer = H5Writer(
-        dst=Path(tmp_path) / "test.h5", dtypes={"jets": jet_dtype}, shapes={"jets": (100,)}
+        dst=Path(tmp_path) / "test.h5",
+        dtypes={"jets": jet_dtype},
+        shapes={"jets": (100,)},
+        num_jets=100,
     )
 
     assert writer.num_jets == 100
@@ -89,7 +92,10 @@ def test_post_init(tmp_path, jet_dtype):
 
 def test_invalid_write(tmp_path, jet_dtype):
     writer = H5Writer(
-        dst=Path(tmp_path) / "test.h5", dtypes={"jets": jet_dtype}, shapes={"jets": (100,)}
+        dst=Path(tmp_path) / "test.h5",
+        dtypes={"jets": jet_dtype},
+        shapes={"jets": (100,)},
+        num_jets=100,
     )
 
     data = {"jets": np.zeros(110, dtype=writer.dtypes["jets"])}
