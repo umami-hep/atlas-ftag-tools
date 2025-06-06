@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import h5py
 import numpy as np
 from numpy.lib.recfunctions import unstructured_to_structured as u2s
 
@@ -135,29 +134,3 @@ def structured_from_dict(d: dict[str, np.ndarray]) -> np.ndarray:
     arrays = np.column_stack(list(d.values()))
     dtypes = np.dtype([(k, v.dtype) for k, v in d.items()])
     return u2s(arrays, dtype=dtypes)
-
-
-def get_num_in_dset(h5path: str, group_name: str = "jets") -> int:
-    """Get the number entries in a given dataset in an HDF5 file.
-
-    Parameters
-    ----------
-    h5path : str
-        Path to the HDF5 file
-    group_name : str
-        Name of the group
-
-    Returns
-    -------
-    int
-        Number of datasets in the group
-
-    Raises
-    ------
-    ValueError
-        If the group is not found in the file
-    """
-    with h5py.File(h5path, "r") as f:
-        if group_name not in f:
-            raise ValueError(f"Group {group_name} not found in file {h5path}")
-        return len(f[group_name])
