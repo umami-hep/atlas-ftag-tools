@@ -193,9 +193,9 @@ def test_precision_none_preserves_dtypes(tmp_path, mock_data):
             for field in dtypes[name].names:
                 expected_dtype = dtypes[name][field]
                 actual_dtype = f[name].dtype[field]
-                assert (
-                    actual_dtype == expected_dtype
-                ), f"{name}.{field} was {actual_dtype}, expected {expected_dtype}"
+                assert actual_dtype == expected_dtype, (
+                    f"{name}.{field} was {actual_dtype}, expected {expected_dtype}"
+                )
 
 
 def test_close_raises_on_incomplete_write(tmp_path, jet_dtype):
@@ -223,8 +223,10 @@ def test_from_file_with_variable_subset(tmp_path):
     with h5py.File(path, "w") as f:
         jets = np.zeros(10, dtype=[("pt", "f4"), ("eta", "f4"), ("phi", "f4")])
         tracks = np.zeros((10, 5), dtype=[("d0", "f4"), ("z0", "f4")])
+        flows = np.zeros((10, 5), dtype=[("pt", "f4")])
         f.create_dataset("jets", data=jets, compression="lzf")
         f.create_dataset("tracks", data=tracks, compression="lzf")
+        f.create_dataset("flows", data=flows, compression="lzf")
 
     # Only want a subset of variables
     variables = {
