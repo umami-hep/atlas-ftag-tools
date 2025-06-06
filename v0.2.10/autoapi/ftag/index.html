@@ -391,9 +391,10 @@
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="labeller/index.html">ftag.labeller</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labels/index.html">ftag.labels</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mock/index.html">ftag.mock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="region/index.html">ftag.region</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sample/index.html">ftag.sample</a></li>
+<li class="toctree-l2"><a class="reference internal" href="track_selector/index.html">ftag.track_selector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transform/index.html">ftag.transform</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="utils/index.html">ftag.utils</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="utils/logging/index.html">ftag.utils.logging</a></li>
@@ -478,9 +479,10 @@
 <li class="toctree-l1"><a class="reference internal" href="git_check/index.html">ftag.git_check</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hdf5/index.html">ftag.hdf5</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labeller/index.html">ftag.labeller</a></li>
-<li class="toctree-l1"><a class="reference internal" href="labels/index.html">ftag.labels</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mock/index.html">ftag.mock</a></li>
+<li class="toctree-l1"><a class="reference internal" href="region/index.html">ftag.region</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sample/index.html">ftag.sample</a></li>
+<li class="toctree-l1"><a class="reference internal" href="track_selector/index.html">ftag.track_selector</a></li>
 <li class="toctree-l1"><a class="reference internal" href="transform/index.html">ftag.transform</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utils/index.html">ftag.utils</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vds/index.html">ftag.vds</a></li>
@@ -512,12 +514,6 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#ftag.Labeller" title="ftag.Labeller"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Labeller</span></code></a></p></td>
 <td><p>Defines a labelling scheme.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.Label" title="ftag.Label"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Label</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ftag.LabelContainer" title="ftag.LabelContainer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LabelContainer</span></code></a></p></td>
-<td><p></p></td>
-</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ftag.Sample" title="ftag.Sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sample</span></code></a></p></td>
 <td><p></p></td>
 </tr>
@@ -532,11 +528,11 @@
 <h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.get_mock_file" title="ftag.get_mock_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_mock_file</span></code></a>(→ tuple[str, h5py.File])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.calculate_best_fraction_values" title="ftag.calculate_best_fraction_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_best_fraction_values</span></code></a>(→ dict)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ftag.get_working_points" title="ftag.get_working_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_working_points</span></code></a>(→ dict | None)</p></td>
-<td><p>Calculate the working points.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ftag.get_mock_file" title="ftag.get_mock_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_mock_file</span></code></a>(→ tuple[str, h5py.File])</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -619,6 +615,11 @@
 <span class="sig-prename descclassname"><span class="pre">ftag.</span></span><span class="sig-name descname"><span class="pre">Flavours</span></span><a class="headerlink" href="#ftag.Flavours" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="ftag.calculate_best_fraction_values">
+<span class="sig-prename descclassname"><span class="pre">ftag.</span></span><span class="sig-name descname"><span class="pre">calculate_best_fraction_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tagger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ftag.labels.Label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flavours</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ftag.labels.LabelContainer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">working_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rejection_weights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer_method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Powell'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#ftag.calculate_best_fraction_values" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="ftag.Labeller">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ftag.</span></span><span class="sig-name descname"><span class="pre">Labeller</span></span><a class="headerlink" href="#ftag.Labeller" title="Link to this definition">#</a></dt>
@@ -627,14 +628,14 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>labels</strong> (<a class="reference internal" href="#ftag.LabelContainer" title="ftag.LabelContainer"><em>LabelContainer</em></a><em> | </em><em>list</em><em>[</em><em>str</em><em> | </em><a class="reference internal" href="#ftag.Label" title="ftag.Label"><em>Label</em></a><em>]</em>) – The labels to be use.</p></li>
+<li><p><strong>labels</strong> (<em>LabelContainer</em><em> | </em><em>list</em><em>[</em><em>str</em><em> | </em><em>Label</em><em>]</em>) – The labels to be use.</p></li>
 <li><p><strong>require_labels</strong> (<em>bool</em>) – Whether to require that all objects are labelled.</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.Labeller.labels">
-<span class="sig-name descname"><span class="pre">labels</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="labels/index.html#ftag.labels.LabelContainer" title="ftag.labels.LabelContainer"><span class="pre">ftag.labels.LabelContainer</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="labels/index.html#ftag.labels.Label" title="ftag.labels.Label"><span class="pre">ftag.labels.Label</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ftag.Labeller.labels" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">labels</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ftag.labels.LabelContainer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ftag.labels.Label</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ftag.Labeller.labels" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -703,146 +704,6 @@
 </dd>
 </dl>
 </dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ftag.Label">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ftag.</span></span><span class="sig-name descname"><span class="pre">Label</span></span><a class="headerlink" href="#ftag.Label" title="Link to this definition">#</a></dt>
-<dd><dl class="py attribute">
-<dt class="sig sig-object py" id="ftag.Label.name">
-<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ftag.Label.name" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ftag.Label.label">
-<span class="sig-name descname"><span class="pre">label</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ftag.Label.label" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ftag.Label.cuts">
-<span class="sig-name descname"><span class="pre">cuts</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><span class="pre">ftag.cuts.Cuts</span></a></em><a class="headerlink" href="#ftag.Label.cuts" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ftag.Label.colour">
-<span class="sig-name descname"><span class="pre">colour</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ftag.Label.colour" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ftag.Label.category">
-<span class="sig-name descname"><span class="pre">category</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ftag.Label.category" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ftag.Label._px">
-<span class="sig-name descname"><span class="pre">_px</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ftag.Label._px" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="ftag.Label.px">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">px</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ftag.Label.px" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="ftag.Label.eff_str">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">eff_str</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ftag.Label.eff_str" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="ftag.Label.rej_str">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rej_str</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ftag.Label.rej_str" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="ftag.Label.frac_str">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">frac_str</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ftag.Label.frac_str" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ftag.Label.__str__">
-<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#ftag.Label.__str__" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ftag.Label.__lt__">
-<span class="sig-name descname"><span class="pre">__lt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#ftag.Label.__lt__" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ftag.LabelContainer">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ftag.</span></span><span class="sig-name descname"><span class="pre">LabelContainer</span></span><a class="headerlink" href="#ftag.LabelContainer" title="Link to this definition">#</a></dt>
-<dd><dl class="py attribute">
-<dt class="sig sig-object py" id="ftag.LabelContainer.labels">
-<span class="sig-name descname"><span class="pre">labels</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#ftag.Label" title="ftag.Label"><span class="pre">Label</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ftag.LabelContainer.labels" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ftag.LabelContainer.__iter__">
-<span class="sig-name descname"><span class="pre">__iter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">collections.abc.Iterator</span></span></span><a class="headerlink" href="#ftag.LabelContainer.__iter__" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ftag.LabelContainer.__getitem__">
-<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ftag.Label" title="ftag.Label"><span class="pre">Label</span></a></span></span><a class="headerlink" href="#ftag.LabelContainer.__getitem__" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ftag.LabelContainer.__len__">
-<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#ftag.LabelContainer.__len__" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ftag.LabelContainer.__getattr__">
-<span class="sig-name descname"><span class="pre">__getattr__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ftag.Label" title="ftag.Label"><span class="pre">Label</span></a></span></span><a class="headerlink" href="#ftag.LabelContainer.__getattr__" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ftag.LabelContainer.__contains__">
-<span class="sig-name descname"><span class="pre">__contains__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#ftag.Label" title="ftag.Label"><span class="pre">Label</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#ftag.LabelContainer.__contains__" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ftag.LabelContainer.__eq__">
-<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#ftag.LabelContainer.__eq__" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ftag.LabelContainer.__repr__">
-<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#ftag.LabelContainer.__repr__" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="ftag.LabelContainer.categories">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">categories</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ftag.LabelContainer.categories" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ftag.LabelContainer.by_category">
-<span class="sig-name descname"><span class="pre">by_category</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">category</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ftag.LabelContainer" title="ftag.LabelContainer"><span class="pre">LabelContainer</span></a></span></span><a class="headerlink" href="#ftag.LabelContainer.by_category" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ftag.LabelContainer.from_cuts">
-<span class="sig-name descname"><span class="pre">from_cuts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cuts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><span class="pre">ftag.cuts.Cuts</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ftag.Label" title="ftag.Label"><span class="pre">Label</span></a></span></span><a class="headerlink" href="#ftag.LabelContainer.from_cuts" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ftag.LabelContainer.from_yaml">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_yaml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yaml_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ftag.LabelContainer" title="ftag.LabelContainer"><span class="pre">LabelContainer</span></a></span></span><a class="headerlink" href="#ftag.LabelContainer.from_yaml" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ftag.LabelContainer.from_list">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ftag.Label" title="ftag.Label"><span class="pre">Label</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ftag.LabelContainer" title="ftag.LabelContainer"><span class="pre">LabelContainer</span></a></span></span><a class="headerlink" href="#ftag.LabelContainer.from_list" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ftag.LabelContainer.backgrounds">
-<span class="sig-name descname"><span class="pre">backgrounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ftag.Label" title="ftag.Label"><span class="pre">Label</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">only_signals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ftag.LabelContainer" title="ftag.LabelContainer"><span class="pre">LabelContainer</span></a></span></span><a class="headerlink" href="#ftag.LabelContainer.backgrounds" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
@@ -1037,24 +898,6 @@
 
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="ftag.get_working_points">
-<span class="sig-prename descclassname"><span class="pre">ftag.</span></span><span class="sig-name descname"><span class="pre">get_working_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">argparse.Namespace</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.get_working_points" title="Link to this definition">#</a></dt>
-<dd><p>Calculate the working points.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>args</strong> (<em>argparse.Namespace</em>) – Input arguments from the argparser</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Dict with the working points. If args.outfile is given, the function returns None and
-stored the resulting dict in a yaml file in args.outfile.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict | None</p>
-</dd>
-</dl>
-</dd></dl>
-
 </section>
 </section>
 
@@ -1127,6 +970,7 @@ stored the resulting dict in a yaml file in args.outfile.</p>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Flavours"><code class="docutils literal notranslate"><span class="pre">Flavours</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.calculate_best_fraction_values"><code class="docutils literal notranslate"><span class="pre">calculate_best_fraction_values()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Labeller"><code class="docutils literal notranslate"><span class="pre">Labeller</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Labeller.labels"><code class="docutils literal notranslate"><span class="pre">Labeller.labels</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Labeller.require_labels"><code class="docutils literal notranslate"><span class="pre">Labeller.require_labels</span></code></a></li>
@@ -1134,38 +978,6 @@ stored the resulting dict in a yaml file in args.outfile.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Labeller.variables"><code class="docutils literal notranslate"><span class="pre">Labeller.variables</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Labeller.get_labels"><code class="docutils literal notranslate"><span class="pre">Labeller.get_labels()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Labeller.add_labels"><code class="docutils literal notranslate"><span class="pre">Labeller.add_labels()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Label"><code class="docutils literal notranslate"><span class="pre">Label</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Label.name"><code class="docutils literal notranslate"><span class="pre">Label.name</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Label.label"><code class="docutils literal notranslate"><span class="pre">Label.label</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Label.cuts"><code class="docutils literal notranslate"><span class="pre">Label.cuts</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Label.colour"><code class="docutils literal notranslate"><span class="pre">Label.colour</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Label.category"><code class="docutils literal notranslate"><span class="pre">Label.category</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Label._px"><code class="docutils literal notranslate"><span class="pre">Label._px</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Label.px"><code class="docutils literal notranslate"><span class="pre">Label.px</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Label.eff_str"><code class="docutils literal notranslate"><span class="pre">Label.eff_str</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Label.rej_str"><code class="docutils literal notranslate"><span class="pre">Label.rej_str</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Label.frac_str"><code class="docutils literal notranslate"><span class="pre">Label.frac_str</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Label.__str__"><code class="docutils literal notranslate"><span class="pre">Label.__str__()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Label.__lt__"><code class="docutils literal notranslate"><span class="pre">Label.__lt__()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.LabelContainer"><code class="docutils literal notranslate"><span class="pre">LabelContainer</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.LabelContainer.labels"><code class="docutils literal notranslate"><span class="pre">LabelContainer.labels</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.LabelContainer.__iter__"><code class="docutils literal notranslate"><span class="pre">LabelContainer.__iter__()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.LabelContainer.__getitem__"><code class="docutils literal notranslate"><span class="pre">LabelContainer.__getitem__()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.LabelContainer.__len__"><code class="docutils literal notranslate"><span class="pre">LabelContainer.__len__()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.LabelContainer.__getattr__"><code class="docutils literal notranslate"><span class="pre">LabelContainer.__getattr__()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.LabelContainer.__contains__"><code class="docutils literal notranslate"><span class="pre">LabelContainer.__contains__()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.LabelContainer.__eq__"><code class="docutils literal notranslate"><span class="pre">LabelContainer.__eq__()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.LabelContainer.__repr__"><code class="docutils literal notranslate"><span class="pre">LabelContainer.__repr__()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.LabelContainer.categories"><code class="docutils literal notranslate"><span class="pre">LabelContainer.categories</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.LabelContainer.by_category"><code class="docutils literal notranslate"><span class="pre">LabelContainer.by_category()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.LabelContainer.from_cuts"><code class="docutils literal notranslate"><span class="pre">LabelContainer.from_cuts()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.LabelContainer.from_yaml"><code class="docutils literal notranslate"><span class="pre">LabelContainer.from_yaml()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.LabelContainer.from_list"><code class="docutils literal notranslate"><span class="pre">LabelContainer.from_list()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.LabelContainer.backgrounds"><code class="docutils literal notranslate"><span class="pre">LabelContainer.backgrounds()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.get_mock_file"><code class="docutils literal notranslate"><span class="pre">get_mock_file()</span></code></a></li>
@@ -1203,7 +1015,6 @@ stored the resulting dict in a yaml file in args.outfile.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Transform.map_variable_names"><code class="docutils literal notranslate"><span class="pre">Transform.map_variable_names()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.get_working_points"><code class="docutils literal notranslate"><span class="pre">get_working_points()</span></code></a></li>
 </ul>
 </li>
 </ul>

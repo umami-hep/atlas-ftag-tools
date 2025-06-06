@@ -89,10 +89,16 @@ Module Contents
 
 
 
+   .. py:attribute:: num_jets
+      :type:  int | None
+      :value: None
+
+
+
    .. py:method:: __post_init__()
 
 
-   .. py:method:: from_file(source: pathlib.Path, num_jets: int | None = None, **kwargs) -> H5Writer
+   .. py:method:: from_file(source: pathlib.Path, num_jets: int | None = 0, variables=None, **kwargs) -> H5Writer
       :classmethod:
 
 
@@ -112,6 +118,6 @@ Module Contents
    .. py:method:: copy_attrs(fname: pathlib.Path) -> None
 
 
-   .. py:method:: write(data: dict[str, numpy.array]) -> None
+   .. py:method:: write(data: dict[str, numpy.ndarray]) -> None
 
 

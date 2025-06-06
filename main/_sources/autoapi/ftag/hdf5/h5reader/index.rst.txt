@@ -78,7 +78,7 @@ Module Contents
    .. py:method:: remove_inf(data: dict) -> dict
 
 
-   .. py:method:: stream(variables: dict | None = None, num_jets: int | None = None, cuts: ftag.cuts.Cuts | None = None, start: int = 0) -> collections.abc.Generator
+   .. py:method:: stream(variables: dict | None = None, num_jets: int | None = None, cuts: ftag.cuts.Cuts | None = None, start: int = 0, skip_batches: int = 0) -> collections.abc.Generator
 
 
 .. py:class:: H5Reader
@@ -182,7 +182,7 @@ Module Contents
    .. py:method:: shapes(num_jets: int, groups: list[str] | None = None) -> dict[str, tuple[int, Ellipsis]]
 
 
-   .. py:method:: stream(variables: dict | None = None, num_jets: int | None = None, cuts: ftag.cuts.Cuts | None = None, start: int = 0) -> collections.abc.Generator
+   .. py:method:: stream(variables: dict | None = None, num_jets: int | None = None, cuts: ftag.cuts.Cuts | None = None, start: int = 0, skip_batches: int = 0) -> collections.abc.Generator
 
       Generate batches of selected jets.
 
@@ -194,6 +194,8 @@ Module Contents
       :type cuts: Cuts | None, optional
       :param start: Starting index of the first jet to read, by default 0
       :type start: int, optional
+      :param skip_batches: Number of batches to skip, by default 0
+      :type skip_batches: int, optional
 
       :Yields: *Generator* -- Generator of batches of selected jets.
 

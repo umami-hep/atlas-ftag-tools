@@ -189,7 +189,7 @@ Package Contents
    .. py:method:: shapes(num_jets: int, groups: list[str] | None = None) -> dict[str, tuple[int, Ellipsis]]
 
 
-   .. py:method:: stream(variables: dict | None = None, num_jets: int | None = None, cuts: ftag.cuts.Cuts | None = None, start: int = 0) -> collections.abc.Generator
+   .. py:method:: stream(variables: dict | None = None, num_jets: int | None = None, cuts: ftag.cuts.Cuts | None = None, start: int = 0, skip_batches: int = 0) -> collections.abc.Generator
 
       Generate batches of selected jets.
 
@@ -201,6 +201,8 @@ Package Contents
       :type cuts: Cuts | None, optional
       :param start: Starting index of the first jet to read, by default 0
       :type start: int, optional
+      :param skip_batches: Number of batches to skip, by default 0
+      :type skip_batches: int, optional
 
       :Yields: *Generator* -- Generator of batches of selected jets.
 
@@ -251,7 +253,7 @@ Package Contents
    :raises ValueError: If precision is not "half" or "full"
 
 
-.. py:function:: get_dtype(ds, variables: list[str] | None = None, precision: str | None = None, transform: ftag.transform.Transform | None = None) -> numpy.dtype
+.. py:function:: get_dtype(ds, variables: list[str] | None = None, precision: str | None = None, transform: ftag.transform.Transform | None = None, full_precision_vars: list[str] | None = None) -> numpy.dtype
 
    Return a dtype based on an existing dataset and requested variables.
 
@@ -263,6 +265,8 @@ Package Contents
    :type precision: str | None, optional
    :param transform: Transform to apply to variables names, by default None
    :type transform: Transform | None, optional
+   :param full_precision_vars: List of variables to keep in full precision, by default None
+   :type full_precision_vars: list[str] | None, optional
 
    :returns: Output dtype
    :rtype: np.dtype
@@ -368,10 +372,16 @@ Package Contents
 
 
 
+   .. py:attribute:: num_jets
+      :type:  int | None
+      :value: None
+
+
+
    .. py:method:: __post_init__()
 
 
-   .. py:method:: from_file(source: pathlib.Path, num_jets: int | None = None, **kwargs) -> H5Writer
+   .. py:method:: from_file(source: pathlib.Path, num_jets: int | None = 0, variables=None, **kwargs) -> H5Writer
       :classmethod:
 
 
@@ -391,6 +401,6 @@ Package Contents
    .. py:method:: copy_attrs(fname: pathlib.Path) -> None
 
 
-   .. py:method:: write(data: dict[str, numpy.array]) -> None
+   .. py:method:: write(data: dict[str, numpy.ndarray]) -> None
 
 
