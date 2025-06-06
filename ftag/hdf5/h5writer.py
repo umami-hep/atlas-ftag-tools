@@ -48,7 +48,6 @@ class H5Writer:
     full_precision_vars: list[str] | None = None
     shuffle: bool = True
     num_jets: int | None = None  # Allow dynamic mode by defaulting to None
-    full_precision_vars: list[str] = None  # List of variables to store in full precision
 
     def __post_init__(self):
         self.num_written = 0
@@ -68,6 +67,8 @@ class H5Writer:
             self.fp_dtype = np.float32
         elif self.precision == "half":
             self.fp_dtype = np.float16
+        elif self.precision is None:
+            self.fp_dtype = None
         else:
             raise ValueError(f"Invalid precision: {self.precision}")
 
@@ -117,15 +118,18 @@ class H5Writer:
         if name == self.jets_name and self.add_flavour_label and "flavour_label" not in dtype.names:
             dtype = np.dtype([*dtype.descr, ("flavour_label", "i4")])
 
-        # adjust dtype based on specified precision
-        full_precision_vars = [] if self.full_precision_vars is None else self.full_precision_vars
-        # If the field is in full_precision_vars, use the full precision dtype
+        # If no precision is defined, or the field is in full_precision_vars, or its non-float,
+        # keep it at the original dtype
         dtype = np.dtype([
             (
                 field,
                 (
                     self.fp_dtype
-                    if (field not in self.full_precision_vars) and np.issubdtype(dt, np.floating)
+                    if (
+                        self.fp_dtype
+                        and field not in self.full_precision_vars
+                        and np.issubdtype(dt, np.floating)
+                    )
                     else dt
                 ),
             )
@@ -187,11 +191,10 @@ class H5Writer:
         low = self.num_written
         high = low + batch_size
 
-        if self.fixed_mode:
-            if high > self.num_jets:
-                raise ValueError(
-                    f"Attempted to write more jets than expected: {high:,} > {self.num_jets:,}"
-                )
+        if self.fixed_mode and high > self.num_jets:
+            raise ValueError(
+                f"Attempted to write more jets than expected: {high:,} > {self.num_jets:,}"
+            )
 
         for group in self.dtypes:
             ds = self.file[group]
