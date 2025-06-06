@@ -342,7 +342,7 @@ def test_skip_batches(tmp_path):
 
     reader = H5Reader(fpath, batch_size=batch_size, shuffle=False)
 
-    # Skip first 2 batches (i.e., skip jets 0–199)
+    # Skip first 2 batches (i.e., skip jets 0-199)
     skip_batches = 2
     indices_seen = []
     for batch in reader.stream({"jets": ["index"]}, skip_batches=skip_batches):
