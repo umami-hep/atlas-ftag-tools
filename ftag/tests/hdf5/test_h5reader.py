@@ -31,16 +31,18 @@ def test_H5Reader(num, length, equal_jets):
 
     # create test files (of different lengths)
     tmpdirs = []
+    file_lengths = []
     for i in range(num):
         fname = NamedTemporaryFile(suffix=".h5", dir=mkdtemp()).name
         tmpdirs.append(Path(fname).parent)
-
+        jets_length = length * (i + 1)
+        file_lengths.append(jets_length)
         with h5py.File(fname, "w") as f:
-            data = i * np.ones((length * (i + 1), 2))
+            data = i * np.ones((jets_length, 2))
             data = u2s(data, dtype=[("x", "f4"), ("y", "f4")])
             f.create_dataset("jets", data=data)
 
-            data = i * np.ones((length * (i + 1), 40, 2))
+            data = i * np.ones((jets_length, 40, 2))
             data = u2s(data, dtype=[("a", "f4"), ("b", "f4")])
             f.create_dataset("tracks", data=data)
 
@@ -49,7 +51,23 @@ def test_H5Reader(num, length, equal_jets):
 
     # test reading from multiple paths
     reader = H5Reader(sample.path, batch_size=batch_size, equal_jets=equal_jets)
-    assert reader.num_jets == num * (num + 1) / 2 * length
+    # dynamically compute valid total batch sizes (sum over per-file batch_sizes)
+    total_jets = sum(file_lengths)
+    weights = [n / total_jets for n in file_lengths]
+    per_file_bs = [int(batch_size * w) for w in weights]
+
+    # all combinations of n * per_file_bs[i] + remainders (as original test tried to capture)
+    effective_bs_options = []
+    for i in range(num + 1):
+        for r in range(batch_size):
+            total_bs = sum(per_file_bs)
+            val = i * total_bs + r
+            if 0 < val <= batch_size:
+                effective_bs_options.append(val)
+    effective_bs_options = list(set(effective_bs_options))  # remove duplicates
+
+    assert reader.num_jets == total_jets
+
     variables = {"jets": ["x", "y"], "tracks": None}
     for data in reader.stream(variables=variables):
         assert "jets" in data
@@ -68,11 +86,8 @@ def test_H5Reader(num, length, equal_jets):
             assert (jet == trk).all()
 
         if num > 1:
-            if len(np.unique(data["jets"]["x"])) == 1:
-                np.testing.assert_array_equal(data["jets"]["x"], data["tracks"]["a"][:, 0])
-            else:
-                corr = np.corrcoef(data["jets"]["x"], data["tracks"]["a"][:, 0])
-                np.testing.assert_allclose(corr, 1)
+            corr = np.corrcoef(data["jets"]["x"], data["tracks"]["a"][:, 0])
+            np.testing.assert_allclose(corr, 1)
 
     # testing load method
     loaded_data = reader.load(num_jets=-1)
@@ -264,3 +279,73 @@ def test_stream(singlereader):
     for batch in singlereader.stream():
         total += len(batch["jets"])
     assert total == singlereader.num_jets
+
+
+def test_weighting_two_files_100_vs_900(tmp_path):
+    # Create two files: one with 100 jets, one with 900
+    jets_100 = np.zeros(100, dtype=[("pt", "f4"), ("source", "i4")])
+    jets_100["pt"] = 1.0
+    jets_100["source"] = 0
+
+    jets_900 = np.zeros(900, dtype=[("pt", "f4"), ("source", "i4")])
+    jets_900["pt"] = 2.0
+    jets_900["source"] = 1
+
+    def write_file(path: Path, jets):
+        with h5py.File(path, "w") as f:
+            f.create_dataset("jets", data=jets)
+
+    fpath_100 = tmp_path / "f100.h5"
+    fpath_900 = tmp_path / "f900.h5"
+    write_file(fpath_100, jets_100)
+    write_file(fpath_900, jets_900)
+
+    reader = H5Reader([fpath_100, fpath_900], batch_size=100, shuffle=False)
+
+    # Check the weights are approximately 0.1 and 0.9
+    expected_weights = [0.1, 0.9]
+    np.testing.assert_allclose(reader.weights, expected_weights, rtol=1e-2)
+
+    counts = {0: 0, 1: 0}
+    total = 0
+    for batch in reader.stream({"jets": ["pt", "source"]}):
+        srcs = batch["jets"]["source"]
+        total += len(srcs)
+        # Correct split per batch
+        assert np.sum(srcs == 0) == 10
+        assert np.sum(srcs == 1) == 90
+        for s in np.unique(srcs):
+            counts[s] += np.sum(srcs == s)
+
+    assert total == 1000
+    assert counts[0] + counts[1] == 1000
+    # Check the source 0 (file with 100 jets) contributes ~100
+    assert 80 <= counts[0] <= 120
+    assert 880 <= counts[1] <= 920
+
+
+def test_skip_batches(tmp_path):
+    # Create a file with 500 jets and identifiable indices
+    num_jets = 500
+    batch_size = 100
+
+    jets = np.zeros(num_jets, dtype=[("pt", "f4"), ("index", "i4")])
+    jets["pt"] = 42.0
+    jets["index"] = np.arange(num_jets)
+
+    fpath = tmp_path / "skip_test.h5"
+    with h5py.File(fpath, "w") as f:
+        f.create_dataset("jets", data=jets)
+
+    reader = H5Reader(fpath, batch_size=batch_size, shuffle=False)
+
+    # Skip first 2 batches (i.e., skip jets 0-199)
+    skip_batches = 2
+    indices_seen = []
+    for batch in reader.stream({"jets": ["index"]}, skip_batches=skip_batches):
+        indices_seen.extend(batch["jets"]["index"])
+
+    # Check that skipped jets are not in the result
+    assert all(i >= skip_batches * batch_size for i in indices_seen)
+    assert len(indices_seen) == num_jets - skip_batches * batch_size
+    assert indices_seen[0] == skip_batches * batch_size
