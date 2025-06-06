@@ -196,3 +196,22 @@ def test_precision_none_preserves_dtypes(tmp_path, mock_data):
                 assert (
                     actual_dtype == expected_dtype
                 ), f"{name}.{field} was {actual_dtype}, expected {expected_dtype}"
+
+
+def test_close_raises_on_incomplete_write(tmp_path, jet_dtype):
+    # Set up writer with fixed mode (num_jets set)
+    writer = H5Writer(
+        dst=Path(tmp_path) / "test_close_incomplete.h5",
+        dtypes={"jets": jet_dtype},
+        shapes={"jets": (100,)},
+        num_jets=100,
+        shuffle=False,
+    )
+
+    # Only write part of the data (e.g., 60 jets instead of 100)
+    partial_data = {"jets": np.zeros(60, dtype=writer.dtypes["jets"])}
+    writer.write(partial_data)
+
+    # Closing should now raise ValueError
+    with pytest.raises(ValueError, match="only 60 out of 100 jets have been written"):
+        writer.close()
