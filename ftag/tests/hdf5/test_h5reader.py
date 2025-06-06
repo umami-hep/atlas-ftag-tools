@@ -264,3 +264,46 @@ def test_stream(singlereader):
     for batch in singlereader.stream():
         total += len(batch["jets"])
     assert total == singlereader.num_jets
+
+
+def test_weighting_two_files_100_vs_900(tmp_path):
+    # Create two files: one with 100 jets, one with 900
+    jets_100 = np.zeros(100, dtype=[("pt", "f4"), ("source", "i4")])
+    jets_100["pt"] = 1.0
+    jets_100["source"] = 0
+
+    jets_900 = np.zeros(900, dtype=[("pt", "f4"), ("source", "i4")])
+    jets_900["pt"] = 2.0
+    jets_900["source"] = 1
+
+    def write_file(path: Path, jets):
+        with h5py.File(path, "w") as f:
+            f.create_dataset("jets", data=jets)
+
+    fpath_100 = tmp_path / "f100.h5"
+    fpath_900 = tmp_path / "f900.h5"
+    write_file(fpath_100, jets_100)
+    write_file(fpath_900, jets_900)
+
+    reader = H5Reader([fpath_100, fpath_900], batch_size=100, shuffle=False)
+
+    # Check the weights are approximately 0.1 and 0.9
+    expected_weights = [0.1, 0.9]
+    np.testing.assert_allclose(reader.weights, expected_weights, rtol=1e-2)
+
+    counts = {0: 0, 1: 0}
+    total = 0
+    for batch in reader.stream({"jets": ["pt", "source"]}):
+        srcs = batch["jets"]["source"]
+        total += len(srcs)
+        # Correct split per batch
+        assert np.sum(srcs == 0) == 10
+        assert np.sum(srcs == 1) == 90
+        for s in np.unique(srcs):
+            counts[s] += np.sum(srcs == s)
+
+    assert total == 1000
+    assert counts[0] + counts[1] == 1000
+    # Check the source 0 (file with 100 jets) contributes ~100
+    assert 80 <= counts[0] <= 120
+    assert 880 <= counts[1] <= 920
