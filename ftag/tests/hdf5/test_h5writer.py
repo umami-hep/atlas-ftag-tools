@@ -138,3 +138,55 @@ def test_half_full_precision(tmp_path, mock_data_path):
                 else:
                     assert dt == np.float32
                     assert dt_writer == np.float16
+
+
+def test_dynamic_mode_write(tmp_path, mock_data):
+    data = {"jets": mock_data[0], "tracks": mock_data[1]}
+
+    shapes = {k: v.shape for k, v in data.items()}
+    dtypes = {k: v.dtype for k, v in data.items()}
+
+    writer = H5Writer(
+        dst=Path(tmp_path) / "test_dynamic.h5",
+        dtypes=dtypes,
+        shapes=shapes,
+        num_jets=None,  # Allow dynamic sizing
+        shuffle=False,
+    )
+
+    writer.write(data)
+    assert writer.num_written == len(data["jets"])
+
+    # Should allow further writes without reshaping issues
+    writer.write(data)
+    assert writer.num_written == 2 * len(data["jets"])
+
+    writer.close()
+    with h5py.File(writer.dst) as f:
+        assert f["jets"].shape[0] == 2 * len(data["jets"])
+
+
+def test_precision_none_preserves_dtypes(tmp_path, mock_data):
+    jets, tracks = mock_data
+    dtypes = {"jets": jets.dtype, "tracks": tracks.dtype}
+    shapes = {"jets": jets.shape, "tracks": tracks.shape}
+
+    writer = H5Writer(
+        dst=Path(tmp_path) / "test_precision_none.h5",
+        dtypes=dtypes,
+        shapes=shapes,
+        precision=None,
+        shuffle=False,
+    )
+
+    writer.write({"jets": jets, "tracks": tracks})
+    writer.close()
+
+    with h5py.File(writer.dst) as f:
+        for name in ["jets", "tracks"]:
+            for field in dtypes[name].names:
+                expected_dtype = dtypes[name][field]
+                actual_dtype = f[name].dtype[field]
+                assert actual_dtype == expected_dtype, (
+                    f"{name}.{field} was {actual_dtype}, expected {expected_dtype}"
+                )
