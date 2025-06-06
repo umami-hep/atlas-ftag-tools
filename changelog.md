@@ -2,6 +2,8 @@
 
 ### [Latest]
 
+- Remove flavours sorting in Labeller [#124](https://github.com/umami-hep/atlas-ftag-tools/pull/124)
+
 ### [v0.2.11]
 
 - Regex integration for vds merging [#116](https://github.com/umami-hep/atlas-ftag-tools/pull/116)
