@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import h5py
 import numpy as np
 from numpy.lib.recfunctions import unstructured_to_structured as u2s
 
