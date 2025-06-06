@@ -193,9 +193,9 @@ def test_precision_none_preserves_dtypes(tmp_path, mock_data):
             for field in dtypes[name].names:
                 expected_dtype = dtypes[name][field]
                 actual_dtype = f[name].dtype[field]
-                assert (
-                    actual_dtype == expected_dtype
-                ), f"{name}.{field} was {actual_dtype}, expected {expected_dtype}"
+                assert actual_dtype == expected_dtype, (
+                    f"{name}.{field} was {actual_dtype}, expected {expected_dtype}"
+                )
 
 
 def test_close_raises_on_incomplete_write(tmp_path, jet_dtype):
@@ -215,3 +215,37 @@ def test_close_raises_on_incomplete_write(tmp_path, jet_dtype):
     # Closing should now raise ValueError
     with pytest.raises(ValueError, match="only 60 out of 100 jets have been written"):
         writer.close()
+
+
+def test_from_file_with_variable_subset(tmp_path):
+    # Create an HDF5 file with known structure
+    path = tmp_path / "test_subset.h5"
+    with h5py.File(path, "w") as f:
+        jets = np.zeros(10, dtype=[("pt", "f4"), ("eta", "f4"), ("phi", "f4")])
+        tracks = np.zeros((10, 5), dtype=[("d0", "f4"), ("z0", "f4")])
+        f.create_dataset("jets", data=jets, compression="lzf")
+        f.create_dataset("tracks", data=tracks, compression="lzf")
+
+    # Only want a subset of variables
+    variables = {
+        "jets": ["pt", "eta"],  # exclude "phi"
+        "tracks": ["d0"],  # exclude "z0"
+    }
+
+    writer = H5Writer.from_file(
+        source=path,
+        dst=tmp_path / "out.h5",
+        num_jets=10,
+        variables=variables,
+        precision=None,
+    )
+
+    # Check only the requested variables are present in the dtypes
+    assert "jets" in writer.dtypes
+    assert "tracks" in writer.dtypes
+    assert writer.dtypes["jets"].names == ("pt", "eta")
+    assert writer.dtypes["tracks"].names == ("d0",)
+
+    # Check shapes respect the updated num_jets
+    assert writer.shapes["jets"][0] == 10
+    assert writer.shapes["tracks"][0] == 10
