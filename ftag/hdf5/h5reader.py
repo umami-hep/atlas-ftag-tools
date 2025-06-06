@@ -74,10 +74,12 @@ class H5SingleReader:
         num_jets: int | None = None,
         cuts: Cuts | None = None,
         start: int = 0,
+        skip_batches: int = 0,
     ) -> Generator:
         if num_jets is None:
             num_jets = self.num_jets
-
+        if skip_batches > 0:
+            assert self.shuffle == False, "Cannot skip batches if shuffle is True"
         if num_jets > self.num_jets:
             log.warning(
                 f"{num_jets:,} jets requested but only {self.num_jets:,} available in {self.fname}."
@@ -97,7 +99,8 @@ class H5SingleReader:
             indices = list(range(start, self.num_jets + start, self.batch_size))
             if self.shuffle:
                 self.rng.shuffle(indices)
-
+            if skip_batches > 0:
+                indices = indices[skip_batches:]
             # loop over batches and read file
             for low in indices:
                 for name in variables:
@@ -233,6 +236,7 @@ class H5Reader:
         num_jets: int | None = None,
         cuts: Cuts | None = None,
         start: int = 0,
+        skip_batches: int = 0,
     ) -> Generator:
         """Generate batches of selected jets.
 
@@ -246,6 +250,8 @@ class H5Reader:
             Selection cuts to apply, by default None
         start : int, optional
             Starting index of the first jet to read, by default 0
+        skip_batches : int, optional
+            Number of batches to skip, by default 0
 
         Yields
         ------
@@ -266,7 +272,9 @@ class H5Reader:
 
         # get streams for selected jets from each reader
         streams = [
-            r.stream(variables, int(r.num_jets / self.num_jets * num_jets), cuts, start)
+            r.stream(
+                variables, int(r.num_jets / self.num_jets * num_jets), cuts, start, skip_batches
+            )
             for r in self.readers
         ]
 
