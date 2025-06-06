@@ -13,7 +13,7 @@ def get_dtype(
     variables: list[str] | None = None,
     precision: str | None = None,
     transform: Transform | None = None,
-    full_precision_vars : list[str] | None = None,
+    full_precision_vars: list[str] | None = None,
 ) -> np.dtype:
     """Return a dtype based on an existing dataset and requested variables.
 
@@ -29,6 +29,7 @@ def get_dtype(
         Transform to apply to variables names, by default None
     full_precision_vars : list[str] | None, optional
         List of variables to keep in full precision, by default None
+
     Returns
     -------
     np.dtype
@@ -43,8 +44,6 @@ def get_dtype(
         variables = ds.dtype.names
     if full_precision_vars is None:
         full_precision_vars = []
-    
-
 
     if (missing := set(variables) - set(ds.dtype.names)) and transform is not None:
         variables = transform.map_variable_names(ds.name, variables, inverse=True)
@@ -58,7 +57,8 @@ def get_dtype(
     if precision:
         dtype = [
             (n, cast_dtype(x, precision)) if n not in full_precision_vars else (n, x)
-            for n, x in dtype]
+            for n, x in dtype
+        ]
 
     return np.dtype(dtype)
 
@@ -86,7 +86,7 @@ def cast_dtype(typestr: str, precision: str) -> np.dtype:
     t = np.dtype(typestr)
     if t.kind != "f":
         return t
-    
+
     if precision == "half":
         return np.dtype("f2")
     if precision == "full":
@@ -134,3 +134,29 @@ def structured_from_dict(d: dict[str, np.ndarray]) -> np.ndarray:
     arrays = np.column_stack(list(d.values()))
     dtypes = np.dtype([(k, v.dtype) for k, v in d.items()])
     return u2s(arrays, dtype=dtypes)
+
+
+def get_num_in_dset(h5path: str, group_name: str = "jets") -> int:
+    """Get the number entries in a given dataset in an HDF5 file.
+
+    Parameters
+    ----------
+    h5path : str
+        Path to the HDF5 file
+    group_name : str
+        Name of the group
+
+    Returns
+    -------
+    int
+        Number of datasets in the group
+
+    Raises
+    ------
+    ValueError
+        If the group is not found in the file
+    """
+    with h5py.File(h5path, "r") as f:
+        if group_name not in f:
+            raise ValueError(f"Group {group_name} not found in file {h5path}")
+        return len(f[group_name])

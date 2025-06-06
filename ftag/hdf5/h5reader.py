@@ -11,7 +11,7 @@ import h5py
 import numpy as np
 
 from ftag.cuts import Cuts
-from ftag.hdf5.h5utils import get_dtype
+from ftag.hdf5.h5utils import get_dtype, get_num_in_dset
 from ftag.sample import Sample
 from ftag.transform import Transform
 
@@ -179,7 +179,10 @@ class H5Reader:
 
         # calculate batch sizes
         if self.weights is None:
-            self.weights = [1 / len(self.fname)] * len(self.fname)
+            rows_per_file = [get_num_in_dset(f, self.jets_name) for f in self.fname]
+            num_total = sum(rows_per_file)
+            self.weights = [num / num_total for num in rows_per_file]
+
         self.batch_sizes = [int(w * self.batch_size) for w in self.weights]
 
         # create readers
