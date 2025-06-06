@@ -12,6 +12,7 @@
 - Updating new Sphinx Docs [#119](https://github.com/umami-hep/atlas-ftag-tools/pull/119)
 - Adding new Sphinx Docs [#118](https://github.com/umami-hep/atlas-ftag-tools/pull/118)
 - Allow writer to write some things at full precision, and the rest at half [#123](https://github.com/umami-hep/atlas-ftag-tools/pull/123)
+- Allow writer to have varying number of jets, fix reader batch sizes [#125](https://github.com/umami-hep/atlas-ftag-tools/pull/125)
 
 ### [v0.2.10]
 

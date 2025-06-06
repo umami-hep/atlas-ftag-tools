@@ -79,7 +79,10 @@ def test_add_attr(tmp_path, jet_dtype):
 
 def test_post_init(tmp_path, jet_dtype):
     writer = H5Writer(
-        dst=Path(tmp_path) / "test.h5", dtypes={"jets": jet_dtype}, shapes={"jets": (100,)}
+        dst=Path(tmp_path) / "test.h5",
+        dtypes={"jets": jet_dtype},
+        shapes={"jets": (100,)},
+        num_jets=100,
     )
 
     assert writer.num_jets == 100
@@ -89,7 +92,10 @@ def test_post_init(tmp_path, jet_dtype):
 
 def test_invalid_write(tmp_path, jet_dtype):
     writer = H5Writer(
-        dst=Path(tmp_path) / "test.h5", dtypes={"jets": jet_dtype}, shapes={"jets": (100,)}
+        dst=Path(tmp_path) / "test.h5",
+        dtypes={"jets": jet_dtype},
+        shapes={"jets": (100,)},
+        num_jets=100,
     )
 
     data = {"jets": np.zeros(110, dtype=writer.dtypes["jets"])}
@@ -138,3 +144,110 @@ def test_half_full_precision(tmp_path, mock_data_path):
                 else:
                     assert dt == np.float32
                     assert dt_writer == np.float16
+
+
+def test_dynamic_mode_write(tmp_path, mock_data):
+    data = {"jets": mock_data[0], "tracks": mock_data[1]}
+
+    shapes = {k: v.shape for k, v in data.items()}
+    dtypes = {k: v.dtype for k, v in data.items()}
+
+    writer = H5Writer(
+        dst=Path(tmp_path) / "test_dynamic.h5",
+        dtypes=dtypes,
+        shapes=shapes,
+        num_jets=None,  # Allow dynamic sizing
+        shuffle=False,
+    )
+
+    writer.write(data)
+    assert writer.num_written == len(data["jets"])
+
+    # Should allow further writes without reshaping issues
+    writer.write(data)
+    assert writer.num_written == 2 * len(data["jets"])
+
+    writer.close()
+    with h5py.File(writer.dst) as f:
+        assert f["jets"].shape[0] == 2 * len(data["jets"])
+
+
+def test_precision_none_preserves_dtypes(tmp_path, mock_data):
+    jets, tracks = mock_data
+    dtypes = {"jets": jets.dtype, "tracks": tracks.dtype}
+    shapes = {"jets": jets.shape, "tracks": tracks.shape}
+
+    writer = H5Writer(
+        dst=Path(tmp_path) / "test_precision_none.h5",
+        dtypes=dtypes,
+        shapes=shapes,
+        precision=None,
+        shuffle=False,
+    )
+
+    writer.write({"jets": jets, "tracks": tracks})
+    writer.close()
+
+    with h5py.File(writer.dst) as f:
+        for name in ["jets", "tracks"]:
+            for field in dtypes[name].names:
+                expected_dtype = dtypes[name][field]
+                actual_dtype = f[name].dtype[field]
+                assert (
+                    actual_dtype == expected_dtype
+                ), f"{name}.{field} was {actual_dtype}, expected {expected_dtype}"
+
+
+def test_close_raises_on_incomplete_write(tmp_path, jet_dtype):
+    # Set up writer with fixed mode (num_jets set)
+    writer = H5Writer(
+        dst=Path(tmp_path) / "test_close_incomplete.h5",
+        dtypes={"jets": jet_dtype},
+        shapes={"jets": (100,)},
+        num_jets=100,
+        shuffle=False,
+    )
+
+    # Only write part of the data (e.g., 60 jets instead of 100)
+    partial_data = {"jets": np.zeros(60, dtype=writer.dtypes["jets"])}
+    writer.write(partial_data)
+
+    # Closing should now raise ValueError
+    with pytest.raises(ValueError, match="only 60 out of 100 jets have been written"):
+        writer.close()
+
+
+def test_from_file_with_variable_subset(tmp_path):
+    # Create an HDF5 file with known structure
+    path = tmp_path / "test_subset.h5"
+    with h5py.File(path, "w") as f:
+        jets = np.zeros(10, dtype=[("pt", "f4"), ("eta", "f4"), ("phi", "f4")])
+        tracks = np.zeros((10, 5), dtype=[("d0", "f4"), ("z0", "f4")])
+        flows = np.zeros((10, 5), dtype=[("pt", "f4")])
+        f.create_dataset("jets", data=jets, compression="lzf")
+        f.create_dataset("tracks", data=tracks, compression="lzf")
+        f.create_dataset("flows", data=flows, compression="lzf")
+
+    # Only want a subset of variables
+    variables = {
+        "jets": ["pt", "eta"],  # exclude "phi"
+        "tracks": ["d0"],  # exclude "z0"
+    }
+
+    writer = H5Writer.from_file(
+        source=path,
+        dst=tmp_path / "out.h5",
+        num_jets=10,
+        variables=variables,
+        precision=None,
+    )
+
+    # Check only the requested variables are present in the dtypes
+    assert "jets" in writer.dtypes
+    assert "tracks" in writer.dtypes
+    assert writer.dtypes["jets"].names == ("pt", "eta")
+    assert writer.dtypes["tracks"].names == ("d0",)
+
+    # Check shapes respect the updated num_jets
+    assert writer.shapes["jets"][0] == 10
+    assert writer.shapes["tracks"][0] == 10
