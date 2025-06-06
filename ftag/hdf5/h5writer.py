@@ -31,8 +31,11 @@ class H5Writer:
         Compression algorithm to use. Default is "lzf".
     precision : str | None, optional
         Precision to use. Default is None.
+    full_precision_vars : list[str] | None, optional
+        List of variables to store in full precision. Default is None.
     shuffle : bool, optional
         Whether to shuffle the jets before writing. Default is True.
+
     """
 
     dst: Path | str
@@ -42,6 +45,7 @@ class H5Writer:
     add_flavour_label: bool = False
     compression: str = "lzf"
     precision: str = "full"
+    full_precision_vars: list[str] | None = None
     shuffle: bool = True
     num_jets: int | None = None  # Allow dynamic mode by defaulting to None
     full_precision_vars: list[str] = None  # List of variables to store in full precision
@@ -112,9 +116,10 @@ class H5Writer:
     def create_ds(self, name: str, dtype: np.dtype) -> None:
         if name == self.jets_name and self.add_flavour_label and "flavour_label" not in dtype.names:
             dtype = np.dtype([*dtype.descr, ("flavour_label", "i4")])
-        print("FP vars: ", self.full_precision_vars)
-        # If the dtype is a float, and its not in the full precision vars, convert it to the specified precision
-        # otherwise, keep it the same dtype
+
+        # adjust dtype based on specified precision
+        full_precision_vars = [] if self.full_precision_vars is None else self.full_precision_vars
+        # If the field is in full_precision_vars, use the full precision dtype
         dtype = np.dtype([
             (
                 field,

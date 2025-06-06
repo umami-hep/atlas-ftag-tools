@@ -58,6 +58,15 @@ vds <pattern> <output path>
 
 The `<pattern>` argument should be a quotes enclosed [glob pattern](https://en.wikipedia.org/wiki/Glob_(programming)), for example `"dsid/path/*.h5"`
 
+If you don't want to glob an entire path, or if you want to merge files that do not contain a common string, you can instead use the regex option as follows:
+
+```
+vds <regex_pattern> <output path> --use-regex
+```
+
+where `<regex_pattern>` can contain a list of files, for example `"dsid/path/(myfile_id1|myfile_id5|other_file).h5"`.
+You can also regex match files located in a different folder, specifying the option `--regex_path`.
+
 See `vds --help` for more options and information.
 
 

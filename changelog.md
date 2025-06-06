@@ -2,9 +2,14 @@
 
 ### [Latest]
 
+### [v0.2.11]
+
+- Regex integration for vds merging [#116](https://github.com/umami-hep/atlas-ftag-tools/pull/116)
+- Update xbb classes definitions [#122](https://github.com/umami-hep/atlas-ftag-tools/pull/122)
 - Fixing Issues in the Imports & Update Docs [#120](https://github.com/umami-hep/atlas-ftag-tools/pull/120)
 - Updating new Sphinx Docs [#119](https://github.com/umami-hep/atlas-ftag-tools/pull/119)
 - Adding new Sphinx Docs [#118](https://github.com/umami-hep/atlas-ftag-tools/pull/118)
+- Allow writer to write some things at full precision, and the rest at half [#123](https://github.com/umami-hep/atlas-ftag-tools/pull/123)
 
 ### [v0.2.10]
 
