@@ -47,7 +47,7 @@ def test_glob_re_files(test_h5_files):
     regex_path = str(Path(test_h5_files[0].parent))
     matched_reg = glob_re(pattern, regex_path)
     assert len(matched_reg) == 2
-    assert matched_reg == ["test_file_3.h5", "test_file_1.h5"]
+    assert set(matched_reg) == {"test_file_3.h5", "test_file_1.h5"}
 
 
 def test_glob_re_dirs(test_h5_dirs):
