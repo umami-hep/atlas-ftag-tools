@@ -2,6 +2,8 @@
 
 ### [Latest]
 
+- Minor qcdnonbb definition update [#127](https://github.com/umami-hep/atlas-ftag-tools/pull/127)
+
 ### [v0.2.11]
 
 - Regex integration for vds merging [#116](https://github.com/umami-hep/atlas-ftag-tools/pull/116)
