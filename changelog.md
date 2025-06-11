@@ -3,6 +3,8 @@
 ### [Latest]
 
 - Minor qcdnonbb definition update [#127](https://github.com/umami-hep/atlas-ftag-tools/pull/127)
+- Remove flavours sorting in Labeller [#124](https://github.com/umami-hep/atlas-ftag-tools/pull/124)
+- Allow writer to have varying number of jets, fix reader batch sizes [#125](https://github.com/umami-hep/atlas-ftag-tools/pull/125)
 
 ### [v0.2.11]
 
