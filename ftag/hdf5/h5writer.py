@@ -108,7 +108,7 @@ class H5Writer:
             compression = [ds.compression for ds in f.values()]
             assert len(set(compression)) == 1, "Must have same compression for all groups"
             compression = compression[0]
-            if compression not in kwargs:
+            if "compression" not in kwargs:
                 kwargs["compression"] = compression
         return cls(dtypes=dtypes, shapes=shapes, **kwargs)
 
