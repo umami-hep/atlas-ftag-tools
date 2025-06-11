@@ -13,6 +13,7 @@ def get_dtype(
     variables: list[str] | None = None,
     precision: str | None = None,
     transform: Transform | None = None,
+    full_precision_vars: list[str] | None = None,
 ) -> np.dtype:
     """Return a dtype based on an existing dataset and requested variables.
 
@@ -26,6 +27,8 @@ def get_dtype(
         Precision to cast floats to, "half" or "full", by default None
     transform : Transform | None, optional
         Transform to apply to variables names, by default None
+    full_precision_vars : list[str] | None, optional
+        List of variables to keep in full precision, by default None
 
     Returns
     -------
@@ -39,6 +42,8 @@ def get_dtype(
     """
     if variables is None:
         variables = ds.dtype.names
+    if full_precision_vars is None:
+        full_precision_vars = []
 
     if (missing := set(variables) - set(ds.dtype.names)) and transform is not None:
         variables = transform.map_variable_names(ds.name, variables, inverse=True)
@@ -50,7 +55,10 @@ def get_dtype(
 
     dtype = [(n, x) for n, x in ds.dtype.descr if n in variables]
     if precision:
-        dtype = [(n, cast_dtype(x, precision)) for n, x in dtype]
+        dtype = [
+            (n, cast_dtype(x, precision)) if n not in full_precision_vars else (n, x)
+            for n, x in dtype
+        ]
 
     return np.dtype(dtype)
 
@@ -78,6 +86,7 @@ def cast_dtype(typestr: str, precision: str) -> np.dtype:
     t = np.dtype(typestr)
     if t.kind != "f":
         return t
+
     if precision == "half":
         return np.dtype("f2")
     if precision == "full":
