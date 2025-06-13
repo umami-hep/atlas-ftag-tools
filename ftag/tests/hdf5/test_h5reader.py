@@ -405,3 +405,31 @@ def test_batch_reader(h5_files):
             upper = int((i + 1) * 1000 / 10000 * n)
             assert sel["index"].min() >= lower
             assert sel["index"].max() < upper
+
+
+def test_single_batch_reader(h5_files):
+    reader = H5SingleReader(h5_files[0], batch_size=1000, shuffle=False)
+
+    batch_reader = reader.get_batch_reader(
+        variables={"jets": ["value", "index"]},
+    )
+
+    index = list(range(8))
+    np.random.shuffle(index)
+
+    for i in index:
+        batch = batch_reader(i)
+        assert "jets" in batch
+        assert len(batch["jets"]) == 1000
+        assert "value" in batch["jets"].dtype.names
+        assert "index" in batch["jets"].dtype.names
+
+        # First, we ensure that we have the correct number from each file in the batch
+        sel = batch["jets"][batch["jets"]["value"] == 0]
+        assert sel["value"].shape[0] == 1000
+        # Next, each file has series indices in the range [0, n)
+        # so we check that the indices are within the expected range
+        lower = i * 1000
+        upper = (i + 1) * 1000
+        assert sel["index"].min() >= lower
+        assert sel["index"].max() < upper

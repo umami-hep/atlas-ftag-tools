@@ -68,6 +68,37 @@ class H5SingleReader:
                     )
         return {name: array[keep_idx] for name, array in data.items()}
 
+    def _process_batch(self, data: dict, cuts: Cuts | None = None) -> dict:
+        """Apply cuts and transformations to the batch.
+
+        Parameters
+        ----------
+        data : dict
+            Dictionary of arrays for each group.
+        cuts : Cuts | None, optional
+            Selection cuts to apply, by default None
+
+        Returns
+        -------
+        dict
+            Processed data dictionary with arrays for each group. After applying cuts,
+            (optional) removal of infs, and (optional) transformation.
+        """
+        # apply selections
+        if cuts:
+            idx = cuts(data[self.jets_name]).idx
+            data = {name: array[idx] for name, array in data.items()}
+
+        # check for inf and remove
+        if self.do_remove_inf:
+            data = self.remove_inf(data)
+
+        # apply transform
+        if self.transform:
+            data = self.transform(data)
+
+        return data
+
     def stream(
         self,
         variables: dict | None = None,
@@ -106,18 +137,8 @@ class H5SingleReader:
                 for name in variables:
                     data[name] = self.read_chunk(f[name], arrays[name], low)
 
-                # apply selections
-                if cuts:
-                    idx = cuts(data[self.jets_name]).idx
-                    data = {name: array[idx] for name, array in data.items()}
-
-                # check for inf and remove
-                if self.do_remove_inf:
-                    data = self.remove_inf(data)
-
-                # apply transform
-                if self.transform:
-                    data = self.transform(data)
+                # Apply cuts and transformations
+                data = self._process_batch(data, cuts)
 
                 # check for completion
                 total += len(data[self.jets_name])
@@ -176,20 +197,8 @@ class H5SingleReader:
                 data[name] = self.read_chunk(h5[name], arrays[name], low)
 
             data_out = {name: array.copy() for name, array in data.items()}
-            # apply selections
-            if cuts:
-                idx = cuts(data[self.jets_name]).idx
-                data_out = {name: array[idx] for name, array in data_out.items()}
 
-            # check for inf and remove
-            if self.do_remove_inf:
-                data_out = self.remove_inf(data_out)
-
-            # apply transform
-            if self.transform:
-                data_out = self.transform(data_out)
-
-            return data_out
+            return self._process_batch(data_out, cuts)
 
         return get_batch
 
