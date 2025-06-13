@@ -410,9 +410,7 @@ def test_batch_reader(h5_files):
 def test_single_batch_reader(h5_files):
     reader = H5SingleReader(h5_files[0], batch_size=1000, shuffle=False)
 
-    batch_reader = reader.get_batch_reader(
-        variables={"jets": ["value", "index"]},
-    )
+    batch_reader = reader.get_batch_reader()
 
     index = list(range(8))
     np.random.shuffle(index)
