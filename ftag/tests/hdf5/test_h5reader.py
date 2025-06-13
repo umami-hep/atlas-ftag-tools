@@ -382,7 +382,7 @@ def test_batch_reader(h5_files):
     reader = H5Reader(h5_files, batch_size=1000, shuffle=False)
 
     batch_reader = reader.get_batch_reader(
-        variables={"jets": ["value", "index"]},
+        variables=None,
     )
 
     index = list(range(10))
@@ -433,3 +433,4 @@ def test_single_batch_reader(h5_files):
         upper = (i + 1) * 1000
         assert sel["index"].min() >= lower
         assert sel["index"].max() < upper
+    assert batch_reader(10) is None, "Batch reader should return None for out-of-bounds index"
