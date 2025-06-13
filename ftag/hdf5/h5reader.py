@@ -130,26 +130,50 @@ class H5SingleReader:
                 yield data
 
     def get_batch_reader(
-            self, 
-            variables: dict | None = None,
-            cuts: Cuts | None = None,
+        self,
+        variables: dict | None = None,
+        cuts: Cuts | None = None,
     ):
+        """Get a function to read batches of selected jets.
+
+        Parameters
+        ----------
+        variables : dict | None, optional
+            Dictionary of variables to for each group, by default use all jet variables.
+        cuts : Cuts | None, optional
+            Selection cuts to apply, by default None
+
+        Returns
+        -------
+        function
+            Function that takes an index and returns a batch of selected jets.
+        """
         if variables is None:
             variables = {self.jets_name: None}
         h5 = h5py.File(self.fname, "r")
         arrays = {name: self.empty(h5[name], var) for name, var in variables.items()}
         # nonlocal data
         data = {name: self.empty(h5[name], var) for name, var in variables.items()}
-        def get_batch(
-          idx      
-        ):
-            """Get a batch of data from the HDF5 file."""
+
+        def get_batch(idx: int) -> dict | None:
+            """Get a batch of data from the HDF5 file.
+
+            Parameters
+            ----------
+            idx : int
+                Index of the batch to read.
+
+            Returns
+            -------
+            dict | None
+            Dictionary of arrays for each group, or None if no more batches are available.
+            """
             low = idx * self.batch_size
             if low >= self.num_jets:
                 return None
 
             for name in variables:
-                    data[name] = self.read_chunk(h5[name], arrays[name], low)
+                data[name] = self.read_chunk(h5[name], arrays[name], low)
 
             data_out = {name: array.copy() for name, array in data.items()}
             # apply selections
@@ -159,16 +183,17 @@ class H5SingleReader:
 
             # check for inf and remove
             if self.do_remove_inf:
-                ddata_outata = self.remove_inf(data_out)
+                data_out = self.remove_inf(data_out)
 
             # apply transform
             if self.transform:
                 data_out = self.transform(data_out)
-    
+
             return data_out
-        
+
         return get_batch
-        
+
+
 @dataclass
 class H5Reader:
     """Reads data from multiple HDF5 files.
@@ -355,18 +380,43 @@ class H5Reader:
             yield data
 
     def get_batch_reader(
-            self, 
-            variables: dict | None = None,
-            cuts: Cuts | None = None,
-            shuffle: bool = True
+        self, variables: dict | None = None, cuts: Cuts | None = None, shuffle: bool = True
     ):
+        """Get a function to read batches of selected jets.
+
+        Parameters
+        ----------
+        variables : dict | None, optional
+            Dictionary of variables to for each group, by default use all jet variables.
+        cuts : Cuts | None, optional
+            Selection cuts to apply, by default None
+        shuffle : bool, optional
+            Read batches in a shuffled order, by default True
+
+        Returns
+        -------
+        function
+            Function that takes an index and returns a batch of selected jets.
+        """
         if variables is None:
             variables = {self.jets_name: None}
-        
+
         # create batch readers for each sample
         batch_readers = [r.get_batch_reader(variables, cuts) for r in self.readers]
+
         def get_batch(idx: int) -> dict | None:
-            """Get a batch of data from the HDF5 files."""
+            """Get a batch of data from the HDF5 files.
+
+            Parameters
+            ----------
+            idx : int
+                Index of the batch to read.
+
+            Returns
+            -------
+            dict | None
+                Dictionary of arrays for each group, or None if no more batches are available.
+            """
             assert idx >= 0, "Index must be non-negative"
             if idx * self.batch_size >= self.num_jets:
                 return None
@@ -382,10 +432,8 @@ class H5Reader:
                 self.rng.shuffle(idx)
                 data = {name: array[idx] for name, array in data.items()}
             return data
-        
-        return get_batch
-            
 
+        return get_batch
 
     def load(
         self, variables: dict | None = None, num_jets: int | None = None, cuts: Cuts | None = None
