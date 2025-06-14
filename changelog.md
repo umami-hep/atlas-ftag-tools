@@ -2,6 +2,7 @@
 
 ### [Latest]
 
+- Ensure that the mock file generation is deterministic [#130](https://github.com/umami-hep/atlas-ftag-tools/pull/130)
 - Remove flavours sorting in Labeller [#124](https://github.com/umami-hep/atlas-ftag-tools/pull/124)
 - Allow writer to have varying number of jets, fix reader batch sizes [#125](https://github.com/umami-hep/atlas-ftag-tools/pull/125)
 

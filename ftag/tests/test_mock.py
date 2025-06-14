@@ -62,3 +62,15 @@ def test_get_mock_file():
     # test custom fname
     fname, f = get_mock_file(fname="test.h5")
     assert fname == "test.h5"
+
+
+def test_get_mock_file_determinism():
+    # Test that the mock file generation is deterministic
+    _, f1 = get_mock_file(num_jets=1000)
+    _, f2 = get_mock_file(num_jets=1000)
+
+    np.testing.assert_array_equal(f1["jets"], f2["jets"])
+    np.testing.assert_array_equal(f1["tracks"], f2["tracks"]) if "tracks" in f1 else True
+
+    # Clean up the file
+    f1.close()
