@@ -20,7 +20,7 @@ Submodules
    /autoapi/ftag/flavours/index
    /autoapi/ftag/git_check/index
    /autoapi/ftag/hdf5/index
-   /autoapi/ftag/labeller/index
+   /autoapi/ftag/labels/index
    /autoapi/ftag/mock/index
    /autoapi/ftag/region/index
    /autoapi/ftag/sample/index
@@ -45,7 +45,8 @@ Classes
 .. autoapisummary::
 
    ftag.Cuts
-   ftag.Labeller
+   ftag.Label
+   ftag.LabelContainer
    ftag.Sample
    ftag.Transform
 
@@ -114,69 +115,106 @@ Package Contents
 
 .. py:data:: Flavours
 
-.. py:class:: Labeller
+.. py:class:: Label
 
-   Defines a labelling scheme.
+   .. py:attribute:: name
+      :type:  str
 
-   Classes are assigned integer labels in [0, ..., n] based on pre-defined selections.
 
-   :param labels: The labels to be use.
-   :type labels: LabelContainer | list[str | Label]
-   :param require_labels: Whether to require that all objects are labelled.
-   :type require_labels: bool
+   .. py:attribute:: label
+      :type:  str
 
+
+   .. py:attribute:: cuts
+      :type:  ftag.cuts.Cuts
+
+
+   .. py:attribute:: colour
+      :type:  str
+
+
+   .. py:attribute:: category
+      :type:  str
+
+
+   .. py:attribute:: _px
+      :type:  str | None
+      :value: None
+
+
+
+   .. py:property:: px
+      :type: str
+
+
+
+   .. py:property:: eff_str
+      :type: str
+
+
+
+   .. py:property:: rej_str
+      :type: str
+
+
+
+   .. py:property:: frac_str
+      :type: str
+
+
+
+   .. py:method:: __str__() -> str
+
+
+   .. py:method:: __lt__(other) -> bool
+
+
+.. py:class:: LabelContainer
 
    .. py:attribute:: labels
-      :type:  ftag.labels.LabelContainer | list[str | ftag.labels.Label]
+      :type:  dict[str, Label]
 
 
-   .. py:attribute:: require_labels
-      :type:  bool
-      :value: True
+   .. py:method:: __iter__() -> collections.abc.Iterator
 
 
+   .. py:method:: __getitem__(key) -> Label
 
-   .. py:method:: __post_init__() -> None
+
+   .. py:method:: __getattr__(name) -> Label
 
 
-   .. py:property:: variables
+   .. py:method:: __contains__(label: str | Label) -> bool
+
+
+   .. py:method:: __eq__(other) -> bool
+
+
+   .. py:method:: __repr__() -> str
+
+
+   .. py:property:: categories
       :type: list[str]
 
 
-      Returns the variables used for labelling.
 
-      :returns: The variables used for labelling.
-      :rtype: list[str]
+   .. py:method:: by_category(category: str) -> LabelContainer
 
 
-   .. py:method:: get_labels(array: numpy.ndarray) -> numpy.ndarray
+   .. py:method:: from_cuts(cuts: list | ftag.cuts.Cuts) -> Label
 
-      Returns the labels for the given array.
 
-      :param array: The array to label.
-      :type array: np.ndarray
-
-      :returns: The labels for the given array.
-      :rtype: np.ndarray
-
-      :raises ValueError: If the `require_labels` attribute is set to `True` and some objects were not labelled.
+   .. py:method:: from_yaml(yaml_path: pathlib.Path | None = None) -> LabelContainer
+      :classmethod:
 
 
 
-   .. py:method:: add_labels(array: numpy.ndarray, label_name: str = 'labels') -> numpy.ndarray
+   .. py:method:: from_list(labels: list[Label]) -> LabelContainer
+      :classmethod:
 
-      Adds the labels to the given array.
 
-      :param array: The array to label.
-      :type array: np.ndarray
-      :param label_name: The name of the label column.
-      :type label_name: str
 
-      :returns: The array with the labels added.
-      :rtype: np.ndarray
-
-      :raises ValueError: If the `require_labels` attribute is set to `False`.
-
+   .. py:method:: backgrounds(label: Label, only_signals: bool = True) -> LabelContainer
 
 
 .. py:function:: get_mock_file(num_jets=1000, fname: str | None = None, tracks_name: str = 'tracks', num_tracks: int = 40) -> tuple[str, h5py.File]
