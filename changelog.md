@@ -2,6 +2,8 @@
 
 ### [Latest]
 
+- Update Minimum Python Version to 3.10 [#131](https://github.com/umami-hep/atlas-ftag-tools/pull/131)
+
 ### [v0.2.12]
 
 - Minor qcdnonbb definition update [#127](https://github.com/umami-hep/atlas-ftag-tools/pull/127)
