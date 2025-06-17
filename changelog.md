@@ -2,6 +2,8 @@
 
 ### [Latest]
 
+### [v0.2.12]
+
 - Minor qcdnonbb definition update [#127](https://github.com/umami-hep/atlas-ftag-tools/pull/127)
 - Ensure that the mock file generation is deterministic [#130](https://github.com/umami-hep/atlas-ftag-tools/pull/130)
 - Remove flavours sorting in Labeller [#124](https://github.com/umami-hep/atlas-ftag-tools/pull/124)
