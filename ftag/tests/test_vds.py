@@ -46,23 +46,36 @@ def test_h5_files():
 
 @pytest.fixture
 def test_h5_dirs():
-    """Create three nested dirs, each holding five small HDF5 files.
+    """Create three nested directories, each holding five small HDF5 files.
 
     Yields
     ------
     list[pathlib.Path]
-        Paths to all created files.  Everything is cleaned up automatically
-        after the test finishes.
+        Paths to **all** created files.  The directories are kept alive
+        for the whole test by retaining references to the corresponding
+        ``TemporaryDirectory`` objects.
     """
     with tempfile.TemporaryDirectory(prefix="outer_tmp_", suffix="_h5dump") as top:
         file_paths: list[Path] = []
+
+        # Keep a reference to every TemporaryDirectory so they are *not*
+        # garbage-collected (and thus deleted) before the test finishes.
+        _keep_alive: list[tempfile.TemporaryDirectory] = []
+
         for _ in range(3):
-            nested = tempfile.TemporaryDirectory(dir=top, prefix="inner_tmp_", suffix=".h5")
+            nested = tempfile.TemporaryDirectory(
+                dir=top,
+                prefix="inner_tmp_",
+                suffix=".h5",
+            )
+            _keep_alive.append(nested)  # <- retain
+
             for j in range(5):
                 fname = Path(nested.name) / f"test_file_{j}.h5"
                 with h5py.File(fname, "w") as f:
                     f.create_dataset("data", data=[j] * 5)
                 file_paths.append(fname)
+
         yield file_paths
 
 
