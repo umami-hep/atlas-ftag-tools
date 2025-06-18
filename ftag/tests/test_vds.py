@@ -310,6 +310,30 @@ def test_regex_files_from_dir_none_args():
     assert regex_files_from_dir(None, None) is None
 
 
+def test_create_virtual_file_no_matches(tmp_path):
+    """Expect FileNotFoundError when the pattern matches nothing."""
+    pattern = tmp_path / "*.h5"  # empty directory ⇒ zero matches
+    with pytest.raises(FileNotFoundError):
+        create_virtual_file(pattern, out_fname=tmp_path / "out.h5")
+
+
+def test_create_virtual_file_multiple_dirs(tmp_path):
+    """Expect ValueError if files are in different directories and no output is given."""
+    # build two sub-dirs, each with one file
+    d1 = tmp_path / "dir1"
+    d2 = tmp_path / "dir2"
+    d1.mkdir()
+    d2.mkdir()
+    for idx, d in enumerate((d1, d2)):
+        with h5py.File(d / f"file_{idx}.h5", "w") as f:
+            f.create_dataset("data", data=[idx])
+
+    pattern = tmp_path / "*/*.h5"  # hits both directories
+    # out_fname=None → should raise because parents differ
+    with pytest.raises(ValueError):
+        create_virtual_file(pattern)
+
+
 def test_main():
     with tempfile.TemporaryDirectory() as tmpdir:
         for i in range(3):
