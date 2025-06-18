@@ -13,6 +13,9 @@ Functions
    ftag.vds.get_virtual_layout
    ftag.vds.glob_re
    ftag.vds.regex_files_from_dir
+   ftag.vds.sum_counts_once
+   ftag.vds.check_subgroups
+   ftag.vds.aggregate_cutbookkeeper
    ftag.vds.create_virtual_file
    ftag.vds.main
 
@@ -20,15 +23,120 @@ Functions
 Module Contents
 ---------------
 
-.. py:function:: parse_args(args)
+.. py:function:: parse_args(args=None)
 
-.. py:function:: get_virtual_layout(fnames: list[str], group: str)
+.. py:function:: get_virtual_layout(fnames: list[str], group: str) -> h5py.VirtualLayout
 
-.. py:function:: glob_re(pattern, regex_path)
+   Concatenate group from multiple files into a single VirtualDataset.
 
-.. py:function:: regex_files_from_dir(reg_matched_fnames, regex_path)
+   :param fnames: List with the file names
+   :type fnames: list[str]
+   :param group: Name of the group that is concatenated
+   :type group: str
 
-.. py:function:: create_virtual_file(pattern: pathlib.Path | str, out_fname: pathlib.Path | None = None, use_regex: bool = False, regex_path: str | None = None, overwrite: bool = False)
+   :returns: Virtual layout of the new virtual dataset
+   :rtype: h5py.VirtualLayout
+
+
+.. py:function:: glob_re(pattern: str | None, regex_path: str | None) -> list[str] | None
+
+   Return list of filenames that match REGEX pattern inside regex_path.
+
+   :param pattern: Pattern for the input files
+   :type pattern: str
+   :param regex_path: Regex path for the input files
+   :type regex_path: str
+
+   :returns: List of the file basenames that matched the regex pattern
+   :rtype: list[str]
+
+
+.. py:function:: regex_files_from_dir(reg_matched_fnames: list[str] | None, regex_path: str | None) -> list[str] | None
+
+   Turn a list of basenames into full paths; dive into sub-dirs if needed.
+
+   :param reg_matched_fnames: List of the regex matched file names
+   :type reg_matched_fnames: list[str]
+   :param regex_path: Regex path for the input files
+   :type regex_path: str
+
+   :returns: List of file paths (as strings) that matched the regex and any subsequent
+             globbing inside matched directories.
+   :rtype: list[str]
+
+
+.. py:function:: sum_counts_once(counts: numpy.ndarray) -> numpy.ndarray
+
+   Reduce the arrays in the counts dataset for one file to a scalar via summation.
+
+   :param counts: Array from the h5py dataset (counts) from the cutBookkeeper groups
+   :type counts: np.ndarray
+
+   :returns: Array with the summed variables for the file
+   :rtype: np.ndarray
+
+
+.. py:function:: check_subgroups(fnames: list[str], group_name: str = 'cutBookkeeper') -> list[str]
+
+   Check which subgroups are available for the bookkeeper.
+
+   Find the intersection of sub-group names that have a 'counts' dataset
+   in every input file. (Using the intersection makes the script robust
+   even if a few files are missing a variation.)
+
+   :param fnames: List of the input files
+   :type fnames: list[str]
+   :param group_name: Group name in the h5 files of the bookkeeper, by default "cutBookkeeper"
+   :type group_name: str, optional
+
+   :returns: Returns the files with common sub-groups
+   :rtype: set[str]
+
+   :raises KeyError: When a file does not have a bookkeeper
+   :raises ValueError: When no common bookkeeper sub-groups were found
+
+
+.. py:function:: aggregate_cutbookkeeper(fnames: list[str], group_name: str = 'cutBookkeeper') -> dict[str, numpy.ndarray] | None
+
+   Aggregate the cutBookkeeper in the input files.
+
+   For every input file:
+   For every sub-group (nominal, sysUp, sysDown, …):
+   1. Sum the 4-entry record array inside each file into 1 record
+   1. Add those records from all files together into grand total
+   Returns a dict  {subgroup_name: scalar-record-array}
+
+   :param fnames: List of the input files
+   :type fnames: list[str]
+
+   :returns: Dict with the accumulated cutBookkeeper groups. If the cut bookkeeper
+             is not in the files, return None.
+   :rtype: dict[str, np.ndarray] | None
+
+
+.. py:function:: create_virtual_file(pattern: pathlib.Path | str, out_fname: pathlib.Path | str | None = None, use_regex: bool = False, regex_path: str | None = None, overwrite: bool = False, bookkeeper_name: str = 'cutBookkeeper') -> pathlib.Path
+
+   Create the virtual dataset file for the given inputs.
+
+   :param pattern: Pattern of the input files used. Wildcard is supported
+   :type pattern: Path | str
+   :param out_fname: Output path to which the virtual dataset file is written. By default None
+   :type out_fname: Path | str | None, optional
+   :param use_regex: If you want to use regex instead of glob, by default False
+   :type use_regex: bool, optional
+   :param regex_path: Regex logic used to define the input files, by default None
+   :type regex_path: str | None, optional
+   :param overwrite: Decide, if an existing output file is overwritten, by default False
+   :type overwrite: bool, optional
+   :param bookkeeper_name: Name of the cut bookkeeper in the h5 files.
+   :type bookkeeper_name: str, optional
+
+   :returns: Path object of the path to which the output file is written
+   :rtype: Path
+
+   :raises FileNotFoundError: If not input files were found for the given pattern
+   :raises ValueError: If no output file is given and the input comes from multiple directories
+
 
 .. py:function:: main(args=None) -> None
 

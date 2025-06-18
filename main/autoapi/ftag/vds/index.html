@@ -475,22 +475,31 @@
 <h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.vds.parse_args" title="ftag.vds.parse_args"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_args</span></code></a>(args)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.vds.parse_args" title="ftag.vds.parse_args"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_args</span></code></a>([args])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ftag.vds.get_virtual_layout" title="ftag.vds.get_virtual_layout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_virtual_layout</span></code></a>(fnames, group)</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ftag.vds.get_virtual_layout" title="ftag.vds.get_virtual_layout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_virtual_layout</span></code></a>(→ h5py.VirtualLayout)</p></td>
+<td><p>Concatenate group from multiple files into a single VirtualDataset.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.vds.glob_re" title="ftag.vds.glob_re"><code class="xref py py-obj docutils literal notranslate"><span class="pre">glob_re</span></code></a>(pattern, regex_path)</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.vds.glob_re" title="ftag.vds.glob_re"><code class="xref py py-obj docutils literal notranslate"><span class="pre">glob_re</span></code></a>(→ list[str] | None)</p></td>
+<td><p>Return list of filenames that match REGEX pattern inside regex_path.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ftag.vds.regex_files_from_dir" title="ftag.vds.regex_files_from_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">regex_files_from_dir</span></code></a>(reg_matched_fnames, regex_path)</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ftag.vds.regex_files_from_dir" title="ftag.vds.regex_files_from_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">regex_files_from_dir</span></code></a>(→ list[str] | None)</p></td>
+<td><p>Turn a list of basenames into full paths; dive into sub-dirs if needed.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.vds.create_virtual_file" title="ftag.vds.create_virtual_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_virtual_file</span></code></a>(pattern[, out_fname, use_regex, ...])</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.vds.sum_counts_once" title="ftag.vds.sum_counts_once"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sum_counts_once</span></code></a>(→ numpy.ndarray)</p></td>
+<td><p>Reduce the arrays in the counts dataset for one file to a scalar via summation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ftag.vds.main" title="ftag.vds.main"><code class="xref py py-obj docutils literal notranslate"><span class="pre">main</span></code></a>(→ None)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ftag.vds.check_subgroups" title="ftag.vds.check_subgroups"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_subgroups</span></code></a>(→ list[str])</p></td>
+<td><p>Check which subgroups are available for the bookkeeper.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.vds.aggregate_cutbookkeeper" title="ftag.vds.aggregate_cutbookkeeper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aggregate_cutbookkeeper</span></code></a>(→ dict[str, numpy.ndarray] | None)</p></td>
+<td><p>Aggregate the cutBookkeeper in the input files.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ftag.vds.create_virtual_file" title="ftag.vds.create_virtual_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_virtual_file</span></code></a>(→ pathlib.Path)</p></td>
+<td><p>Create the virtual dataset file for the given inputs.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.vds.main" title="ftag.vds.main"><code class="xref py py-obj docutils literal notranslate"><span class="pre">main</span></code></a>(→ None)</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -501,28 +510,168 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">#</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="ftag.vds.parse_args">
-<span class="sig-prename descclassname"><span class="pre">ftag.vds.</span></span><span class="sig-name descname"><span class="pre">parse_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ftag.vds.parse_args" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">ftag.vds.</span></span><span class="sig-name descname"><span class="pre">parse_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ftag.vds.parse_args" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ftag.vds.get_virtual_layout">
-<span class="sig-prename descclassname"><span class="pre">ftag.vds.</span></span><span class="sig-name descname"><span class="pre">get_virtual_layout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fnames</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ftag.vds.get_virtual_layout" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">ftag.vds.</span></span><span class="sig-name descname"><span class="pre">get_virtual_layout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fnames</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">h5py.VirtualLayout</span></span></span><a class="headerlink" href="#ftag.vds.get_virtual_layout" title="Link to this definition">#</a></dt>
+<dd><p>Concatenate group from multiple files into a single VirtualDataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fnames</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List with the file names</p></li>
+<li><p><strong>group</strong> (<em>str</em>) – Name of the group that is concatenated</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Virtual layout of the new virtual dataset</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>h5py.VirtualLayout</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ftag.vds.glob_re">
-<span class="sig-prename descclassname"><span class="pre">ftag.vds.</span></span><span class="sig-name descname"><span class="pre">glob_re</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regex_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ftag.vds.glob_re" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">ftag.vds.</span></span><span class="sig-name descname"><span class="pre">glob_re</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regex_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.vds.glob_re" title="Link to this definition">#</a></dt>
+<dd><p>Return list of filenames that match REGEX pattern inside regex_path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pattern</strong> (<em>str</em>) – Pattern for the input files</p></li>
+<li><p><strong>regex_path</strong> (<em>str</em>) – Regex path for the input files</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of the file basenames that matched the regex pattern</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ftag.vds.regex_files_from_dir">
-<span class="sig-prename descclassname"><span class="pre">ftag.vds.</span></span><span class="sig-name descname"><span class="pre">regex_files_from_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reg_matched_fnames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regex_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ftag.vds.regex_files_from_dir" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">ftag.vds.</span></span><span class="sig-name descname"><span class="pre">regex_files_from_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reg_matched_fnames</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regex_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.vds.regex_files_from_dir" title="Link to this definition">#</a></dt>
+<dd><p>Turn a list of basenames into full paths; dive into sub-dirs if needed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>reg_matched_fnames</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of the regex matched file names</p></li>
+<li><p><strong>regex_path</strong> (<em>str</em>) – Regex path for the input files</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of file paths (as strings) that matched the regex and any subsequent
+globbing inside matched directories.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ftag.vds.sum_counts_once">
+<span class="sig-prename descclassname"><span class="pre">ftag.vds.</span></span><span class="sig-name descname"><span class="pre">sum_counts_once</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">counts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#ftag.vds.sum_counts_once" title="Link to this definition">#</a></dt>
+<dd><p>Reduce the arrays in the counts dataset for one file to a scalar via summation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>counts</strong> (<em>np.ndarray</em>) – Array from the h5py dataset (counts) from the cutBookkeeper groups</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Array with the summed variables for the file</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ftag.vds.check_subgroups">
+<span class="sig-prename descclassname"><span class="pre">ftag.vds.</span></span><span class="sig-name descname"><span class="pre">check_subgroups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fnames</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'cutBookkeeper'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ftag.vds.check_subgroups" title="Link to this definition">#</a></dt>
+<dd><p>Check which subgroups are available for the bookkeeper.</p>
+<p>Find the intersection of sub-group names that have a ‘counts’ dataset
+in every input file. (Using the intersection makes the script robust
+even if a few files are missing a variation.)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fnames</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of the input files</p></li>
+<li><p><strong>group_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Group name in the h5 files of the bookkeeper, by default “cutBookkeeper”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns the files with common sub-groups</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>set[str]</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>KeyError</strong> – When a file does not have a bookkeeper</p></li>
+<li><p><strong>ValueError</strong> – When no common bookkeeper sub-groups were found</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ftag.vds.aggregate_cutbookkeeper">
+<span class="sig-prename descclassname"><span class="pre">ftag.vds.</span></span><span class="sig-name descname"><span class="pre">aggregate_cutbookkeeper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fnames</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'cutBookkeeper'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.vds.aggregate_cutbookkeeper" title="Link to this definition">#</a></dt>
+<dd><p>Aggregate the cutBookkeeper in the input files.</p>
+<p>For every input file:
+For every sub-group (nominal, sysUp, sysDown, …):
+1. Sum the 4-entry record array inside each file into 1 record
+1. Add those records from all files together into grand total
+Returns a dict  {subgroup_name: scalar-record-array}</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fnames</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of the input files</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dict with the accumulated cutBookkeeper groups. If the cut bookkeeper
+is not in the files, return None.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, np.ndarray] | None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ftag.vds.create_virtual_file">
-<span class="sig-prename descclassname"><span class="pre">ftag.vds.</span></span><span class="sig-name descname"><span class="pre">create_virtual_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_fname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_regex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regex_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ftag.vds.create_virtual_file" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">ftag.vds.</span></span><span class="sig-name descname"><span class="pre">create_virtual_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_fname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_regex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regex_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bookkeeper_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'cutBookkeeper'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pathlib.Path</span></span></span><a class="headerlink" href="#ftag.vds.create_virtual_file" title="Link to this definition">#</a></dt>
+<dd><p>Create the virtual dataset file for the given inputs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pattern</strong> (<em>Path</em><em> | </em><em>str</em>) – Pattern of the input files used. Wildcard is supported</p></li>
+<li><p><strong>out_fname</strong> (<em>Path</em><em> | </em><em>str</em><em> | </em><em>None</em><em>, </em><em>optional</em>) – Output path to which the virtual dataset file is written. By default None</p></li>
+<li><p><strong>use_regex</strong> (<em>bool</em><em>, </em><em>optional</em>) – If you want to use regex instead of glob, by default False</p></li>
+<li><p><strong>regex_path</strong> (<em>str</em><em> | </em><em>None</em><em>, </em><em>optional</em>) – Regex logic used to define the input files, by default None</p></li>
+<li><p><strong>overwrite</strong> (<em>bool</em><em>, </em><em>optional</em>) – Decide, if an existing output file is overwritten, by default False</p></li>
+<li><p><strong>bookkeeper_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of the cut bookkeeper in the h5 files.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Path object of the path to which the output file is written</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Path</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>FileNotFoundError</strong> – If not input files were found for the given pattern</p></li>
+<li><p><strong>ValueError</strong> – If no output file is given and the input comes from multiple directories</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ftag.vds.main">
@@ -585,6 +734,9 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.vds.get_virtual_layout"><code class="docutils literal notranslate"><span class="pre">get_virtual_layout()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.vds.glob_re"><code class="docutils literal notranslate"><span class="pre">glob_re()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.vds.regex_files_from_dir"><code class="docutils literal notranslate"><span class="pre">regex_files_from_dir()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.vds.sum_counts_once"><code class="docutils literal notranslate"><span class="pre">sum_counts_once()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.vds.check_subgroups"><code class="docutils literal notranslate"><span class="pre">check_subgroups()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.vds.aggregate_cutbookkeeper"><code class="docutils literal notranslate"><span class="pre">aggregate_cutbookkeeper()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.vds.create_virtual_file"><code class="docutils literal notranslate"><span class="pre">create_virtual_file()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.vds.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 </ul>
