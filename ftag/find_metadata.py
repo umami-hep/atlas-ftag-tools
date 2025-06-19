@@ -153,5 +153,5 @@ def main():
     process_container_list(args.input, args.output, args.merge)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     main()
