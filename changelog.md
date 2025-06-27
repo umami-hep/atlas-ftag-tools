@@ -2,6 +2,7 @@
 
 ### [Latest]
 
+- Adding correct Usage of NaNs in Cuts [#134](https://github.com/umami-hep/atlas-ftag-tools/pull/134)
 
 ### [v0.2.13]
 
