@@ -58,14 +58,11 @@ class Cut:
 
         if isinstance(val, float) and np.isnan(val):
             if self.operator == "!=":
-                print(~np.isnan(col))
                 return ~np.isnan(col)
             if self.operator == "==":
-                print(np.isnan(col))
                 return np.isnan(col)
             raise ValueError("'nan' only makes sense with '==' or '!=' operators")
 
-        print(OPERATORS[self.operator](col, val))
         return OPERATORS[self.operator](col, val)
 
     def __str__(self) -> str:
