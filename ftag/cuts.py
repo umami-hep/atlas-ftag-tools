@@ -42,11 +42,28 @@ class Cut:
     @property
     def value(self) -> int | float:
         if isinstance(self._value, str):
+            txt = self._value.strip().lower()
+            if txt == "nan":
+                return float("nan")
+            if txt in {"+inf", "inf"}:
+                return float("inf")
+            if txt == "-inf":
+                return float("-inf")
             return literal_eval(self._value)
         return self._value
 
     def __call__(self, array):
-        return OPERATORS[self.operator](array[self.variable], self.value)
+        col = array[self.variable]
+        val = self.value
+
+        if isinstance(val, float) and np.isnan(val):
+            if self.operator == "!=":
+                return ~np.isnan(col)
+            if self.operator == "==":
+                return np.isnan(col)
+            raise ValueError("'nan' only makes sense with '==' or '!=' operators")
+
+        return OPERATORS[self.operator](col, val)
 
     def __str__(self) -> str:
         return f"{self.variable} {self.operator} {self.value}"
