@@ -174,3 +174,19 @@ def test_Cuts_ndim_error():
     array = np.ones((2, 2))
     with pytest.raises(ValueError, match="only supports jet selections"):
         c(array)
+
+
+def test_Cut_call_nan_not_equal():
+    """Operator '!=' on a nan value should invert the np.isnan result."""
+    c = Cut("x", "!=", "nan")
+    array = np.array([np.nan, 1.0, np.nan], dtype=[("x", float)])
+    expected = ~np.isnan(array["x"])
+    np.testing.assert_array_equal(c(array), expected)
+
+
+def test_Cut_call_nan_invalid_operator():
+    """Operators other than '==' or '!=' with nan must raise ValueError."""
+    c = Cut("x", "<", "nan")
+    array = np.array([0.0, np.nan], dtype=[("x", float)])
+    with pytest.raises(ValueError, match="nan.*only makes sense"):
+        c(array)
