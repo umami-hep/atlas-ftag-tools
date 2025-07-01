@@ -1,338 +1,273 @@
 from __future__ import annotations
 
 import json
-import sys
-import urllib.error
-from unittest.mock import patch
+import tempfile
+import unittest
+from pathlib import Path
+from unittest.mock import MagicMock, patch
 
 import h5py
-import numpy as np
-import pytest
-from numpy.lib.recfunctions import unstructured_to_structured as u2s
+import requests
+import yaml
 
-from ftag import find_metadata, mock
-from ftag.find_metadata import (
-    download_xsecdb_files,
-    main,
-    parse_line,
-    process_container_list,
-    query_xsecdb,
-    write_metadata_to_h5,
-)
-from ftag.mock import get_mock_file
-
-# ------------------------
-# parse_line() tests
-# ------------------------
+from ftag import find_metadata
 
 
-def test_parse_line_valid():
-    container = "mc16_13TeV.301200.Sherpa_ttbar.e5270_"
-    raw_campaign, campaign, dsid, etag = parse_line(container)
-    assert raw_campaign == "mc16"
-    assert campaign == "mc16"
-    assert dsid == 301200
-    assert etag == "e5270"
-
-
-def test_parse_line_invalid():
-    container = "invalid_container_name"
-    raw_campaign, campaign, dsid, etag = parse_line(container)
-    assert raw_campaign is None
-    assert campaign is None
-    assert dsid is None
-    assert etag is None
-
-
-# ------------------------
-# query_xsecdb() tests
-# ------------------------
-
-
-def test_query_xsecdb_missing_file():
-    with patch("ftag.find_metadata.Path.exists", return_value=False):
-        result = query_xsecdb("mc16", 301200, "e5270")
-        assert result is None
-
-
-def test_query_xsecdb_with_match(tmp_path):
-    fake_file = tmp_path / "PMGxsecDB_mc16.txt"
-    content = "301200 dummy 1.23 0.95 1.1 x y z e5270\n"
-    fake_file.write_text(content)
-
-    find_metadata.XSECDB_MAP["mc16"] = str(fake_file)
-
-    result = query_xsecdb("mc16", 301200, "e5270")
-    assert result is not None
-    assert result["cross_section_pb"] == pytest.approx(1.23)
-    assert result["genFiltEff"] == pytest.approx(0.95)
-    assert result["kfactor"] == pytest.approx(1.1)
-
-
-def test_query_xsecdb_no_match(tmp_path):
-    fake_file = tmp_path / "PMGxsecDB_mc16.txt"
-    fake_file.write_text("999999 dummy 1.0 1.0 1.0 x x x e1234\n")
-    find_metadata.XSECDB_MAP["mc16"] = str(fake_file)
-    result = query_xsecdb("mc16", 301200, "e5270")
-    assert result is None
-
-
-def test_query_xsecdb_bad_format(tmp_path):
-    fake_file = tmp_path / "PMGxsecDB_mc16.txt"
-    fake_file.write_text("bad line\n")
-    find_metadata.XSECDB_MAP["mc16"] = str(fake_file)
-    result = query_xsecdb("mc16", 301200, "e5270")
-    assert result is None
-
-
-# ------------------------
-# write_metadata_to_h5() test using mock file
-# ------------------------
-
-
-@patch("ftag.mock.mock_jets")
-def test_write_metadata_to_h5_real_file(mock_mock_jets):
-    dummy_jets = u2s(
-        np.array([[1.0] * len(mock.JET_VARS)], dtype=np.float32).repeat(10, axis=0),
-        dtype=np.dtype(mock.JET_VARS),
-    )
-    mock_mock_jets.return_value = dummy_jets
-
-    mock_path, h5file = get_mock_file(num_jets=10)
-    h5file.close()  # Close for writing
-
-    fake_metadata = {
-        "301200": {
-            "cross_section_pb": 1.23,
-            "genFiltEff": 0.95,
-            "kfactor": 1.1,
-        }
-    }
-
-    write_metadata_to_h5(mock_path, fake_metadata)
-
-    with h5py.File(mock_path, "r") as f:
-        assert "metadata" in f
-        assert "301200" in f["metadata"]
-        dsid_group = f["metadata"]["301200"]
-        assert dsid_group["cross_section_pb"][()] == pytest.approx(1.23)
-        assert dsid_group["genFiltEff"][()] == pytest.approx(0.95)
-        assert dsid_group["kfactor"][()] == pytest.approx(1.1)
-
-
-def test_write_metadata_to_h5_error():
-    with patch("ftag.find_metadata.h5py.File", side_effect=OSError("fail")), pytest.raises(
-        OSError, match="fail"
-    ):
-        write_metadata_to_h5(
-            "bad.h5",
-            {"123": {"cross_section_pb": 1.0, "genFiltEff": 1.0, "kfactor": 1.0}},
+class TestFindMetadata(unittest.TestCase):
+    #
+    # === 1. TaskID / Container / Campaign Extraction Functions ===
+    #
+    def test_extract_taskid_from_filename(self):
+        self.assertEqual(
+            find_metadata.extract_taskid_from_filename(Path("user.test.12345678._000001.h5")),
+            "12345678",
         )
 
+    def test_extract_taskid_fail(self):
+        self.assertIsNone(find_metadata.extract_taskid_from_filename(Path("badname.h5")))
 
-# ------------------------
-# process_container_list() integration test
-# ------------------------
+    def test_parse_line_from_taskname(self):
+        dsid, etag = find_metadata.parse_line_from_taskname("user.123456.e1234_tid123")
+        self.assertEqual((dsid, etag), (123456, "e1234"))
+
+    def test_parse_line_from_taskname_fail(self):
+        self.assertEqual(find_metadata.parse_line_from_taskname("not.match"), (None, None))
+
+    def test_parse_campaign(self):
+        self.assertEqual(find_metadata.parse_campaign_from_taskname("mc20_13TeV"), "mc16")
+        self.assertEqual(find_metadata.parse_campaign_from_taskname("mc21_13TeV"), "mc21")
+        self.assertIsNone(find_metadata.parse_campaign_from_taskname("data18"))
+
+    def test_extract_info_from_container(self):
+        self.assertEqual(
+            find_metadata.extract_info_from_container("mc20_13TeV.123456.e7890_s1234_r5678"),
+            (123456, "e7890", "mc16"),
+        )
+        self.assertIsNone(find_metadata.extract_info_from_container("bad.container"))
+
+    def test_extract_mc_container_from_json(self):
+        data = {"key": "mc21_13TeV.123456.e3456_s2345"}
+        self.assertIn("mc21_13TeV", find_metadata.extract_mc_container_from_json(data))
+        self.assertIsNone(find_metadata.extract_mc_container_from_json({"no": "match"}))
+
+    #
+    # === 2. URL Validation ===
+    #
+    def test_validate_url_scheme(self):
+        self.assertIsNotNone(find_metadata.validate_url_scheme("https://abc.com"))
+        with self.assertRaises(ValueError):
+            find_metadata.validate_url_scheme("ftp://bad")
+
+    #
+    # === 3. Xsec Database Download Logic ===
+    #
+    def test_download_xsecdb_files_invalid_scheme(self):
+        with patch("ftag.find_metadata.Path.exists", return_value=False), patch(
+            "ftag.find_metadata.validate_url_scheme", side_effect=ValueError("bad")
+        ), patch("ftag.find_metadata.requests.get"):
+            find_metadata.download_xsecdb_files()
+
+    def test_download_xsecdb_files_network_fail(self):
+        with patch("ftag.find_metadata.Path.exists", return_value=False), patch(
+            "ftag.find_metadata.requests.get", side_effect=requests.RequestException("fail")
+        ):
+            find_metadata.download_xsecdb_files()
+
+    def test_download_xsecdb_files_success(self):
+        with patch("ftag.find_metadata.Path.exists", return_value=False), patch(
+            "ftag.find_metadata.validate_url_scheme"
+        ) as mock_validate, patch("ftag.find_metadata.requests.get") as mock_get, patch(
+            "ftag.find_metadata.Path.write_bytes"
+        ) as mock_write, patch("builtins.print") as mock_print:
+            mock_response = MagicMock()
+            mock_response.status_code = 200
+            mock_response.content = b"mock file content"
+            mock_get.return_value = mock_response
+
+            find_metadata.download_xsecdb_files()
+
+            self.assertTrue(mock_validate.called)
+            self.assertTrue(mock_get.called)
+            self.assertTrue(mock_response.raise_for_status.called)
+            self.assertTrue(mock_write.called)
+            mock_print.assert_any_call("Downloaded: PMGxsecDB_mc15.txt")
+
+    #
+    # === 4. BigPanDA Query ===
+    #
+    def test_fetch_taskinfo_success(self):
+        mock_data = [
+            {"taskname": "user.123456.e7890_tid123", "inputdataset": "mc20_13TeV.123456.e7890"}
+        ]
+        with patch("ftag.find_metadata.requests.get") as mock_get:
+            mock_get.return_value.status_code = 200
+            mock_get.return_value.json.return_value = mock_data
+            out = find_metadata.fetch_taskinfo_from_bigpanda("12345678")
+            self.assertEqual(out, mock_data[0])
+
+    def test_fetch_taskinfo_empty(self):
+        with patch("ftag.find_metadata.requests.get") as mock_get:
+            mock_get.return_value.status_code = 200
+            mock_get.return_value.json.return_value = []
+            self.assertIsNone(find_metadata.fetch_taskinfo_from_bigpanda("123"))
+
+    def test_fetch_taskinfo_jsonfail(self):
+        with patch("ftag.find_metadata.requests.get") as mock_get:
+            mock_get.return_value.status_code = 200
+            mock_get.return_value.json.side_effect = json.JSONDecodeError("fail", "doc", 0)
+            self.assertIsNone(find_metadata.fetch_taskinfo_from_bigpanda("123"))
+
+    #
+    # === 5. Xsec Database Query ===
+    #
+    def test_query_xsecdb(self):
+        line = "123456 x 2.2 0.9 1.1 x x x e9999\n"
+        with tempfile.NamedTemporaryFile("w+", delete=False) as f:
+            f.write(line)
+            f.flush()
+            with patch("ftag.find_metadata.XSECDB_MAP", {"mc16": f.name}):
+                r = find_metadata.query_xsecdb("mc16", 123456, "e9999")
+                self.assertEqual(r["cross_section_pb"], 2.2)
+                self.assertEqual(r["genFiltEff"], 0.9)
+                self.assertEqual(r["kfactor"], 1.1)
+
+    def test_query_xsecdb_invalid_line(self):
+        line = "123456 a b\n"
+        with tempfile.NamedTemporaryFile("w+", delete=False) as f:
+            f.write(line)
+            f.flush()
+            with patch("ftag.find_metadata.XSECDB_MAP", {"mc16": f.name}):
+                r = find_metadata.query_xsecdb("mc16", 123456, "e0000")
+                self.assertIsNone(r)
+
+    def test_query_xsecdb_dbfile_missing(self):
+        with patch("ftag.find_metadata.Path.exists", return_value=False), patch(
+            "builtins.print"
+        ) as mock_print:
+            r1 = find_metadata.query_xsecdb("unknown_campaign", 123456, "e1234")
+            self.assertIsNone(r1)
+            with patch("ftag.find_metadata.XSECDB_MAP", {"mc16": "nonexistent_file.txt"}):
+                r2 = find_metadata.query_xsecdb("mc16", 123456, "e1234")
+                self.assertIsNone(r2)
+            mock_print.assert_any_call(
+                "ERROR: Database file for campaign 'unknown_campaign' not found."
+            )
+            mock_print.assert_any_call("ERROR: Database file for campaign 'mc16' not found.")
+
+    #
+    # === 6. Metadata Writing ===
+    #
+    def test_write_metadata_to_h5(self):
+        meta = {"cross_section_pb": 2.1, "genFiltEff": 0.5, "kfactor": 1.3}
+        with tempfile.NamedTemporaryFile(suffix=".h5") as f:
+            find_metadata.write_metadata_to_h5(f.name, 123456, meta)
+            with h5py.File(f.name, "r") as h5:
+                g = h5["metadata/123456"]
+                self.assertEqual(g["cross_section_pb"][()], 2.1)
+
+    #
+    # === 7. YAML Fallback Path ===
+    #
+    def test_handle_yaml_fallback_manual(self):
+        data = {"123456": {"cross_section_pb": 1, "genFiltEff": 1, "kfactor": 1}}
+        with tempfile.NamedTemporaryFile(suffix=".h5") as f:
+            find_metadata.handle_yaml_fallback(Path(f.name), data)
+            with h5py.File(f.name, "r") as h5:
+                self.assertIn("123456", h5["metadata"])
+
+    def test_handle_yaml_fallback_container_parse_fail(self):
+        data = {"container name": "bad.container.name"}
+        with tempfile.NamedTemporaryFile(suffix=".h5") as f:
+            with self.assertRaises(ValueError) as ctx:
+                find_metadata.handle_yaml_fallback(Path(f.name), data)
+            self.assertIn("Failed to parse valid DSID", str(ctx.exception))
+
+    def test_handle_yaml_fallback_container_not_in_db(self):
+        container = "mc21_13TeV.123456.e7890_s1234_r5678"
+        data = {"container name": container}
+        with tempfile.NamedTemporaryFile(suffix=".h5") as f, patch(
+            "ftag.find_metadata.extract_info_from_container", return_value=(123456, "e7890", "mc21")
+        ), patch("ftag.find_metadata.query_xsecdb", return_value=None):
+            with self.assertRaises(ValueError) as ctx:
+                find_metadata.handle_yaml_fallback(Path(f.name), data)
+            self.assertIn("Container not found", str(ctx.exception))
+
+    #
+    # === 8. CLI Argument Parsing ===
+    #
+    def test_parse_args_and_yaml_no_fallback(self):
+        test_args = ["find_metadata.py", "a.h5", "b.h5"]
+        with patch("sys.argv", test_args):
+            h5_files, yaml_data = find_metadata.parse_args_and_yaml()
+            self.assertEqual(h5_files, ["a.h5", "b.h5"])
+            self.assertEqual(yaml_data, {})
+
+    def test_parse_args_and_yaml_with_fallback(self):
+        test_yaml = {"123456": {"cross_section_pb": 1.1, "genFiltEff": 0.9, "kfactor": 1.0}}
+        with tempfile.NamedTemporaryFile("w+", suffix=".yaml", delete=False) as tmp_yaml:
+            yaml.dump(test_yaml, tmp_yaml)
+            tmp_yaml_path = tmp_yaml.name
+        test_args = ["find_metadata.py", "file1.h5", "-m", tmp_yaml_path]
+        with patch("sys.argv", test_args):
+            h5_files, yaml_data = find_metadata.parse_args_and_yaml()
+            self.assertEqual(h5_files, ["file1.h5"])
+            self.assertEqual(yaml_data, test_yaml)
+
+    #
+    # === 9. Main Flow / Integration Tests ===
+    #
+    def test_main_cli_path(self):
+        with patch("ftag.find_metadata.parse_args_and_yaml", return_value=(["a.h5"], {})), patch(
+            "ftag.find_metadata.download_xsecdb_files"
+        ), patch("ftag.find_metadata.process_single_file"), patch(
+            "ftag.find_metadata.Path.exists", return_value=True
+        ), patch("ftag.find_metadata.Path.unlink", side_effect=OSError("fail")):
+            find_metadata.main()
+
+    def test_process_single_file_auto_success(self):
+        mock_taskinfo = {
+            "taskname": "user.123456.e7890_tid123",
+            "inputdataset": "mc20_13TeV.123456.e7890_s1234_r5678",
+        }
+        meta = {"cross_section_pb": 3.0, "genFiltEff": 0.5, "kfactor": 1.2, "etag": "e7890"}
+        with tempfile.NamedTemporaryFile(suffix=".h5") as f, patch(
+            "ftag.find_metadata.Path.exists", return_value=True
+        ), patch("ftag.find_metadata.extract_taskid_from_filename", return_value="12345678"), patch(
+            "ftag.find_metadata.fetch_taskinfo_from_bigpanda", return_value=mock_taskinfo
+        ), patch(
+            "ftag.find_metadata.parse_line_from_taskname", return_value=(123456, "e7890")
+        ), patch(
+            "ftag.find_metadata.extract_mc_container_from_json",
+            return_value=mock_taskinfo["inputdataset"],
+        ), patch("ftag.find_metadata.parse_campaign_from_taskname", return_value="mc16"), patch(
+            "ftag.find_metadata.query_xsecdb", return_value=meta.copy()
+        ), patch("ftag.find_metadata.write_metadata_to_h5") as mock_write, patch(
+            "builtins.print"
+        ) as mock_print:
+            find_metadata.process_single_file(Path(f.name), yaml_data={})
+            mock_write.assert_called_once_with(str(f.name), 123456, {**meta, "campaign": "mc16"})
+            mock_print.assert_any_call("Extracted Task ID: 12345678")
+
+    def test_process_single_file_yaml_fallback_fails(self):
+        path = Path("some.12345678._000001.h5")
+        yaml_data = {"container name": "bad.container"}
+        with patch("ftag.find_metadata.Path.exists", return_value=True), patch(
+            "ftag.find_metadata.extract_taskid_from_filename", return_value=None
+        ), patch("builtins.print") as mock_print:
+            find_metadata.process_single_file(path, yaml_data)
+            mock_print.assert_any_call("Using YAML fallback path")
+            self.assertTrue(
+                any("YAML fallback failed:" in c[0][0] for c in mock_print.call_args_list)
+            )
+
+    def test_process_single_file_no_taskid_no_fallback(self):
+        path = Path("noid.h5")
+        with patch("ftag.find_metadata.Path.exists", return_value=True), patch(
+            "ftag.find_metadata.extract_taskid_from_filename", return_value=None
+        ), patch("builtins.print") as mock_print:
+            find_metadata.process_single_file(path, yaml_data={})
+            mock_print.assert_any_call("Failed to retrieve metadata and no YAML fallback provided")
 
 
-def test_process_container_list_integration(tmp_path):
-    input_file = tmp_path / "containers.txt"
-    output_json = tmp_path / "output.json"
-    output_h5 = tmp_path / "output.h5"
-
-    input_file.write_text("mc16_13TeV.301200.Sherpa_ttbar.e5270_\n")
-
-    db_file = tmp_path / "PMGxsecDB_mc16.txt"
-    db_file.write_text("301200 dummy 1.23 0.95 1.1 x y z e5270\n")
-
-    find_metadata.XSECDB_MAP["mc16"] = str(db_file)
-
-    process_container_list(str(input_file), str(output_json), str(output_h5))
-
-    assert output_json.exists()
-    assert "301200" in output_json.read_text()
-
-    with h5py.File(output_h5, "r") as f:
-        assert "301200" in f["metadata"]
-
-
-def test_process_container_list_parse_fail(tmp_path):
-    input_file = tmp_path / "bad.txt"
-    output_json = tmp_path / "output.json"
-    input_file.write_text("invalid_container_name\n")
-    process_container_list(str(input_file), str(output_json))
-    assert output_json.exists()
-
-
-def test_process_container_list_query_fail(tmp_path):
-    input_file = tmp_path / "queryfail.txt"
-    output_json = tmp_path / "output.json"
-    input_file.write_text("mc16_13TeV.301200.Sherpa_ttbar.e5270_\n")
-    db_file = tmp_path / "PMGxsecDB_mc16.txt"
-    db_file.write_text("999999 dummy 1.0 1.0 1.0 x x x e1234\n")
-    find_metadata.XSECDB_MAP["mc16"] = str(db_file)
-    process_container_list(str(input_file), str(output_json))
-    assert output_json.exists()
-
-
-def test_process_container_list_error_log(tmp_path):
-    input_file = tmp_path / "bad2.txt"
-    output_json = tmp_path / "metadata.json"
-    input_file.write_text("bad_container\n" "mc16_13TeV.301200.Sherpa_ttbar.e5270_")
-    db_file = tmp_path / "PMGxsecDB_mc16.txt"
-    db_file.write_text("999999 dummy 1.0 1.0 1.0 x x x e0000\n")
-    find_metadata.XSECDB_MAP["mc16"] = str(db_file)
-    process_container_list(str(input_file), str(output_json))
-    assert (tmp_path / "metadata_errors.log").exists()
-
-
-# ------------------------
-# download_xsecdb_files() test
-# ------------------------
-
-
-def test_download_xsecdb_files():
-    with patch("ftag.find_metadata.Path.exists", return_value=False), patch(
-        "ftag.find_metadata.urllib.request.urlretrieve"
-    ) as mock_urlretrieve:
-        download_xsecdb_files()
-        assert mock_urlretrieve.call_count == 4
-
-
-def test_download_xsecdb_files_fail():
-    with patch("ftag.find_metadata.Path.exists", return_value=False), patch(
-        "ftag.find_metadata.urllib.request.urlretrieve",
-        side_effect=urllib.error.URLError("fail"),
-    ) as mock_urlretrieve:
-        download_xsecdb_files()
-        assert mock_urlretrieve.call_count == 4
-
-
-# ------------------------
-# CLI main() test
-# ------------------------
-
-
-def test_main_invokes_all(tmp_path, monkeypatch):
-    containers = tmp_path / "containers.txt"
-    containers.write_text("mc16_13TeV.301200.Sherpa_ttbar.e5270_\n")
-    db_file = tmp_path / "PMGxsecDB_mc16.txt"
-    db_file.write_text("301200 dummy 1.23 0.95 1.1 x y z e5270\n")
-    find_metadata.XSECDB_MAP["mc16"] = str(db_file)
-
-    output_json = tmp_path / "result.json"
-    h5file = tmp_path / "merged.h5"
-
-    monkeypatch.setattr(
-        sys, "argv", ["script", "-i", str(containers), "-o", str(output_json), "-m", str(h5file)]
-    )
-    main()
-
-    assert output_json.exists()
-    with h5py.File(h5file) as f:
-        assert "metadata" in f
-        assert "301200" in f["metadata"]
-
-
-def test_query_xsecdb_print_not_found(tmp_path, capsys):
-    fake_file = tmp_path / "PMGxsecDB_mc16.txt"
-    fake_file.write_text("301200 dummy 1.0 1.0 1.0 x x x e1234\n")
-    find_metadata.XSECDB_MAP["mc16"] = str(fake_file)
-    result = query_xsecdb("mc16", 301200, "e9999")
-    captured = capsys.readouterr()
-    assert "not found" in captured.out
-    assert result is None
-
-
-def test_write_metadata_to_h5_key_skip(tmp_path):
-    h5file = tmp_path / "file.h5"
-    with h5py.File(h5file, "w") as f:
-        g = f.create_group("metadata/123")
-        g.create_dataset("cross_section_pb", data=0.1)
-    meta = {"123": {"cross_section_pb": 0.2, "genFiltEff": 0.3, "kfactor": 0.4}}
-    write_metadata_to_h5(h5file, meta)
-    with h5py.File(h5file, "r") as f:
-        assert f["metadata/123/genFiltEff"][()] == pytest.approx(0.3)
-        assert f["metadata/123/kfactor"][()] == pytest.approx(0.4)
-
-
-def test_main_merge_fail(tmp_path, monkeypatch):
-    container = tmp_path / "c.txt"
-    db_file = tmp_path / "PMGxsecDB_mc16.txt"
-    container.write_text("mc16_13TeV.301200.Sherpa_ttbar.e5270_\n")
-    db_file.write_text("301200 dummy 1.0 1.0 1.0 x x x e5270\n")
-    find_metadata.XSECDB_MAP["mc16"] = str(db_file)
-
-    out_json = tmp_path / "x.json"
-    out_h5 = tmp_path / "fail.h5"
-
-    monkeypatch.setattr(
-        sys,
-        "argv",
-        ["script", "-i", str(container), "-o", str(out_json), "-m", str(out_h5)],
-    )
-
-    with patch("ftag.find_metadata.h5py.File", side_effect=RuntimeError("merge fail")):
-        main()
-
-
-def test_query_xsecdb_partial_match_but_etag_fail(tmp_path, capsys):
-    file = tmp_path / "PMGxsecDB_mc16.txt"
-    file.write_text("301200 dummy 1.0 1.0 1.0 x x x e1111\n")
-    find_metadata.XSECDB_MAP["mc16"] = str(file)
-    query_xsecdb("mc16", 301200, "e9999")
-    captured = capsys.readouterr()
-    assert "not found" in captured.out
-
-
-def test_process_container_list_missing_metadata_log(tmp_path, capsys):
-    container_file = tmp_path / "missing.txt"
-    container_file.write_text("mc16_13TeV.301200.Sherpa_ttbar.e0000_\n")
-    db_file = tmp_path / "PMGxsecDB_mc16.txt"
-    db_file.write_text("999999 dummy 1.0 1.0 1.0 x x x e1234\n")
-    find_metadata.XSECDB_MAP["mc16"] = str(db_file)
-    output_file = tmp_path / "meta.json"
-    process_container_list(str(container_file), str(output_file))
-    captured = capsys.readouterr()
-    assert "lookup failed" in captured.out
-
-
-def test_main_no_merge(monkeypatch, tmp_path):
-    container_file = tmp_path / "c.txt"
-    out_json = tmp_path / "o.json"
-    db_file = tmp_path / "PMGxsecDB_mc16.txt"
-    container_file.write_text("mc16_13TeV.301200.Sherpa_ttbar.e5270_\n")
-    db_file.write_text("301200 dummy 1.23 0.95 1.1 x y z e5270\n")
-    find_metadata.XSECDB_MAP["mc16"] = str(db_file)
-    monkeypatch.setattr(sys, "argv", ["script", "-i", str(container_file), "-o", str(out_json)])
-    main()
-    assert out_json.exists()
-
-
-def test_query_xsecdb_skip_comment_line(tmp_path):
-    # Create a database file with a comment line
-    fake_file = tmp_path / "PMGxsecDB_mc16.txt"
-    fake_file.write_text("# this is a comment line\n301200 dummy 1.2 0.9 1.1 x x x e5270\n")
-
-    # Override the db path
-    find_metadata.XSECDB_MAP["mc16"] = str(fake_file)
-
-    # Query existing data (should skip the comment and match)
-    result = query_xsecdb("mc16", 301200, "e5270")
-    assert result is not None
-    assert result["cross_section_pb"] == pytest.approx(1.2)
-
-
-def test_process_container_list_skips_empty_line(tmp_path):
-    input_file = tmp_path / "containers.txt"
-    output_file = tmp_path / "meta.json"
-    input_file.write_text("\nmc16_13TeV.301200.Sherpa_ttbar.e5270_\n")
-
-    db_file = tmp_path / "PMGxsecDB_mc16.txt"
-    db_file.write_text("301200 dummy 1.0 1.0 1.0 x x x e5270\n")
-    find_metadata.XSECDB_MAP["mc16"] = str(db_file)
-
-    process_container_list(str(input_file), str(output_file))
-    assert output_file.exists()
-    content = json.loads(output_file.read_text())
-    assert "301200" in content
+if __name__ == "__main__":
+    unittest.main()

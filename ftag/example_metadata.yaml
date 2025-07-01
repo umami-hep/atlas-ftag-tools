@@ -1,0 +1,25 @@
+# YAML fallback example for find_metadata.py (only ONE of the following two formats is allowed, and only ONE entry total)
+# ==========
+# Option 1: Use a container name (recommended — the script will parse DSID, etag, and campaign and query the PMG database)
+
+# container name: mc20_13TeV.364703.Pythia8EvtGen_A14NNPDF23LO_jetjet_JZ3WithSW.deriv.DAOD_JETM2.e7142_s3681_r13144_p5548
+# ↑ Replace the line above (uncomment it) with the dataset you want to inject metadata for.
+# ↑ The script will extract the following automatically:
+#    - DSID (e.g. 364704)
+#    - etag (e.g. e7142)
+#    - campaign (e.g. mc20, mc21, etc.)
+#    Then it will look up the PMG xsecDB file to inject the corresponding metadata.
+
+# ==========
+
+# Option 2: Manually provide metadata (bypass PMG query entirely)
+
+123456:  # ← This is the DSID you want to inject metadata for
+  cross_section_pb: 0.12345  # ← Cross-section in pb
+  genFiltEff: 0.934          # ← Generator filter efficiency
+  kfactor: 1.05              # ← K-factor
+
+# Notes:
+# - This YAML file must contain ONLY ONE entry (either a container name or a DSID key)
+# - You cannot mix formats — container name and DSID must not coexist
+# - You cannot provide multiple DSID entries — only one is allowed
