@@ -559,9 +559,50 @@
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="ftag.hdf5.h5reader.H5SingleReader._process_batch">
+<span class="sig-name descname"><span class="pre">_process_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cuts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><span class="pre">ftag.cuts.Cuts</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#ftag.hdf5.h5reader.H5SingleReader._process_batch" title="Link to this definition">#</a></dt>
+<dd><p>Apply cuts and transformations to the batch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>dict</em>) – Dictionary of arrays for each group.</p></li>
+<li><p><strong>cuts</strong> (<a class="reference internal" href="../../cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><em>Cuts</em></a><em> | </em><em>None</em><em>, </em><em>optional</em>) – Selection cuts to apply, by default None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Processed data dictionary with arrays for each group. After applying cuts,
+(optional) removal of infs, and (optional) transformation.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="ftag.hdf5.h5reader.H5SingleReader.stream">
 <span class="sig-name descname"><span class="pre">stream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_jets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cuts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><span class="pre">ftag.cuts.Cuts</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_batches</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">collections.abc.Generator</span></span></span><a class="headerlink" href="#ftag.hdf5.h5reader.H5SingleReader.stream" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ftag.hdf5.h5reader.H5SingleReader.get_batch_reader">
+<span class="sig-name descname"><span class="pre">get_batch_reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cuts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><span class="pre">ftag.cuts.Cuts</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ftag.hdf5.h5reader.H5SingleReader.get_batch_reader" title="Link to this definition">#</a></dt>
+<dd><p>Get a function to read batches of selected jets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>variables</strong> (<em>dict</em><em> | </em><em>None</em><em>, </em><em>optional</em>) – Dictionary of variables to for each group, by default use all jet variables.</p></li>
+<li><p><strong>cuts</strong> (<a class="reference internal" href="../../cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><em>Cuts</em></a><em> | </em><em>None</em><em>, </em><em>optional</em>) – Selection cuts to apply, by default None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Function that takes an index and returns a batch of selected jets.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>function</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -681,6 +722,27 @@ use all available jets from each sample.</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="ftag.hdf5.h5reader.H5Reader.get_batch_reader">
+<span class="sig-name descname"><span class="pre">get_batch_reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cuts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><span class="pre">ftag.cuts.Cuts</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ftag.hdf5.h5reader.H5Reader.get_batch_reader" title="Link to this definition">#</a></dt>
+<dd><p>Get a function to read batches of selected jets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>variables</strong> (<em>dict</em><em> | </em><em>None</em><em>, </em><em>optional</em>) – Dictionary of variables to for each group, by default use all jet variables.</p></li>
+<li><p><strong>cuts</strong> (<a class="reference internal" href="../../cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><em>Cuts</em></a><em> | </em><em>None</em><em>, </em><em>optional</em>) – Selection cuts to apply, by default None</p></li>
+<li><p><strong>shuffle</strong> (<em>bool</em><em>, </em><em>optional</em>) – Read batches in a shuffled order, by default True</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Function that takes an index and returns a batch of selected jets.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>function</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="ftag.hdf5.h5reader.H5Reader.load">
 <span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_jets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cuts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><span class="pre">ftag.cuts.Cuts</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#ftag.hdf5.h5reader.H5Reader.load" title="Link to this definition">#</a></dt>
 <dd><p>Load multiple batches of selected jets into memory.</p>
@@ -789,7 +851,9 @@ use all available jets from each sample.</p></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5SingleReader.empty"><code class="docutils literal notranslate"><span class="pre">H5SingleReader.empty()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5SingleReader.read_chunk"><code class="docutils literal notranslate"><span class="pre">H5SingleReader.read_chunk()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5SingleReader.remove_inf"><code class="docutils literal notranslate"><span class="pre">H5SingleReader.remove_inf()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5SingleReader._process_batch"><code class="docutils literal notranslate"><span class="pre">H5SingleReader._process_batch()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5SingleReader.stream"><code class="docutils literal notranslate"><span class="pre">H5SingleReader.stream()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5SingleReader.get_batch_reader"><code class="docutils literal notranslate"><span class="pre">H5SingleReader.get_batch_reader()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5Reader"><code class="docutils literal notranslate"><span class="pre">H5Reader</span></code></a><ul class="nav section-nav flex-column">
@@ -808,6 +872,7 @@ use all available jets from each sample.</p></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5Reader.dtypes"><code class="docutils literal notranslate"><span class="pre">H5Reader.dtypes()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5Reader.shapes"><code class="docutils literal notranslate"><span class="pre">H5Reader.shapes()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5Reader.stream"><code class="docutils literal notranslate"><span class="pre">H5Reader.stream()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5Reader.get_batch_reader"><code class="docutils literal notranslate"><span class="pre">H5Reader.get_batch_reader()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5Reader.load"><code class="docutils literal notranslate"><span class="pre">H5Reader.load()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5Reader.estimate_available_jets"><code class="docutils literal notranslate"><span class="pre">H5Reader.estimate_available_jets()</span></code></a></li>
 </ul>

@@ -208,6 +208,22 @@ Package Contents
 
 
 
+   .. py:method:: get_batch_reader(variables: dict | None = None, cuts: ftag.cuts.Cuts | None = None, shuffle: bool = True)
+
+      Get a function to read batches of selected jets.
+
+      :param variables: Dictionary of variables to for each group, by default use all jet variables.
+      :type variables: dict | None, optional
+      :param cuts: Selection cuts to apply, by default None
+      :type cuts: Cuts | None, optional
+      :param shuffle: Read batches in a shuffled order, by default True
+      :type shuffle: bool, optional
+
+      :returns: Function that takes an index and returns a batch of selected jets.
+      :rtype: function
+
+
+
    .. py:method:: load(variables: dict | None = None, num_jets: int | None = None, cuts: ftag.cuts.Cuts | None = None) -> dict
 
       Load multiple batches of selected jets into memory.

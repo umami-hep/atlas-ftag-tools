@@ -78,7 +78,36 @@ Module Contents
    .. py:method:: remove_inf(data: dict) -> dict
 
 
+   .. py:method:: _process_batch(data: dict, cuts: ftag.cuts.Cuts | None = None) -> dict
+
+      Apply cuts and transformations to the batch.
+
+      :param data: Dictionary of arrays for each group.
+      :type data: dict
+      :param cuts: Selection cuts to apply, by default None
+      :type cuts: Cuts | None, optional
+
+      :returns: Processed data dictionary with arrays for each group. After applying cuts,
+                (optional) removal of infs, and (optional) transformation.
+      :rtype: dict
+
+
+
    .. py:method:: stream(variables: dict | None = None, num_jets: int | None = None, cuts: ftag.cuts.Cuts | None = None, start: int = 0, skip_batches: int = 0) -> collections.abc.Generator
+
+
+   .. py:method:: get_batch_reader(variables: dict | None = None, cuts: ftag.cuts.Cuts | None = None)
+
+      Get a function to read batches of selected jets.
+
+      :param variables: Dictionary of variables to for each group, by default use all jet variables.
+      :type variables: dict | None, optional
+      :param cuts: Selection cuts to apply, by default None
+      :type cuts: Cuts | None, optional
+
+      :returns: Function that takes an index and returns a batch of selected jets.
+      :rtype: function
+
 
 
 .. py:class:: H5Reader
@@ -198,6 +227,22 @@ Module Contents
       :type skip_batches: int, optional
 
       :Yields: *Generator* -- Generator of batches of selected jets.
+
+
+
+   .. py:method:: get_batch_reader(variables: dict | None = None, cuts: ftag.cuts.Cuts | None = None, shuffle: bool = True)
+
+      Get a function to read batches of selected jets.
+
+      :param variables: Dictionary of variables to for each group, by default use all jet variables.
+      :type variables: dict | None, optional
+      :param cuts: Selection cuts to apply, by default None
+      :type cuts: Cuts | None, optional
+      :param shuffle: Read batches in a shuffled order, by default True
+      :type shuffle: bool, optional
+
+      :returns: Function that takes an index and returns a batch of selected jets.
+      :rtype: function
 
 
 
