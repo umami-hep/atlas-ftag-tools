@@ -349,3 +349,86 @@ def test_skip_batches(tmp_path):
     assert all(i >= skip_batches * batch_size for i in indices_seen)
     assert len(indices_seen) == num_jets - skip_batches * batch_size
     assert indices_seen[0] == skip_batches * batch_size
+
+
+@pytest.fixture
+def h5_files(tmp_path):
+    # Create 3 files with different number of jets
+    # Total of 10k jets
+    num_jets_list = [8000, 1500, 500]
+    file_paths = [tmp_path / f"file_{i}.h5" for i in range(len(num_jets_list))]
+    for i, (path, num_jets) in enumerate(zip(file_paths, num_jets_list)):
+        with h5py.File(path, "w") as f:
+            jets = np.zeros(num_jets, dtype=[("value", "i4"), ("index", "i4")])
+            jets["value"] = i
+            jets["index"] = np.arange(num_jets)
+            f.create_dataset("jets", data=jets)
+    return file_paths
+
+
+def test_batch_reader_invalid_idx(h5_files):
+    reader = H5Reader(h5_files, batch_size=1000, shuffle=False)
+
+    batch_reader = reader.get_batch_reader(
+        variables={"jets": ["value", "index"]},
+    )
+    with pytest.raises(AssertionError, match="Index must be non-negative"):
+        batch_reader(-1)
+
+    assert batch_reader(10) is None, "Batch reader should return None for out-of-bounds index"
+
+
+def test_batch_reader(h5_files):
+    reader = H5Reader(h5_files, batch_size=1000, shuffle=False)
+
+    batch_reader = reader.get_batch_reader(
+        variables=None,
+    )
+
+    index = list(range(10))
+    np.random.shuffle(index)
+
+    for i in index:
+        batch = batch_reader(i)
+        assert "jets" in batch
+        assert len(batch["jets"]) == 1000
+        assert "value" in batch["jets"].dtype.names
+        assert "index" in batch["jets"].dtype.names
+
+        for j, n in enumerate([8000, 1500, 500]):
+            # First, we ensure that we have the correct number from each file in the batch
+            sel = batch["jets"][batch["jets"]["value"] == j]
+            assert sel["value"].shape[0] == int(n * 0.1)
+            # Next, each file has series indices in the range [0, n)
+            # so we check that the indices are within the expected range
+            lower = int(i * 1000 / 10000 * n)
+            upper = int((i + 1) * 1000 / 10000 * n)
+            assert sel["index"].min() >= lower
+            assert sel["index"].max() < upper
+
+
+def test_single_batch_reader(h5_files):
+    reader = H5SingleReader(h5_files[0], batch_size=1000, shuffle=False)
+
+    batch_reader = reader.get_batch_reader()
+
+    index = list(range(8))
+    np.random.shuffle(index)
+
+    for i in index:
+        batch = batch_reader(i)
+        assert "jets" in batch
+        assert len(batch["jets"]) == 1000
+        assert "value" in batch["jets"].dtype.names
+        assert "index" in batch["jets"].dtype.names
+
+        # First, we ensure that we have the correct number from each file in the batch
+        sel = batch["jets"][batch["jets"]["value"] == 0]
+        assert sel["value"].shape[0] == 1000
+        # Next, each file has series indices in the range [0, n)
+        # so we check that the indices are within the expected range
+        lower = i * 1000
+        upper = (i + 1) * 1000
+        assert sel["index"].min() >= lower
+        assert sel["index"].max() < upper
+    assert batch_reader(10) is None, "Batch reader should return None for out-of-bounds index"
