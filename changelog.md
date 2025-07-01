@@ -2,6 +2,17 @@
 
 ### [Latest]
 
+- Adding correct Usage of NaNs in Cuts [#134](https://github.com/umami-hep/atlas-ftag-tools/pull/134)
+
+### [v0.2.13]
+
+- Update Minimum Python Version to 3.10 [#131](https://github.com/umami-hep/atlas-ftag-tools/pull/131)
+- Update Virtual Dataset Creation to Incorporate the Cut Bookkeeper [#132](https://github.com/umami-hep/atlas-ftag-tools/pull/132)
+
+### [v0.2.12]
+
+- Minor qcdnonbb definition update [#127](https://github.com/umami-hep/atlas-ftag-tools/pull/127)
+- Ensure that the mock file generation is deterministic [#130](https://github.com/umami-hep/atlas-ftag-tools/pull/130)
 - Remove flavours sorting in Labeller [#124](https://github.com/umami-hep/atlas-ftag-tools/pull/124)
 - Allow writer to have varying number of jets, fix reader batch sizes [#125](https://github.com/umami-hep/atlas-ftag-tools/pull/125)
 
