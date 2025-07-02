@@ -15,7 +15,7 @@ from ftag import find_metadata
 
 class TestFindMetadata(unittest.TestCase):
     #
-    # === 1. TaskID / Container / Campaign Extraction Functions ===
+    # === 1. TaskID/Container/Campaign Extraction Functions ===
     #
     def test_extract_taskid_from_filename(self):
         self.assertEqual(
@@ -154,6 +154,18 @@ class TestFindMetadata(unittest.TestCase):
             )
             mock_print.assert_any_call("ERROR: Database file for campaign 'mc16' not found.")
 
+    def test_query_xsecdb_skips_comment_and_blank_lines(self):
+        content = "\n# comment line\n123456 x 2.2 0.9 1.1 x x x e1234\n"
+        with tempfile.NamedTemporaryFile("w+", delete=False) as f:
+            f.write(content)
+            f.flush()
+            with patch("ftag.find_metadata.XSECDB_MAP", {"mc16": f.name}):
+                result = find_metadata.query_xsecdb("mc16", 123456, "e1234")
+                self.assertIsNotNone(result)
+                self.assertEqual(result["cross_section_pb"], 2.2)
+                self.assertEqual(result["genFiltEff"], 0.9)
+                self.assertEqual(result["kfactor"], 1.1)
+
     #
     # === 6. Metadata Writing ===
     #
@@ -164,6 +176,20 @@ class TestFindMetadata(unittest.TestCase):
             with h5py.File(f.name, "r") as h5:
                 g = h5["metadata/123456"]
                 self.assertEqual(g["cross_section_pb"][()], 2.1)
+
+    def test_write_metadata_overwrites_existing_keys(self):
+        meta1 = {"cross_section_pb": 1.0, "genFiltEff": 0.5, "kfactor": 1.1}
+        meta2 = {"cross_section_pb": 2.0, "genFiltEff": 0.6, "kfactor": 1.2}
+
+        with tempfile.NamedTemporaryFile(suffix=".h5") as f:
+            find_metadata.write_metadata_to_h5(f.name, 123456, meta1)
+            find_metadata.write_metadata_to_h5(f.name, 123456, meta2)
+
+            with h5py.File(f.name, "r") as h5:
+                g = h5["metadata/123456"]
+                self.assertEqual(g["cross_section_pb"][()], 2.0)
+                self.assertEqual(g["genFiltEff"][()], 0.6)
+                self.assertEqual(g["kfactor"][()], 1.2)
 
     #
     # === 7. YAML Fallback Path ===
@@ -192,6 +218,50 @@ class TestFindMetadata(unittest.TestCase):
                 find_metadata.handle_yaml_fallback(Path(f.name), data)
             self.assertIn("Container not found", str(ctx.exception))
 
+    def test_handle_yaml_fallback_multiple_entries_raises(self):
+        bad_yaml = {
+            "123456": {"cross_section_pb": 1, "genFiltEff": 1, "kfactor": 1},
+            "123457": {"cross_section_pb": 2, "genFiltEff": 2, "kfactor": 2},
+        }
+        with tempfile.NamedTemporaryFile(suffix=".h5") as f:
+            with self.assertRaises(ValueError) as ctx:
+                find_metadata.handle_yaml_fallback(Path(f.name), bad_yaml)
+            self.assertIn("YAML fallback file must contain exactly one entry", str(ctx.exception))
+
+    def test_handle_yaml_fallback_empty_yaml_raises(self):
+        with tempfile.NamedTemporaryFile(suffix=".h5") as f:
+            with self.assertRaises(ValueError) as ctx:
+                find_metadata.handle_yaml_fallback(Path(f.name), {})
+            self.assertIn("YAML fallback file must contain exactly one entry", str(ctx.exception))
+
+    def test_handle_yaml_fallback_container_not_string(self):
+        bad_yaml = {"container name": ["not", "a", "string"]}
+        with tempfile.NamedTemporaryFile(suffix=".h5") as f:
+            with self.assertRaises(ValueError) as ctx:
+                find_metadata.handle_yaml_fallback(Path(f.name), bad_yaml)
+            self.assertIn("'container name' must be a string", str(ctx.exception))
+
+    def test_handle_yaml_fallback_invalid_dsid_key_raises(self):
+        bad_yaml = {"not_a_dsid": {"cross_section_pb": 1, "genFiltEff": 1, "kfactor": 1}}
+        with tempfile.NamedTemporaryFile(suffix=".h5") as f:
+            with self.assertRaises(ValueError) as ctx:
+                find_metadata.handle_yaml_fallback(Path(f.name), bad_yaml)
+            self.assertIn("YAML key must be a valid DSID or 'container name'", str(ctx.exception))
+
+    def test_handle_yaml_fallback_manual_missing_keys(self):
+        bad_yaml = {"123456": {"cross_section_pb": 0.1, "genFiltEff": 0.9}}
+        with tempfile.NamedTemporaryFile(suffix=".h5") as f:
+            with self.assertRaises(ValueError) as ctx:
+                find_metadata.handle_yaml_fallback(Path(f.name), bad_yaml)
+            self.assertIn("Manual metadata must include", str(ctx.exception))
+
+    def test_handle_yaml_fallback_manual_not_dict(self):
+        bad_yaml = {"123456": "this is not a dict"}
+        with tempfile.NamedTemporaryFile(suffix=".h5") as f:
+            with self.assertRaises(ValueError) as ctx:
+                find_metadata.handle_yaml_fallback(Path(f.name), bad_yaml)
+            self.assertIn("Manual metadata must include", str(ctx.exception))
+
     #
     # === 8. CLI Argument Parsing ===
     #
@@ -214,7 +284,7 @@ class TestFindMetadata(unittest.TestCase):
             self.assertEqual(yaml_data, test_yaml)
 
     #
-    # === 9. Main Flow / Integration Tests ===
+    # === 9. Main Flow/Integration Tests ===
     #
     def test_main_cli_path(self):
         with patch("ftag.find_metadata.parse_args_and_yaml", return_value=(["a.h5"], {})), patch(
@@ -267,6 +337,65 @@ class TestFindMetadata(unittest.TestCase):
         ), patch("builtins.print") as mock_print:
             find_metadata.process_single_file(path, yaml_data={})
             mock_print.assert_any_call("Failed to retrieve metadata and no YAML fallback provided")
+
+    def test_process_single_file_path_not_exists(self):
+        fake_path = Path("nonexistent_file.h5")
+        with patch("ftag.find_metadata.Path.exists", return_value=False), patch(
+            "builtins.print"
+        ) as mock_print, patch(
+            "ftag.find_metadata.extract_taskid_from_filename"
+        ) as mock_extract, patch("ftag.find_metadata.fetch_taskinfo_from_bigpanda") as mock_fetch:
+            find_metadata.process_single_file(fake_path, yaml_data={})
+            mock_print.assert_any_call(f"File not found: {fake_path}")
+            mock_extract.assert_not_called()
+            mock_fetch.assert_not_called()
+
+    def test_process_single_file_write_metadata_fails(self):
+        mock_taskinfo = {
+            "taskname": "user.123456.e7890_tid123",
+            "inputdataset": "mc20_13TeV.123456.e7890_s1234_r5678",
+        }
+        meta = {"cross_section_pb": 1.0, "genFiltEff": 1.0, "kfactor": 1.0, "etag": "e7890"}
+
+        with tempfile.NamedTemporaryFile(suffix=".h5") as f, patch(
+            "ftag.find_metadata.Path.exists", return_value=True
+        ), patch("ftag.find_metadata.extract_taskid_from_filename", return_value="12345678"), patch(
+            "ftag.find_metadata.fetch_taskinfo_from_bigpanda", return_value=mock_taskinfo
+        ), patch(
+            "ftag.find_metadata.parse_line_from_taskname", return_value=(123456, "e7890")
+        ), patch(
+            "ftag.find_metadata.extract_mc_container_from_json",
+            return_value=mock_taskinfo["inputdataset"],
+        ), patch("ftag.find_metadata.parse_campaign_from_taskname", return_value="mc16"), patch(
+            "ftag.find_metadata.query_xsecdb", return_value=meta
+        ), patch(
+            "ftag.find_metadata.write_metadata_to_h5",
+            side_effect=OSError("simulated write failure"),
+        ), patch("builtins.print") as mock_print:
+            find_metadata.process_single_file(Path(f.name), yaml_data={})
+            self.assertTrue(
+                any(
+                    "Failed to write metadata: simulated write failure" in call.args[0]
+                    for call in mock_print.call_args_list
+                )
+            )
+
+    def test_main_deletes_tempfile_success(self):
+        with (
+            patch("ftag.find_metadata.parse_args_and_yaml", return_value=(["a.h5"], {})),
+            patch("ftag.find_metadata.download_xsecdb_files"),
+            patch("ftag.find_metadata.process_single_file"),
+            patch("ftag.find_metadata.Path.exists", return_value=True),
+            patch("ftag.find_metadata.Path.unlink"),
+            patch("builtins.print") as mock_print,
+        ):
+            find_metadata.main()
+            calls = [
+                f"Deleted temporary file: {Path(name)}"
+                for name in find_metadata.XSECDB_MAP.values()
+            ]
+            for c in calls:
+                assert any(c in p.args[0] for p in mock_print.call_args_list)
 
 
 if __name__ == "__main__":
