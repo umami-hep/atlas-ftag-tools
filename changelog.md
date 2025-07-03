@@ -2,6 +2,8 @@
 
 ### [Latest]
 
+- New W to light and c classes [#135](https://github.com/umami-hep/atlas-ftag-tools/pull/135)
+
 ### [v0.2.14](https://github.com/umami-hep/atlas-ftag-tools/releases/tag/v0.2.14) (01.07.2025)
 
 - Read h5 batch [#129](https://github.com/umami-hep/atlas-ftag-tools/pull/129)
