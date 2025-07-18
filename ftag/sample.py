@@ -14,13 +14,17 @@ class Sample:
     ntuple_dir: Path | str | None = None
     name: str | None = None
     weights: list[float] | None = None
+    skip_checks : bool = False
+
 
     def __post_init__(self) -> None:
+        if self.skip_checks:
+            return
         if not self.pattern:
             raise ValueError("Sample pattern cannot be empty")
         if "*" in str(self.pattern) and not self.files:
             raise FileNotFoundError(f"No files matched pattern {self.pattern}")
-        if missing := [file for file in self.files if not Path(file).is_file()]:
+        if missing := [file for file in self.files if not Path(file).exists()]:
             raise FileNotFoundError(f"The following files do not exist: {missing}")
 
     @property
