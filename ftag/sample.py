@@ -14,8 +14,7 @@ class Sample:
     ntuple_dir: Path | str | None = None
     name: str | None = None
     weights: list[float] | None = None
-    skip_checks : bool = False
-
+    skip_checks: bool = False
 
     def __post_init__(self) -> None:
         if self.skip_checks:
