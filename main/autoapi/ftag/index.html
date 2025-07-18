@@ -379,7 +379,6 @@
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">ftag</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="cli_utils/index.html">ftag.cli_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cuts/index.html">ftag.cuts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="flavours/index.html">ftag.flavours</a></li>
 <li class="toctree-l2"><a class="reference internal" href="fraction_optimization/index.html">ftag.fraction_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="git_check/index.html">ftag.git_check</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="hdf5/index.html">ftag.hdf5</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -475,7 +474,6 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="cli_utils/index.html">ftag.cli_utils</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cuts/index.html">ftag.cuts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="flavours/index.html">ftag.flavours</a></li>
 <li class="toctree-l1"><a class="reference internal" href="fraction_optimization/index.html">ftag.fraction_optimization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="git_check/index.html">ftag.git_check</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hdf5/index.html">ftag.hdf5</a></li>
@@ -496,9 +494,6 @@
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ftag.__version__" title="ftag.__version__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__version__</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ftag.Flavours" title="ftag.Flavours"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Flavours</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -532,10 +527,13 @@
 <h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.get_mock_file" title="ftag.get_mock_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_mock_file</span></code></a>(→ tuple[str, h5py.File])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.calculate_best_fraction_values" title="ftag.calculate_best_fraction_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_best_fraction_values</span></code></a>(→ dict)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ftag.get_working_points" title="ftag.get_working_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_working_points</span></code></a>(→ dict | None)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ftag.get_mock_file" title="ftag.get_mock_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_mock_file</span></code></a>(→ tuple[str, h5py.File])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.get_working_points" title="ftag.get_working_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_working_points</span></code></a>(→ dict | None)</p></td>
 <td><p>Calculate the working points.</p></td>
 </tr>
 </tbody>
@@ -614,9 +612,9 @@
 
 </dd></dl>
 
-<dl class="py data">
-<dt class="sig sig-object py" id="ftag.Flavours">
-<span class="sig-prename descclassname"><span class="pre">ftag.</span></span><span class="sig-name descname"><span class="pre">Flavours</span></span><a class="headerlink" href="#ftag.Flavours" title="Link to this definition">#</a></dt>
+<dl class="py function">
+<dt class="sig sig-object py" id="ftag.calculate_best_fraction_values">
+<span class="sig-prename descclassname"><span class="pre">ftag.</span></span><span class="sig-name descname"><span class="pre">calculate_best_fraction_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tagger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="labels/index.html#ftag.labels.Label" title="ftag.labels.Label"><span class="pre">ftag.labels.Label</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">flavours</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="labels/index.html#ftag.labels.LabelContainer" title="ftag.labels.LabelContainer"><span class="pre">ftag.labels.LabelContainer</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">working_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rejection_weights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer_method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Powell'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#ftag.calculate_best_fraction_values" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py class">
@@ -785,6 +783,11 @@
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.Sample.weights">
 <span class="sig-name descname"><span class="pre">weights</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ftag.Sample.weights" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ftag.Sample.skip_checks">
+<span class="sig-name descname"><span class="pre">skip_checks</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#ftag.Sample.skip_checks" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -1039,7 +1042,7 @@ stored the resulting dict in a yaml file in args.outfile.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Cuts.__repr__"><code class="docutils literal notranslate"><span class="pre">Cuts.__repr__()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Flavours"><code class="docutils literal notranslate"><span class="pre">Flavours</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.calculate_best_fraction_values"><code class="docutils literal notranslate"><span class="pre">calculate_best_fraction_values()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Label"><code class="docutils literal notranslate"><span class="pre">Label</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Label.name"><code class="docutils literal notranslate"><span class="pre">Label.name</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Label.label"><code class="docutils literal notranslate"><span class="pre">Label.label</span></code></a></li>
@@ -1078,6 +1081,7 @@ stored the resulting dict in a yaml file in args.outfile.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Sample.ntuple_dir"><code class="docutils literal notranslate"><span class="pre">Sample.ntuple_dir</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Sample.name"><code class="docutils literal notranslate"><span class="pre">Sample.name</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Sample.weights"><code class="docutils literal notranslate"><span class="pre">Sample.weights</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Sample.skip_checks"><code class="docutils literal notranslate"><span class="pre">Sample.skip_checks</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Sample.__post_init__"><code class="docutils literal notranslate"><span class="pre">Sample.__post_init__()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Sample.path"><code class="docutils literal notranslate"><span class="pre">Sample.path</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Sample.files"><code class="docutils literal notranslate"><span class="pre">Sample.files</span></code></a></li>

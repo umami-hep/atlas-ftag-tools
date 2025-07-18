@@ -17,7 +17,6 @@ Submodules
 
    /autoapi/ftag/cli_utils/index
    /autoapi/ftag/cuts/index
-   /autoapi/ftag/flavours/index
    /autoapi/ftag/git_check/index
    /autoapi/ftag/hdf5/index
    /autoapi/ftag/labels/index
@@ -36,7 +35,6 @@ Attributes
 .. autoapisummary::
 
    ftag.__version__
-   ftag.Flavours
 
 
 Classes
@@ -112,8 +110,6 @@ Package Contents
 
    .. py:method:: __repr__() -> str
 
-
-.. py:data:: Flavours
 
 .. py:class:: Label
 

@@ -17,7 +17,6 @@ Submodules
 
    /autoapi/ftag/cli_utils/index
    /autoapi/ftag/cuts/index
-   /autoapi/ftag/flavours/index
    /autoapi/ftag/fraction_optimization/index
    /autoapi/ftag/git_check/index
    /autoapi/ftag/hdf5/index
@@ -38,7 +37,6 @@ Attributes
 .. autoapisummary::
 
    ftag.__version__
-   ftag.Flavours
 
 
 Classes
@@ -58,6 +56,7 @@ Functions
 
 .. autoapisummary::
 
+   ftag.calculate_best_fraction_values
    ftag.get_mock_file
    ftag.get_working_points
 
@@ -114,7 +113,7 @@ Package Contents
    .. py:method:: __repr__() -> str
 
 
-.. py:data:: Flavours
+.. py:function:: calculate_best_fraction_values(jets: numpy.ndarray, tagger: str, signal: ftag.labels.Label, flavours: ftag.labels.LabelContainer, working_point: float, rejection_weights: dict | None = None, optimizer_method: str = 'Powell') -> dict
 
 .. py:class:: Label
 
