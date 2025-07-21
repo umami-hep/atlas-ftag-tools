@@ -35,6 +35,7 @@ wps = "ftag.working_points:main"
 h5move = "ftag.hdf5.h5move:main"
 h5split = "ftag.hdf5.h5split:main"
 h5addcol = "ftag.hdf5.h5add_col:main"
+find_metadata = "ftag.find_metadata:main"
 
 [tool.setuptools]
 packages = ["ftag", "ftag.hdf5", "ftag.utils"]

@@ -4,7 +4,8 @@ import argparse
 import json
 import re
 from pathlib import Path
-from urllib.parse import urlparse
+from typing import Any
+from urllib.parse import ParseResult, urlparse
 
 import h5py
 import requests
@@ -17,40 +18,45 @@ Injects metadata (cross_section_pb, genFiltEff, kfactor) into .h5 files produced
 
 Usage:
     python find_metadata.py <h5_file1> [<h5_file2> ...] [-m fallback.yaml]
-
-Modes:
-    1. Auto mode (default):
-        - Extract ATLAS BigPanDA Task ID from filename
-        - Query BigPanDA → extract task info → parse DSID/etag/campaign
-        - Query PMGxsecDB and write metadata into /metadata/<DSID>/ in the .h5 file
-
-    2. Fallback mode (-m):
-        - If auto lookup fails, use a YAML file to inject metadata manually
-        - YAML must contain exactly one entry (see example_metadata.yaml)
-
-Example:
-    python find_metadata.py user.username.taskid._000001.h5
-    python find_metadata.py localdump.h5 -m fallback.yaml
 """
 
-XSECDB_MAP = {
+XSECDB_MAP: dict[str, str] = {
     "mc15": "PMGxsecDB_mc15.txt",
     "mc16": "PMGxsecDB_mc16.txt",
     "mc21": "PMGxsecDB_mc21.txt",
     "mc23": "PMGxsecDB_mc23.txt",
 }
 
-XSECDB_URL_BASE = "https://atlas-groupdata.web.cern.ch/atlas-groupdata/dev/PMGTools/"
+XSECDB_URL_BASE: str = "https://atlas-groupdata.web.cern.ch/atlas-groupdata/dev/PMGTools/"
 
 
-def validate_url_scheme(url: str):
+def validate_url_scheme(url: str) -> ParseResult:
+    """
+    Validate the scheme of a given URL, ensuring it is http or https.
+
+    Parameters
+    ----------
+    url : str
+        URL string to validate.
+
+    Returns
+    -------
+    ParseResult
+        Parsed URL object.
+
+    Raises
+    ------
+    ValueError
+        If the URL scheme is not supported.
+    """
     parsed = urlparse(url)
     if parsed.scheme not in {"http", "https"}:
         raise ValueError(f"Unsupported URL scheme: {parsed.scheme}")
     return parsed
 
 
-def download_xsecdb_files():
+def download_xsecdb_files() -> None:
+    """Download the PMG xsecDB files from CERN if they are not present locally."""
     for filename in XSECDB_MAP.values():
         if not Path(filename).exists():
             url = XSECDB_URL_BASE + filename
@@ -66,11 +72,31 @@ def download_xsecdb_files():
 
 
 def extract_taskid_from_filename(h5_path: Path) -> str | None:
+    """
+    Extract the BigPanDA Task ID (8-digit) from an HDF5 filename.
+
+    Args:
+        h5_path: Path object pointing to the .h5 file.
+
+    Returns
+    -------
+        The Task ID as a string if found, otherwise None.
+    """
     m = re.search(r"\.(\d{8})\.", h5_path.name)
     return m.group(1) if m else None
 
 
-def fetch_taskinfo_from_bigpanda(taskid: str) -> dict | None:
+def fetch_taskinfo_from_bigpanda(taskid: str) -> dict[str, Any] | None:
+    """
+    Fetch task information from BigPanDA for a given Task ID.
+
+    Args:
+        taskid: BigPanDA task ID.
+
+    Returns
+    -------
+        Task info as a dictionary if found, otherwise None.
+    """
     url = f"https://bigpanda.cern.ch/tasks/?jeditaskid={taskid}&json"
     print(f"Fetching task info from: {url}")
     try:
@@ -86,13 +112,33 @@ def fetch_taskinfo_from_bigpanda(taskid: str) -> dict | None:
     return None
 
 
-def extract_mc_container_from_json(data: dict) -> str | None:
+def extract_mc_container_from_json(data: dict[str, Any]) -> str | None:
+    """
+    Extract the MC container name (e.g., mc16_13TeV.<something>) from a task JSON.
+
+    Args:
+        data: Task info dictionary from BigPanDA.
+
+    Returns
+    -------
+        The container string if found, otherwise None.
+    """
     text = json.dumps(data)
     match = re.search(r"(mc\d+_13TeV\.[\w\.]+)", text)
     return match.group(1) if match else None
 
 
-def parse_line_from_taskname(taskname: str):
+def parse_line_from_taskname(taskname: str) -> tuple[int | None, str | None]:
+    """
+    Extract DSID and etag from a task name string.
+
+    Args:
+        taskname: Full task name.
+
+    Returns
+    -------
+        A tuple of (DSID as int, etag as string), or (None, None) if not found.
+    """
     match = re.match(r".*\.(\d{6})\.e(\d+)_", taskname)
     if match:
         dsid, etag = match.groups()
@@ -101,6 +147,16 @@ def parse_line_from_taskname(taskname: str):
 
 
 def parse_campaign_from_taskname(taskname: str) -> str | None:
+    """
+    Derive campaign (mc15/mc16/etc.) from a task or container name.
+
+    Args:
+        taskname: The name string.
+
+    Returns
+    -------
+        Campaign string, or None if not found.
+    """
     m = re.match(r"(mc\d+)_13TeV", taskname)
     if m:
         raw_campaign = m.group(1)
@@ -109,6 +165,16 @@ def parse_campaign_from_taskname(taskname: str) -> str | None:
 
 
 def extract_info_from_container(container: str) -> tuple[int, str, str] | None:
+    """
+    Extract DSID, etag, and campaign name from a container string.
+
+    Args:
+        container: The MC container string.
+
+    Returns
+    -------
+        A tuple of (DSID, etag, campaign), or None if parsing fails.
+    """
     m_campaign = re.search(r"\b(mc\d+)_13TeV", container)
     m_dsid = re.search(r"\.(\d{6})\.", container)
     m_etag = re.search(r"\.e(\d+)(?:[_.]|$)", container)
@@ -121,12 +187,26 @@ def extract_info_from_container(container: str) -> tuple[int, str, str] | None:
     return None
 
 
-def query_xsecdb(campaign, dsid, etag):
+def query_xsecdb(campaign: str, dsid: int, etag: str) -> dict[str, Any] | None:
+    """
+    Look up cross-section metadata in the PMG xsecDB.
+
+    Args:
+        campaign: Campaign name (e.g., mc16).
+        dsid: Dataset ID.
+        etag: Event tag.
+
+    Returns
+    -------
+        Dictionary with cross_section_pb, genFiltEff, kfactor, and etag if found, otherwise None.
+    """
     db_path = XSECDB_MAP.get(campaign)
     print(f"Searching in {db_path} for DSID={dsid}, etag={etag}")
     if not db_path or not Path(db_path).exists():
         print(f"ERROR: Database file for campaign '{campaign}' not found.")
         return None
+
+    # Iterate through lines in the DB to find a match
     with open(db_path) as f:
         for raw_line in f:
             line = raw_line.strip()
@@ -147,10 +227,20 @@ def query_xsecdb(campaign, dsid, etag):
     return None
 
 
-def write_metadata_to_h5(h5_filename, dsid, metadata_dict):
+def write_metadata_to_h5(h5_filename: str, dsid: int, metadata_dict: dict[str, Any]) -> None:
+    """
+    Write metadata values into an HDF5 file under metadata/<DSID>.
+
+    Args:
+        h5_filename: Target HDF5 file.
+        dsid: Dataset ID to write metadata for.
+        metadata_dict: Dictionary of metadata to inject.
+    """
     with h5py.File(h5_filename, "a") as f:
         meta_group = f.require_group("metadata")
         dsid_group = meta_group.require_group(str(dsid))
+
+        # Overwrite existing keys if present
         for key in ["cross_section_pb", "genFiltEff", "kfactor"]:
             if key in dsid_group:
                 del dsid_group[key]
@@ -158,11 +248,28 @@ def write_metadata_to_h5(h5_filename, dsid, metadata_dict):
             print(f"Wrote {key} = {metadata_dict[key]} to metadata/{dsid}/{key}")
 
 
-def handle_yaml_fallback(h5_path: Path, yaml_data: dict):
+def handle_yaml_fallback(h5_path: Path, yaml_data: dict[str, Any]) -> None:
+    """
+    Use fallback metadata from YAML if automatic lookup fails.
+
+    Parameters
+    ----------
+    h5_path : Path
+        Path to the HDF5 file.
+    yaml_data : dict[str, Any]
+        Metadata dictionary loaded from YAML.
+
+    Raises
+    ------
+    ValueError
+        If YAML is invalid, empty, or missing required fields.
+    """
     if len(yaml_data) != 1:
         raise ValueError("YAML fallback file must contain exactly one entry")
 
     key, value = next(iter(yaml_data.items()))
+
+    # YAML may specify container or DSID
     if key == "container name":
         if not isinstance(value, str):
             raise ValueError("'container name' must be a string")
@@ -193,7 +300,14 @@ def handle_yaml_fallback(h5_path: Path, yaml_data: dict):
     print(f"YAML metadata written to {h5_path.name} for DSID {dsid}")
 
 
-def parse_args_and_yaml():
+def parse_args_and_yaml() -> tuple[list[str], dict[str, Any]]:
+    """
+    Parse CLI arguments and load YAML metadata if provided.
+
+    Returns
+    -------
+        A tuple of (list of HDF5 file paths, YAML metadata dict).
+    """
     parser = argparse.ArgumentParser(
         description="Inject metadata into .h5 files via BigPanDA or YAML fallback."
     )
@@ -201,7 +315,7 @@ def parse_args_and_yaml():
     parser.add_argument("-m", "--manual-yaml", help="Manual metadata YAML fallback file")
     args = parser.parse_args()
 
-    yaml_data = {}
+    yaml_data: dict[str, Any] = {}
     if args.manual_yaml:
         with open(args.manual_yaml) as f:
             yaml_data = yaml.safe_load(f)
@@ -209,7 +323,14 @@ def parse_args_and_yaml():
     return args.h5_files, yaml_data
 
 
-def process_single_file(path: Path, yaml_data: dict):
+def process_single_file(path: Path, yaml_data: dict[str, Any]) -> None:
+    """
+    Process a single .h5 file by attempting BigPanDA lookup, then fallback to YAML.
+
+    Args:
+        path: Path to the HDF5 file.
+        yaml_data: Optional fallback metadata.
+    """
     if not path.exists():
         print(f"File not found: {path}")
         return
@@ -223,6 +344,8 @@ def process_single_file(path: Path, yaml_data: dict):
             dsid, etag = parse_line_from_taskname(taskname)
             container = extract_mc_container_from_json(taskinfo)
             campaign = parse_campaign_from_taskname(container or "")
+
+            # Only query DB if all three are found
             if dsid and etag and campaign:
                 print(
                     f"Matched info: DSID={dsid}, etag={etag}, "
@@ -233,8 +356,7 @@ def process_single_file(path: Path, yaml_data: dict):
                     meta["campaign"] = campaign
                     print(
                         f"Got metadata: cross_section = {meta['cross_section_pb']} pb, "
-                        f"eff = {meta['genFiltEff']}, "
-                        f"k = {meta['kfactor']}"
+                        f"eff = {meta['genFiltEff']}, k = {meta['kfactor']}"
                     )
                     try:
                         write_metadata_to_h5(str(path), dsid, meta)
@@ -246,6 +368,7 @@ def process_single_file(path: Path, yaml_data: dict):
     else:
         print("Failed to extract Task ID from filename")
 
+    # Fallback to YAML if automatic mode fails
     if yaml_data:
         try:
             print("Using YAML fallback path")
@@ -256,7 +379,8 @@ def process_single_file(path: Path, yaml_data: dict):
         print("Failed to retrieve metadata and no YAML fallback provided")
 
 
-def main():
+def main() -> None:
+    """Entry point: parse arguments, download xsecDBs, process each file, and clean up."""
     h5_files, yaml_data = parse_args_and_yaml()
     download_xsecdb_files()
 
@@ -264,6 +388,7 @@ def main():
         print(f"\n==================== Processing {h5_file} ====================\n")
         process_single_file(Path(h5_file), yaml_data)
 
+    # Remove temporary database files after use
     for filename in XSECDB_MAP.values():
         path = Path(filename)
         if path.exists():
