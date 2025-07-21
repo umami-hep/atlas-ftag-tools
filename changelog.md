@@ -3,6 +3,7 @@
 ### [Latest]
 
 - New W to light and c classes [#135](https://github.com/umami-hep/atlas-ftag-tools/pull/135)
+- Allow not doing checks with sample.py [#138](https://github.com/umami-hep/atlas-ftag-tools/pull/138)
 
 ### [v0.2.14](https://github.com/umami-hep/atlas-ftag-tools/releases/tag/v0.2.14) (01.07.2025)
 
