@@ -17,6 +17,7 @@ Submodules
 
    /autoapi/ftag/cli_utils/index
    /autoapi/ftag/cuts/index
+   /autoapi/ftag/find_metadata/index
    /autoapi/ftag/fraction_optimization/index
    /autoapi/ftag/git_check/index
    /autoapi/ftag/hdf5/index

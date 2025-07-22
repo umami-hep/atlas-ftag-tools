@@ -1,0 +1,171 @@
+ftag.find_metadata
+==================
+
+.. py:module:: ftag.find_metadata
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   ftag.find_metadata.XSECDB_MAP
+   ftag.find_metadata.XSECDB_URL_BASE
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   ftag.find_metadata.validate_url_scheme
+   ftag.find_metadata.download_xsecdb_files
+   ftag.find_metadata.extract_taskid_from_filename
+   ftag.find_metadata.fetch_taskinfo_from_bigpanda
+   ftag.find_metadata.extract_mc_container_from_json
+   ftag.find_metadata.parse_line_from_taskname
+   ftag.find_metadata.parse_campaign_from_taskname
+   ftag.find_metadata.extract_info_from_container
+   ftag.find_metadata.query_xsecdb
+   ftag.find_metadata.write_metadata_to_h5
+   ftag.find_metadata.handle_yaml_fallback
+   ftag.find_metadata.parse_args_and_yaml
+   ftag.find_metadata.process_single_file
+   ftag.find_metadata.main
+
+
+Module Contents
+---------------
+
+.. py:data:: XSECDB_MAP
+   :type:  dict[str, str]
+
+.. py:data:: XSECDB_URL_BASE
+   :type:  str
+   :value: 'https://atlas-groupdata.web.cern.ch/atlas-groupdata/dev/PMGTools/'
+
+
+.. py:function:: validate_url_scheme(url: str) -> urllib.parse.ParseResult
+
+   Validate the scheme of a given URL, ensuring it is http or https.
+
+   :param url: URL string to validate.
+   :type url: str
+
+   :returns: Parsed URL object.
+   :rtype: ParseResult
+
+   :raises ValueError: If the URL scheme is not supported.
+
+
+.. py:function:: download_xsecdb_files() -> None
+
+   Download the PMG xsecDB files from CERN if they are not present locally.
+
+
+.. py:function:: extract_taskid_from_filename(h5_path: pathlib.Path) -> str | None
+
+   Extract the BigPanDA Task ID (8-digit) from an HDF5 filename.
+
+   :param h5_path: Path object pointing to the .h5 file.
+
+   :rtype: The Task ID as a string if found, otherwise None.
+
+
+.. py:function:: fetch_taskinfo_from_bigpanda(taskid: str) -> dict[str, Any] | None
+
+   Fetch task information from BigPanDA for a given Task ID.
+
+   :param taskid: BigPanDA task ID.
+
+   :rtype: Task info as a dictionary if found, otherwise None.
+
+
+.. py:function:: extract_mc_container_from_json(data: dict[str, Any]) -> str | None
+
+   Extract the MC container name (e.g., mc16_13TeV.<something>) from a task JSON.
+
+   :param data: Task info dictionary from BigPanDA.
+
+   :rtype: The container string if found, otherwise None.
+
+
+.. py:function:: parse_line_from_taskname(taskname: str) -> tuple[int | None, str | None]
+
+   Extract DSID and etag from a task name string.
+
+   :param taskname: Full task name.
+
+   :rtype: A tuple of (DSID as int, etag as string), or (None, None) if not found.
+
+
+.. py:function:: parse_campaign_from_taskname(taskname: str) -> str | None
+
+   Derive campaign (mc15/mc16/etc.) from a task or container name.
+
+   :param taskname: The name string.
+
+   :rtype: Campaign string, or None if not found.
+
+
+.. py:function:: extract_info_from_container(container: str) -> tuple[int, str, str] | None
+
+   Extract DSID, etag, and campaign name from a container string.
+
+   :param container: The MC container string.
+
+   :rtype: A tuple of (DSID, etag, campaign), or None if parsing fails.
+
+
+.. py:function:: query_xsecdb(campaign: str, dsid: int, etag: str) -> dict[str, Any] | None
+
+   Look up cross-section metadata in the PMG xsecDB.
+
+   :param campaign: Campaign name (e.g., mc16).
+   :param dsid: Dataset ID.
+   :param etag: Event tag.
+
+   :rtype: Dictionary with cross_section_pb, genFiltEff, kfactor, and etag if found, otherwise None.
+
+
+.. py:function:: write_metadata_to_h5(h5_filename: str, dsid: int, metadata_dict: dict[str, Any]) -> None
+
+   Write metadata values into an HDF5 file under metadata/<DSID>.
+
+   :param h5_filename: Target HDF5 file.
+   :param dsid: Dataset ID to write metadata for.
+   :param metadata_dict: Dictionary of metadata to inject.
+
+
+.. py:function:: handle_yaml_fallback(h5_path: pathlib.Path, yaml_data: dict[str, Any]) -> None
+
+   Use fallback metadata from YAML if automatic lookup fails.
+
+   :param h5_path: Path to the HDF5 file.
+   :type h5_path: Path
+   :param yaml_data: Metadata dictionary loaded from YAML.
+   :type yaml_data: dict[str, Any]
+
+   :raises ValueError: If YAML is invalid, empty, or missing required fields.
+
+
+.. py:function:: parse_args_and_yaml() -> tuple[list[str], dict[str, Any]]
+
+   Parse CLI arguments and load YAML metadata if provided.
+
+   :rtype: A tuple of (list of HDF5 file paths, YAML metadata dict).
+
+
+.. py:function:: process_single_file(path: pathlib.Path, yaml_data: dict[str, Any]) -> None
+
+   Process a single .h5 file by attempting BigPanDA lookup, then fallback to YAML.
+
+   :param path: Path to the HDF5 file.
+   :param yaml_data: Optional fallback metadata.
+
+
+.. py:function:: main() -> None
+
+   Entry point: parse arguments, download xsecDBs, process each file, and clean up.
+
+
