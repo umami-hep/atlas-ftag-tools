@@ -172,6 +172,13 @@ def calculate_efficiency(
     # Get the cutvalue for the given target efficiency
     cutvalue = weighted_percentile(arr=sig_disc, percentile=1.0 - target_eff, weights=sig_weights)
 
+    # Get the minimum discriminant for the background
+    cutvalue_eff_1 = weighted_percentile(arr=bkg_disc, percentile=0.0, weights=sig_weights)
+
+    # Get the position where the target efficiency equals 1 and replace the cutvalue
+    target_eff_1_mask = target_eff == 1.0
+    cutvalue[target_eff_1_mask] = cutvalue_eff_1
+
     # Sort the cutvalues to get the correct order
     sorted_args = np.argsort(1 - target_eff)
 
