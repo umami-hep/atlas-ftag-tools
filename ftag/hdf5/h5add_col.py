@@ -153,7 +153,7 @@ def h5_add_column(
         Input h5 file to read from.
     output_file : str | Path
         Output h5 file to write to.
-    append_function : callable | list[callable]
+    append_function : Callable | list[Callable]
         A function, or list of functions, which take a batch from H5Reader and returns a dictionary
         of the form:
             {
@@ -175,9 +175,9 @@ def h5_add_column(
         List of groups to write to the output file. If None, writes all groups. By default None.
         Note that this is a subset of the input groups, and must include all groups that the
         append functions wish to write to.
-    reader_kwargs : dict, optional
+    reader_kwargs : dict | None, optional
         Additional arguments to pass to the H5Reader. By default None.
-    writer_kwargs : dict, optional
+    writer_kwargs : dict | None, optional
         Additional arguments to pass to the H5Writer. By default None.
     overwrite : bool, optional
         If True, will overwrite the output file if it exists. By default False.

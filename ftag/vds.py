@@ -89,14 +89,14 @@ def glob_re(pattern: str | None, regex_path: str | None) -> list[str] | None:
 
     Parameters
     ----------
-    pattern : str
+    pattern : str | None
         Pattern for the input files
-    regex_path : str
+    regex_path : str | None
         Regex path for the input files
 
     Returns
     -------
-    list[str]
+    list[str] | None
         List of the file basenames that matched the regex pattern
     """
     if pattern is None or regex_path is None:
@@ -113,14 +113,14 @@ def regex_files_from_dir(
 
     Parameters
     ----------
-    reg_matched_fnames : list[str]
+    reg_matched_fnames : list[str] | None
         List of the regex matched file names
-    regex_path : str
+    regex_path : str | None
         Regex path for the input files
 
     Returns
     -------
-    list[str]
+    list[str] | None
         List of file paths (as strings) that matched the regex and any subsequent
         globbing inside matched directories.
     """
@@ -212,6 +212,8 @@ def aggregate_cutbookkeeper(
     ----------
     fnames : list[str]
         List of the input files
+    group_name: str, optional
+        Group name of the cutBookkeeper. By default "cutBookkeeper"
 
     Returns
     -------

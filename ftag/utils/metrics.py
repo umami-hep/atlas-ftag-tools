@@ -25,9 +25,9 @@ def save_divide(
 
     Parameters
     ----------
-    numerator: np.ndarray | float,
+    numerator: np.ndarray | float
         Numerator in the ratio calculation.
-    denominator: np.ndarray | float,
+    denominator: np.ndarray | float
         Denominator in the ratio calculation.
     default: float
         Default value which is returned if denominator is 0.
@@ -133,7 +133,7 @@ def calculate_efficiency(
         Signal discriminant
     bkg_disc : np.ndarray
         Background discriminant
-    target_eff : float or list or np.ndarray
+    target_eff : float | list | np.ndarray
         Working point which is used for discriminant calculation
     return_cuts : bool
         Specifies if the cut values corresponding to the provided WPs are returned.
@@ -197,7 +197,7 @@ def calculate_efficiency(
 def calculate_rejection(
     sig_disc: np.ndarray,
     bkg_disc: np.ndarray,
-    target_eff,
+    target_eff: float | list,
     return_cuts: bool = False,
     sig_weights: np.ndarray = None,
     bkg_weights: np.ndarray = None,
@@ -211,16 +211,18 @@ def calculate_rejection(
         Signal discriminant
     bkg_disc : np.ndarray
         Background discriminant
-    target_eff : float or list
+    target_eff : float | list
         Working point which is used for discriminant calculation
-    return_cuts : bool
+    return_cuts : bool, optional
         Specifies if the cut values corresponding to the provided WPs are returned.
         If target_eff is a float, only one cut value will be returned. If target_eff
         is an array, target_eff is an array as well.
-    sig_weights : np.ndarray
+    sig_weights : np.ndarray, optional
         Weights for signal events, by default None
-    bkg_weights : np.ndarray
+    bkg_weights : np.ndarray, optional
         Weights for background events, by default None
+    smooth: bool, optional
+        Decide, if the output is smoothed using a 1D gaussian filter. By default False
 
     Returns
     -------
@@ -274,7 +276,7 @@ def calculate_efficiency_error(
 
     Parameters
     ----------
-    arr : numpy.array
+    arr : np.ndarray
         Efficiency values
     n_counts : int
         Number of used statistics to calculate efficiency
@@ -285,7 +287,7 @@ def calculate_efficiency_error(
 
     Returns
     -------
-    numpy.array
+    np.ndarray
         Efficiency uncertainties
 
     Raises
@@ -319,7 +321,7 @@ def calculate_rejection_error(
 
     Parameters
     ----------
-    arr : numpy.array
+    arr : np.ndarray
         Rejection values
     n_counts : int
         Number of used statistics to calculate rejection
@@ -328,15 +330,13 @@ def calculate_rejection_error(
 
     Returns
     -------
-    numpy.array
+    np.ndarray
         Rejection uncertainties
 
     Raises
     ------
     ValueError
-        If n_counts <=0
-    ValueError
-        If any rejection value is 0
+        If n_counts <=0 or if the rejection value is 0
 
     Notes
     -----
@@ -376,7 +376,9 @@ def get_discriminant(
         Name of the tagger
     signal : Label
         Signal flavour (bjets/cjets or hbb/hcc)
-    fraction_values : dict
+    flavours: LabelContainer
+        Labels that are used in the discriminant calculation
+    fraction_values : dict[str, float]
         Dict with the fraction values for the background classes for the given tagger
     epsilon : float, optional
         Small number to avoid division by zero, by default 1e-10

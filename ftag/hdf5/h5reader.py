@@ -207,7 +207,7 @@ class H5SingleReader:
 class H5Reader:
     """Reads data from multiple HDF5 files.
 
-    Parameters
+    Attributes
     ----------
     fname : Path | str | list[Path | str]
         Path to the HDF5 file or list of paths

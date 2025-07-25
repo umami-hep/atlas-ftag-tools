@@ -16,7 +16,7 @@ class Labeller:
 
     Classes are assigned integer labels in [0, ..., n] based on pre-defined selections.
 
-    Parameters
+    Attributes
     ----------
     labels : LabelContainer | list[str | Label]
         The labels to be use.
