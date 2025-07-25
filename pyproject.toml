@@ -1,7 +1,7 @@
 [project]
 name = "atlas-ftag-tools"
 description = "ATLAS Flavour Tagging Tools"
-authors = [{name="Sam Van Stroud"}, {name="Philipp Gadow"}]
+authors = [{name="Sam Van Stroud"}, {name="Philipp Gadow"}, {name="Alexander Froch"}]
 dynamic = ["version"]
 license = {text = "MIT"}
 readme = "README.md"
@@ -16,13 +16,14 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-  "ruff==0.6.2",
+  "ipykernel==6.21.3",
   "mypy==1.11.2",
   "pre-commit==3.1.1",
-  "pytest==7.2.2",
-  "pytest-cov==4.0.0",
+  "pydoclint==0.6.6",
   "pytest_notebook==0.10.0",
-  "ipykernel==6.21.3",
+  "pytest-cov==4.0.0",
+  "pytest==7.2.2",
+  "ruff==0.6.2",
 ]
 
 [project.urls]
@@ -30,12 +31,12 @@ dev = [
 
 
 [project.scripts]
-vds = "ftag.vds:main"
-wps = "ftag.working_points:main"
+find_metadata = "ftag.find_metadata:main"
+h5addcol = "ftag.hdf5.h5add_col:main"
 h5move = "ftag.hdf5.h5move:main"
 h5split = "ftag.hdf5.h5split:main"
-h5addcol = "ftag.hdf5.h5add_col:main"
-find_metadata = "ftag.find_metadata:main"
+vds = "ftag.vds:main"
+wps = "ftag.working_points:main"
 
 [tool.setuptools]
 packages = ["ftag", "ftag.hdf5", "ftag.utils"]

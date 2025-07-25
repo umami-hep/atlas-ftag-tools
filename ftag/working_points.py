@@ -27,7 +27,7 @@ def parse_args(args: Sequence[str]) -> argparse.Namespace:
 
     Parameters
     ----------
-    args : Sequence[str] | None
+    args : Sequence[str]
         Sequence of string inputs to the script
 
     Returns
@@ -38,12 +38,9 @@ def parse_args(args: Sequence[str]) -> argparse.Namespace:
     Raises
     ------
     ValueError
-        When both --effs and --disc_cuts are provided
-    ValueError
-        When neither --effs nor --disc_cuts are provided
-    ValueError
-        When the number of fraction values is not conistent
-    ValueError
+        When both --effs and --disc_cuts are provided or
+        When neither --effs nor --disc_cuts are provided or
+        When the number of fraction values is not conistent or
         When the sum of fraction values for a tagger is not equal to one
     """
     # Define the pre-parser which checks the --category
@@ -300,6 +297,8 @@ def get_rej_eff_at_disc(
         List of discriminant cut values for which the efficiency/rejection is calculated
     flavours : LabelContainer
         LabelContainer instance of the flavours that are used
+    fraction_values : dict
+        Dict with the fraction values to use
 
     Returns
     -------
@@ -519,8 +518,8 @@ def main(args: Sequence[str]) -> dict | None:
 
     Parameters
     ----------
-    args : Sequence[str] | None, optional
-        Input arguments, by default None
+    args : Sequence[str]
+        Input arguments
 
     Returns
     -------

@@ -13,15 +13,13 @@ import ftag
 class H5Writer:
     """Writes jets to an HDF5 file.
 
-    Parameters
+    Attributes
     ----------
     dst : Path | str
         Path to the output file.
     dtypes : dict[str, np.dtype]
         Dictionary of group names and their corresponding dtypes.
-    num_jets : int
-        Number of jets to write.
-    shapes : dict[str, int], optional
+    shapes : dict[str, tuple[int, ...]], optional
         Dictionary of group names and their corresponding shapes.
     jets_name : str, optional
         Name of the jets group. Default is "jets".
@@ -29,12 +27,14 @@ class H5Writer:
         Whether to add a flavour label to the jets group. Default is False.
     compression : str, optional
         Compression algorithm to use. Default is "lzf".
-    precision : str | None, optional
+    precision : str, optional
         Precision to use. Default is None.
     full_precision_vars : list[str] | None, optional
         List of variables to store in full precision. Default is None.
     shuffle : bool, optional
         Whether to shuffle the jets before writing. Default is True.
+    num_jets : int | None
+        Number of jets to write.
 
     """
 

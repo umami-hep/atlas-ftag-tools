@@ -1,15 +1,20 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import numpy as np
 from numpy.lib.recfunctions import unstructured_to_structured as u2s
 
 from ftag.transform import Transform
 
+if TYPE_CHECKING:  # pragma: no cover
+    import h5py
+
 __all__ = ["cast_dtype", "get_dtype", "join_structured_arrays"]
 
 
 def get_dtype(
-    ds,
+    ds: h5py.Dataset,
     variables: list[str] | None = None,
     precision: str | None = None,
     transform: Transform | None = None,
@@ -123,7 +128,7 @@ def structured_from_dict(d: dict[str, np.ndarray]) -> np.ndarray:
 
     Parameters
     ----------
-    d : dict
+    d : dict[str, np.ndarray]
         Input dict of numpy arrays
 
     Returns

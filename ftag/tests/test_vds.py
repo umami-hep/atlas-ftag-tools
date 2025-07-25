@@ -96,7 +96,7 @@ def _make_counts_array(seed: int) -> np.ndarray:
 
     Parameters
     ----------
-    seed
+    seed: int
         Offset applied to make every file unique.
 
     Returns
@@ -112,8 +112,13 @@ def _make_counts_array(seed: int) -> np.ndarray:
 
 
 @pytest.fixture
-def h5_with_bookkeeper(tmp_path_factory):
+def h5_with_bookkeeper(tmp_path_factory: pytest.TempPathFactory):
     """Three files; each has ``data`` plus ``cutBookkeeper/{nominal,sysUp}/counts``.
+
+    Parameters
+    ----------
+    tmp_path_factory: pytest.TempPathFactory
+        Temporary path factory from pytest
 
     Returns
     -------
@@ -134,8 +139,13 @@ def h5_with_bookkeeper(tmp_path_factory):
 
 
 @pytest.fixture
-def h5_without_bookkeeper(tmp_path_factory):
+def h5_without_bookkeeper(tmp_path_factory: pytest.TempPathFactory):
     """Three files **without** any ``cutBookkeeper`` group.
+
+    Parameters
+    ----------
+    tmp_path_factory: pytest.TempPathFactory
+        Temporary path factory from pytest
 
     Returns
     -------

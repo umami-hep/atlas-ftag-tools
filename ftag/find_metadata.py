@@ -72,14 +72,16 @@ def download_xsecdb_files() -> None:
 
 
 def extract_taskid_from_filename(h5_path: Path) -> str | None:
-    """
-    Extract the BigPanDA Task ID (8-digit) from an HDF5 filename.
+    """Extract the BigPanDA Task ID (8-digit) from an HDF5 filename.
 
-    Args:
-        h5_path: Path object pointing to the .h5 file.
+    Parameters
+    ----------
+    h5_path : Path
+        Path object pointing to the .h5 file.
 
     Returns
     -------
+    str | None
         The Task ID as a string if found, otherwise None.
     """
     m = re.search(r"\.(\d{8})\.", h5_path.name)
@@ -87,14 +89,16 @@ def extract_taskid_from_filename(h5_path: Path) -> str | None:
 
 
 def fetch_taskinfo_from_bigpanda(taskid: str) -> dict[str, Any] | None:
-    """
-    Fetch task information from BigPanDA for a given Task ID.
+    """Fetch task information from BigPanDA for a given Task ID.
 
-    Args:
-        taskid: BigPanDA task ID.
+    Parameters
+    ----------
+    taskid : str
+        BigPanDA task ID.
 
     Returns
     -------
+    dict[str, Any] | None
         Task info as a dictionary if found, otherwise None.
     """
     url = f"https://bigpanda.cern.ch/tasks/?jeditaskid={taskid}&json"
@@ -113,14 +117,16 @@ def fetch_taskinfo_from_bigpanda(taskid: str) -> dict[str, Any] | None:
 
 
 def extract_mc_container_from_json(data: dict[str, Any]) -> str | None:
-    """
-    Extract the MC container name (e.g., mc16_13TeV.<something>) from a task JSON.
+    """Extract the MC container name (e.g., mc16_13TeV.<something>) from a task JSON.
 
-    Args:
-        data: Task info dictionary from BigPanDA.
+    Parameters
+    ----------
+    data : dict[str, Any]
+        Task info dictionary from BigPanDA.
 
     Returns
     -------
+    str | None
         The container string if found, otherwise None.
     """
     text = json.dumps(data)
@@ -129,14 +135,16 @@ def extract_mc_container_from_json(data: dict[str, Any]) -> str | None:
 
 
 def parse_line_from_taskname(taskname: str) -> tuple[int | None, str | None]:
-    """
-    Extract DSID and etag from a task name string.
+    """Extract DSID and etag from a task name string.
 
-    Args:
-        taskname: Full task name.
+    Parameters
+    ----------
+    taskname : str
+        Full task name.
 
     Returns
     -------
+    tuple[int | None, str | None]
         A tuple of (DSID as int, etag as string), or (None, None) if not found.
     """
     match = re.match(r".*\.(\d{6})\.e(\d+)_", taskname)
@@ -147,14 +155,16 @@ def parse_line_from_taskname(taskname: str) -> tuple[int | None, str | None]:
 
 
 def parse_campaign_from_taskname(taskname: str) -> str | None:
-    """
-    Derive campaign (mc15/mc16/etc.) from a task or container name.
+    """Derive campaign (mc15/mc16/etc.) from a task or container name.
 
-    Args:
-        taskname: The name string.
+    Parameters
+    ----------
+    taskname : str
+        The name string.
 
     Returns
     -------
+    str | None
         Campaign string, or None if not found.
     """
     m = re.match(r"(mc\d+)_13TeV", taskname)
@@ -165,14 +175,16 @@ def parse_campaign_from_taskname(taskname: str) -> str | None:
 
 
 def extract_info_from_container(container: str) -> tuple[int, str, str] | None:
-    """
-    Extract DSID, etag, and campaign name from a container string.
+    """Extract DSID, etag, and campaign name from a container string.
 
-    Args:
-        container: The MC container string.
+    Parameters
+    ----------
+    container : str
+        The MC container string.
 
     Returns
     -------
+    tuple[int, str, str] | None
         A tuple of (DSID, etag, campaign), or None if parsing fails.
     """
     m_campaign = re.search(r"\b(mc\d+)_13TeV", container)
@@ -188,16 +200,20 @@ def extract_info_from_container(container: str) -> tuple[int, str, str] | None:
 
 
 def query_xsecdb(campaign: str, dsid: int, etag: str) -> dict[str, Any] | None:
-    """
-    Look up cross-section metadata in the PMG xsecDB.
+    """Look up cross-section metadata in the PMG xsecDB.
 
-    Args:
-        campaign: Campaign name (e.g., mc16).
-        dsid: Dataset ID.
-        etag: Event tag.
+    Parameters
+    ----------
+    campaign : str
+        Campaign name (e.g., mc16).
+    dsid : int
+        Dataset ID.
+    etag : str
+        Event tag.
 
     Returns
     -------
+    dict[str, Any] | None
         Dictionary with cross_section_pb, genFiltEff, kfactor, and etag if found, otherwise None.
     """
     db_path = XSECDB_MAP.get(campaign)
@@ -228,13 +244,16 @@ def query_xsecdb(campaign: str, dsid: int, etag: str) -> dict[str, Any] | None:
 
 
 def write_metadata_to_h5(h5_filename: str, dsid: int, metadata_dict: dict[str, Any]) -> None:
-    """
-    Write metadata values into an HDF5 file under metadata/<DSID>.
+    """Write metadata values into an HDF5 file under metadata/<DSID>.
 
-    Args:
-        h5_filename: Target HDF5 file.
-        dsid: Dataset ID to write metadata for.
-        metadata_dict: Dictionary of metadata to inject.
+    Parameters
+    ----------
+    h5_filename : str
+        Target HDF5 file.
+    dsid : int
+        Dataset ID to write metadata for.
+    metadata_dict : dict[str, Any]
+        Dictionary of metadata to inject.
     """
     with h5py.File(h5_filename, "a") as f:
         meta_group = f.require_group("metadata")
@@ -249,8 +268,7 @@ def write_metadata_to_h5(h5_filename: str, dsid: int, metadata_dict: dict[str, A
 
 
 def handle_yaml_fallback(h5_path: Path, yaml_data: dict[str, Any]) -> None:
-    """
-    Use fallback metadata from YAML if automatic lookup fails.
+    """Use fallback metadata from YAML if automatic lookup fails.
 
     Parameters
     ----------
@@ -301,11 +319,11 @@ def handle_yaml_fallback(h5_path: Path, yaml_data: dict[str, Any]) -> None:
 
 
 def parse_args_and_yaml() -> tuple[list[str], dict[str, Any]]:
-    """
-    Parse CLI arguments and load YAML metadata if provided.
+    """Parse CLI arguments and load YAML metadata if provided.
 
     Returns
     -------
+    tuple[list[str], dict[str, Any]]
         A tuple of (list of HDF5 file paths, YAML metadata dict).
     """
     parser = argparse.ArgumentParser(
@@ -324,12 +342,14 @@ def parse_args_and_yaml() -> tuple[list[str], dict[str, Any]]:
 
 
 def process_single_file(path: Path, yaml_data: dict[str, Any]) -> None:
-    """
-    Process a single .h5 file by attempting BigPanDA lookup, then fallback to YAML.
+    """Process a single .h5 file by attempting BigPanDA lookup, then fallback to YAML.
 
-    Args:
-        path: Path to the HDF5 file.
-        yaml_data: Optional fallback metadata.
+    Parameters
+    ----------
+    path : Path
+        Path to the HDF5 file.
+    yaml_data : dict[str, Any]
+        Optional fallback metadata.
     """
     if not path.exists():
         print(f"File not found: {path}")
