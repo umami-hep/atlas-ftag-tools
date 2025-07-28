@@ -18,3 +18,9 @@ repos:
     hooks:
       - id: yamllint
         args: ["-d", "{extends: relaxed, rules: {line-length: disable}}"]
+
+  - repo: https://github.com/jsh9/pydoclint
+    rev: 0.6.6
+    hooks:
+      - id: pydoclint
+        args: [--style=numpy, --check-return-types=False]
