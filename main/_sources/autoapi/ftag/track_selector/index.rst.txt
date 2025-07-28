@@ -23,10 +23,17 @@ Module Contents
    Applying cuts will NaN out the tracks that do not pass the cuts,
    but leave the shape of the array unchanged.
 
-   :param cuts: The cuts to apply to the tracks
-   :type cuts: Cuts
-   :param valid_str: The name of the field in the tracks that indicates whether the track is
-   :type valid_str: str
+   .. attribute:: cuts
+
+      The cuts to apply to the tracks
+
+      :type: Cuts
+
+   .. attribute:: valid_str
+
+      The name of the field in the tracks that indicates whether the track is
+
+      :type: str, optional
 
 
    .. py:attribute:: cuts

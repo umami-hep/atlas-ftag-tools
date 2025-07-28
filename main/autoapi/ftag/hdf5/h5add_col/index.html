@@ -641,7 +641,7 @@ such that h5read.stream(all_groups) will return all the groups in the file.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_file</strong> (<em>str</em><em> | </em><em>Path</em>) – Input h5 file to read from.</p></li>
 <li><p><strong>output_file</strong> (<em>str</em><em> | </em><em>Path</em>) – Output h5 file to write to.</p></li>
-<li><p><strong>append_function</strong> (<em>callable</em><em> | </em><em>list</em><em>[</em><em>callable</em><em>]</em>) – <p>A function, or list of functions, which take a batch from H5Reader and returns a dictionary
+<li><p><strong>append_function</strong> (<em>Callable</em><em> | </em><em>list</em><em>[</em><em>Callable</em><em>]</em>) – <p>A function, or list of functions, which take a batch from H5Reader and returns a dictionary
 of the form:</p>
 <blockquote>
 <div><dl>
@@ -666,8 +666,8 @@ new_column4 : data,</p>
 <li><p><strong>output_groups</strong> (<em>list</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em><em>, </em><em>optional</em>) – List of groups to write to the output file. If None, writes all groups. By default None.
 Note that this is a subset of the input groups, and must include all groups that the
 append functions wish to write to.</p></li>
-<li><p><strong>reader_kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – Additional arguments to pass to the H5Reader. By default None.</p></li>
-<li><p><strong>writer_kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – Additional arguments to pass to the H5Writer. By default None.</p></li>
+<li><p><strong>reader_kwargs</strong> (<em>dict</em><em> | </em><em>None</em><em>, </em><em>optional</em>) – Additional arguments to pass to the H5Reader. By default None.</p></li>
+<li><p><strong>writer_kwargs</strong> (<em>dict</em><em> | </em><em>None</em><em>, </em><em>optional</em>) – Additional arguments to pass to the H5Writer. By default None.</p></li>
 <li><p><strong>overwrite</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, will overwrite the output file if it exists. By default False.
 If False, will raise a FileExistsError if the output file exists.
 If None, will check if the output file exists and raise an error if it does unless

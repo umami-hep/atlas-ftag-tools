@@ -511,7 +511,7 @@
 <dd><p>Parse the input arguments into a Namespace.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>args</strong> (<em>Sequence</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>) – Sequence of string inputs to the script</p>
+<dd class="field-odd"><p><strong>args</strong> (<em>Sequence</em><em>[</em><em>str</em><em>]</em>) – Sequence of string inputs to the script</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Namespace with the parsed arguments</p>
@@ -520,12 +520,10 @@
 <dd class="field-odd"><p>argparse.Namespace</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>ValueError</strong> – When both –effs and –disc_cuts are provided</p></li>
-<li><p><strong>ValueError</strong> – When neither –effs nor –disc_cuts are provided</p></li>
-<li><p><strong>ValueError</strong> – When the number of fraction values is not conistent</p></li>
-<li><p><strong>ValueError</strong> – When the sum of fraction values for a tagger is not equal to one</p></li>
-</ul>
+<dd class="field-even"><p><strong>ValueError</strong> – When both –effs and –disc_cuts are provided or
+When neither –effs nor –disc_cuts are provided or
+When the number of fraction values is not conistent or
+When the sum of fraction values for a tagger is not equal to one</p>
 </dd>
 </dl>
 </dd></dl>
@@ -584,6 +582,7 @@
 <li><p><strong>signal</strong> (<a class="reference internal" href="../index.html#ftag.Label" title="ftag.Label"><em>Label</em></a>) – Label instance of the signal flavour</p></li>
 <li><p><strong>disc_cuts</strong> (<em>list</em>) – List of discriminant cut values for which the efficiency/rejection is calculated</p></li>
 <li><p><strong>flavours</strong> (<a class="reference internal" href="../index.html#ftag.LabelContainer" title="ftag.LabelContainer"><em>LabelContainer</em></a>) – LabelContainer instance of the flavours that are used</p></li>
+<li><p><strong>fraction_values</strong> (<em>dict</em>) – Dict with the fraction values to use</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -654,7 +653,7 @@ stored the resulting dict in a yaml file in args.outfile.</p>
 <dd><p>Main function to run working point calculation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>args</strong> (<em>Sequence</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em><em>, </em><em>optional</em>) – Input arguments, by default None</p>
+<dd class="field-odd"><p><strong>args</strong> (<em>Sequence</em><em>[</em><em>str</em><em>]</em>) – Input arguments</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The output dict with the calculated values. When –outfile

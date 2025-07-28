@@ -34,9 +34,9 @@ Module Contents
    denominator is 0.
 
    :param numerator: Numerator in the ratio calculation.
-   :type numerator: np.ndarray | float,
+   :type numerator: np.ndarray | float
    :param denominator: Denominator in the ratio calculation.
-   :type denominator: np.ndarray | float,
+   :type denominator: np.ndarray | float
    :param default: Default value which is returned if denominator is 0.
    :type default: float
 
@@ -71,7 +71,7 @@ Module Contents
    :param bkg_disc: Background discriminant
    :type bkg_disc: np.ndarray
    :param target_eff: Working point which is used for discriminant calculation
-   :type target_eff: float or list or np.ndarray
+   :type target_eff: float | list | np.ndarray
    :param return_cuts: Specifies if the cut values corresponding to the provided WPs are returned.
                        If target_eff is a float, only one cut value will be returned. If target_eff
                        is an array, target_eff is an array as well.
@@ -87,7 +87,7 @@ Module Contents
                Return float if target_eff is a float, else np.ndarray
 
 
-.. py:function:: calculate_rejection(sig_disc: numpy.ndarray, bkg_disc: numpy.ndarray, target_eff, return_cuts: bool = False, sig_weights: numpy.ndarray = None, bkg_weights: numpy.ndarray = None, smooth: bool = False)
+.. py:function:: calculate_rejection(sig_disc: numpy.ndarray, bkg_disc: numpy.ndarray, target_eff: float | list, return_cuts: bool = False, sig_weights: numpy.ndarray = None, bkg_weights: numpy.ndarray = None, smooth: bool = False)
 
    Calculate rejection.
 
@@ -96,15 +96,17 @@ Module Contents
    :param bkg_disc: Background discriminant
    :type bkg_disc: np.ndarray
    :param target_eff: Working point which is used for discriminant calculation
-   :type target_eff: float or list
+   :type target_eff: float | list
    :param return_cuts: Specifies if the cut values corresponding to the provided WPs are returned.
                        If target_eff is a float, only one cut value will be returned. If target_eff
                        is an array, target_eff is an array as well.
-   :type return_cuts: bool
+   :type return_cuts: bool, optional
    :param sig_weights: Weights for signal events, by default None
-   :type sig_weights: np.ndarray
+   :type sig_weights: np.ndarray, optional
    :param bkg_weights: Weights for background events, by default None
-   :type bkg_weights: np.ndarray
+   :type bkg_weights: np.ndarray, optional
+   :param smooth: Decide, if the output is smoothed using a 1D gaussian filter. By default False
+   :type smooth: bool, optional
 
    :returns: * **rej** (*float or np.ndarray*) -- Rejection.
                If target_eff is a float, a float is returned if it's a list a np.ndarray
@@ -117,7 +119,7 @@ Module Contents
    Calculate statistical efficiency uncertainty.
 
    :param arr: Efficiency values
-   :type arr: numpy.array
+   :type arr: np.ndarray
    :param n_counts: Number of used statistics to calculate efficiency
    :type n_counts: int
    :param suppress_zero_divison_error: Not raising Error for zero division
@@ -126,7 +128,7 @@ Module Contents
    :type norm: bool, optional
 
    :returns: Efficiency uncertainties
-   :rtype: numpy.array
+   :rtype: np.ndarray
 
    :raises ValueError: If n_counts <=0
 
@@ -141,17 +143,16 @@ Module Contents
    Calculate the rejection uncertainties.
 
    :param arr: Rejection values
-   :type arr: numpy.array
+   :type arr: np.ndarray
    :param n_counts: Number of used statistics to calculate rejection
    :type n_counts: int
    :param norm: If True, normed (relative) error is being calculated, by default False
    :type norm: bool, optional
 
    :returns: Rejection uncertainties
-   :rtype: numpy.array
+   :rtype: np.ndarray
 
-   :raises ValueError: If n_counts <=0
-   :raises ValueError: If any rejection value is 0
+   :raises ValueError: If n_counts <=0 or if the rejection value is 0
 
    .. rubric:: Notes
 
@@ -171,8 +172,10 @@ Module Contents
    :type tagger: str
    :param signal: Signal flavour (bjets/cjets or hbb/hcc)
    :type signal: Label
+   :param flavours: Labels that are used in the discriminant calculation
+   :type flavours: LabelContainer
    :param fraction_values: Dict with the fraction values for the background classes for the given tagger
-   :type fraction_values: dict
+   :type fraction_values: dict[str, float]
    :param epsilon: Small number to avoid division by zero, by default 1e-10
    :type epsilon: float, optional
 

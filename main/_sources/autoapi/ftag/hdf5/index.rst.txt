@@ -63,7 +63,7 @@ Package Contents
                                    },
                                    ...
                                }
-   :type append_function: callable | list[callable]
+   :type append_function: Callable | list[Callable]
    :param num_jets: Number of jets to read from the input file. If -1, reads all jets. By default -1.
    :type num_jets: int, optional
    :param input_groups: List of groups to read from the input file. If None, reads all groups. By default None.
@@ -73,9 +73,9 @@ Package Contents
                          append functions wish to write to.
    :type output_groups: list[str] | None, optional
    :param reader_kwargs: Additional arguments to pass to the H5Reader. By default None.
-   :type reader_kwargs: dict, optional
+   :type reader_kwargs: dict | None, optional
    :param writer_kwargs: Additional arguments to pass to the H5Writer. By default None.
-   :type writer_kwargs: dict, optional
+   :type writer_kwargs: dict | None, optional
    :param overwrite: If True, will overwrite the output file if it exists. By default False.
                      If False, will raise a FileExistsError if the output file exists.
                      If None, will check if the output file exists and raise an error if it does unless
@@ -92,30 +92,65 @@ Package Contents
 
    Reads data from multiple HDF5 files.
 
-   :param fname: Path to the HDF5 file or list of paths
-   :type fname: Path | str | list[Path | str]
-   :param batch_size: Number of jets to read at a time, by default 100_000
-   :type batch_size: int, optional
-   :param jets_name: Name of the jets dataset, by default "jets"
-   :type jets_name: str, optional
-   :param precision: Cast floats to given precision, by default None
-   :type precision: str | None, optional
-   :param shuffle: Read batches in a shuffled order, by default True
-   :type shuffle: bool, optional
-   :param weights: Weights for different input datasets, by default None
-   :type weights: list[float] | None, optional
-   :param do_remove_inf: Remove jets with inf values, by default False
-   :type do_remove_inf: bool, optional
-   :param transform: Transform to apply to data, by default None
-   :type transform: Transform | None, optional
-   :param equal_jets: Take the same number of jets (weighted) from each sample, by default True.
-                      This is useful when you specify a list of DSIDs for the sample and they are
-                      qualitatively different, and you want to ensure that you always return batches
-                      with jets from all DSIDs. This is used for example in the QCD resampling for Xbb.
-                      If False, use all jets in each sample, allowing for the full available statistics
-                      to be used. Useful for example if you have multiple ttbar samples and you want to
-                      use all available jets from each sample.
-   :type equal_jets: bool, optional
+   .. attribute:: fname
+
+      Path to the HDF5 file or list of paths
+
+      :type: Path | str | list[Path | str]
+
+   .. attribute:: batch_size
+
+      Number of jets to read at a time, by default 100_000
+
+      :type: int, optional
+
+   .. attribute:: jets_name
+
+      Name of the jets dataset, by default "jets"
+
+      :type: str, optional
+
+   .. attribute:: precision
+
+      Cast floats to given precision, by default None
+
+      :type: str | None, optional
+
+   .. attribute:: shuffle
+
+      Read batches in a shuffled order, by default True
+
+      :type: bool, optional
+
+   .. attribute:: weights
+
+      Weights for different input datasets, by default None
+
+      :type: list[float] | None, optional
+
+   .. attribute:: do_remove_inf
+
+      Remove jets with inf values, by default False
+
+      :type: bool, optional
+
+   .. attribute:: transform
+
+      Transform to apply to data, by default None
+
+      :type: Transform | None, optional
+
+   .. attribute:: equal_jets
+
+      Take the same number of jets (weighted) from each sample, by default True.
+      This is useful when you specify a list of DSIDs for the sample and they are
+      qualitatively different, and you want to ensure that you always return batches
+      with jets from all DSIDs. This is used for example in the QCD resampling for Xbb.
+      If False, use all jets in each sample, allowing for the full available statistics
+      to be used. Useful for example if you have multiple ttbar samples and you want to
+      use all available jets from each sample.
+
+      :type: bool, optional
 
 
    .. py:attribute:: fname
@@ -269,7 +304,7 @@ Package Contents
    :raises ValueError: If precision is not "half" or "full"
 
 
-.. py:function:: get_dtype(ds, variables: list[str] | None = None, precision: str | None = None, transform: ftag.transform.Transform | None = None, full_precision_vars: list[str] | None = None) -> numpy.dtype
+.. py:function:: get_dtype(ds: h5py.Dataset, variables: list[str] | None = None, precision: str | None = None, transform: ftag.transform.Transform | None = None, full_precision_vars: list[str] | None = None) -> numpy.dtype
 
    Return a dtype based on an existing dataset and requested variables.
 
@@ -308,7 +343,7 @@ Package Contents
    Convert a dict to a structured array.
 
    :param d: Input dict of numpy arrays
-   :type d: dict
+   :type d: dict[str, np.ndarray]
 
    :returns: Structured array
    :rtype: np.ndarray
@@ -318,26 +353,65 @@ Package Contents
 
    Writes jets to an HDF5 file.
 
-   :param dst: Path to the output file.
-   :type dst: Path | str
-   :param dtypes: Dictionary of group names and their corresponding dtypes.
-   :type dtypes: dict[str, np.dtype]
-   :param num_jets: Number of jets to write.
-   :type num_jets: int
-   :param shapes: Dictionary of group names and their corresponding shapes.
-   :type shapes: dict[str, int], optional
-   :param jets_name: Name of the jets group. Default is "jets".
-   :type jets_name: str, optional
-   :param add_flavour_label: Whether to add a flavour label to the jets group. Default is False.
-   :type add_flavour_label: bool, optional
-   :param compression: Compression algorithm to use. Default is "lzf".
-   :type compression: str, optional
-   :param precision: Precision to use. Default is None.
-   :type precision: str | None, optional
-   :param full_precision_vars: List of variables to store in full precision. Default is None.
-   :type full_precision_vars: list[str] | None, optional
-   :param shuffle: Whether to shuffle the jets before writing. Default is True.
-   :type shuffle: bool, optional
+   .. attribute:: dst
+
+      Path to the output file.
+
+      :type: Path | str
+
+   .. attribute:: dtypes
+
+      Dictionary of group names and their corresponding dtypes.
+
+      :type: dict[str, np.dtype]
+
+   .. attribute:: shapes
+
+      Dictionary of group names and their corresponding shapes.
+
+      :type: dict[str, tuple[int, ...]], optional
+
+   .. attribute:: jets_name
+
+      Name of the jets group. Default is "jets".
+
+      :type: str, optional
+
+   .. attribute:: add_flavour_label
+
+      Whether to add a flavour label to the jets group. Default is False.
+
+      :type: bool, optional
+
+   .. attribute:: compression
+
+      Compression algorithm to use. Default is "lzf".
+
+      :type: str, optional
+
+   .. attribute:: precision
+
+      Precision to use. Default is None.
+
+      :type: str, optional
+
+   .. attribute:: full_precision_vars
+
+      List of variables to store in full precision. Default is None.
+
+      :type: list[str] | None, optional
+
+   .. attribute:: shuffle
+
+      Whether to shuffle the jets before writing. Default is True.
+
+      :type: bool, optional
+
+   .. attribute:: num_jets
+
+      Number of jets to write.
+
+      :type: int | None
 
 
    .. py:attribute:: dst

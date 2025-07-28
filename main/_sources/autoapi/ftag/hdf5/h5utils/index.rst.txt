@@ -17,7 +17,7 @@ Functions
 Module Contents
 ---------------
 
-.. py:function:: get_dtype(ds, variables: list[str] | None = None, precision: str | None = None, transform: ftag.transform.Transform | None = None, full_precision_vars: list[str] | None = None) -> numpy.dtype
+.. py:function:: get_dtype(ds: h5py.Dataset, variables: list[str] | None = None, precision: str | None = None, transform: ftag.transform.Transform | None = None, full_precision_vars: list[str] | None = None) -> numpy.dtype
 
    Return a dtype based on an existing dataset and requested variables.
 

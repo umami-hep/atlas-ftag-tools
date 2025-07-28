@@ -43,12 +43,12 @@ Module Contents
    Return list of filenames that match REGEX pattern inside regex_path.
 
    :param pattern: Pattern for the input files
-   :type pattern: str
+   :type pattern: str | None
    :param regex_path: Regex path for the input files
-   :type regex_path: str
+   :type regex_path: str | None
 
    :returns: List of the file basenames that matched the regex pattern
-   :rtype: list[str]
+   :rtype: list[str] | None
 
 
 .. py:function:: regex_files_from_dir(reg_matched_fnames: list[str] | None, regex_path: str | None) -> list[str] | None
@@ -56,13 +56,13 @@ Module Contents
    Turn a list of basenames into full paths; dive into sub-dirs if needed.
 
    :param reg_matched_fnames: List of the regex matched file names
-   :type reg_matched_fnames: list[str]
+   :type reg_matched_fnames: list[str] | None
    :param regex_path: Regex path for the input files
-   :type regex_path: str
+   :type regex_path: str | None
 
    :returns: List of file paths (as strings) that matched the regex and any subsequent
              globbing inside matched directories.
-   :rtype: list[str]
+   :rtype: list[str] | None
 
 
 .. py:function:: sum_counts_once(counts: numpy.ndarray) -> numpy.ndarray
@@ -108,6 +108,8 @@ Module Contents
 
    :param fnames: List of the input files
    :type fnames: list[str]
+   :param group_name: Group name of the cutBookkeeper. By default "cutBookkeeper"
+   :type group_name: str, optional
 
    :returns: Dict with the accumulated cutBookkeeper groups. If the cut bookkeeper
              is not in the files, return None.

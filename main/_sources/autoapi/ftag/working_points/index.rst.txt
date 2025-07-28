@@ -32,15 +32,15 @@ Module Contents
    Parse the input arguments into a Namespace.
 
    :param args: Sequence of string inputs to the script
-   :type args: Sequence[str] | None
+   :type args: Sequence[str]
 
    :returns: Namespace with the parsed arguments
    :rtype: argparse.Namespace
 
-   :raises ValueError: When both --effs and --disc_cuts are provided
-   :raises ValueError: When neither --effs nor --disc_cuts are provided
-   :raises ValueError: When the number of fraction values is not conistent
-   :raises ValueError: When the sum of fraction values for a tagger is not equal to one
+   :raises ValueError: When both --effs and --disc_cuts are provided or
+       When neither --effs nor --disc_cuts are provided or
+       When the number of fraction values is not conistent or
+       When the sum of fraction values for a tagger is not equal to one
 
 
 .. py:function:: get_fxs_from_args(args: argparse.Namespace, flavours: ftag.labels.LabelContainer) -> list
@@ -87,6 +87,8 @@ Module Contents
    :type disc_cuts: list
    :param flavours: LabelContainer instance of the flavours that are used
    :type flavours: LabelContainer
+   :param fraction_values: Dict with the fraction values to use
+   :type fraction_values: dict
 
    :returns: Dict with the discriminant cut values and their respective efficiencies/rejections
    :rtype: dict
@@ -131,8 +133,8 @@ Module Contents
 
    Main function to run working point calculation.
 
-   :param args: Input arguments, by default None
-   :type args: Sequence[str] | None, optional
+   :param args: Input arguments
+   :type args: Sequence[str]
 
    :returns: The output dict with the calculated values. When --outfile
              was given, the return value is None

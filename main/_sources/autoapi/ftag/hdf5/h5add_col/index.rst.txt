@@ -126,7 +126,7 @@ Module Contents
                                    },
                                    ...
                                }
-   :type append_function: callable | list[callable]
+   :type append_function: Callable | list[Callable]
    :param num_jets: Number of jets to read from the input file. If -1, reads all jets. By default -1.
    :type num_jets: int, optional
    :param input_groups: List of groups to read from the input file. If None, reads all groups. By default None.
@@ -136,9 +136,9 @@ Module Contents
                          append functions wish to write to.
    :type output_groups: list[str] | None, optional
    :param reader_kwargs: Additional arguments to pass to the H5Reader. By default None.
-   :type reader_kwargs: dict, optional
+   :type reader_kwargs: dict | None, optional
    :param writer_kwargs: Additional arguments to pass to the H5Writer. By default None.
-   :type writer_kwargs: dict, optional
+   :type writer_kwargs: dict | None, optional
    :param overwrite: If True, will overwrite the output file if it exists. By default False.
                      If False, will raise a FileExistsError if the output file exists.
                      If None, will check if the output file exists and raise an error if it does unless

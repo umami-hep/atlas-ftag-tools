@@ -19,26 +19,65 @@ Module Contents
 
    Writes jets to an HDF5 file.
 
-   :param dst: Path to the output file.
-   :type dst: Path | str
-   :param dtypes: Dictionary of group names and their corresponding dtypes.
-   :type dtypes: dict[str, np.dtype]
-   :param num_jets: Number of jets to write.
-   :type num_jets: int
-   :param shapes: Dictionary of group names and their corresponding shapes.
-   :type shapes: dict[str, int], optional
-   :param jets_name: Name of the jets group. Default is "jets".
-   :type jets_name: str, optional
-   :param add_flavour_label: Whether to add a flavour label to the jets group. Default is False.
-   :type add_flavour_label: bool, optional
-   :param compression: Compression algorithm to use. Default is "lzf".
-   :type compression: str, optional
-   :param precision: Precision to use. Default is None.
-   :type precision: str | None, optional
-   :param full_precision_vars: List of variables to store in full precision. Default is None.
-   :type full_precision_vars: list[str] | None, optional
-   :param shuffle: Whether to shuffle the jets before writing. Default is True.
-   :type shuffle: bool, optional
+   .. attribute:: dst
+
+      Path to the output file.
+
+      :type: Path | str
+
+   .. attribute:: dtypes
+
+      Dictionary of group names and their corresponding dtypes.
+
+      :type: dict[str, np.dtype]
+
+   .. attribute:: shapes
+
+      Dictionary of group names and their corresponding shapes.
+
+      :type: dict[str, tuple[int, ...]], optional
+
+   .. attribute:: jets_name
+
+      Name of the jets group. Default is "jets".
+
+      :type: str, optional
+
+   .. attribute:: add_flavour_label
+
+      Whether to add a flavour label to the jets group. Default is False.
+
+      :type: bool, optional
+
+   .. attribute:: compression
+
+      Compression algorithm to use. Default is "lzf".
+
+      :type: str, optional
+
+   .. attribute:: precision
+
+      Precision to use. Default is None.
+
+      :type: str, optional
+
+   .. attribute:: full_precision_vars
+
+      List of variables to store in full precision. Default is None.
+
+      :type: list[str] | None, optional
+
+   .. attribute:: shuffle
+
+      Whether to shuffle the jets before writing. Default is True.
+
+      :type: bool, optional
+
+   .. attribute:: num_jets
+
+      Number of jets to write.
+
+      :type: int | None
 
 
    .. py:attribute:: dst

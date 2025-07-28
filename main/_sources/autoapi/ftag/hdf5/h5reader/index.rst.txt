@@ -114,30 +114,65 @@ Module Contents
 
    Reads data from multiple HDF5 files.
 
-   :param fname: Path to the HDF5 file or list of paths
-   :type fname: Path | str | list[Path | str]
-   :param batch_size: Number of jets to read at a time, by default 100_000
-   :type batch_size: int, optional
-   :param jets_name: Name of the jets dataset, by default "jets"
-   :type jets_name: str, optional
-   :param precision: Cast floats to given precision, by default None
-   :type precision: str | None, optional
-   :param shuffle: Read batches in a shuffled order, by default True
-   :type shuffle: bool, optional
-   :param weights: Weights for different input datasets, by default None
-   :type weights: list[float] | None, optional
-   :param do_remove_inf: Remove jets with inf values, by default False
-   :type do_remove_inf: bool, optional
-   :param transform: Transform to apply to data, by default None
-   :type transform: Transform | None, optional
-   :param equal_jets: Take the same number of jets (weighted) from each sample, by default True.
-                      This is useful when you specify a list of DSIDs for the sample and they are
-                      qualitatively different, and you want to ensure that you always return batches
-                      with jets from all DSIDs. This is used for example in the QCD resampling for Xbb.
-                      If False, use all jets in each sample, allowing for the full available statistics
-                      to be used. Useful for example if you have multiple ttbar samples and you want to
-                      use all available jets from each sample.
-   :type equal_jets: bool, optional
+   .. attribute:: fname
+
+      Path to the HDF5 file or list of paths
+
+      :type: Path | str | list[Path | str]
+
+   .. attribute:: batch_size
+
+      Number of jets to read at a time, by default 100_000
+
+      :type: int, optional
+
+   .. attribute:: jets_name
+
+      Name of the jets dataset, by default "jets"
+
+      :type: str, optional
+
+   .. attribute:: precision
+
+      Cast floats to given precision, by default None
+
+      :type: str | None, optional
+
+   .. attribute:: shuffle
+
+      Read batches in a shuffled order, by default True
+
+      :type: bool, optional
+
+   .. attribute:: weights
+
+      Weights for different input datasets, by default None
+
+      :type: list[float] | None, optional
+
+   .. attribute:: do_remove_inf
+
+      Remove jets with inf values, by default False
+
+      :type: bool, optional
+
+   .. attribute:: transform
+
+      Transform to apply to data, by default None
+
+      :type: Transform | None, optional
+
+   .. attribute:: equal_jets
+
+      Take the same number of jets (weighted) from each sample, by default True.
+      This is useful when you specify a list of DSIDs for the sample and they are
+      qualitatively different, and you want to ensure that you always return batches
+      with jets from all DSIDs. This is used for example in the QCD resampling for Xbb.
+      If False, use all jets in each sample, allowing for the full available statistics
+      to be used. Useful for example if you have multiple ttbar samples and you want to
+      use all available jets from each sample.
+
+      :type: bool, optional
 
 
    .. py:attribute:: fname

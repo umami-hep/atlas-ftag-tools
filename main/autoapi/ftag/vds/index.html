@@ -540,15 +540,15 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pattern</strong> (<em>str</em>) – Pattern for the input files</p></li>
-<li><p><strong>regex_path</strong> (<em>str</em>) – Regex path for the input files</p></li>
+<li><p><strong>pattern</strong> (<em>str</em><em> | </em><em>None</em>) – Pattern for the input files</p></li>
+<li><p><strong>regex_path</strong> (<em>str</em><em> | </em><em>None</em>) – Regex path for the input files</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>List of the file basenames that matched the regex pattern</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list[str]</p>
+<dd class="field-odd"><p>list[str] | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -560,8 +560,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>reg_matched_fnames</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of the regex matched file names</p></li>
-<li><p><strong>regex_path</strong> (<em>str</em>) – Regex path for the input files</p></li>
+<li><p><strong>reg_matched_fnames</strong> (<em>list</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>) – List of the regex matched file names</p></li>
+<li><p><strong>regex_path</strong> (<em>str</em><em> | </em><em>None</em>) – Regex path for the input files</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -569,7 +569,7 @@
 globbing inside matched directories.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list[str]</p>
+<dd class="field-odd"><p>list[str] | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -631,7 +631,10 @@ For every sub-group (nominal, sysUp, sysDown, …):
 Returns a dict  {subgroup_name: scalar-record-array}</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>fnames</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of the input files</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fnames</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of the input files</p></li>
+<li><p><strong>group_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Group name of the cutBookkeeper. By default “cutBookkeeper”</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Dict with the accumulated cutBookkeeper groups. If the cut bookkeeper

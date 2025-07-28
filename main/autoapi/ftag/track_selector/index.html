@@ -491,22 +491,36 @@
 <p>The array is assumed to have shape (n_jets, n_tracks, n_features).
 Applying cuts will NaN out the tracks that do not pass the cuts,
 but leave the shape of the array unchanged.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>cuts</strong> (<a class="reference internal" href="../cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><em>Cuts</em></a>) – The cuts to apply to the tracks</p></li>
-<li><p><strong>valid_str</strong> (<em>str</em>) – The name of the field in the tracks that indicates whether the track is</p></li>
-</ul>
-</dd>
-</dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.track_selector.TrackSelector.cuts">
-<span class="sig-name descname"><span class="pre">cuts</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><span class="pre">ftag.cuts.Cuts</span></a></em><a class="headerlink" href="#ftag.track_selector.TrackSelector.cuts" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">cuts</span></span><a class="headerlink" href="#ftag.track_selector.TrackSelector.cuts" title="Link to this definition">#</a></dt>
+<dd><p>The cuts to apply to the tracks</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts">Cuts</a></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.track_selector.TrackSelector.valid_str">
-<span class="sig-name descname"><span class="pre">valid_str</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'valid'</span></em><a class="headerlink" href="#ftag.track_selector.TrackSelector.valid_str" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">valid_str</span></span><a class="headerlink" href="#ftag.track_selector.TrackSelector.valid_str" title="Link to this definition">#</a></dt>
+<dd><p>The name of the field in the tracks that indicates whether the track is</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">cuts</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><span class="pre">ftag.cuts.Cuts</span></a></em><a class="headerlink" href="#id0" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">valid_str</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'valid'</span></em><a class="headerlink" href="#id1" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -576,6 +590,8 @@ but leave the shape of the array unchanged.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.track_selector.TrackSelector"><code class="docutils literal notranslate"><span class="pre">TrackSelector</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.track_selector.TrackSelector.cuts"><code class="docutils literal notranslate"><span class="pre">TrackSelector.cuts</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.track_selector.TrackSelector.valid_str"><code class="docutils literal notranslate"><span class="pre">TrackSelector.valid_str</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">TrackSelector.cuts</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><code class="docutils literal notranslate"><span class="pre">TrackSelector.valid_str</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.track_selector.TrackSelector.__call__"><code class="docutils literal notranslate"><span class="pre">TrackSelector.__call__()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.track_selector.TrackSelector._nshared_cut"><code class="docutils literal notranslate"><span class="pre">TrackSelector._nshared_cut()</span></code></a></li>
 </ul>

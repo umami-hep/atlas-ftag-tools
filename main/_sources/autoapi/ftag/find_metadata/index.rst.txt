@@ -68,8 +68,10 @@ Module Contents
    Extract the BigPanDA Task ID (8-digit) from an HDF5 filename.
 
    :param h5_path: Path object pointing to the .h5 file.
+   :type h5_path: Path
 
-   :rtype: The Task ID as a string if found, otherwise None.
+   :returns: The Task ID as a string if found, otherwise None.
+   :rtype: str | None
 
 
 .. py:function:: fetch_taskinfo_from_bigpanda(taskid: str) -> dict[str, Any] | None
@@ -77,8 +79,10 @@ Module Contents
    Fetch task information from BigPanDA for a given Task ID.
 
    :param taskid: BigPanDA task ID.
+   :type taskid: str
 
-   :rtype: Task info as a dictionary if found, otherwise None.
+   :returns: Task info as a dictionary if found, otherwise None.
+   :rtype: dict[str, Any] | None
 
 
 .. py:function:: extract_mc_container_from_json(data: dict[str, Any]) -> str | None
@@ -86,8 +90,10 @@ Module Contents
    Extract the MC container name (e.g., mc16_13TeV.<something>) from a task JSON.
 
    :param data: Task info dictionary from BigPanDA.
+   :type data: dict[str, Any]
 
-   :rtype: The container string if found, otherwise None.
+   :returns: The container string if found, otherwise None.
+   :rtype: str | None
 
 
 .. py:function:: parse_line_from_taskname(taskname: str) -> tuple[int | None, str | None]
@@ -95,8 +101,10 @@ Module Contents
    Extract DSID and etag from a task name string.
 
    :param taskname: Full task name.
+   :type taskname: str
 
-   :rtype: A tuple of (DSID as int, etag as string), or (None, None) if not found.
+   :returns: A tuple of (DSID as int, etag as string), or (None, None) if not found.
+   :rtype: tuple[int | None, str | None]
 
 
 .. py:function:: parse_campaign_from_taskname(taskname: str) -> str | None
@@ -104,8 +112,10 @@ Module Contents
    Derive campaign (mc15/mc16/etc.) from a task or container name.
 
    :param taskname: The name string.
+   :type taskname: str
 
-   :rtype: Campaign string, or None if not found.
+   :returns: Campaign string, or None if not found.
+   :rtype: str | None
 
 
 .. py:function:: extract_info_from_container(container: str) -> tuple[int, str, str] | None
@@ -113,8 +123,10 @@ Module Contents
    Extract DSID, etag, and campaign name from a container string.
 
    :param container: The MC container string.
+   :type container: str
 
-   :rtype: A tuple of (DSID, etag, campaign), or None if parsing fails.
+   :returns: A tuple of (DSID, etag, campaign), or None if parsing fails.
+   :rtype: tuple[int, str, str] | None
 
 
 .. py:function:: query_xsecdb(campaign: str, dsid: int, etag: str) -> dict[str, Any] | None
@@ -122,10 +134,14 @@ Module Contents
    Look up cross-section metadata in the PMG xsecDB.
 
    :param campaign: Campaign name (e.g., mc16).
+   :type campaign: str
    :param dsid: Dataset ID.
+   :type dsid: int
    :param etag: Event tag.
+   :type etag: str
 
-   :rtype: Dictionary with cross_section_pb, genFiltEff, kfactor, and etag if found, otherwise None.
+   :returns: Dictionary with cross_section_pb, genFiltEff, kfactor, and etag if found, otherwise None.
+   :rtype: dict[str, Any] | None
 
 
 .. py:function:: write_metadata_to_h5(h5_filename: str, dsid: int, metadata_dict: dict[str, Any]) -> None
@@ -133,8 +149,11 @@ Module Contents
    Write metadata values into an HDF5 file under metadata/<DSID>.
 
    :param h5_filename: Target HDF5 file.
+   :type h5_filename: str
    :param dsid: Dataset ID to write metadata for.
+   :type dsid: int
    :param metadata_dict: Dictionary of metadata to inject.
+   :type metadata_dict: dict[str, Any]
 
 
 .. py:function:: handle_yaml_fallback(h5_path: pathlib.Path, yaml_data: dict[str, Any]) -> None
@@ -153,7 +172,8 @@ Module Contents
 
    Parse CLI arguments and load YAML metadata if provided.
 
-   :rtype: A tuple of (list of HDF5 file paths, YAML metadata dict).
+   :returns: A tuple of (list of HDF5 file paths, YAML metadata dict).
+   :rtype: tuple[list[str], dict[str, Any]]
 
 
 .. py:function:: process_single_file(path: pathlib.Path, yaml_data: dict[str, Any]) -> None
@@ -161,7 +181,9 @@ Module Contents
    Process a single .h5 file by attempting BigPanDA lookup, then fallback to YAML.
 
    :param path: Path to the HDF5 file.
+   :type path: Path
    :param yaml_data: Optional fallback metadata.
+   :type yaml_data: dict[str, Any]
 
 
 .. py:function:: main() -> None

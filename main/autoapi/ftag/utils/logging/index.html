@@ -621,7 +621,7 @@ it is formatted using formatException() and appended to the message.</p>
 <dd><p>Initialise.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>log_level</strong> (<em>str</em><em>, </em><em>optional</em>) – Logging level defining the verbose level. Accepted values are:
+<dd class="field-odd"><p><strong>log_level</strong> (<em>str</em><em> | </em><em>None</em><em>, </em><em>optional</em>) – Logging level defining the verbose level. Accepted values are:
 CRITICAL, ERROR, WARNING, INFO, DEBUG, NOTSET, by default None
 If the log_level is not set, it will be set to info</p>
 </dd>
@@ -636,12 +636,12 @@ If the log_level is not set, it will be set to info</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ftag.utils.logging.set_log_level">
-<span class="sig-prename descclassname"><span class="pre">ftag.utils.logging.</span></span><span class="sig-name descname"><span class="pre">set_log_level</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tools_logger</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ftag.utils.logging.set_log_level" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">ftag.utils.logging.</span></span><span class="sig-name descname"><span class="pre">set_log_level</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tools_logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">logging.Logger</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ftag.utils.logging.set_log_level" title="Link to this definition">#</a></dt>
 <dd><p>Setting log level.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>tools_logger</strong> (<em>logger</em>) – logger object</p></li>
+<li><p><strong>tools_logger</strong> (<em>logging.Logger</em>) – logger object</p></li>
 <li><p><strong>log_level</strong> (<em>str</em>) – Logging level corresponding CRITICAL, ERROR, WARNING, INFO, DEBUG, NOTSET</p></li>
 </ul>
 </dd>

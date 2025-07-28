@@ -579,10 +579,13 @@
 <dd><p>Extract the BigPanDA Task ID (8-digit) from an HDF5 filename.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>h5_path</strong> – Path object pointing to the .h5 file.</p>
+<dd class="field-odd"><p><strong>h5_path</strong> (<em>Path</em>) – Path object pointing to the .h5 file.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The Task ID as a string if found, otherwise None.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -593,10 +596,13 @@
 <dd><p>Fetch task information from BigPanDA for a given Task ID.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>taskid</strong> – BigPanDA task ID.</p>
+<dd class="field-odd"><p><strong>taskid</strong> (<em>str</em>) – BigPanDA task ID.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Task info as a dictionary if found, otherwise None.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, Any] | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -607,10 +613,13 @@
 <dd><p>Extract the MC container name (e.g., mc16_13TeV.&lt;something&gt;) from a task JSON.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>data</strong> – Task info dictionary from BigPanDA.</p>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – Task info dictionary from BigPanDA.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The container string if found, otherwise None.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -621,10 +630,13 @@
 <dd><p>Extract DSID and etag from a task name string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>taskname</strong> – Full task name.</p>
+<dd class="field-odd"><p><strong>taskname</strong> (<em>str</em>) – Full task name.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A tuple of (DSID as int, etag as string), or (None, None) if not found.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[int | None, str | None]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -635,10 +647,13 @@
 <dd><p>Derive campaign (mc15/mc16/etc.) from a task or container name.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>taskname</strong> – The name string.</p>
+<dd class="field-odd"><p><strong>taskname</strong> (<em>str</em>) – The name string.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Campaign string, or None if not found.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -649,10 +664,13 @@
 <dd><p>Extract DSID, etag, and campaign name from a container string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>container</strong> – The MC container string.</p>
+<dd class="field-odd"><p><strong>container</strong> (<em>str</em>) – The MC container string.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A tuple of (DSID, etag, campaign), or None if parsing fails.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[int, str, str] | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -664,13 +682,16 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>campaign</strong> – Campaign name (e.g., mc16).</p></li>
-<li><p><strong>dsid</strong> – Dataset ID.</p></li>
-<li><p><strong>etag</strong> – Event tag.</p></li>
+<li><p><strong>campaign</strong> (<em>str</em>) – Campaign name (e.g., mc16).</p></li>
+<li><p><strong>dsid</strong> (<em>int</em>) – Dataset ID.</p></li>
+<li><p><strong>etag</strong> (<em>str</em>) – Event tag.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Dictionary with cross_section_pb, genFiltEff, kfactor, and etag if found, otherwise None.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, Any] | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -682,9 +703,9 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>h5_filename</strong> – Target HDF5 file.</p></li>
-<li><p><strong>dsid</strong> – Dataset ID to write metadata for.</p></li>
-<li><p><strong>metadata_dict</strong> – Dictionary of metadata to inject.</p></li>
+<li><p><strong>h5_filename</strong> (<em>str</em>) – Target HDF5 file.</p></li>
+<li><p><strong>dsid</strong> (<em>int</em>) – Dataset ID to write metadata for.</p></li>
+<li><p><strong>metadata_dict</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – Dictionary of metadata to inject.</p></li>
 </ul>
 </dd>
 </dl>
@@ -712,8 +733,11 @@
 <span class="sig-prename descclassname"><span class="pre">ftag.find_metadata.</span></span><span class="sig-name descname"><span class="pre">parse_args_and_yaml</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ftag.find_metadata.parse_args_and_yaml" title="Link to this definition">#</a></dt>
 <dd><p>Parse CLI arguments and load YAML metadata if provided.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A tuple of (list of HDF5 file paths, YAML metadata dict).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[list[str], dict[str, Any]]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -725,8 +749,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> – Path to the HDF5 file.</p></li>
-<li><p><strong>yaml_data</strong> – Optional fallback metadata.</p></li>
+<li><p><strong>path</strong> (<em>Path</em>) – Path to the HDF5 file.</p></li>
+<li><p><strong>yaml_data</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – Optional fallback metadata.</p></li>
 </ul>
 </dd>
 </dl>
