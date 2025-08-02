@@ -10,7 +10,7 @@ import pytest
 
 from ftag import get_mock_file
 from ftag.hdf5.h5add_col import (
-    get_all_groups,
+    get_all_datasets,
     get_shape,
     h5_add_column,
     merge_dicts,
@@ -63,8 +63,8 @@ def test_get_shape_scalar_and_vector():
     assert shape["b"] == (100, 3)
 
 
-def test_get_all_groups(input_file):
-    groups = get_all_groups(input_file)
+def test_get_all_datasets(input_file):
+    groups = get_all_datasets(input_file)
     assert isinstance(groups, dict)
     assert "jets" in groups
 

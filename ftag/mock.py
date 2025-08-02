@@ -187,5 +187,6 @@ def get_mock_file(
     if tracks_name:
         tracks = mock_tracks(num_jets, num_tracks)
         f.create_dataset(tracks_name, data=tracks)
-
+    # Add some dummy meta-data
+    f.create_dataset("cutBookkeeper/nominal/counts", data=np.array([100, 200, 300]))
     return fname, f
