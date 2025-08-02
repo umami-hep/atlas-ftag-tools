@@ -47,7 +47,7 @@ def main(args=None):
     print(f"\nSplitting: {src}")
     print(f"Destination: {dst}")
     with h5py.File(src, "r") as f:
-        total_jets = next(iter(f.values())).shape[0]
+        total_jets = next(d.shape[0] for d in f.values() if isinstance(d, h5py.Dataset))
 
     num_full_files = total_jets // jets_per_file
     remainder = total_jets % jets_per_file

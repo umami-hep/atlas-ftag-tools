@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+import h5py
 import numpy as np
 from numpy.lib.recfunctions import unstructured_to_structured as u2s
 
@@ -10,7 +11,59 @@ from ftag.transform import Transform
 if TYPE_CHECKING:  # pragma: no cover
     import h5py
 
-__all__ = ["cast_dtype", "get_dtype", "join_structured_arrays"]
+__all__ = ["cast_dtype", "compare_groups", "get_dtype", "join_structured_arrays"]
+
+
+def compare_groups(g1: h5py.Group | dict, g2: h5py.Group | dict, path: str = ""):
+    """Recursively compare two h5py.Groups or in-memory dicts.
+
+    Parameters
+    ----------
+    g1 : h5py.Group | dict
+        First group or dict to compare
+    g2 : h5py.Group | dict
+        Second group or dict to compare
+    path : str, optional
+        Path to the current group, by default ""
+
+    Raises
+    ------
+    TypeError
+        If the types of the items do not match
+    """
+    assert set(g1.keys()) == set(
+        g2.keys()
+    ), f"{path}: Keys mismatch: {set(g1.keys())} vs {set(g2.keys())}"
+
+    for key in g1:
+        item1 = g1[key]
+        item2 = g2[key]
+        subpath = f"{path}/{key}"
+
+        # Check for extracted group (dict) with 'data'
+        if isinstance(item1, dict) and "data" in item1:
+            assert isinstance(item2, dict), f"{subpath}: One side missing 'data'"
+            assert "data" in item2, f"{subpath}: One side missing 'data'"
+            np.testing.assert_array_equal(
+                item1["data"], item2["data"], err_msg=f"{subpath}: Data mismatch"
+            )
+            assert item1.get("attrs", {}) == item2.get("attrs", {}), f"{subpath}: Attr mismatch"
+
+        # Check for full extracted group
+        elif isinstance(item1, dict):
+            assert isinstance(item2, dict), f"{subpath}: Expected nested dict"
+            compare_groups(item1, item2, subpath)
+
+        # h5py.Dataset or Group objects
+        elif isinstance(item1, h5py.Dataset):
+            np.testing.assert_array_equal(item1[()], item2[()], err_msg=f"{subpath}: Data mismatch")
+            assert dict(item1.attrs) == dict(item2.attrs), f"{subpath}: Attr mismatch"
+
+        elif isinstance(item1, h5py.Group):
+            compare_groups(item1, item2, subpath)
+
+        else:
+            raise TypeError(f"{subpath}: Unexpected type: {type(item1)}")
 
 
 def get_dtype(
@@ -45,11 +98,13 @@ def get_dtype(
     ValueError
         If variables are not found in dataset
     """
+    variables = variables or ds.dtype.names
+    # If we have a non structured array we just return its dtype
     if variables is None:
-        variables = ds.dtype.names
+        return ds.dtype
+
     if full_precision_vars is None:
         full_precision_vars = []
-
     if (missing := set(variables) - set(ds.dtype.names)) and transform is not None:
         variables = transform.map_variable_names(ds.name, variables, inverse=True)
         missing = set(variables) - set(ds.dtype.names)
