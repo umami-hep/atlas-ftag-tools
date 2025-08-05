@@ -7,63 +7,7 @@ import h5py
 import numpy as np
 
 import ftag
-
-
-def write_group_full(h5group: h5py.Group, data: dict):
-    # Write group-level attributes
-    if "_group_attrs" in data:
-        for k, v in data["_group_attrs"].items():
-            h5group.attrs[k] = v
-
-    for key, value in data.items():
-        if key == "_group_attrs":
-            continue
-        if isinstance(value, dict) and "data" in value:
-            dset = h5group.create_dataset(key, data=value["data"])
-            for attr_k, attr_v in value["attrs"].items():
-                dset.attrs[attr_k] = attr_v
-        elif isinstance(value, dict):
-            subgroup = h5group.create_group(key)
-            write_group_full(subgroup, value)
-        else:
-            raise TypeError(f"Unexpected value type for key '{key}': {type(value)}")
-
-
-def extract_group_full(group: h5py.Group) -> dict:
-    result = {}
-    # Save group-level attributes
-    if group.attrs:
-        result["_group_attrs"] = {k: group.attrs[k] for k in group.attrs}
-    for key, item in group.items():
-        if isinstance(item, h5py.Dataset):
-            result[key] = {"data": item[()], "attrs": {k: item.attrs[k] for k in item.attrs}}
-        elif isinstance(item, h5py.Group):
-            result[key] = extract_group_full(item)
-        else:
-            raise TypeError(f"Unsupported item {key}: {type(item)}")
-    return result
-
-
-def extract_group(group: h5py.Group) -> dict:
-    data = {}
-    for key, item in group.items():
-        if isinstance(item, h5py.Dataset):
-            data[key] = item[()]  # Convert to NumPy array
-        elif isinstance(item, h5py.Group):
-            data[key] = extract_group(item)  # Recursive
-        else:
-            raise TypeError(f"Unsupported HDF5 item type: {type(item)}")
-    return data
-
-
-def write_group(h5file: h5py.Group, data: dict):
-    for key, value in data.items():
-        if isinstance(value, dict):
-            subgroup = h5file.create_group(key)
-            write_group(subgroup, value)  # Recursive
-        else:
-            h5file.create_dataset(key, data=value)
-
+from ftag.hdf5.h5utils import extract_group_full, write_group_full
 
 @dataclass
 class H5Writer:
