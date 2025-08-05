@@ -11,8 +11,15 @@ from ftag.transform import Transform
 if TYPE_CHECKING:  # pragma: no cover
     import h5py
 
-__all__ = ["cast_dtype", "compare_groups", "get_dtype", "join_structured_arrays",
-           "structured_from_dict", "extract_group_full", "write_group_full"]
+__all__ = [
+    "cast_dtype",
+    "compare_groups",
+    "extract_group_full",
+    "get_dtype",
+    "join_structured_arrays",
+    "structured_from_dict",
+    "write_group_full",
+]
 
 
 def compare_groups(g1: h5py.Group | dict, g2: h5py.Group | dict, path: str = ""):
@@ -32,9 +39,9 @@ def compare_groups(g1: h5py.Group | dict, g2: h5py.Group | dict, path: str = "")
     TypeError
         If the types of the items do not match
     """
-    assert set(g1.keys()) == set(g2.keys()), (
-        f"{path}: Keys mismatch: {set(g1.keys())} vs {set(g2.keys())}"
-    )
+    assert set(g1.keys()) == set(
+        g2.keys()
+    ), f"{path}: Keys mismatch: {set(g1.keys())} vs {set(g2.keys())}"
 
     for key in g1:
         item1 = g1[key]

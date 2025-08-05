@@ -9,6 +9,7 @@ import numpy as np
 import ftag
 from ftag.hdf5.h5utils import extract_group_full, write_group_full
 
+
 @dataclass
 class H5Writer:
     """Writes jets to an HDF5 file.
