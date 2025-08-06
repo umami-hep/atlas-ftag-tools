@@ -2,6 +2,7 @@
 
 ### [Latest]
 
+- Updating flavours and allow duplicated flavours in different categories [#142](https://github.com/umami-hep/atlas-ftag-tools/pull/142)
 - Adding new Docstring Checker [#139](https://github.com/umami-hep/atlas-ftag-tools/pull/139)
 - Added `find_metadata` script for injecting metadata into `.h5` files [#133](https://github.com/umami-hep/atlas-ftag-tools/pull/133)
 - Allow not doing checks with sample.py [#138](https://github.com/umami-hep/atlas-ftag-tools/pull/138)
