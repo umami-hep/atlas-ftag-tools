@@ -413,6 +413,12 @@ Package Contents
 
       :type: int | None
 
+   .. attribute:: groups
+
+      Groups to copy from the source file. Default is None.
+
+      :type: dict[str, h5py.Group] | None
+
 
    .. py:attribute:: dst
       :type:  pathlib.Path | str
@@ -468,12 +474,21 @@ Package Contents
 
 
 
+   .. py:attribute:: groups
+      :type:  dict[str, h5py.Group] | None
+      :value: None
+
+
+
    .. py:method:: __post_init__()
 
 
-   .. py:method:: from_file(source: pathlib.Path, num_jets: int | None = 0, variables=None, **kwargs) -> H5Writer
+   .. py:method:: from_file(source: pathlib.Path, num_jets: int | None = 0, variables=None, copy_groups=True, **kwargs) -> H5Writer
       :classmethod:
 
+
+
+   .. py:method:: save_groups(groups: dict[str, dict]) -> None
 
 
    .. py:method:: create_ds(name: str, dtype: numpy.dtype) -> None

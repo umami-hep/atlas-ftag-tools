@@ -9,13 +9,70 @@ Functions
 
 .. autoapisummary::
 
+   ftag.hdf5.h5utils.compare_groups
+   ftag.hdf5.h5utils.write_group_full
+   ftag.hdf5.h5utils.extract_group_full
    ftag.hdf5.h5utils.get_dtype
    ftag.hdf5.h5utils.cast_dtype
    ftag.hdf5.h5utils.join_structured_arrays
+   ftag.hdf5.h5utils.structured_from_dict
 
 
 Module Contents
 ---------------
+
+.. py:function:: compare_groups(g1: h5py.Group | dict, g2: h5py.Group | dict, path: str = '')
+
+   Recursively compare two h5py.Groups or in-memory dicts.
+
+   :param g1: First group or dict to compare
+   :type g1: h5py.Group | dict
+   :param g2: Second group or dict to compare
+   :type g2: h5py.Group | dict
+   :param path: Path to the current group, by default ""
+   :type path: str, optional
+
+   :raises TypeError: If the types of the items do not match
+
+
+.. py:function:: write_group_full(h5group: h5py.Group, data: dict)
+
+   Write a nested dictionary structure to an HDF5 group.
+
+   This function recursively writes a dictionary containing datasets and subgroups
+   to an HDF5 group. The dictionary should have the structure created by
+   extract_group_full().
+
+   :param h5group: The HDF5 group to write data to
+   :type h5group: h5py.Group
+   :param data: Dictionary containing the data structure to write. Can contain:
+                - '_group_attrs': dict of group-level attributes
+                - dataset entries: dict with 'data' and 'attrs' keys
+                - subgroup entries: nested dictionaries
+   :type data: dict
+
+   :raises TypeError: If an unexpected value type is encountered in the data dict
+
+
+.. py:function:: extract_group_full(group: h5py.Group) -> dict
+
+   Extract the full contents of an HDF5 group into a nested dictionary.
+
+   This function recursively extracts all datasets, subgroups, and attributes
+   from an HDF5 group into an in-memory dictionary structure. Group-level
+   attributes are stored under the '_group_attrs' key.
+
+   :param group: The HDF5 group to extract data from
+   :type group: h5py.Group
+
+   :returns: Nested dictionary containing:
+             - '_group_attrs': dict of group-level attributes (if any)
+             - dataset entries: dict with 'data' (array) and 'attrs' (dict) keys
+             - subgroup entries: nested dictionaries with same structure
+   :rtype: dict
+
+   :raises TypeError: If an unsupported HDF5 item type is encountered
+
 
 .. py:function:: get_dtype(ds: h5py.Dataset, variables: list[str] | None = None, precision: str | None = None, transform: ftag.transform.Transform | None = None, full_precision_vars: list[str] | None = None) -> numpy.dtype
 
@@ -64,5 +121,16 @@ Module Contents
 
    :returns: A merged structured array
    :rtype: np.array
+
+
+.. py:function:: structured_from_dict(d: dict[str, numpy.ndarray]) -> numpy.ndarray
+
+   Convert a dict to a structured array.
+
+   :param d: Input dict of numpy arrays
+   :type d: dict[str, np.ndarray]
+
+   :returns: Structured array
+   :rtype: np.ndarray
 
 

@@ -478,14 +478,26 @@
 <h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.hdf5.h5utils.get_dtype" title="ftag.hdf5.h5utils.get_dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_dtype</span></code></a>(→ numpy.dtype)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.hdf5.h5utils.compare_groups" title="ftag.hdf5.h5utils.compare_groups"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compare_groups</span></code></a>(g1, g2[, path])</p></td>
+<td><p>Recursively compare two h5py.Groups or in-memory dicts.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ftag.hdf5.h5utils.write_group_full" title="ftag.hdf5.h5utils.write_group_full"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_group_full</span></code></a>(h5group, data)</p></td>
+<td><p>Write a nested dictionary structure to an HDF5 group.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.hdf5.h5utils.extract_group_full" title="ftag.hdf5.h5utils.extract_group_full"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract_group_full</span></code></a>(→ dict)</p></td>
+<td><p>Extract the full contents of an HDF5 group into a nested dictionary.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ftag.hdf5.h5utils.get_dtype" title="ftag.hdf5.h5utils.get_dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_dtype</span></code></a>(→ numpy.dtype)</p></td>
 <td><p>Return a dtype based on an existing dataset and requested variables.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ftag.hdf5.h5utils.cast_dtype" title="ftag.hdf5.h5utils.cast_dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cast_dtype</span></code></a>(→ numpy.dtype)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.hdf5.h5utils.cast_dtype" title="ftag.hdf5.h5utils.cast_dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cast_dtype</span></code></a>(→ numpy.dtype)</p></td>
 <td><p>Cast float type to half or full precision.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.hdf5.h5utils.join_structured_arrays" title="ftag.hdf5.h5utils.join_structured_arrays"><code class="xref py py-obj docutils literal notranslate"><span class="pre">join_structured_arrays</span></code></a>(arrays)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ftag.hdf5.h5utils.join_structured_arrays" title="ftag.hdf5.h5utils.join_structured_arrays"><code class="xref py py-obj docutils literal notranslate"><span class="pre">join_structured_arrays</span></code></a>(arrays)</p></td>
 <td><p>Join a list of structured numpy arrays.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.hdf5.h5utils.structured_from_dict" title="ftag.hdf5.h5utils.structured_from_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">structured_from_dict</span></code></a>(→ numpy.ndarray)</p></td>
+<td><p>Convert a dict to a structured array.</p></td>
 </tr>
 </tbody>
 </table>
@@ -493,6 +505,73 @@
 </section>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="ftag.hdf5.h5utils.compare_groups">
+<span class="sig-prename descclassname"><span class="pre">ftag.hdf5.h5utils.</span></span><span class="sig-name descname"><span class="pre">compare_groups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">h5py.Group</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">h5py.Group</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ftag.hdf5.h5utils.compare_groups" title="Link to this definition">#</a></dt>
+<dd><p>Recursively compare two h5py.Groups or in-memory dicts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g1</strong> (<em>h5py.Group</em><em> | </em><em>dict</em>) – First group or dict to compare</p></li>
+<li><p><strong>g2</strong> (<em>h5py.Group</em><em> | </em><em>dict</em>) – Second group or dict to compare</p></li>
+<li><p><strong>path</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to the current group, by default “”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TypeError</strong> – If the types of the items do not match</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ftag.hdf5.h5utils.write_group_full">
+<span class="sig-prename descclassname"><span class="pre">ftag.hdf5.h5utils.</span></span><span class="sig-name descname"><span class="pre">write_group_full</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">h5group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">h5py.Group</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ftag.hdf5.h5utils.write_group_full" title="Link to this definition">#</a></dt>
+<dd><p>Write a nested dictionary structure to an HDF5 group.</p>
+<p>This function recursively writes a dictionary containing datasets and subgroups
+to an HDF5 group. The dictionary should have the structure created by
+extract_group_full().</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>h5group</strong> (<em>h5py.Group</em>) – The HDF5 group to write data to</p></li>
+<li><p><strong>data</strong> (<em>dict</em>) – Dictionary containing the data structure to write. Can contain:
+- ‘_group_attrs’: dict of group-level attributes
+- dataset entries: dict with ‘data’ and ‘attrs’ keys
+- subgroup entries: nested dictionaries</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TypeError</strong> – If an unexpected value type is encountered in the data dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ftag.hdf5.h5utils.extract_group_full">
+<span class="sig-prename descclassname"><span class="pre">ftag.hdf5.h5utils.</span></span><span class="sig-name descname"><span class="pre">extract_group_full</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">h5py.Group</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#ftag.hdf5.h5utils.extract_group_full" title="Link to this definition">#</a></dt>
+<dd><p>Extract the full contents of an HDF5 group into a nested dictionary.</p>
+<p>This function recursively extracts all datasets, subgroups, and attributes
+from an HDF5 group into an in-memory dictionary structure. Group-level
+attributes are stored under the ‘_group_attrs’ key.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>group</strong> (<em>h5py.Group</em>) – The HDF5 group to extract data from</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Nested dictionary containing:
+- ‘_group_attrs’: dict of group-level attributes (if any)
+- dataset entries: dict with ‘data’ (array) and ‘attrs’ (dict) keys
+- subgroup entries: nested dictionaries with same structure</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TypeError</strong> – If an unsupported HDF5 item type is encountered</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="ftag.hdf5.h5utils.get_dtype">
 <span class="sig-prename descclassname"><span class="pre">ftag.hdf5.h5utils.</span></span><span class="sig-name descname"><span class="pre">get_dtype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">h5py.Dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../transform/index.html#ftag.transform.Transform" title="ftag.transform.Transform"><span class="pre">ftag.transform.Transform</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full_precision_vars</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.dtype</span></span></span><a class="headerlink" href="#ftag.hdf5.h5utils.get_dtype" title="Link to this definition">#</a></dt>
@@ -560,6 +639,23 @@
 </dl>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="ftag.hdf5.h5utils.structured_from_dict">
+<span class="sig-prename descclassname"><span class="pre">ftag.hdf5.h5utils.</span></span><span class="sig-name descname"><span class="pre">structured_from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#ftag.hdf5.h5utils.structured_from_dict" title="Link to this definition">#</a></dt>
+<dd><p>Convert a dict to a structured array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>np.ndarray</em><em>]</em>) – Input dict of numpy arrays</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Structured array</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 </section>
 
@@ -612,9 +708,13 @@
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functions">Functions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">Module Contents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5utils.compare_groups"><code class="docutils literal notranslate"><span class="pre">compare_groups()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5utils.write_group_full"><code class="docutils literal notranslate"><span class="pre">write_group_full()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5utils.extract_group_full"><code class="docutils literal notranslate"><span class="pre">extract_group_full()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5utils.get_dtype"><code class="docutils literal notranslate"><span class="pre">get_dtype()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5utils.cast_dtype"><code class="docutils literal notranslate"><span class="pre">cast_dtype()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5utils.join_structured_arrays"><code class="docutils literal notranslate"><span class="pre">join_structured_arrays()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5utils.structured_from_dict"><code class="docutils literal notranslate"><span class="pre">structured_from_dict()</span></code></a></li>
 </ul>
 </li>
 </ul>

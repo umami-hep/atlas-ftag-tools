@@ -58,6 +58,18 @@ Module Contents
 
 
 
+   .. py:attribute:: groups
+      :type:  list[str] | None
+      :value: None
+
+
+
+   .. py:attribute:: dsets
+      :type:  list[str] | None
+      :value: None
+
+
+
    .. py:method:: __post_init__() -> None
 
 
@@ -69,7 +81,7 @@ Module Contents
    .. py:method:: get_attr(name, group=None)
 
 
-   .. py:method:: empty(ds: h5py.Dataset, variables: list[str]) -> numpy.ndarray
+   .. py:method:: empty(ds: h5py.Dataset | h5py.Group, variables: list[str]) -> numpy.ndarray
 
 
    .. py:method:: read_chunk(ds: h5py.Dataset, array: numpy.ndarray, low: int) -> numpy.ndarray

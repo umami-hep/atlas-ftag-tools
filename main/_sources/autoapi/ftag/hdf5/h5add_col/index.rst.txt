@@ -11,7 +11,7 @@ Functions
 
    ftag.hdf5.h5add_col.merge_dicts
    ftag.hdf5.h5add_col.get_shape
-   ftag.hdf5.h5add_col.get_all_groups
+   ftag.hdf5.h5add_col.get_all_datasets
    ftag.hdf5.h5add_col.h5_add_column
    ftag.hdf5.h5add_col.parse_append_function
    ftag.hdf5.h5add_col.get_args
@@ -93,14 +93,14 @@ Module Contents
    :rtype: dict[str, tuple[int, ...]]
 
 
-.. py:function:: get_all_groups(file: pathlib.Path | str) -> dict[str, None]
+.. py:function:: get_all_datasets(file: pathlib.Path | str) -> dict[str, None]
 
    Returns a dictionary with all the groups in the h5 file.
 
    :param file: Path to the h5 file
    :type file: Path | str
 
-   :returns: A dictionary with all the groups in the h5 file as keys and None as values,
+   :returns: A dictionary with all the datasets in the h5 file as keys and None as values,
              such that h5read.stream(all_groups) will return all the groups in the file.
    :rtype: dict[str, None]
 
