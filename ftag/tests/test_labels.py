@@ -178,3 +178,45 @@ class TestLabelContainer(unittest.TestCase):
         self.assertEqual(len(container), 2)
         self.assertIn("bjets", container)
         self.assertIn("cjets", container)
+
+    def test_from_yaml_exclude(self):
+        """Test the loading from yaml with exluding categories."""
+        container = LabelContainer.from_yaml(
+            exclude_categories=[
+                "single-btag-extended",
+                "single-btag-extended-ghost",
+            ]
+        )
+        with self.assertRaises(KeyError):
+            _ = container.by_category("single-btag-extended")
+
+        self.assertEqual(
+            container.by_category("single-btag"),
+            LabelContainer.from_list([
+                container.bjets,
+                container.cjets,
+                container.ujets,
+                container.taujets,
+            ]),
+        )
+
+    def test_from_yaml_include(self):
+        """Test the loading from yaml with including categories."""
+        container = LabelContainer.from_yaml(
+            include_categories=[
+                "single-btag",
+                "single-btag-ghost",
+            ]
+        )
+        with self.assertRaises(KeyError):
+            _ = container.by_category("single-btag-extended-ghost")
+
+        self.assertEqual(
+            container.by_category("single-btag"),
+            LabelContainer.from_list([
+                container.bjets,
+                container.cjets,
+                container.ujets,
+                container.taujets,
+            ]),
+        )
