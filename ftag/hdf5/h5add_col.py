@@ -115,7 +115,7 @@ def get_shape(num_jets: int, batch: dict[str, np.ndarray]) -> dict[str, tuple[in
     return shape
 
 
-def get_all_groups(file: Path | str) -> dict[str, None]:
+def get_all_datasets(file: Path | str) -> dict[str, None]:
     """Returns a dictionary with all the groups in the h5 file.
 
     Parameters
@@ -126,12 +126,12 @@ def get_all_groups(file: Path | str) -> dict[str, None]:
     Returns
     -------
     dict[str, None]
-        A dictionary with all the groups in the h5 file as keys and None as values,
+        A dictionary with all the datasets in the h5 file as keys and None as values,
         such that h5read.stream(all_groups) will return all the groups in the file.
     """
     with h5py.File(file, "r") as f:
-        groups = list(f.keys())
-        return dict.fromkeys(groups)
+        datasets = [d for d in f if isinstance(f[d], h5py.Dataset)]
+        return dict.fromkeys(datasets)
 
 
 def h5_add_column(
@@ -223,7 +223,7 @@ def h5_add_column(
     writer = None
 
     input_variables = (
-        get_all_groups(input_file) if input_groups is None else dict.fromkeys(input_groups)
+        get_all_datasets(input_file) if input_groups is None else dict.fromkeys(input_groups)
     )
     if output_groups is None:
         output_groups = list(input_variables.keys())

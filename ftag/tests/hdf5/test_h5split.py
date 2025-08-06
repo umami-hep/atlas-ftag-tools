@@ -7,6 +7,7 @@ import pytest
 
 from ftag import get_mock_file
 from ftag.hdf5.h5split import main, parse_args
+from ftag.hdf5.h5utils import compare_groups
 
 
 # Define a fixture to provide mock data
@@ -43,7 +44,10 @@ def test_main(mock_h5_file, capsys):
         with h5py.File(f) as dst, h5py.File(mock_h5_file) as src:
             assert src.keys() == dst.keys()
             for k in src:
-                assert (src[k][start:stop] == dst[k]).all()
+                if isinstance(src[k], h5py.Dataset):
+                    assert (src[k][start:stop] == dst[k]).all()
+                else:
+                    compare_groups(src[k], dst[k], path=k)
 
 
 def test_remainder(mock_h5_file, capsys):
@@ -67,7 +71,10 @@ def test_remainder(mock_h5_file, capsys):
         with h5py.File(f) as dst, h5py.File(mock_h5_file) as src:
             assert src.keys() == dst.keys()
             for k in src:
-                assert (src[k][start:stop] == dst[k]).all()
+                if isinstance(src[k], h5py.Dataset):
+                    assert (src[k][start:stop] == dst[k]).all()
+                else:
+                    compare_groups(src[k], dst[k], path=k)
 
 
 def test_attrs(mock_h5_file):
