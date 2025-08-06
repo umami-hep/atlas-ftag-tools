@@ -220,3 +220,8 @@ class TestLabelContainer(unittest.TestCase):
                 container.taujets,
             ]),
         )
+
+    def test_from_yaml_KeyError(self):
+        """Test the KeyError if no class survived the selection."""
+        with self.assertRaises(KeyError):
+            LabelContainer.from_yaml(include_categories=[])
