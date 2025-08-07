@@ -208,7 +208,7 @@ Package Contents
    .. py:method:: from_cuts(cuts: list | ftag.cuts.Cuts) -> Label
 
 
-   .. py:method:: from_yaml(yaml_path: pathlib.Path | None = None) -> LabelContainer
+   .. py:method:: from_yaml(yaml_path: pathlib.Path | None = None, include_categories: collections.abc.Iterable[str] | None = None, exclude_categories: collections.abc.Iterable[str] | None = None) -> LabelContainer
       :classmethod:
 
 
