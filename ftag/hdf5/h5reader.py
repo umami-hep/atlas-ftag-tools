@@ -25,6 +25,10 @@ class H5SingleReader:
     shuffle: bool = True
     do_remove_inf: bool = False
     transform: Transform | None = None
+    # groups hold meta-data e.g. "cutBookkeeper"
+    groups: list[str] | None = None
+    # dsets hold data and all have a first dimension of njets
+    dsets: list[str] | None = None
 
     def __post_init__(self) -> None:
         self.rng = np.random.default_rng(42)
@@ -33,6 +37,9 @@ class H5SingleReader:
         if len(fname) != 1:
             raise ValueError("H5SingleReader should only read a single file")
         self.fname = fname[0]
+        with h5py.File(self.fname) as f:
+            self.groups = self.groups or [g for g in f if isinstance(f[g], h5py.Group)]
+            self.dsets = self.dsets or [d for d in f if isinstance(f[d], h5py.Dataset)]
 
     @cached_property
     def num_jets(self) -> int:
@@ -44,7 +51,10 @@ class H5SingleReader:
             obj = f[group] if group else f
             return obj.attrs[name]
 
-    def empty(self, ds: h5py.Dataset, variables: list[str]) -> np.ndarray:
+    def empty(self, ds: h5py.Dataset | h5py.Group, variables: list[str]) -> np.ndarray:
+        if variables is None:
+            variables = ds.dtype.names
+
         return np.array(0, dtype=get_dtype(ds, variables, self.precision, transform=self.transform))
 
     def read_chunk(self, ds: h5py.Dataset, array: np.ndarray, low: int) -> np.ndarray:
@@ -287,7 +297,10 @@ class H5Reader:
         with h5py.File(self.files[0]) as f:
             if variables is None:
                 for key in f:
-                    dtype = f[key].dtype
+                    if isinstance(f[key], h5py.Group):
+                        continue
+                    if isinstance(f[key], h5py.Dataset):
+                        dtype = f[key].dtype
                     if self.transform:
                         dtype = self.transform.map_dtype(key, dtype)
                     dtypes[key] = dtype

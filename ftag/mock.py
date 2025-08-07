@@ -187,5 +187,10 @@ def get_mock_file(
     if tracks_name:
         tracks = mock_tracks(num_jets, num_tracks)
         f.create_dataset(tracks_name, data=tracks)
-
+    # Add some dummy meta-data
+    counts_dtype = np.dtype([("count", "i8"), ("sum", "f8"), ("sum2", "f8")])
+    counts_data = np.array([100, 200, 300], dtype=counts_dtype)
+    f.create_dataset("cutBookkeeper/nominal/counts", data=counts_data)
+    # add a test attribute to this group
+    f["cutBookkeeper/nominal"].attrs["test"] = "test"
     return fname, f
