@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from collections.abc import Iterator
+from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -102,11 +102,29 @@ class LabelContainer:
         raise KeyError(f"Label with {cuts} not found")
 
     @classmethod
-    def from_yaml(cls, yaml_path: Path | None = None) -> LabelContainer:
+    def from_yaml(
+        cls,
+        yaml_path: Path | None = None,
+        include_categories: Iterable[str] | None = None,
+        exclude_categories: Iterable[str] | None = None,
+    ) -> LabelContainer:
         if yaml_path is None:
             yaml_path = Path(__file__).parent / "flavours.yaml"
         with open(yaml_path) as f:
             config = yaml.safe_load(f)
+
+        # Filter for categories to include
+        if include_categories is not None:
+            include_categories = set(include_categories)
+            config = [f for f in config if f.get("category") in include_categories]
+
+        # Filter for categories to exclude
+        if exclude_categories is not None:
+            exclude_categories = set(exclude_categories)
+            config = [f for f in config if f.get("category") not in exclude_categories]
+
+        if not config:
+            raise KeyError("No labels left after category filtering.")
 
         # sanity checks
         cuts = [Cuts.from_list(f["cuts"]) for f in config]

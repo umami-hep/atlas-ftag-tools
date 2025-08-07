@@ -6,7 +6,7 @@ __version__ = "v0.2.14"
 
 from . import hdf5, utils
 from .cuts import Cuts
-from .flavours import Flavours
+from .flavours import Extended_Flavours, Flavours
 from .fraction_optimization import calculate_best_fraction_values
 from .labeller import Labeller
 from .labels import Label, LabelContainer
@@ -17,6 +17,7 @@ from .working_points import get_working_points
 
 __all__ = [
     "Cuts",
+    "Extended_Flavours",
     "Flavours",
     "Label",
     "LabelContainer",
