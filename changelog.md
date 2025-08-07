@@ -2,6 +2,8 @@
 
 ### [Latest]
 
+### [v0.2.15](https://github.com/umami-hep/atlas-ftag-tools/releases/tag/v0.2.15) (07.08.2025)
+
 - Updating flavours and allow duplicated flavours in different categories [#142](https://github.com/umami-hep/atlas-ftag-tools/pull/142)
 - Fix issue where h5 writer and other utils did not work with new file format which includes groups for meta data [#141](https://github.com/umami-hep/atlas-ftag-tools/pull/141)
 - Adding new Docstring Checker [#139](https://github.com/umami-hep/atlas-ftag-tools/pull/139)
