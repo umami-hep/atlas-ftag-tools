@@ -10,6 +10,20 @@ from ftag.cuts import Cuts
 
 
 def remove_suffix(string: str, suffix: str) -> str:
+    """Remove the suffix from a string.
+
+    Parameters
+    ----------
+    string : str
+        String from which the suffix is to be removed
+    suffix : str
+        Suffix to remove
+
+    Returns
+    -------
+    str
+        String with the suffix removed
+    """
     if string.endswith(suffix):
         return string[: -len(suffix)]
     return string
@@ -17,6 +31,22 @@ def remove_suffix(string: str, suffix: str) -> str:
 
 @dataclass(frozen=True)
 class Label:
+    """Dataclass to hold info about one flavour/label.
+
+    Attributes
+    ----------
+    name : str
+        Name of the flavour/label
+    label : str
+        Plot label for this flavour/label
+    cuts : Cuts
+        Cuts of this flavour/label
+    colour : str
+        Colour of this flavour/label
+    category : str
+        Flavour category, to which this flavour/label belongs
+    """
+
     name: str
     label: str
     cuts: Cuts
@@ -49,6 +79,14 @@ class Label:
 
 @dataclass
 class LabelContainer:
+    """Label container that holds multiple labels.
+
+    Attributes
+    ----------
+    labels : dict[str, Label]
+        Dict with the labels this container will hold
+    """
+
     labels: dict[str, Label]
 
     def __iter__(self) -> Iterator:

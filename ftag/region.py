@@ -7,6 +7,16 @@ from ftag.cuts import Cuts
 
 @dataclass(frozen=True)
 class Region:
+    """Dataclass to store info about a region.
+
+    Attributes
+    ----------
+    name : str
+        Name of the region
+    cuts : Cuts
+        Cuts of this region
+    """
+
     name: str
     cuts: Cuts
 

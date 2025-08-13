@@ -49,9 +49,10 @@ def test_get_dtype_with_transform():
 
 def test_get_dtype_unstructured():
     """Test get_dtype with unstructured array (line 184)."""
-    with tempfile.NamedTemporaryFile(suffix=".h5", delete=False) as tmp, h5py.File(
-        tmp.name, "w"
-    ) as f:
+    with (
+        tempfile.NamedTemporaryFile(suffix=".h5", delete=False) as tmp,
+        h5py.File(tmp.name, "w") as f,
+    ):
         # Create unstructured dataset
         data = np.array([1, 2, 3, 4, 5])
         ds = f.create_dataset("unstructured", data=data)
@@ -99,9 +100,10 @@ def test_structured_from_dict():
 
 def test_compare_groups():
     """Test compare_groups function with various group structures."""
-    with tempfile.NamedTemporaryFile(suffix=".h5", delete=False) as tmp, h5py.File(
-        tmp.name, "w"
-    ) as f:
+    with (
+        tempfile.NamedTemporaryFile(suffix=".h5", delete=False) as tmp,
+        h5py.File(tmp.name, "w") as f,
+    ):
         # Create test groups with datasets and attributes
         g1 = f.create_group("group1")
         g1.attrs["group_attr"] = "test_value"
@@ -172,9 +174,10 @@ def test_write_group_full():
         },
     }
 
-    with tempfile.NamedTemporaryFile(suffix=".h5", delete=False) as tmp, h5py.File(
-        tmp.name, "w"
-    ) as f:
+    with (
+        tempfile.NamedTemporaryFile(suffix=".h5", delete=False) as tmp,
+        h5py.File(tmp.name, "w") as f,
+    ):
         root_group = f.create_group("test_group")
         write_group_full(root_group, data)
 
@@ -202,9 +205,10 @@ def test_write_group_full():
     # Test with invalid data structure
     invalid_data = {"invalid_key": "string_value"}  # Should raise TypeError
 
-    with tempfile.NamedTemporaryFile(suffix=".h5", delete=False) as tmp, h5py.File(
-        tmp.name, "w"
-    ) as f:
+    with (
+        tempfile.NamedTemporaryFile(suffix=".h5", delete=False) as tmp,
+        h5py.File(tmp.name, "w") as f,
+    ):
         root_group = f.create_group("test_group")
         with pytest.raises(TypeError, match="Unexpected value type"):
             write_group_full(root_group, invalid_data)
@@ -212,9 +216,10 @@ def test_write_group_full():
 
 def test_extract_group_full():
     """Test extract_group_full function."""
-    with tempfile.NamedTemporaryFile(suffix=".h5", delete=False) as tmp, h5py.File(
-        tmp.name, "w"
-    ) as f:
+    with (
+        tempfile.NamedTemporaryFile(suffix=".h5", delete=False) as tmp,
+        h5py.File(tmp.name, "w") as f,
+    ):
         # Create test structure
         root_group = f.create_group("test_group")
         root_group.attrs["root_attr"] = "root_value"
@@ -269,9 +274,10 @@ def test_extract_group_full_unsupported_item():
     # This is tricky to test with real HDF5 since it only allows Groups and Datasets
     # We'll test by mocking the items() method to return an unsupported type
 
-    with tempfile.NamedTemporaryFile(suffix=".h5", delete=False) as tmp, h5py.File(
-        tmp.name, "w"
-    ) as f:
+    with (
+        tempfile.NamedTemporaryFile(suffix=".h5", delete=False) as tmp,
+        h5py.File(tmp.name, "w") as f,
+    ):
         group = f.create_group("test_group")
 
         # Mock an unsupported item type

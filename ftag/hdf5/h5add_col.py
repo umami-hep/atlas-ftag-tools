@@ -3,8 +3,9 @@ from __future__ import annotations
 
 import argparse
 import importlib.util
+from collections.abc import Callable
 from pathlib import Path
-from typing import Callable
+from typing import Any
 
 import h5py
 import numpy as np
@@ -330,7 +331,19 @@ def parse_append_function(func_path: str) -> Callable:
     return getattr(module, func_name)
 
 
-def get_args(args):
+def parse_args(args: Any | None) -> argparse.Namespace:
+    """Parse command line arguments.
+
+    Parameters
+    ----------
+    args : Any | None
+        Command line arguments
+
+    Returns
+    -------
+    argparse.Namespace
+        Namespace with the parsed command line arguments.
+    """
     parser = argparse.ArgumentParser(description="Append columns to an h5 file.")
     parser.add_argument("--input", "-i", type=str, required=True, help="Input h5 file")
     parser.add_argument(
@@ -359,10 +372,16 @@ def get_args(args):
         help="List of groups to write to the output file",
     )
     parser.add_argument(
-        "--reader_kwargs", type=dict, default=None, help="Additional arguments for H5Reader"
+        "--reader_kwargs",
+        type=dict,  # type: ignore[arg-type]
+        default=None,
+        help="Additional arguments for H5Reader",
     )
     parser.add_argument(
-        "--writer_kwargs", type=dict, default=None, help="Additional arguments for H5Writer"
+        "--writer_kwargs",
+        type=dict,  # type: ignore[arg-type]
+        default=None,
+        help="Additional arguments for H5Writer",
     )
     parser.add_argument(
         "--overwrite", action="store_true", help="Overwrite the output file if it exists"
@@ -371,8 +390,15 @@ def get_args(args):
     return parser.parse_args(args)
 
 
-def main(args=None):
-    args = get_args(args)
+def main(args: Any | None = None) -> None:
+    """Run VDS creation.
+
+    Parameters
+    ----------
+    args : Any | None, optional
+        Command line arguments, by default None
+    """
+    args = parse_args(args)
     append_function = [
         parse_append_function(func_path) if isinstance(func_path, str) else func_path
         for func_path in args.append_function

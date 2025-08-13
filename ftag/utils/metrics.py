@@ -42,8 +42,8 @@ def save_divide(
     logger.debug("denominator: %s", denominator)
     logger.debug("default: %s", default)
 
-    if isinstance(numerator, (int, float, np.number)) and isinstance(
-        denominator, (int, float, np.number)
+    if isinstance(numerator, int | float | np.number) and isinstance(
+        denominator, int | float | np.number
     ):
         output_shape = 1
     else:
