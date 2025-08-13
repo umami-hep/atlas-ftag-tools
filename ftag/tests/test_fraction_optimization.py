@@ -43,7 +43,7 @@ class TestConvertDict(unittest.TestCase):
 
     def test_wrong_input_type_value_error(self):
         """Test raising of ValueError if wrong type is given."""
-        with self.assertRaises(ValueError) as ctx:
+        with self.assertRaises(TypeError) as ctx:
             convert_dict(fraction_values="Error", backgrounds=self.backgrounds)
         self.assertEqual(
             "Only input of type `dict` or `np.ndarray` are accepted! You gave <class 'str'>",

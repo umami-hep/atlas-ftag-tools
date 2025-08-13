@@ -16,6 +16,25 @@ def convert_dict(
     fraction_values: dict | np.ndarray,
     backgrounds: LabelContainer,
 ) -> np.ndarray | dict:
+    """Convert the fraction values from dict to array or vice versa.
+
+    Parameters
+    ----------
+    fraction_values : dict | np.ndarray
+        Dict of array with the fraction values
+    backgrounds : LabelContainer
+        LabelContainer with the background flavours
+
+    Returns
+    -------
+    np.ndarray | dict
+        Array or dict with the fraction values
+
+    Raises
+    ------
+    TypeError
+        If the type of the input was wrong
+    """
     if isinstance(fraction_values, dict):
         return np.array([fraction_values[iter_bkg.frac_str] for iter_bkg in backgrounds])
 
@@ -24,9 +43,11 @@ def convert_dict(
             float(frac_value / np.sum(fraction_values)) for frac_value in fraction_values
         ]
 
-        return dict(zip([iter_bkg.frac_str for iter_bkg in backgrounds], fraction_values))
+        return dict(
+            zip([iter_bkg.frac_str for iter_bkg in backgrounds], fraction_values, strict=False)
+        )
 
-    raise ValueError(
+    raise TypeError(
         f"Only input of type `dict` or `np.ndarray` are accepted! You gave {type(fraction_values)}"
     )
 
@@ -38,6 +59,26 @@ def get_bkg_norm_dict(
     flavours: LabelContainer,
     working_point: float,
 ) -> dict:
+    """Get the normalisation dict for the background flavours.
+
+    Parameters
+    ----------
+    jets : np.ndarray
+        Loaded jets
+    tagger : str
+        Name of the tagger
+    signal : Label
+        Label instance of the signal
+    flavours : LabelContainer
+        LabelContainer instance with all flavours used
+    working_point : float
+        Working point that is to be used
+
+    Returns
+    -------
+    dict
+        Background normalisation dict
+    """
     # Init a dict for the bkg rejection norm values
     bkg_rej_norm = {}
 
@@ -84,6 +125,32 @@ def calculate_rejection_sum(
     bkg_norm_dict: dict,
     rejection_weights: dict,
 ) -> float:
+    """Calculate the sum of the normalised rejections.
+
+    Parameters
+    ----------
+    fraction_dict : dict | np.ndarray
+        Dict/Array with the fraction values
+    jets : np.ndarray
+        Loaded jets
+    tagger : str
+        Name of the tagger
+    signal : Label
+        Label instance of the signal
+    flavours : LabelContainer
+        LabelContainer with all flavours
+    working_point : float
+        Working point that is used
+    bkg_norm_dict : dict
+        Backgroud normalisation dict
+    rejection_weights : dict
+        Weights for the rejections
+
+    Returns
+    -------
+    float
+        Sum of the normalised rejections
+    """
     # Get the background classes
     backgrounds = flavours.backgrounds(signal)
 
@@ -133,6 +200,30 @@ def calculate_best_fraction_values(
     rejection_weights: dict | None = None,
     optimizer_method: str = "Powell",
 ) -> dict:
+    """Calculate the best fraction values for a given tagger and working point.
+
+    Parameters
+    ----------
+    jets : np.ndarray
+        Loaded jets
+    tagger : str
+        Name of the tagger
+    signal : Label
+        Label instance of the signal
+    flavours : LabelContainer
+        LabelContainer with all flavours
+    working_point : float
+        Working point that is used
+    rejection_weights : dict | None, optional
+        Rejection weights for the background classes, by default None
+    optimizer_method : str, optional
+        Optimizer method for the minimization, by default "Powell"
+
+    Returns
+    -------
+    dict
+        Dict with the best fraction values
+    """
     logger.debug("Calculating best fraction values.")
     logger.debug(f"tagger: {tagger}")
     logger.debug(f"signal: {signal}")

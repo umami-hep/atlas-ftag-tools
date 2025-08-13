@@ -6,12 +6,25 @@ import os
 import re
 import sys
 from pathlib import Path
+from typing import Any
 
 import h5py
 import numpy as np
 
 
-def parse_args(args=None):
+def parse_args(args: Any | None) -> argparse.Namespace:
+    """Parse command line arguments.
+
+    Parameters
+    ----------
+    args : Any | None
+        Command line arguments
+
+    Returns
+    -------
+    argparse.Namespace
+        Namespace with the parsed command line arguments.
+    """
     parser = argparse.ArgumentParser(
         description="Create a lightweight HDF5 wrapper (virtual datasets + "
         "summed cutBookkeeper counts) around a set of .h5 files"
@@ -342,7 +355,14 @@ def create_virtual_file(
     return out_fname
 
 
-def main(args=None) -> None:
+def main(args: Any | None = None) -> None:
+    """Run VDS creation.
+
+    Parameters
+    ----------
+    args : Any | None, optional
+        Command line arguments, by default None
+    """
     args = parse_args(args)
     matching_mode = "Applying regex to" if args.use_regex else "Globbing"
     print(f"{matching_mode} {args.pattern} ...")

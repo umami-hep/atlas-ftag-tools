@@ -10,6 +10,22 @@ from ftag.vds import create_virtual_file
 
 @dataclass(frozen=True)
 class Sample:
+    """Dataclass which holds info about a specific sample.
+
+    Attributes
+    ----------
+    pattern: Path | str | tuple[Path | str, ...]
+        Filepattern for the h5 files
+    ntuple_dir: Path | str | None, optional
+        Ntuple directory where the h5 files are stored, by default None
+    name: str | None, optional
+        Name of the sample, for internal identification, by default None
+    weights: list[float] | None, optional
+        List of weights for this sample, by default None
+    skip_checks: bool, optional
+        Decide, if certain checks are skipped, by default False
+    """
+
     pattern: Path | str | tuple[Path | str, ...]
     ntuple_dir: Path | str | None = None
     name: str | None = None
@@ -28,7 +44,7 @@ class Sample:
 
     @property
     def path(self) -> tuple[Path, ...]:
-        pattern_tuple = self.pattern if isinstance(self.pattern, (list, tuple)) else (self.pattern,)
+        pattern_tuple = self.pattern if isinstance(self.pattern, list | tuple) else (self.pattern,)
         if self.ntuple_dir is not None:
             return tuple(Path(self.ntuple_dir, p) for p in pattern_tuple)
         return tuple(Path(p) for p in pattern_tuple)

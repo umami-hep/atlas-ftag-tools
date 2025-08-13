@@ -172,7 +172,7 @@ class TestLabelContainer(unittest.TestCase):
   category: "single-btag"
 """,
     )
-    def test_from_yaml(self, _mock_file):  # noqa: PT019
+    def test_from_yaml(self, _mock_file):
         """Test that from_yaml reads and parses the YAML data correctly."""
         container = LabelContainer.from_yaml(Path("dummy.yaml"))
         self.assertEqual(len(container), 2)

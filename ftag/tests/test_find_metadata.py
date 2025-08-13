@@ -62,23 +62,28 @@ class TestFindMetadata(unittest.TestCase):
     # === 3. Xsec Database Download Logic ===
     #
     def test_download_xsecdb_files_invalid_scheme(self):
-        with patch("ftag.find_metadata.Path.exists", return_value=False), patch(
-            "ftag.find_metadata.validate_url_scheme", side_effect=ValueError("bad")
-        ), patch("ftag.find_metadata.requests.get"):
+        with (
+            patch("ftag.find_metadata.Path.exists", return_value=False),
+            patch("ftag.find_metadata.validate_url_scheme", side_effect=ValueError("bad")),
+            patch("ftag.find_metadata.requests.get"),
+        ):
             find_metadata.download_xsecdb_files()
 
     def test_download_xsecdb_files_network_fail(self):
-        with patch("ftag.find_metadata.Path.exists", return_value=False), patch(
-            "ftag.find_metadata.requests.get", side_effect=requests.RequestException("fail")
+        with (
+            patch("ftag.find_metadata.Path.exists", return_value=False),
+            patch("ftag.find_metadata.requests.get", side_effect=requests.RequestException("fail")),
         ):
             find_metadata.download_xsecdb_files()
 
     def test_download_xsecdb_files_success(self):
-        with patch("ftag.find_metadata.Path.exists", return_value=False), patch(
-            "ftag.find_metadata.validate_url_scheme"
-        ) as mock_validate, patch("ftag.find_metadata.requests.get") as mock_get, patch(
-            "ftag.find_metadata.Path.write_bytes"
-        ) as mock_write, patch("builtins.print") as mock_print:
+        with (
+            patch("ftag.find_metadata.Path.exists", return_value=False),
+            patch("ftag.find_metadata.validate_url_scheme") as mock_validate,
+            patch("ftag.find_metadata.requests.get") as mock_get,
+            patch("ftag.find_metadata.Path.write_bytes") as mock_write,
+            patch("builtins.print") as mock_print,
+        ):
             mock_response = MagicMock()
             mock_response.status_code = 200
             mock_response.content = b"mock file content"
@@ -141,9 +146,10 @@ class TestFindMetadata(unittest.TestCase):
                 self.assertIsNone(r)
 
     def test_query_xsecdb_dbfile_missing(self):
-        with patch("ftag.find_metadata.Path.exists", return_value=False), patch(
-            "builtins.print"
-        ) as mock_print:
+        with (
+            patch("ftag.find_metadata.Path.exists", return_value=False),
+            patch("builtins.print") as mock_print,
+        ):
             r1 = find_metadata.query_xsecdb("unknown_campaign", 123456, "e1234")
             self.assertIsNone(r1)
             with patch("ftag.find_metadata.XSECDB_MAP", {"mc16": "nonexistent_file.txt"}):
@@ -211,9 +217,14 @@ class TestFindMetadata(unittest.TestCase):
     def test_handle_yaml_fallback_container_not_in_db(self):
         container = "mc21_13TeV.123456.e7890_s1234_r5678"
         data = {"container name": container}
-        with tempfile.NamedTemporaryFile(suffix=".h5") as f, patch(
-            "ftag.find_metadata.extract_info_from_container", return_value=(123456, "e7890", "mc21")
-        ), patch("ftag.find_metadata.query_xsecdb", return_value=None):
+        with (
+            tempfile.NamedTemporaryFile(suffix=".h5") as f,
+            patch(
+                "ftag.find_metadata.extract_info_from_container",
+                return_value=(123456, "e7890", "mc21"),
+            ),
+            patch("ftag.find_metadata.query_xsecdb", return_value=None),
+        ):
             with self.assertRaises(ValueError) as ctx:
                 find_metadata.handle_yaml_fallback(Path(f.name), data)
             self.assertIn("Container not found", str(ctx.exception))
@@ -287,11 +298,13 @@ class TestFindMetadata(unittest.TestCase):
     # === 9. Main Flow/Integration Tests ===
     #
     def test_main_cli_path(self):
-        with patch("ftag.find_metadata.parse_args_and_yaml", return_value=(["a.h5"], {})), patch(
-            "ftag.find_metadata.download_xsecdb_files"
-        ), patch("ftag.find_metadata.process_single_file"), patch(
-            "ftag.find_metadata.Path.exists", return_value=True
-        ), patch("ftag.find_metadata.Path.unlink", side_effect=OSError("fail")):
+        with (
+            patch("ftag.find_metadata.parse_args_and_yaml", return_value=(["a.h5"], {})),
+            patch("ftag.find_metadata.download_xsecdb_files"),
+            patch("ftag.find_metadata.process_single_file"),
+            patch("ftag.find_metadata.Path.exists", return_value=True),
+            patch("ftag.find_metadata.Path.unlink", side_effect=OSError("fail")),
+        ):
             find_metadata.main()
 
     def test_process_single_file_auto_success(self):
@@ -300,20 +313,21 @@ class TestFindMetadata(unittest.TestCase):
             "inputdataset": "mc20_13TeV.123456.e7890_s1234_r5678",
         }
         meta = {"cross_section_pb": 3.0, "genFiltEff": 0.5, "kfactor": 1.2, "etag": "e7890"}
-        with tempfile.NamedTemporaryFile(suffix=".h5") as f, patch(
-            "ftag.find_metadata.Path.exists", return_value=True
-        ), patch("ftag.find_metadata.extract_taskid_from_filename", return_value="12345678"), patch(
-            "ftag.find_metadata.fetch_taskinfo_from_bigpanda", return_value=mock_taskinfo
-        ), patch(
-            "ftag.find_metadata.parse_line_from_taskname", return_value=(123456, "e7890")
-        ), patch(
-            "ftag.find_metadata.extract_mc_container_from_json",
-            return_value=mock_taskinfo["inputdataset"],
-        ), patch("ftag.find_metadata.parse_campaign_from_taskname", return_value="mc16"), patch(
-            "ftag.find_metadata.query_xsecdb", return_value=meta.copy()
-        ), patch("ftag.find_metadata.write_metadata_to_h5") as mock_write, patch(
-            "builtins.print"
-        ) as mock_print:
+        with (
+            tempfile.NamedTemporaryFile(suffix=".h5") as f,
+            patch("ftag.find_metadata.Path.exists", return_value=True),
+            patch("ftag.find_metadata.extract_taskid_from_filename", return_value="12345678"),
+            patch("ftag.find_metadata.fetch_taskinfo_from_bigpanda", return_value=mock_taskinfo),
+            patch("ftag.find_metadata.parse_line_from_taskname", return_value=(123456, "e7890")),
+            patch(
+                "ftag.find_metadata.extract_mc_container_from_json",
+                return_value=mock_taskinfo["inputdataset"],
+            ),
+            patch("ftag.find_metadata.parse_campaign_from_taskname", return_value="mc16"),
+            patch("ftag.find_metadata.query_xsecdb", return_value=meta.copy()),
+            patch("ftag.find_metadata.write_metadata_to_h5") as mock_write,
+            patch("builtins.print") as mock_print,
+        ):
             find_metadata.process_single_file(Path(f.name), yaml_data={})
             mock_write.assert_called_once_with(str(f.name), 123456, {**meta, "campaign": "mc16"})
             mock_print.assert_any_call("Extracted Task ID: 12345678")
@@ -321,9 +335,11 @@ class TestFindMetadata(unittest.TestCase):
     def test_process_single_file_yaml_fallback_fails(self):
         path = Path("some.12345678._000001.h5")
         yaml_data = {"container name": "bad.container"}
-        with patch("ftag.find_metadata.Path.exists", return_value=True), patch(
-            "ftag.find_metadata.extract_taskid_from_filename", return_value=None
-        ), patch("builtins.print") as mock_print:
+        with (
+            patch("ftag.find_metadata.Path.exists", return_value=True),
+            patch("ftag.find_metadata.extract_taskid_from_filename", return_value=None),
+            patch("builtins.print") as mock_print,
+        ):
             find_metadata.process_single_file(path, yaml_data)
             mock_print.assert_any_call("Using YAML fallback path")
             self.assertTrue(
@@ -332,19 +348,22 @@ class TestFindMetadata(unittest.TestCase):
 
     def test_process_single_file_no_taskid_no_fallback(self):
         path = Path("noid.h5")
-        with patch("ftag.find_metadata.Path.exists", return_value=True), patch(
-            "ftag.find_metadata.extract_taskid_from_filename", return_value=None
-        ), patch("builtins.print") as mock_print:
+        with (
+            patch("ftag.find_metadata.Path.exists", return_value=True),
+            patch("ftag.find_metadata.extract_taskid_from_filename", return_value=None),
+            patch("builtins.print") as mock_print,
+        ):
             find_metadata.process_single_file(path, yaml_data={})
             mock_print.assert_any_call("Failed to retrieve metadata and no YAML fallback provided")
 
     def test_process_single_file_path_not_exists(self):
         fake_path = Path("nonexistent_file.h5")
-        with patch("ftag.find_metadata.Path.exists", return_value=False), patch(
-            "builtins.print"
-        ) as mock_print, patch(
-            "ftag.find_metadata.extract_taskid_from_filename"
-        ) as mock_extract, patch("ftag.find_metadata.fetch_taskinfo_from_bigpanda") as mock_fetch:
+        with (
+            patch("ftag.find_metadata.Path.exists", return_value=False),
+            patch("builtins.print") as mock_print,
+            patch("ftag.find_metadata.extract_taskid_from_filename") as mock_extract,
+            patch("ftag.find_metadata.fetch_taskinfo_from_bigpanda") as mock_fetch,
+        ):
             find_metadata.process_single_file(fake_path, yaml_data={})
             mock_print.assert_any_call(f"File not found: {fake_path}")
             mock_extract.assert_not_called()
@@ -357,21 +376,24 @@ class TestFindMetadata(unittest.TestCase):
         }
         meta = {"cross_section_pb": 1.0, "genFiltEff": 1.0, "kfactor": 1.0, "etag": "e7890"}
 
-        with tempfile.NamedTemporaryFile(suffix=".h5") as f, patch(
-            "ftag.find_metadata.Path.exists", return_value=True
-        ), patch("ftag.find_metadata.extract_taskid_from_filename", return_value="12345678"), patch(
-            "ftag.find_metadata.fetch_taskinfo_from_bigpanda", return_value=mock_taskinfo
-        ), patch(
-            "ftag.find_metadata.parse_line_from_taskname", return_value=(123456, "e7890")
-        ), patch(
-            "ftag.find_metadata.extract_mc_container_from_json",
-            return_value=mock_taskinfo["inputdataset"],
-        ), patch("ftag.find_metadata.parse_campaign_from_taskname", return_value="mc16"), patch(
-            "ftag.find_metadata.query_xsecdb", return_value=meta
-        ), patch(
-            "ftag.find_metadata.write_metadata_to_h5",
-            side_effect=OSError("simulated write failure"),
-        ), patch("builtins.print") as mock_print:
+        with (
+            tempfile.NamedTemporaryFile(suffix=".h5") as f,
+            patch("ftag.find_metadata.Path.exists", return_value=True),
+            patch("ftag.find_metadata.extract_taskid_from_filename", return_value="12345678"),
+            patch("ftag.find_metadata.fetch_taskinfo_from_bigpanda", return_value=mock_taskinfo),
+            patch("ftag.find_metadata.parse_line_from_taskname", return_value=(123456, "e7890")),
+            patch(
+                "ftag.find_metadata.extract_mc_container_from_json",
+                return_value=mock_taskinfo["inputdataset"],
+            ),
+            patch("ftag.find_metadata.parse_campaign_from_taskname", return_value="mc16"),
+            patch("ftag.find_metadata.query_xsecdb", return_value=meta),
+            patch(
+                "ftag.find_metadata.write_metadata_to_h5",
+                side_effect=OSError("simulated write failure"),
+            ),
+            patch("builtins.print") as mock_print,
+        ):
             find_metadata.process_single_file(Path(f.name), yaml_data={})
             self.assertTrue(
                 any(

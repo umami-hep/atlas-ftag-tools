@@ -1,3 +1,5 @@
+"""HDF5 package of the atlas-ftag-tools."""
+
 from __future__ import annotations
 
 from .h5add_col import h5_add_column

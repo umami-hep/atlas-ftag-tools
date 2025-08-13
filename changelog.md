@@ -2,6 +2,8 @@
 
 ### [Latest]
 
+- Enabling Docstring Checks [#143](https://github.com/umami-hep/atlas-ftag-tools/pull/143)
+
 ### [v0.2.15](https://github.com/umami-hep/atlas-ftag-tools/releases/tag/v0.2.15) (07.08.2025)
 
 - Updating flavours and allow duplicated flavours in different categories [#142](https://github.com/umami-hep/atlas-ftag-tools/pull/142)

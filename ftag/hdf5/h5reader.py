@@ -18,6 +18,30 @@ from ftag.transform import Transform
 
 @dataclass
 class H5SingleReader:
+    """H5 single reader for a single file.
+
+    Attributes
+    ----------
+    fname: Path | str
+        Path to the file
+    batch_size: int, optional
+        Batch size to read, by default 100_000
+    jets_name: str, optional
+        Name of the jets dataset, by default "jets"
+    precision: str | None, optional
+        Precision that is to be used, by default None
+    shuffle: bool, optional
+        If random jets are loaded from the file, by default True
+    do_remove_inf: bool, optional
+        Remove infs from the jets, by default False
+    transform: Transform | None, optional
+        Transformation that should be applied, by default None
+    groups: list[str] | None, optional
+        List of the groups that hold metadata, by default None
+    dsets: list[str] | None, optional
+        List of the datsets, that hold the per jet/track data, by default None
+    """
+
     fname: Path | str
     batch_size: int = 100_000
     jets_name: str = "jets"
@@ -257,7 +281,7 @@ class H5Reader:
 
     def __post_init__(self) -> None:
         self.rng = np.random.default_rng(42)
-        if isinstance(self.fname, (str, Path)):
+        if isinstance(self.fname, str | Path):
             self.fname = [self.fname]
 
         # calculate batch sizes
@@ -281,7 +305,7 @@ class H5Reader:
                 self.do_remove_inf,
                 self.transform,
             )
-            for f, b in zip(self.fname, self.batch_sizes)
+            for f, b in zip(self.fname, self.batch_sizes, strict=False)
         ]
 
     @property
