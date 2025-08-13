@@ -222,7 +222,7 @@ def calculate_best_fraction_values(
     Returns
     -------
     dict
-        _description_
+        Dict with the best fraction values
     """
     logger.debug("Calculating best fraction values.")
     logger.debug(f"tagger: {tagger}")
