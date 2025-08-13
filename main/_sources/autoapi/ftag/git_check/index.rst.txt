@@ -3,6 +3,23 @@ ftag.git_check
 
 .. py:module:: ftag.git_check
 
+.. autoapi-nested-parse::
+
+   Small utilities for interacting with a local Git repository.
+
+   This module provides helper functions to:
+
+   - detect whether a given path is inside a Git working tree,
+   - fail fast when there are uncommitted changes,
+   - verify that a local clone is a fork of an expected upstream,
+   - create and push an annotated tag, and
+   - read the current short commit hash.
+
+   All functions run Git commands via :mod:`subprocess`. If Git is not installed
+   or the command cannot be executed, the underlying OS error (e.g. :class:`OSError`)
+   will propagate.
+
+
 
 Exceptions
 ----------
@@ -32,18 +49,90 @@ Module Contents
    Bases: :py:obj:`Exception`
 
 
-   Common base class for all non-exit exceptions.
+   Raised when a Git-related precondition is not satisfied.
 
    Initialize self.  See help(type(self)) for accurate signature.
 
 
-.. py:function:: is_git_repo(path) -> bool
+.. py:function:: is_git_repo(path: str | os.PathLike[str]) -> bool
 
-.. py:function:: check_for_uncommitted_changes(path) -> None
+   Return whether ``path`` is inside a Git working tree.
 
-.. py:function:: check_for_fork(path, upstream) -> None
+   :param path: Filesystem path used as the current working directory for the Git command.
+   :type path: str | PathLike[str]
 
-.. py:function:: create_and_push_tag(path, upstream, tagname, msg) -> None
+   :returns: ``True`` if ``path`` is inside a Git working tree, ``False`` otherwise.
+   :rtype: bool
 
-.. py:function:: get_git_hash(path)
+   .. rubric:: Notes
+
+   This function runs::
+
+       git rev-parse --is-inside-work-tree HEAD
+
+   Any non-zero exit status is treated as "not a Git repository". If Git is not
+   available on the system, an :class:`OSError` may be raised by :mod:`subprocess`.
+
+
+.. py:function:: check_for_uncommitted_changes(path: str | os.PathLike[str]) -> None
+
+   Raise if the repository at ``path`` has uncommitted changes.
+
+   :param path: Filesystem path to the repository root or any directory within it.
+   :type path: str | PathLike[str]
+
+   :raises GitError: If ``path`` is a Git repository and there are uncommitted changes.
+
+   .. rubric:: Notes
+
+   - If ``path`` is **not** a Git repository, the function returns silently.
+   - If the current process is running under ``pytest`` (detected via
+     :data:`sys.modules`), the check is skipped and the function returns.
+
+
+.. py:function:: check_for_fork(path: str | os.PathLike[str], upstream: str) -> None
+
+   Ensure the local clone's ``origin`` remote is a fork of ``upstream``.
+
+   :param path: Filesystem path to the repository root or any directory within it.
+   :type path: str | PathLike[str]
+   :param upstream: Expected upstream repository URL substring (e.g. ``'github.com/org/repo'``).
+   :type upstream: str
+
+   :raises GitError: If the repository is present but its ``origin`` URL does not contain ``upstream``.
+
+   .. rubric:: Notes
+
+   If ``path`` is not a Git repository, the function returns silently.
+
+
+.. py:function:: create_and_push_tag(path: str | os.PathLike[str], upstream: str, tagname: str, msg: str) -> None
+
+   Create an annotated Git tag and push it to ``origin``.
+
+   :param path: Filesystem path to the repository root or any directory within it.
+   :type path: str | PathLike[str]
+   :param upstream: Expected upstream repository URL substring; passed to :func:`check_for_fork`.
+   :type upstream: str
+   :param tagname: Name of the tag to create.
+   :type tagname: str
+   :param msg: Annotation message for the tag (``git tag -m``).
+   :type msg: str
+
+   .. rubric:: Notes
+
+   If ``path`` is not a Git repository, the function returns silently.
+
+
+.. py:function:: get_git_hash(path: str | os.PathLike[str]) -> str | None
+
+   Return the short commit hash for ``HEAD`` at ``path``, if available.
+
+   :param path: Filesystem path to the repository root or any directory within it.
+   :type path: str | PathLike[str]
+
+   :returns: The short (``--short``) commit hash as a string, or ``None`` if ``path`` is
+             not a Git repository.
+   :rtype: str | None
+
 

@@ -15,5 +15,20 @@ Functions
 Module Contents
 ---------------
 
-.. py:function:: get_mock_file(num_jets=1000, fname: str | None = None, tracks_name: str = 'tracks', num_tracks: int = 40) -> tuple[str, h5py.File]
+.. py:function:: get_mock_file(num_jets: int = 1000, fname: str | None = None, tracks_name: str = 'tracks', num_tracks: int = 40) -> tuple[str, h5py.File]
+
+   Get a mock file for testing.
+
+   :param num_jets: Number of jets in the file, by default 1000
+   :type num_jets: int, optional
+   :param fname: Name of the file, by default None
+   :type fname: str | None, optional
+   :param tracks_name: Name of the tracks dataset, by default "tracks"
+   :type tracks_name: str, optional
+   :param num_tracks: Number of tracks per jet, by default 40
+   :type num_tracks: int, optional
+
+   :returns: Tuple with the path and the h5 file
+   :rtype: tuple[str, h5py.File]
+
 

@@ -17,6 +17,39 @@ Module Contents
 
 .. py:class:: Sample
 
+   Dataclass which holds info about a specific sample.
+
+   .. attribute:: pattern
+
+      Filepattern for the h5 files
+
+      :type: Path | str | tuple[Path | str, ...]
+
+   .. attribute:: ntuple_dir
+
+      Ntuple directory where the h5 files are stored, by default None
+
+      :type: Path | str | None, optional
+
+   .. attribute:: name
+
+      Name of the sample, for internal identification, by default None
+
+      :type: str | None, optional
+
+   .. attribute:: weights
+
+      List of weights for this sample, by default None
+
+      :type: list[float] | None, optional
+
+   .. attribute:: skip_checks
+
+      Decide, if certain checks are skipped, by default False
+
+      :type: bool, optional
+
+
    .. py:attribute:: pattern
       :type:  pathlib.Path | str | tuple[pathlib.Path | str, Ellipsis]
 

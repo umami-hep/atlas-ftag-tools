@@ -32,6 +32,21 @@ Module Contents
    Bases: :py:obj:`NamedTuple`
 
 
+   Namespace alss for the cut results.
+
+   .. attribute:: idx
+
+      Positions of the cuts
+
+      :type: np.ndarray
+
+   .. attribute:: values
+
+      Values of the cuts
+
+      :type: np.ndarray
+
+
    .. py:attribute:: idx
       :type:  numpy.ndarray
 
@@ -41,6 +56,21 @@ Module Contents
 
 
 .. py:class:: Cut
+
+   Cut dataclass to store a single cut.
+
+   .. attribute:: variable
+
+      Variable on which the cut is applied
+
+      :type: str
+
+   .. attribute:: operator
+
+      Operator for the cut
+
+      :type: str
+
 
    .. py:attribute:: variable
       :type:  str
@@ -66,6 +96,15 @@ Module Contents
 
 
 .. py:class:: Cuts
+
+   Cuts dataclass to store multiple Cut instances and apply them.
+
+   .. attribute:: cuts
+
+      Tuple with the Cut instances
+
+      :type: tuple[Cut, ...]
+
 
    .. py:attribute:: cuts
       :type:  tuple[Cut, Ellipsis]

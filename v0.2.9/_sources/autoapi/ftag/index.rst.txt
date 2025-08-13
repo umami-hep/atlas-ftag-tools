@@ -19,6 +19,7 @@ Submodules
    /autoapi/ftag/cuts/index
    /autoapi/ftag/git_check/index
    /autoapi/ftag/hdf5/index
+   /autoapi/ftag/labeller/index
    /autoapi/ftag/labels/index
    /autoapi/ftag/mock/index
    /autoapi/ftag/region/index

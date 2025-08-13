@@ -26,7 +26,51 @@ Module Contents
 
 .. py:function:: remove_suffix(string: str, suffix: str) -> str
 
+   Remove the suffix from a string.
+
+   :param string: String from which the suffix is to be removed
+   :type string: str
+   :param suffix: Suffix to remove
+   :type suffix: str
+
+   :returns: String with the suffix removed
+   :rtype: str
+
+
 .. py:class:: Label
+
+   Dataclass to hold info about one flavour/label.
+
+   .. attribute:: name
+
+      Name of the flavour/label
+
+      :type: str
+
+   .. attribute:: label
+
+      Plot label for this flavour/label
+
+      :type: str
+
+   .. attribute:: cuts
+
+      Cuts of this flavour/label
+
+      :type: Cuts
+
+   .. attribute:: colour
+
+      Colour of this flavour/label
+
+      :type: str
+
+   .. attribute:: category
+
+      Flavour category, to which this flavour/label belongs
+
+      :type: str
+
 
    .. py:attribute:: name
       :type:  str
@@ -81,6 +125,15 @@ Module Contents
 
 
 .. py:class:: LabelContainer
+
+   Label container that holds multiple labels.
+
+   .. attribute:: labels
+
+      Dict with the labels this container will hold
+
+      :type: dict[str, Label]
+
 
    .. py:attribute:: labels
       :type:  dict[str, Label]

@@ -746,7 +746,19 @@ The function requires an input file, and output file, and a function (or list of
 <span class="kn">from</span><span class="w"> </span><span class="nn">ftag.hdf5</span><span class="w"> </span><span class="kn">import</span> <span class="n">h5_add_column</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">add_number_of_tracks</span><span class="p">(</span><span class="n">batch</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">add_number_of_tracks</span><span class="p">(</span><span class="n">batch</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add the number of tracks to the jets dict.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    batch : dict</span>
+<span class="sd">        Loaded batch of jets</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        dict with the number of tracks in the jets dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">num_tracks</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;tracks&quot;</span><span class="p">][</span><span class="s2">&quot;valid&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">{</span>
         <span class="s2">&quot;jets&quot;</span><span class="p">:</span> <span class="p">{</span>  <span class="c1"># Add to the &#39;jets&#39; group</span>

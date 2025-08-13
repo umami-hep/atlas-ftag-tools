@@ -3,6 +3,11 @@ ftag.utils
 
 .. py:module:: ftag.utils
 
+.. autoapi-nested-parse::
+
+   Utils package of the atlas-ftag-tools.
+
+
 
 Submodules
 ----------

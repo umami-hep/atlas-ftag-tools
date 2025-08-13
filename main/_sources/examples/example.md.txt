@@ -352,7 +352,19 @@ import tempfile
 from ftag.hdf5 import h5_add_column
 
 
-def add_number_of_tracks(batch):
+def add_number_of_tracks(batch: dict) -> dict:
+    """Add the number of tracks to the jets dict.
+
+    Parameters
+    ----------
+    batch : dict
+        Loaded batch of jets
+
+    Returns
+    -------
+    dict
+        dict with the number of tracks in the jets dict
+    """
     num_tracks = batch["tracks"]["valid"].sum(axis=1)
     return {
         "jets": {  # Add to the 'jets' group

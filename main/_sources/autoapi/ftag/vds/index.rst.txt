@@ -23,7 +23,16 @@ Functions
 Module Contents
 ---------------
 
-.. py:function:: parse_args(args=None)
+.. py:function:: parse_args(args: Any | None) -> argparse.Namespace
+
+   Parse command line arguments.
+
+   :param args: Command line arguments
+   :type args: Any | None
+
+   :returns: Namespace with the parsed command line arguments.
+   :rtype: argparse.Namespace
+
 
 .. py:function:: get_virtual_layout(fnames: list[str], group: str) -> h5py.VirtualLayout
 
@@ -140,5 +149,11 @@ Module Contents
    :raises ValueError: If no output file is given and the input comes from multiple directories
 
 
-.. py:function:: main(args=None) -> None
+.. py:function:: main(args: Any | None = None) -> None
+
+   Run VDS creation.
+
+   :param args: Command line arguments, by default None
+   :type args: Any | None, optional
+
 

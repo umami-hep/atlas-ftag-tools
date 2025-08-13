@@ -14,7 +14,7 @@ Functions
    ftag.hdf5.h5add_col.get_all_datasets
    ftag.hdf5.h5add_col.h5_add_column
    ftag.hdf5.h5add_col.parse_append_function
-   ftag.hdf5.h5add_col.get_args
+   ftag.hdf5.h5add_col.parse_args
    ftag.hdf5.h5add_col.main
 
 
@@ -105,7 +105,7 @@ Module Contents
    :rtype: dict[str, None]
 
 
-.. py:function:: h5_add_column(input_file: str | pathlib.Path, output_file: str | pathlib.Path, append_function: Callable | list[Callable], num_jets: int = -1, input_groups: list[str] | None = None, output_groups: list[str] | None = None, reader_kwargs: dict | None = None, writer_kwargs: dict | None = None, overwrite: bool = False) -> None
+.. py:function:: h5_add_column(input_file: str | pathlib.Path, output_file: str | pathlib.Path, append_function: collections.abc.Callable | list[collections.abc.Callable], num_jets: int = -1, input_groups: list[str] | None = None, output_groups: list[str] | None = None, reader_kwargs: dict | None = None, writer_kwargs: dict | None = None, overwrite: bool = False) -> None
 
    Appends one or more columns to one or more groups in an h5 file.
 
@@ -151,7 +151,7 @@ Module Contents
        the input groups.
 
 
-.. py:function:: parse_append_function(func_path: str) -> Callable
+.. py:function:: parse_append_function(func_path: str) -> collections.abc.Callable
 
    Attempts to load the function specified by func_path.
    The function should be specified as 'path/to/file.py:function_name'.
@@ -168,7 +168,22 @@ Module Contents
    :raises AttributeError: If the function does not exist in the file.
 
 
-.. py:function:: get_args(args)
+.. py:function:: parse_args(args: Any | None) -> argparse.Namespace
 
-.. py:function:: main(args=None)
+   Parse command line arguments.
+
+   :param args: Command line arguments
+   :type args: Any | None
+
+   :returns: Namespace with the parsed command line arguments.
+   :rtype: argparse.Namespace
+
+
+.. py:function:: main(args: Any | None = None) -> None
+
+   Run VDS creation.
+
+   :param args: Command line arguments, by default None
+   :type args: Any | None, optional
+
 

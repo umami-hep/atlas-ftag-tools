@@ -391,6 +391,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../hdf5/h5writer/index.html">ftag.hdf5.h5writer</a></li>
 </ul>
 </details></li>
+<li class="toctree-l2"><a class="reference internal" href="../labeller/index.html">ftag.labeller</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../labels/index.html">ftag.labels</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">ftag.mock</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../region/index.html">ftag.region</a></li>
@@ -476,7 +477,7 @@
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ftag.mock.get_mock_file" title="ftag.mock.get_mock_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_mock_file</span></code></a>(→ tuple[str, h5py.File])</p></td>
-<td><p></p></td>
+<td><p>Get a mock file for testing.</p></td>
 </tr>
 </tbody>
 </table>
@@ -486,8 +487,25 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">#</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="ftag.mock.get_mock_file">
-<span class="sig-prename descclassname"><span class="pre">ftag.mock.</span></span><span class="sig-name descname"><span class="pre">get_mock_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_jets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tracks_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'tracks'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_tracks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">40</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">h5py.File</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ftag.mock.get_mock_file" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">ftag.mock.</span></span><span class="sig-name descname"><span class="pre">get_mock_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_jets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tracks_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'tracks'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_tracks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">40</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">h5py.File</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ftag.mock.get_mock_file" title="Link to this definition">#</a></dt>
+<dd><p>Get a mock file for testing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>num_jets</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of jets in the file, by default 1000</p></li>
+<li><p><strong>fname</strong> (<em>str</em><em> | </em><em>None</em><em>, </em><em>optional</em>) – Name of the file, by default None</p></li>
+<li><p><strong>tracks_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of the tracks dataset, by default “tracks”</p></li>
+<li><p><strong>num_tracks</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of tracks per jet, by default 40</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple with the path and the h5 file</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[str, h5py.File]</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 </section>

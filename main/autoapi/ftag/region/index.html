@@ -391,6 +391,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../hdf5/h5writer/index.html">ftag.hdf5.h5writer</a></li>
 </ul>
 </details></li>
+<li class="toctree-l2"><a class="reference internal" href="../labeller/index.html">ftag.labeller</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../labels/index.html">ftag.labels</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mock/index.html">ftag.mock</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">ftag.region</a></li>
@@ -476,7 +477,7 @@
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ftag.region.Region" title="ftag.region.Region"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Region</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Dataclass to store info about a region.</p></td>
 </tr>
 </tbody>
 </table>
@@ -487,14 +488,37 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="ftag.region.Region">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ftag.region.</span></span><span class="sig-name descname"><span class="pre">Region</span></span><a class="headerlink" href="#ftag.region.Region" title="Link to this definition">#</a></dt>
-<dd><dl class="py attribute">
+<dd><p>Dataclass to store info about a region.</p>
+<dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.region.Region.name">
-<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ftag.region.Region.name" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#ftag.region.Region.name" title="Link to this definition">#</a></dt>
+<dd><p>Name of the region</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.region.Region.cuts">
-<span class="sig-name descname"><span class="pre">cuts</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><span class="pre">ftag.cuts.Cuts</span></a></em><a class="headerlink" href="#ftag.region.Region.cuts" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">cuts</span></span><a class="headerlink" href="#ftag.region.Region.cuts" title="Link to this definition">#</a></dt>
+<dd><p>Cuts of this region</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts">Cuts</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id0" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">cuts</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><span class="pre">ftag.cuts.Cuts</span></a></em><a class="headerlink" href="#id1" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -569,6 +593,8 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.region.Region"><code class="docutils literal notranslate"><span class="pre">Region</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.region.Region.name"><code class="docutils literal notranslate"><span class="pre">Region.name</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.region.Region.cuts"><code class="docutils literal notranslate"><span class="pre">Region.cuts</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">Region.name</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><code class="docutils literal notranslate"><span class="pre">Region.cuts</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.region.Region.__str__"><code class="docutils literal notranslate"><span class="pre">Region.__str__()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.region.Region.__lt__"><code class="docutils literal notranslate"><span class="pre">Region.__lt__()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.region.Region.__eq__"><code class="docutils literal notranslate"><span class="pre">Region.__eq__()</span></code></a></li>

@@ -391,6 +391,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../hdf5/h5writer/index.html">ftag.hdf5.h5writer</a></li>
 </ul>
 </details></li>
+<li class="toctree-l2"><a class="reference internal" href="../labeller/index.html">ftag.labeller</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../labels/index.html">ftag.labels</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mock/index.html">ftag.mock</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../region/index.html">ftag.region</a></li>
@@ -471,12 +472,24 @@
                   
   <section id="module-ftag.git_check">
 <span id="ftag-git-check"></span><h1>ftag.git_check<a class="headerlink" href="#module-ftag.git_check" title="Link to this heading">#</a></h1>
+<p>Small utilities for interacting with a local Git repository.</p>
+<p>This module provides helper functions to:</p>
+<ul class="simple">
+<li><p>detect whether a given path is inside a Git working tree,</p></li>
+<li><p>fail fast when there are uncommitted changes,</p></li>
+<li><p>verify that a local clone is a fork of an expected upstream,</p></li>
+<li><p>create and push an annotated tag, and</p></li>
+<li><p>read the current short commit hash.</p></li>
+</ul>
+<p>All functions run Git commands via <code class="xref py py-mod docutils literal notranslate"><span class="pre">subprocess</span></code>. If Git is not installed
+or the command cannot be executed, the underlying OS error (e.g. <code class="xref py py-class docutils literal notranslate"><span class="pre">OSError</span></code>)
+will propagate.</p>
 <section id="exceptions">
 <h2>Exceptions<a class="headerlink" href="#exceptions" title="Link to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ftag.git_check.GitError" title="ftag.git_check.GitError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GitError</span></code></a></p></td>
-<td><p>Common base class for all non-exit exceptions.</p></td>
+<td><p>Raised when a Git-related precondition is not satisfied.</p></td>
 </tr>
 </tbody>
 </table>
@@ -487,19 +500,19 @@
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ftag.git_check.is_git_repo" title="ftag.git_check.is_git_repo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_git_repo</span></code></a>(→ bool)</p></td>
-<td><p></p></td>
+<td><p>Return whether <code class="docutils literal notranslate"><span class="pre">path</span></code> is inside a Git working tree.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ftag.git_check.check_for_uncommitted_changes" title="ftag.git_check.check_for_uncommitted_changes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_for_uncommitted_changes</span></code></a>(→ None)</p></td>
-<td><p></p></td>
+<td><p>Raise if the repository at <code class="docutils literal notranslate"><span class="pre">path</span></code> has uncommitted changes.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ftag.git_check.check_for_fork" title="ftag.git_check.check_for_fork"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_for_fork</span></code></a>(→ None)</p></td>
-<td><p></p></td>
+<td><p>Ensure the local clone's <code class="docutils literal notranslate"><span class="pre">origin</span></code> remote is a fork of <code class="docutils literal notranslate"><span class="pre">upstream</span></code>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ftag.git_check.create_and_push_tag" title="ftag.git_check.create_and_push_tag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_and_push_tag</span></code></a>(→ None)</p></td>
-<td><p></p></td>
+<td><p>Create an annotated Git tag and push it to <code class="docutils literal notranslate"><span class="pre">origin</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.git_check.get_git_hash" title="ftag.git_check.get_git_hash"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_git_hash</span></code></a>(path)</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.git_check.get_git_hash" title="ftag.git_check.get_git_hash"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_git_hash</span></code></a>(→ str | None)</p></td>
+<td><p>Return the short commit hash for <code class="docutils literal notranslate"><span class="pre">HEAD</span></code> at <code class="docutils literal notranslate"><span class="pre">path</span></code>, if available.</p></td>
 </tr>
 </tbody>
 </table>
@@ -511,34 +524,108 @@
 <dt class="sig sig-object py" id="ftag.git_check.GitError">
 <em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ftag.git_check.</span></span><span class="sig-name descname"><span class="pre">GitError</span></span><a class="headerlink" href="#ftag.git_check.GitError" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">Exception</span></code></p>
-<p>Common base class for all non-exit exceptions.</p>
+<p>Raised when a Git-related precondition is not satisfied.</p>
 <p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ftag.git_check.is_git_repo">
-<span class="sig-prename descclassname"><span class="pre">ftag.git_check.</span></span><span class="sig-name descname"><span class="pre">is_git_repo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#ftag.git_check.is_git_repo" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">ftag.git_check.</span></span><span class="sig-name descname"><span class="pre">is_git_repo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">os.PathLike</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#ftag.git_check.is_git_repo" title="Link to this definition">#</a></dt>
+<dd><p>Return whether <code class="docutils literal notranslate"><span class="pre">path</span></code> is inside a Git working tree.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em><em> | </em><em>PathLike</em><em>[</em><em>str</em><em>]</em>) – Filesystem path used as the current working directory for the Git command.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if <code class="docutils literal notranslate"><span class="pre">path</span></code> is inside a Git working tree, <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This function runs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">rev</span><span class="o">-</span><span class="n">parse</span> <span class="o">--</span><span class="ow">is</span><span class="o">-</span><span class="n">inside</span><span class="o">-</span><span class="n">work</span><span class="o">-</span><span class="n">tree</span> <span class="n">HEAD</span>
+</pre></div>
+</div>
+<p>Any non-zero exit status is treated as “not a Git repository”. If Git is not
+available on the system, an <code class="xref py py-class docutils literal notranslate"><span class="pre">OSError</span></code> may be raised by <code class="xref py py-mod docutils literal notranslate"><span class="pre">subprocess</span></code>.</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ftag.git_check.check_for_uncommitted_changes">
-<span class="sig-prename descclassname"><span class="pre">ftag.git_check.</span></span><span class="sig-name descname"><span class="pre">check_for_uncommitted_changes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.git_check.check_for_uncommitted_changes" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">ftag.git_check.</span></span><span class="sig-name descname"><span class="pre">check_for_uncommitted_changes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">os.PathLike</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.git_check.check_for_uncommitted_changes" title="Link to this definition">#</a></dt>
+<dd><p>Raise if the repository at <code class="docutils literal notranslate"><span class="pre">path</span></code> has uncommitted changes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em><em> | </em><em>PathLike</em><em>[</em><em>str</em><em>]</em>) – Filesystem path to the repository root or any directory within it.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#ftag.git_check.GitError" title="ftag.git_check.GitError"><strong>GitError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">path</span></code> is a Git repository and there are uncommitted changes.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">path</span></code> is <strong>not</strong> a Git repository, the function returns silently.</p></li>
+<li><p>If the current process is running under <code class="docutils literal notranslate"><span class="pre">pytest</span></code> (detected via
+<code class="xref py py-data docutils literal notranslate"><span class="pre">sys.modules</span></code>), the check is skipped and the function returns.</p></li>
+</ul>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ftag.git_check.check_for_fork">
-<span class="sig-prename descclassname"><span class="pre">ftag.git_check.</span></span><span class="sig-name descname"><span class="pre">check_for_fork</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upstream</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.git_check.check_for_fork" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">ftag.git_check.</span></span><span class="sig-name descname"><span class="pre">check_for_fork</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">os.PathLike</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upstream</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.git_check.check_for_fork" title="Link to this definition">#</a></dt>
+<dd><p>Ensure the local clone’s <code class="docutils literal notranslate"><span class="pre">origin</span></code> remote is a fork of <code class="docutils literal notranslate"><span class="pre">upstream</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em><em> | </em><em>PathLike</em><em>[</em><em>str</em><em>]</em>) – Filesystem path to the repository root or any directory within it.</p></li>
+<li><p><strong>upstream</strong> (<em>str</em>) – Expected upstream repository URL substring (e.g. <code class="docutils literal notranslate"><span class="pre">'github.com/org/repo'</span></code>).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#ftag.git_check.GitError" title="ftag.git_check.GitError"><strong>GitError</strong></a> – If the repository is present but its <code class="docutils literal notranslate"><span class="pre">origin</span></code> URL does not contain <code class="docutils literal notranslate"><span class="pre">upstream</span></code>.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">path</span></code> is not a Git repository, the function returns silently.</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ftag.git_check.create_and_push_tag">
-<span class="sig-prename descclassname"><span class="pre">ftag.git_check.</span></span><span class="sig-name descname"><span class="pre">create_and_push_tag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upstream</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tagname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.git_check.create_and_push_tag" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">ftag.git_check.</span></span><span class="sig-name descname"><span class="pre">create_and_push_tag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">os.PathLike</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upstream</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tagname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.git_check.create_and_push_tag" title="Link to this definition">#</a></dt>
+<dd><p>Create an annotated Git tag and push it to <code class="docutils literal notranslate"><span class="pre">origin</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em><em> | </em><em>PathLike</em><em>[</em><em>str</em><em>]</em>) – Filesystem path to the repository root or any directory within it.</p></li>
+<li><p><strong>upstream</strong> (<em>str</em>) – Expected upstream repository URL substring; passed to <a class="reference internal" href="#ftag.git_check.check_for_fork" title="ftag.git_check.check_for_fork"><code class="xref py py-func docutils literal notranslate"><span class="pre">check_for_fork()</span></code></a>.</p></li>
+<li><p><strong>tagname</strong> (<em>str</em>) – Name of the tag to create.</p></li>
+<li><p><strong>msg</strong> (<em>str</em>) – Annotation message for the tag (<code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">tag</span> <span class="pre">-m</span></code>).</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">path</span></code> is not a Git repository, the function returns silently.</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ftag.git_check.get_git_hash">
-<span class="sig-prename descclassname"><span class="pre">ftag.git_check.</span></span><span class="sig-name descname"><span class="pre">get_git_hash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ftag.git_check.get_git_hash" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">ftag.git_check.</span></span><span class="sig-name descname"><span class="pre">get_git_hash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">os.PathLike</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.git_check.get_git_hash" title="Link to this definition">#</a></dt>
+<dd><p>Return the short commit hash for <code class="docutils literal notranslate"><span class="pre">HEAD</span></code> at <code class="docutils literal notranslate"><span class="pre">path</span></code>, if available.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em><em> | </em><em>PathLike</em><em>[</em><em>str</em><em>]</em>) – Filesystem path to the repository root or any directory within it.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The short (<code class="docutils literal notranslate"><span class="pre">--short</span></code>) commit hash as a string, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if <code class="docutils literal notranslate"><span class="pre">path</span></code> is
+not a Git repository.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str | None</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 </section>

@@ -23,7 +23,18 @@ Functions
 Module Contents
 ---------------
 
-.. py:function:: valid_path(string)
+.. py:function:: valid_path(string: str) -> pathlib.Path
+
+   Check if the given string is a valid path.
+
+   :param string: Input path as string
+   :type string: str
+
+   :returns: Output path as Path object
+   :rtype: Path
+
+   :raises FileNotFoundError: If the given input path as string doesn't exist
+
 
 .. py:class:: HelpFormatter(prog, indent_increment=2, max_help_position=24, width=None)
 

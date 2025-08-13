@@ -18,6 +18,63 @@ Module Contents
 
 .. py:class:: H5SingleReader
 
+   H5 single reader for a single file.
+
+   .. attribute:: fname
+
+      Path to the file
+
+      :type: Path | str
+
+   .. attribute:: batch_size
+
+      Batch size to read, by default 100_000
+
+      :type: int, optional
+
+   .. attribute:: jets_name
+
+      Name of the jets dataset, by default "jets"
+
+      :type: str, optional
+
+   .. attribute:: precision
+
+      Precision that is to be used, by default None
+
+      :type: str | None, optional
+
+   .. attribute:: shuffle
+
+      If random jets are loaded from the file, by default True
+
+      :type: bool, optional
+
+   .. attribute:: do_remove_inf
+
+      Remove infs from the jets, by default False
+
+      :type: bool, optional
+
+   .. attribute:: transform
+
+      Transformation that should be applied, by default None
+
+      :type: Transform | None, optional
+
+   .. attribute:: groups
+
+      List of the groups that hold metadata, by default None
+
+      :type: list[str] | None, optional
+
+   .. attribute:: dsets
+
+      List of the datsets, that hold the per jet/track data, by default None
+
+      :type: list[str] | None, optional
+
+
    .. py:attribute:: fname
       :type:  pathlib.Path | str
 

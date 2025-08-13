@@ -391,6 +391,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../hdf5/h5writer/index.html">ftag.hdf5.h5writer</a></li>
 </ul>
 </details></li>
+<li class="toctree-l2"><a class="reference internal" href="../labeller/index.html">ftag.labeller</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../labels/index.html">ftag.labels</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mock/index.html">ftag.mock</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../region/index.html">ftag.region</a></li>
@@ -476,16 +477,16 @@
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ftag.fraction_optimization.convert_dict" title="ftag.fraction_optimization.convert_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_dict</span></code></a>(→ numpy.ndarray | dict)</p></td>
-<td><p></p></td>
+<td><p>Convert the fraction values from dict to array or vice versa.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ftag.fraction_optimization.get_bkg_norm_dict" title="ftag.fraction_optimization.get_bkg_norm_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_bkg_norm_dict</span></code></a>(→ dict)</p></td>
-<td><p></p></td>
+<td><p>Get the normalisation dict for the background flavours.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ftag.fraction_optimization.calculate_rejection_sum" title="ftag.fraction_optimization.calculate_rejection_sum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_rejection_sum</span></code></a>(→ float)</p></td>
-<td><p></p></td>
+<td><p>Calculate the sum of the normalised rejections.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ftag.fraction_optimization.calculate_best_fraction_values" title="ftag.fraction_optimization.calculate_best_fraction_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_best_fraction_values</span></code></a>(→ dict)</p></td>
-<td><p></p></td>
+<td><p>Calculate the best fraction values for a given tagger and working point.</p></td>
 </tr>
 </tbody>
 </table>
@@ -496,22 +497,99 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="ftag.fraction_optimization.convert_dict">
 <span class="sig-prename descclassname"><span class="pre">ftag.fraction_optimization.</span></span><span class="sig-name descname"><span class="pre">convert_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fraction_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backgrounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../labels/index.html#ftag.labels.LabelContainer" title="ftag.labels.LabelContainer"><span class="pre">ftag.labels.LabelContainer</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span></span></span><a class="headerlink" href="#ftag.fraction_optimization.convert_dict" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Convert the fraction values from dict to array or vice versa.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fraction_values</strong> (<em>dict</em><em> | </em><em>np.ndarray</em>) – Dict of array with the fraction values</p></li>
+<li><p><strong>backgrounds</strong> (<a class="reference internal" href="../index.html#ftag.LabelContainer" title="ftag.LabelContainer"><em>LabelContainer</em></a>) – LabelContainer with the background flavours</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Array or dict with the fraction values</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray | dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TypeError</strong> – If the type of the input was wrong</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ftag.fraction_optimization.get_bkg_norm_dict">
 <span class="sig-prename descclassname"><span class="pre">ftag.fraction_optimization.</span></span><span class="sig-name descname"><span class="pre">get_bkg_norm_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tagger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../labels/index.html#ftag.labels.Label" title="ftag.labels.Label"><span class="pre">ftag.labels.Label</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">flavours</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../labels/index.html#ftag.labels.LabelContainer" title="ftag.labels.LabelContainer"><span class="pre">ftag.labels.LabelContainer</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">working_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#ftag.fraction_optimization.get_bkg_norm_dict" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Get the normalisation dict for the background flavours.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>jets</strong> (<em>np.ndarray</em>) – Loaded jets</p></li>
+<li><p><strong>tagger</strong> (<em>str</em>) – Name of the tagger</p></li>
+<li><p><strong>signal</strong> (<a class="reference internal" href="../index.html#ftag.Label" title="ftag.Label"><em>Label</em></a>) – Label instance of the signal</p></li>
+<li><p><strong>flavours</strong> (<a class="reference internal" href="../index.html#ftag.LabelContainer" title="ftag.LabelContainer"><em>LabelContainer</em></a>) – LabelContainer instance with all flavours used</p></li>
+<li><p><strong>working_point</strong> (<em>float</em>) – Working point that is to be used</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Background normalisation dict</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ftag.fraction_optimization.calculate_rejection_sum">
 <span class="sig-prename descclassname"><span class="pre">ftag.fraction_optimization.</span></span><span class="sig-name descname"><span class="pre">calculate_rejection_sum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fraction_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tagger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../labels/index.html#ftag.labels.Label" title="ftag.labels.Label"><span class="pre">ftag.labels.Label</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">flavours</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../labels/index.html#ftag.labels.LabelContainer" title="ftag.labels.LabelContainer"><span class="pre">ftag.labels.LabelContainer</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">working_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bkg_norm_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rejection_weights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#ftag.fraction_optimization.calculate_rejection_sum" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Calculate the sum of the normalised rejections.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fraction_dict</strong> (<em>dict</em><em> | </em><em>np.ndarray</em>) – Dict/Array with the fraction values</p></li>
+<li><p><strong>jets</strong> (<em>np.ndarray</em>) – Loaded jets</p></li>
+<li><p><strong>tagger</strong> (<em>str</em>) – Name of the tagger</p></li>
+<li><p><strong>signal</strong> (<a class="reference internal" href="../index.html#ftag.Label" title="ftag.Label"><em>Label</em></a>) – Label instance of the signal</p></li>
+<li><p><strong>flavours</strong> (<a class="reference internal" href="../index.html#ftag.LabelContainer" title="ftag.LabelContainer"><em>LabelContainer</em></a>) – LabelContainer with all flavours</p></li>
+<li><p><strong>working_point</strong> (<em>float</em>) – Working point that is used</p></li>
+<li><p><strong>bkg_norm_dict</strong> (<em>dict</em>) – Backgroud normalisation dict</p></li>
+<li><p><strong>rejection_weights</strong> (<em>dict</em>) – Weights for the rejections</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Sum of the normalised rejections</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ftag.fraction_optimization.calculate_best_fraction_values">
 <span class="sig-prename descclassname"><span class="pre">ftag.fraction_optimization.</span></span><span class="sig-name descname"><span class="pre">calculate_best_fraction_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tagger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../labels/index.html#ftag.labels.Label" title="ftag.labels.Label"><span class="pre">ftag.labels.Label</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">flavours</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../labels/index.html#ftag.labels.LabelContainer" title="ftag.labels.LabelContainer"><span class="pre">ftag.labels.LabelContainer</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">working_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rejection_weights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer_method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Powell'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#ftag.fraction_optimization.calculate_best_fraction_values" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Calculate the best fraction values for a given tagger and working point.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>jets</strong> (<em>np.ndarray</em>) – Loaded jets</p></li>
+<li><p><strong>tagger</strong> (<em>str</em>) – Name of the tagger</p></li>
+<li><p><strong>signal</strong> (<a class="reference internal" href="../index.html#ftag.Label" title="ftag.Label"><em>Label</em></a>) – Label instance of the signal</p></li>
+<li><p><strong>flavours</strong> (<a class="reference internal" href="../index.html#ftag.LabelContainer" title="ftag.LabelContainer"><em>LabelContainer</em></a>) – LabelContainer with all flavours</p></li>
+<li><p><strong>working_point</strong> (<em>float</em>) – Working point that is used</p></li>
+<li><p><strong>rejection_weights</strong> (<em>dict</em><em> | </em><em>None</em><em>, </em><em>optional</em>) – Rejection weights for the background classes, by default None</p></li>
+<li><p><strong>optimizer_method</strong> (<em>str</em><em>, </em><em>optional</em>) – Optimizer method for the minimization, by default “Powell”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dict with the best fraction values</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 </section>

@@ -17,6 +17,27 @@ Module Contents
 
 .. py:class:: Transform
 
+   Transform class to transform variables.
+
+   .. attribute:: variable_map
+
+      Map with the old and new variables
+
+      :type: dict[str, dict[str, str]] | None, optional
+
+   .. attribute:: ints_map
+
+      Map with the old and new integer values
+
+      :type: dict[str, dict[str, dict[int, int]]] | None, optional
+
+   .. attribute:: floats_map
+
+      Map with the old and new float values
+
+      :type: dict[str, dict[str, str | Callable]] | None, optional
+
+
    .. py:attribute:: variable_map
       :type:  dict[str, dict[str, str]] | None
       :value: None
@@ -30,7 +51,7 @@ Module Contents
 
 
    .. py:attribute:: floats_map
-      :type:  dict[str, dict[str, str | Callable]] | None
+      :type:  dict[str, dict[str, str | collections.abc.Callable]] | None
       :value: None
 
 

@@ -20,9 +20,83 @@ Module Contents
 
 .. py:function:: convert_dict(fraction_values: dict | numpy.ndarray, backgrounds: ftag.labels.LabelContainer) -> numpy.ndarray | dict
 
+   Convert the fraction values from dict to array or vice versa.
+
+   :param fraction_values: Dict of array with the fraction values
+   :type fraction_values: dict | np.ndarray
+   :param backgrounds: LabelContainer with the background flavours
+   :type backgrounds: LabelContainer
+
+   :returns: Array or dict with the fraction values
+   :rtype: np.ndarray | dict
+
+   :raises TypeError: If the type of the input was wrong
+
+
 .. py:function:: get_bkg_norm_dict(jets: numpy.ndarray, tagger: str, signal: ftag.labels.Label, flavours: ftag.labels.LabelContainer, working_point: float) -> dict
+
+   Get the normalisation dict for the background flavours.
+
+   :param jets: Loaded jets
+   :type jets: np.ndarray
+   :param tagger: Name of the tagger
+   :type tagger: str
+   :param signal: Label instance of the signal
+   :type signal: Label
+   :param flavours: LabelContainer instance with all flavours used
+   :type flavours: LabelContainer
+   :param working_point: Working point that is to be used
+   :type working_point: float
+
+   :returns: Background normalisation dict
+   :rtype: dict
+
 
 .. py:function:: calculate_rejection_sum(fraction_dict: dict | numpy.ndarray, jets: numpy.ndarray, tagger: str, signal: ftag.labels.Label, flavours: ftag.labels.LabelContainer, working_point: float, bkg_norm_dict: dict, rejection_weights: dict) -> float
 
+   Calculate the sum of the normalised rejections.
+
+   :param fraction_dict: Dict/Array with the fraction values
+   :type fraction_dict: dict | np.ndarray
+   :param jets: Loaded jets
+   :type jets: np.ndarray
+   :param tagger: Name of the tagger
+   :type tagger: str
+   :param signal: Label instance of the signal
+   :type signal: Label
+   :param flavours: LabelContainer with all flavours
+   :type flavours: LabelContainer
+   :param working_point: Working point that is used
+   :type working_point: float
+   :param bkg_norm_dict: Backgroud normalisation dict
+   :type bkg_norm_dict: dict
+   :param rejection_weights: Weights for the rejections
+   :type rejection_weights: dict
+
+   :returns: Sum of the normalised rejections
+   :rtype: float
+
+
 .. py:function:: calculate_best_fraction_values(jets: numpy.ndarray, tagger: str, signal: ftag.labels.Label, flavours: ftag.labels.LabelContainer, working_point: float, rejection_weights: dict | None = None, optimizer_method: str = 'Powell') -> dict
+
+   Calculate the best fraction values for a given tagger and working point.
+
+   :param jets: Loaded jets
+   :type jets: np.ndarray
+   :param tagger: Name of the tagger
+   :type tagger: str
+   :param signal: Label instance of the signal
+   :type signal: Label
+   :param flavours: LabelContainer with all flavours
+   :type flavours: LabelContainer
+   :param working_point: Working point that is used
+   :type working_point: float
+   :param rejection_weights: Rejection weights for the background classes, by default None
+   :type rejection_weights: dict | None, optional
+   :param optimizer_method: Optimizer method for the minimization, by default "Powell"
+   :type optimizer_method: str, optional
+
+   :returns: Dict with the best fraction values
+   :rtype: dict
+
 

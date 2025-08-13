@@ -391,6 +391,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../hdf5/h5writer/index.html">ftag.hdf5.h5writer</a></li>
 </ul>
 </details></li>
+<li class="toctree-l2"><a class="reference internal" href="../labeller/index.html">ftag.labeller</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../labels/index.html">ftag.labels</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mock/index.html">ftag.mock</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../region/index.html">ftag.region</a></li>
@@ -487,13 +488,13 @@
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ftag.cuts.CutsResult" title="ftag.cuts.CutsResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CutsResult</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Namespace alss for the cut results.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ftag.cuts.Cut" title="ftag.cuts.Cut"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cut</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Cut dataclass to store a single cut.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cuts</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Cuts dataclass to store multiple Cut instances and apply them.</p></td>
 </tr>
 </tbody>
 </table>
@@ -510,14 +511,37 @@
 <dt class="sig sig-object py" id="ftag.cuts.CutsResult">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ftag.cuts.</span></span><span class="sig-name descname"><span class="pre">CutsResult</span></span><a class="headerlink" href="#ftag.cuts.CutsResult" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">NamedTuple</span></code></p>
+<p>Namespace alss for the cut results.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.cuts.CutsResult.idx">
-<span class="sig-name descname"><span class="pre">idx</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span></em><a class="headerlink" href="#ftag.cuts.CutsResult.idx" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">idx</span></span><a class="headerlink" href="#ftag.cuts.CutsResult.idx" title="Link to this definition">#</a></dt>
+<dd><p>Positions of the cuts</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.cuts.CutsResult.values">
-<span class="sig-name descname"><span class="pre">values</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span></em><a class="headerlink" href="#ftag.cuts.CutsResult.values" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">values</span></span><a class="headerlink" href="#ftag.cuts.CutsResult.values" title="Link to this definition">#</a></dt>
+<dd><p>Values of the cuts</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">idx</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span></em><a class="headerlink" href="#id0" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">values</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span></em><a class="headerlink" href="#id1" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -525,14 +549,37 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="ftag.cuts.Cut">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ftag.cuts.</span></span><span class="sig-name descname"><span class="pre">Cut</span></span><a class="headerlink" href="#ftag.cuts.Cut" title="Link to this definition">#</a></dt>
-<dd><dl class="py attribute">
+<dd><p>Cut dataclass to store a single cut.</p>
+<dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.cuts.Cut.variable">
-<span class="sig-name descname"><span class="pre">variable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ftag.cuts.Cut.variable" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">variable</span></span><a class="headerlink" href="#ftag.cuts.Cut.variable" title="Link to this definition">#</a></dt>
+<dd><p>Variable on which the cut is applied</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.cuts.Cut.operator">
-<span class="sig-name descname"><span class="pre">operator</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ftag.cuts.Cut.operator" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">operator</span></span><a class="headerlink" href="#ftag.cuts.Cut.operator" title="Link to this definition">#</a></dt>
+<dd><p>Operator for the cut</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">variable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">operator</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id3" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -560,9 +607,21 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="ftag.cuts.Cuts">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ftag.cuts.</span></span><span class="sig-name descname"><span class="pre">Cuts</span></span><a class="headerlink" href="#ftag.cuts.Cuts" title="Link to this definition">#</a></dt>
-<dd><dl class="py attribute">
+<dd><p>Cuts dataclass to store multiple Cut instances and apply them.</p>
+<dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.cuts.Cuts.cuts">
-<span class="sig-name descname"><span class="pre">cuts</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ftag.cuts.Cut" title="ftag.cuts.Cut"><span class="pre">Cut</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ftag.cuts.Cuts.cuts" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">cuts</span></span><a class="headerlink" href="#ftag.cuts.Cuts.cuts" title="Link to this definition">#</a></dt>
+<dd><p>Tuple with the Cut instances</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[<a class="reference internal" href="#ftag.cuts.Cut" title="ftag.cuts.Cut">Cut</a>, …]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">cuts</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ftag.cuts.Cut" title="ftag.cuts.Cut"><span class="pre">Cut</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#id4" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -679,11 +738,15 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.cuts.CutsResult"><code class="docutils literal notranslate"><span class="pre">CutsResult</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.cuts.CutsResult.idx"><code class="docutils literal notranslate"><span class="pre">CutsResult.idx</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.cuts.CutsResult.values"><code class="docutils literal notranslate"><span class="pre">CutsResult.values</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">CutsResult.idx</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><code class="docutils literal notranslate"><span class="pre">CutsResult.values</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.cuts.Cut"><code class="docutils literal notranslate"><span class="pre">Cut</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.cuts.Cut.variable"><code class="docutils literal notranslate"><span class="pre">Cut.variable</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.cuts.Cut.operator"><code class="docutils literal notranslate"><span class="pre">Cut.operator</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><code class="docutils literal notranslate"><span class="pre">Cut.variable</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><code class="docutils literal notranslate"><span class="pre">Cut.operator</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.cuts.Cut._value"><code class="docutils literal notranslate"><span class="pre">Cut._value</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.cuts.Cut.value"><code class="docutils literal notranslate"><span class="pre">Cut.value</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.cuts.Cut.__call__"><code class="docutils literal notranslate"><span class="pre">Cut.__call__()</span></code></a></li>
@@ -692,6 +755,7 @@
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.cuts.Cuts"><code class="docutils literal notranslate"><span class="pre">Cuts</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.cuts.Cuts.cuts"><code class="docutils literal notranslate"><span class="pre">Cuts.cuts</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><code class="docutils literal notranslate"><span class="pre">Cuts.cuts</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.cuts.Cuts.from_list"><code class="docutils literal notranslate"><span class="pre">Cuts.from_list()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.cuts.Cuts.empty"><code class="docutils literal notranslate"><span class="pre">Cuts.empty()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.cuts.Cuts.__post_init__"><code class="docutils literal notranslate"><span class="pre">Cuts.__post_init__()</span></code></a></li>

@@ -17,6 +17,21 @@ Module Contents
 
 .. py:class:: Region
 
+   Dataclass to store info about a region.
+
+   .. attribute:: name
+
+      Name of the region
+
+      :type: str
+
+   .. attribute:: cuts
+
+      Cuts of this region
+
+      :type: Cuts
+
+
    .. py:attribute:: name
       :type:  str
 
