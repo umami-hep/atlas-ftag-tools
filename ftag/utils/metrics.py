@@ -120,7 +120,8 @@ def weighted_percentile(
 def calculate_efficiency(
     sig_disc: np.ndarray,
     bkg_disc: np.ndarray,
-    target_eff: float | list | np.ndarray,
+    target_eff: float | list | np.ndarray | None = None,
+    cut_value: float | list | np.ndarray | None = None,
     return_cuts: bool = False,
     sig_weights: np.ndarray = None,
     bkg_weights: np.ndarray = None,
@@ -133,8 +134,11 @@ def calculate_efficiency(
         Signal discriminant
     bkg_disc : np.ndarray
         Background discriminant
-    target_eff : float | list | np.ndarray
-        Working point which is used for discriminant calculation
+    target_eff : float | list | np.ndarray | None, optional
+        Working point which is used for discriminant calculation. By default None
+    cut_value : float | list | np.ndarray | None, optional
+        Instead of the working points being calculated on the sample, you can give
+        provide the cut values directly. By default None
     return_cuts : bool
         Specifies if the cut values corresponding to the provided WPs are returned.
         If target_eff is a float, only one cut value will be returned. If target_eff
@@ -149,9 +153,14 @@ def calculate_efficiency(
     eff : float or np.ndarray
         Efficiency.
         Return float if target_eff is a float, else np.ndarray
-    cutvalue : float or np.ndarray
+    cut_vals : float or np.ndarray
         Cutvalue if return_cuts is True.
         Return float if target_eff is a float, else np.ndarray
+
+    Raises
+    ------
+    ValueError
+        If target_eff and cut_value are both not None or both are None
     """
     logger.debug("Calculating efficiency.")
     logger.debug("sig_disc: %s", sig_disc)
@@ -161,22 +170,37 @@ def calculate_efficiency(
     logger.debug("sig_weights: %s", sig_weights)
     logger.debug("bkg_weights: %s", bkg_weights)
 
+    if (target_eff is None) == (cut_value is None):
+        raise ValueError("Either target_eff or cut_value must/can be defined!")
+
     # float | np.ndarray for both target_eff and the returned values
     return_float = False
     if isinstance(target_eff, float):
         return_float = True
 
-    # Flatten the target efficiencies
-    target_eff = np.asarray([target_eff]).flatten()
+    # Calculate the cut_vals based on the target_eff
+    if target_eff is not None:
+        # Flatten the target efficiencies
+        target_eff = np.asarray([target_eff]).flatten()
 
-    # Get the cutvalue for the given target efficiency
-    cutvalue = weighted_percentile(arr=sig_disc, percentile=1.0 - target_eff, weights=sig_weights)
+        # Get the cut_vals for the given target efficiency
+        cut_vals = weighted_percentile(
+            arr=sig_disc, percentile=1.0 - target_eff, weights=sig_weights
+        )
 
-    # Sort the cutvalues to get the correct order
-    sorted_args = np.argsort(1 - target_eff)
+        # Sort the cut_vals to get the correct order
+        sorted_args = np.argsort(1 - target_eff)
+
+    # If the cut values are provided, use them
+    else:
+        cut_vals = np.asarray([cut_value]).flatten()
+
+        # Sort the cut_vals to get the correct order
+        sorted_args = np.argsort(cut_vals)
 
     # Get the histogram for the backgrounds
-    hist, _ = np.histogram(bkg_disc, (-np.inf, *cutvalue[sorted_args], np.inf), weights=bkg_weights)
+    logger.error((-np.inf, *cut_vals[sorted_args], np.inf))
+    hist, _ = np.histogram(bkg_disc, (-np.inf, *cut_vals[sorted_args], np.inf), weights=bkg_weights)
 
     # Calculate the efficiencies for the calculated cut values
     eff = hist[::-1].cumsum()[-2::-1] / hist.sum()
@@ -185,11 +209,11 @@ def calculate_efficiency(
     # Ensure that a float is returned if float was given
     if return_float:
         eff = eff[0]
-        cutvalue = cutvalue[0]
+        cut_vals = cut_vals[0]
 
     # Also return the cuts if wanted
     if return_cuts:
-        return eff, cutvalue
+        return eff, cut_vals
 
     return eff
 
@@ -197,7 +221,8 @@ def calculate_efficiency(
 def calculate_rejection(
     sig_disc: np.ndarray,
     bkg_disc: np.ndarray,
-    target_eff: float | list,
+    target_eff: float | list | None = None,
+    cut_value: float | list | None = None,
     return_cuts: bool = False,
     sig_weights: np.ndarray = None,
     bkg_weights: np.ndarray = None,
@@ -211,8 +236,11 @@ def calculate_rejection(
         Signal discriminant
     bkg_disc : np.ndarray
         Background discriminant
-    target_eff : float | list
-        Working point which is used for discriminant calculation
+    target_eff : float | list | None, optional
+        Working point which is used for discriminant calculation. By default None
+    cut_value : float | list | None, optional
+        Instead of the working points being calculated on the sample, you can give
+        provide the cut values directly. By default None
     return_cuts : bool, optional
         Specifies if the cut values corresponding to the provided WPs are returned.
         If target_eff is a float, only one cut value will be returned. If target_eff
@@ -232,6 +260,11 @@ def calculate_rejection(
     cut_value : float or np.ndarray
         Cutvalue if return_cuts is True.
         If target_eff is a float, a float is returned if it's a list a np.ndarray
+
+    Raises
+    ------
+    ValueError
+        If target_eff and cut_value are both not None or both are None
     """
     logger.debug("Calculating rejection.")
     logger.debug("sig_disc: %s", sig_disc)
@@ -242,11 +275,15 @@ def calculate_rejection(
     logger.debug("bkg_weights: %s", bkg_weights)
     logger.debug("smooth: %s", smooth)
 
+    if (target_eff is None) == (cut_value is None):
+        raise ValueError("Either target_eff or cut_value must/can be defined!")
+
     # Calculate the efficiency
     eff = calculate_efficiency(
         sig_disc=sig_disc,
         bkg_disc=bkg_disc,
         target_eff=target_eff,
+        cut_value=cut_value,
         return_cuts=return_cuts,
         sig_weights=sig_weights,
         bkg_weights=bkg_weights,

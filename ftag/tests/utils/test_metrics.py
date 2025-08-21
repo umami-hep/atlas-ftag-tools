@@ -111,8 +111,8 @@ class CalcEffTestCase(unittest.TestCase):
         #       from μ+2o to infinity --> expect a value of 0.0227501
         # https://www.wolframalpha.com/input?i=integrate+1%2Fsqrt%282+pi%29+*+exp%28-0.5*x**2%29+from+2+to+oo
         bkg_eff, cut = calculate_efficiency(
-            self.disc_sig,
-            self.disc_bkg,
+            sig_disc=self.disc_sig,
+            bkg_disc=self.disc_bkg,
             target_eff=0.841345,
             return_cuts=True,
         )
@@ -123,8 +123,8 @@ class CalcEffTestCase(unittest.TestCase):
 
         # Test without returned cut values
         bkg_eff = calculate_efficiency(
-            self.disc_sig,
-            self.disc_bkg,
+            sig_disc=self.disc_sig,
+            bkg_disc=self.disc_bkg,
             target_eff=0.841345,
             return_cuts=False,
         )
@@ -135,8 +135,8 @@ class CalcEffTestCase(unittest.TestCase):
         # explanation is the same as above, now also cut the signal in the middle
         # --> target sig.efficiency 0.841345 and 0.5 --> cut at 2 and 3
         bkg_eff, cut = calculate_efficiency(
-            self.disc_sig,
-            self.disc_bkg,
+            sig_disc=self.disc_sig,
+            bkg_disc=self.disc_bkg,
             target_eff=[0.841345, 0.5],
             return_cuts=True,
         )
@@ -144,6 +144,60 @@ class CalcEffTestCase(unittest.TestCase):
         # since we use random numbers
         np.testing.assert_array_almost_equal(cut, np.array([1.9956997, 2.990996]))
         np.testing.assert_array_almost_equal(bkg_eff, np.array([0.02367, 0.00144]))
+
+    def test_float_cut_value(self):
+        """Test efficiency and cut value calculation for one cut value."""
+        bkg_eff, cut = calculate_efficiency(
+            sig_disc=self.disc_sig,
+            bkg_disc=self.disc_bkg,
+            cut_value=1.9956997,
+            return_cuts=True,
+        )
+        # the values here differ slightly from the values of the analytical integral,
+        # since we use random numbers
+        self.assertAlmostEqual(cut, 1.9956997)
+        self.assertAlmostEqual(bkg_eff, 0.02367)
+
+        # Test without returned cut values
+        bkg_eff = calculate_efficiency(
+            sig_disc=self.disc_sig,
+            bkg_disc=self.disc_bkg,
+            cut_value=1.9956997,
+            return_cuts=False,
+        )
+        self.assertAlmostEqual(bkg_eff, 0.02367)
+
+    def test_array_cut_value(self):
+        """Test efficiency and cut value calculation for list of cut values."""
+        bkg_eff, cut = calculate_efficiency(
+            sig_disc=self.disc_sig,
+            bkg_disc=self.disc_bkg,
+            cut_value=[1.9956997, 2.990996],
+            return_cuts=True,
+        )
+        # the values here differ slightly from the values of the analytical integral,
+        # since we use random numbers
+        np.testing.assert_array_almost_equal(cut, np.array([1.9956997, 2.990996]))
+        np.testing.assert_array_almost_equal(bkg_eff, np.array([0.02367, 0.00144]))
+
+    def test_both_cut_value_and_target_eff(self):
+        """Test the ValueError if both cut_value and target_eff are defined or None."""
+        with self.assertRaises(ValueError):
+            calculate_efficiency(
+                sig_disc=self.disc_sig,
+                bkg_disc=self.disc_bkg,
+                target_eff=[0.841345, 0.5],
+                cut_value=[1, 3],
+                return_cuts=True,
+            )
+        with self.assertRaises(ValueError):
+            calculate_efficiency(
+                sig_disc=self.disc_sig,
+                bkg_disc=self.disc_bkg,
+                target_eff=None,
+                cut_value=None,
+                return_cuts=True,
+            )
 
 
 class CalcRejTestCase(unittest.TestCase):
@@ -158,8 +212,8 @@ class CalcRejTestCase(unittest.TestCase):
         """Test efficiency and cut value calculation for one target value."""
         # Same as for eff but this time for rejection, just use rej = 1 / eff
         bkg_rej, cut = calculate_rejection(
-            self.disc_sig,
-            self.disc_bkg,
+            sig_disc=self.disc_sig,
+            bkg_disc=self.disc_bkg,
             target_eff=0.841345,
             return_cuts=True,
         )
@@ -168,8 +222,8 @@ class CalcRejTestCase(unittest.TestCase):
 
         # Test without returned cut values
         bkg_rej = calculate_rejection(
-            self.disc_sig,
-            self.disc_bkg,
+            sig_disc=self.disc_sig,
+            bkg_disc=self.disc_bkg,
             target_eff=0.841345,
             return_cuts=False,
         )
@@ -180,8 +234,8 @@ class CalcRejTestCase(unittest.TestCase):
         # explanation is the same as above, now also cut the signal in the middle
         # --> target sig.efficiency 0.841345 and 0.5 --> cut at 2 and 3
         bkg_rej, cut = calculate_rejection(
-            self.disc_sig,
-            self.disc_bkg,
+            sig_disc=self.disc_sig,
+            bkg_disc=self.disc_bkg,
             target_eff=[0.841345, 0.5],
             return_cuts=True,
         )
@@ -191,14 +245,76 @@ class CalcRejTestCase(unittest.TestCase):
     def test_with_smooth(self):
         """Test efficiency and cut value calculation with smoothing."""
         bkg_rej, cut = calculate_rejection(
-            self.disc_sig,
-            self.disc_bkg,
+            sig_disc=self.disc_sig,
+            bkg_disc=self.disc_bkg,
             target_eff=[0.841345, 0.5],
             return_cuts=True,
             smooth=True,
         )
         np.testing.assert_array_almost_equal(cut, np.array([1.9956997, 2.990996]))
         np.testing.assert_array_almost_equal(bkg_rej, np.array([237.052272, 499.639743]))
+
+    def test_float_cut_value(self):
+        """Test efficiency and cut value calculation for one cut value."""
+        bkg_rej, cut = calculate_rejection(
+            sig_disc=self.disc_sig,
+            bkg_disc=self.disc_bkg,
+            cut_value=1.9956997,
+            return_cuts=True,
+        )
+        self.assertAlmostEqual(cut, 1.9956997)
+        self.assertAlmostEqual(bkg_rej, 1 / 0.02367)
+
+        # Test without returned cut values
+        bkg_rej = calculate_rejection(
+            sig_disc=self.disc_sig,
+            bkg_disc=self.disc_bkg,
+            cut_value=1.9956997,
+            return_cuts=False,
+        )
+        self.assertAlmostEqual(bkg_rej, 1 / 0.02367)
+
+    def test_array_cut_value(self):
+        """Test efficiency and cut value calculation for list of cut_values."""
+        bkg_rej, cut = calculate_rejection(
+            sig_disc=self.disc_sig,
+            bkg_disc=self.disc_bkg,
+            cut_value=[1.9956997, 2.990996],
+            return_cuts=True,
+        )
+        np.testing.assert_array_almost_equal(cut, np.array([1.9956997, 2.990996]))
+        np.testing.assert_array_almost_equal(bkg_rej, 1 / np.array([0.02367, 0.00144]))
+
+    def test_with_smooth_cut_value(self):
+        """Test efficiency and cut value calculation with smoothing."""
+        bkg_rej, cut = calculate_rejection(
+            sig_disc=self.disc_sig,
+            bkg_disc=self.disc_bkg,
+            cut_value=[1.9956997, 2.990996],
+            return_cuts=True,
+            smooth=True,
+        )
+        np.testing.assert_array_almost_equal(cut, np.array([1.9956997, 2.990996]))
+        np.testing.assert_array_almost_equal(bkg_rej, np.array([237.052272, 499.639743]))
+
+    def test_both_cut_value_and_target_eff(self):
+        """Test the ValueError if both cut_value and target_eff are defined or None."""
+        with self.assertRaises(ValueError):
+            calculate_rejection(
+                sig_disc=self.disc_sig,
+                bkg_disc=self.disc_bkg,
+                target_eff=[0.841345, 0.5],
+                cut_value=[1, 3],
+                return_cuts=True,
+            )
+        with self.assertRaises(ValueError):
+            calculate_rejection(
+                sig_disc=self.disc_sig,
+                bkg_disc=self.disc_bkg,
+                target_eff=None,
+                cut_value=None,
+                return_cuts=True,
+            )
 
 
 class EffErrTestCase(unittest.TestCase):
