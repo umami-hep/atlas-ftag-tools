@@ -2,6 +2,7 @@
 
 ### [Latest]
 
+- Adding `cut_value` Option for `calculate_efficiency` and `calculate_rejection` Functions [#144](https://github.com/umami-hep/atlas-ftag-tools/pull/144)
 - Enabling Docstring Checks [#143](https://github.com/umami-hep/atlas-ftag-tools/pull/143)
 
 ### [v0.2.15](https://github.com/umami-hep/atlas-ftag-tools/releases/tag/v0.2.15) (07.08.2025)
