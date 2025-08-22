@@ -57,7 +57,7 @@ Package Contents
    :type log_level: str
 
 
-.. py:function:: calculate_efficiency(sig_disc: numpy.ndarray, bkg_disc: numpy.ndarray, target_eff: float | list | numpy.ndarray, return_cuts: bool = False, sig_weights: numpy.ndarray = None, bkg_weights: numpy.ndarray = None)
+.. py:function:: calculate_efficiency(sig_disc: numpy.ndarray, bkg_disc: numpy.ndarray, target_eff: float | list | numpy.ndarray | None = None, cut_value: float | list | numpy.ndarray | None = None, return_cuts: bool = False, sig_weights: numpy.ndarray = None, bkg_weights: numpy.ndarray = None)
 
    Calculate efficiency.
 
@@ -65,8 +65,11 @@ Package Contents
    :type sig_disc: np.ndarray
    :param bkg_disc: Background discriminant
    :type bkg_disc: np.ndarray
-   :param target_eff: Working point which is used for discriminant calculation
-   :type target_eff: float | list | np.ndarray
+   :param target_eff: Working point which is used for discriminant calculation. By default None
+   :type target_eff: float | list | np.ndarray | None, optional
+   :param cut_value: Instead of the working points being calculated on the sample, you can give
+                     provide the cut values directly. By default None
+   :type cut_value: float | list | np.ndarray | None, optional
    :param return_cuts: Specifies if the cut values corresponding to the provided WPs are returned.
                        If target_eff is a float, only one cut value will be returned. If target_eff
                        is an array, target_eff is an array as well.
@@ -78,8 +81,10 @@ Package Contents
 
    :returns: * **eff** (*float or np.ndarray*) -- Efficiency.
                Return float if target_eff is a float, else np.ndarray
-             * **cutvalue** (*float or np.ndarray*) -- Cutvalue if return_cuts is True.
+             * **cut_vals** (*float or np.ndarray*) -- Cutvalue if return_cuts is True.
                Return float if target_eff is a float, else np.ndarray
+
+   :raises ValueError: If target_eff and cut_value are both not None or both are None
 
 
 .. py:function:: calculate_efficiency_error(arr: numpy.ndarray, n_counts: int, suppress_zero_divison_error: bool = False, norm: bool = False) -> numpy.ndarray
@@ -106,7 +111,7 @@ Package Contents
    https://inspirehep.net/files/57287ac8e45a976ab423f3dd456af694
 
 
-.. py:function:: calculate_rejection(sig_disc: numpy.ndarray, bkg_disc: numpy.ndarray, target_eff: float | list, return_cuts: bool = False, sig_weights: numpy.ndarray = None, bkg_weights: numpy.ndarray = None, smooth: bool = False)
+.. py:function:: calculate_rejection(sig_disc: numpy.ndarray, bkg_disc: numpy.ndarray, target_eff: float | list | None = None, cut_value: float | list | None = None, return_cuts: bool = False, sig_weights: numpy.ndarray = None, bkg_weights: numpy.ndarray = None, smooth: bool = False)
 
    Calculate rejection.
 
@@ -114,8 +119,11 @@ Package Contents
    :type sig_disc: np.ndarray
    :param bkg_disc: Background discriminant
    :type bkg_disc: np.ndarray
-   :param target_eff: Working point which is used for discriminant calculation
-   :type target_eff: float | list
+   :param target_eff: Working point which is used for discriminant calculation. By default None
+   :type target_eff: float | list | None, optional
+   :param cut_value: Instead of the working points being calculated on the sample, you can give
+                     provide the cut values directly. By default None
+   :type cut_value: float | list | None, optional
    :param return_cuts: Specifies if the cut values corresponding to the provided WPs are returned.
                        If target_eff is a float, only one cut value will be returned. If target_eff
                        is an array, target_eff is an array as well.
@@ -131,6 +139,8 @@ Package Contents
                If target_eff is a float, a float is returned if it's a list a np.ndarray
              * **cut_value** (*float or np.ndarray*) -- Cutvalue if return_cuts is True.
                If target_eff is a float, a float is returned if it's a list a np.ndarray
+
+   :raises ValueError: If target_eff and cut_value are both not None or both are None
 
 
 .. py:function:: calculate_rejection_error(arr: numpy.ndarray, n_counts: int, norm: bool = False) -> numpy.ndarray
