@@ -199,7 +199,6 @@ def calculate_efficiency(
         sorted_args = np.argsort(cut_vals)
 
     # Get the histogram for the backgrounds
-    logger.error((-np.inf, *cut_vals[sorted_args], np.inf))
     hist, _ = np.histogram(bkg_disc, (-np.inf, *cut_vals[sorted_args], np.inf), weights=bkg_weights)
 
     # Calculate the efficiencies for the calculated cut values
