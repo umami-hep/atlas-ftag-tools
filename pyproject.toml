@@ -8,27 +8,27 @@ readme = "README.md"
 requires-python = ">=3.10,<3.12"
 
 dependencies = [
-  "h5py>=3.0",
-  "numpy>=2.2.3",
-  "PyYAML>=5.1",
-  "scipy>=1.15.2"
+  "h5py>=3.14.0",
+  "numpy>=2.2.6",
+  "PyYAML>=6.0.2",
+  "scipy>=1.15.3"
 ]
 
 [project.optional-dependencies]
 dev = [
-  "ipykernel==6.21.3",
-  "mypy==1.11.2",
-  "pre-commit==3.1.1",
-  "pydoclint==0.6.6",
-  "pytest_notebook==0.10.0",
-  "pytest-cov==4.0.0",
-  "pytest==7.2.2",
-  "ruff==0.6.2",
+  "ipykernel>=6.30.1",
+  "mypy>=1.18.1",
+  "pre-commit>=4.3.0",
+  "pydoclint>=0.7.3",
+  "pytest_notebook>=0.10.0",
+  "pytest-cov>=7.0.0",
+  "pytest>=8.4.2",
+  "ruff>=0.13.0",
 ]
 
 [project.urls]
 "Homepage" = "https://github.com/umami-hep/atlas-ftag-tools/"
-
+"Issue Tracker" = "https://github.com/umami-hep/atlas-ftag-tools/issues"
 
 [project.scripts]
 find_metadata = "ftag.find_metadata:main"
