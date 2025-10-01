@@ -18,13 +18,12 @@ Submodules
    /autoapi/ftag/cli_utils/index
    /autoapi/ftag/cuts/index
    /autoapi/ftag/find_metadata/index
+   /autoapi/ftag/flavours/index
    /autoapi/ftag/fraction_optimization/index
    /autoapi/ftag/git_check/index
    /autoapi/ftag/hdf5/index
-   /autoapi/ftag/labeller/index
    /autoapi/ftag/labels/index
    /autoapi/ftag/mock/index
-   /autoapi/ftag/region/index
    /autoapi/ftag/sample/index
    /autoapi/ftag/track_selector/index
    /autoapi/ftag/transform/index
@@ -39,6 +38,8 @@ Attributes
 .. autoapisummary::
 
    ftag.__version__
+   ftag.Extended_Flavours
+   ftag.Flavours
 
 
 Exceptions
@@ -55,7 +56,6 @@ Classes
 .. autoapisummary::
 
    ftag.Cuts
-   ftag.Labeller
    ftag.Label
    ftag.LabelContainer
    ftag.Sample
@@ -67,13 +67,13 @@ Functions
 
 .. autoapisummary::
 
+   ftag.calculate_best_fraction_values
    ftag.check_for_fork
    ftag.check_for_uncommitted_changes
    ftag.create_and_push_tag
    ftag.get_git_hash
    ftag.is_git_repo
    ftag.get_mock_file
-   ftag.get_working_points
 
 
 Package Contents
@@ -135,6 +135,33 @@ Package Contents
 
 
    .. py:method:: __repr__() -> str
+
+
+.. py:data:: Extended_Flavours
+
+.. py:data:: Flavours
+
+.. py:function:: calculate_best_fraction_values(jets: numpy.ndarray, tagger: str, signal: ftag.labels.Label, flavours: ftag.labels.LabelContainer, working_point: float, rejection_weights: dict | None = None, optimizer_method: str = 'Powell') -> dict
+
+   Calculate the best fraction values for a given tagger and working point.
+
+   :param jets: Loaded jets
+   :type jets: np.ndarray
+   :param tagger: Name of the tagger
+   :type tagger: str
+   :param signal: Label instance of the signal
+   :type signal: Label
+   :param flavours: LabelContainer with all flavours
+   :type flavours: LabelContainer
+   :param working_point: Working point that is used
+   :type working_point: float
+   :param rejection_weights: Rejection weights for the background classes, by default None
+   :type rejection_weights: dict | None, optional
+   :param optimizer_method: Optimizer method for the minimization, by default "Powell"
+   :type optimizer_method: str, optional
+
+   :returns: Dict with the best fraction values
+   :rtype: dict
 
 
 .. py:exception:: GitError
@@ -227,78 +254,6 @@ Package Contents
 
    Any non-zero exit status is treated as "not a Git repository". If Git is not
    available on the system, an :class:`OSError` may be raised by :mod:`subprocess`.
-
-
-.. py:class:: Labeller
-
-   Defines a labelling scheme.
-
-   Classes are assigned integer labels in [0, ..., n] based on pre-defined selections.
-
-   .. attribute:: labels
-
-      The labels to be use.
-
-      :type: LabelContainer | list[str | Label]
-
-   .. attribute:: require_labels
-
-      Whether to require that all objects are labelled.
-
-      :type: bool
-
-
-   .. py:attribute:: labels
-      :type:  ftag.labels.LabelContainer | list[str | ftag.labels.Label]
-
-
-   .. py:attribute:: require_labels
-      :type:  bool
-      :value: True
-
-
-
-   .. py:method:: __post_init__() -> None
-
-
-   .. py:property:: variables
-      :type: list[str]
-
-
-      Returns the variables used for labelling.
-
-      :returns: The variables used for labelling.
-      :rtype: list[str]
-
-
-   .. py:method:: get_labels(array: numpy.ndarray) -> numpy.ndarray
-
-      Returns the labels for the given array.
-
-      :param array: The array to label.
-      :type array: np.ndarray
-
-      :returns: The labels for the given array.
-      :rtype: np.ndarray
-
-      :raises ValueError: If the `require_labels` attribute is set to `True` and some objects were not labelled.
-
-
-
-   .. py:method:: add_labels(array: numpy.ndarray, label_name: str = 'labels') -> numpy.ndarray
-
-      Adds the labels to the given array.
-
-      :param array: The array to label.
-      :type array: np.ndarray
-      :param label_name: The name of the label column.
-      :type label_name: str
-
-      :returns: The array with the labels added.
-      :rtype: np.ndarray
-
-      :raises ValueError: If the `require_labels` attribute is set to `False`.
-
 
 
 .. py:class:: Label
@@ -675,17 +630,5 @@ Package Contents
 
 
    .. py:method:: map_variable_names(name: str, variables: list[str], inverse=False) -> list[str]
-
-
-.. py:function:: get_working_points(args: argparse.Namespace) -> dict | None
-
-   Calculate the working points.
-
-   :param args: Input arguments from the argparser
-   :type args: argparse.Namespace
-
-   :returns: Dict with the working points. If args.outfile is given, the function returns None and
-             stored the resulting dict in a yaml file in args.outfile.
-   :rtype: dict | None
 
 
