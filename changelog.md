@@ -2,6 +2,8 @@
 
 ### [Latest]
 
+- Updating Package Versions [#145](https://github.com/umami-hep/atlas-ftag-tools/pull/145)
+
 ### [v0.2.16](https://github.com/umami-hep/atlas-ftag-tools/releases/tag/v0.2.16) (22.08.2025)
 
 - Adding `cut_value` Option for `calculate_efficiency` and `calculate_rejection` Functions [#144](https://github.com/umami-hep/atlas-ftag-tools/pull/144)
