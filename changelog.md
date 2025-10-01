@@ -2,6 +2,8 @@
 
 ### [Latest]
 
+### [v0.2.17](https://github.com/umami-hep/atlas-ftag-tools/releases/tag/v0.2.17) (01.10.2025)
+
 - Updating Package Versions [#145](https://github.com/umami-hep/atlas-ftag-tools/pull/145)
 
 ### [v0.2.16](https://github.com/umami-hep/atlas-ftag-tools/releases/tag/v0.2.16) (22.08.2025)
