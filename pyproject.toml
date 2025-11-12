@@ -83,5 +83,5 @@ required-imports = ["from __future__ import annotations"]
 convention = "numpy"  # Accepts: "google", "numpy", or "pep257".
 
 [tool.pytest]
-nb_exec_timeout = 50
+nb_exec_timeout = "50"
 nb_coverage = "True"
