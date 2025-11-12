@@ -37,6 +37,7 @@ h5move = "ftag.hdf5.h5move:main"
 h5split = "ftag.hdf5.h5split:main"
 vds = "ftag.vds:main"
 wps = "ftag.working_points:main"
+fraction_optimization = "ftag.fraction_optimization:main"
 
 [tool.setuptools]
 packages = ["ftag", "ftag.hdf5", "ftag.utils"]
