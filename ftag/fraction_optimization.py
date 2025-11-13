@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import argparse
-import sys
+import re
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -12,7 +12,7 @@ from ftag.cli_utils import HelpFormatter
 from ftag.cuts import Cuts
 from ftag.hdf5 import H5Reader
 from ftag.labels import LabelContainer
-from ftag.utils import calculate_rejection, get_discriminant, logger
+from ftag.utils import calculate_rejection, get_discriminant, logger, set_log_level
 
 if TYPE_CHECKING:  # pragma: no cover
     from collections.abc import Sequence
@@ -283,12 +283,12 @@ def calculate_best_fraction_values(
     return final_frac_dict
 
 
-def parse_args(args: Sequence[str]) -> argparse.Namespace:
+def parse_args(args: Sequence[str] | None) -> argparse.Namespace:
     """Parse the input arguments into a Namespace.
 
     Parameters
     ----------
-    args : Sequence[str]
+    args : Sequence[str] | None
         Sequence of string inputs to the script
 
     Returns
@@ -329,7 +329,7 @@ def parse_args(args: Sequence[str]) -> argparse.Namespace:
         required=True,
         type=float,
         help="Working point for which to optimize the fraction values. "
-        "Values are given in sub-one values (e.g. 0.70 for 70% WP).",
+        "Values are given in sub-one values (e.g. 0.70 for 70%% WP).",
     )
     parser.add_argument(
         "-o",
@@ -380,21 +380,31 @@ def parse_args(args: Sequence[str]) -> argparse.Namespace:
         type=str,
         help="Name of the category of the flavours that will be used.",
     )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        default="INFO",
+        choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+        help="Verbosity level",
+    )
 
     # Final parse of all arguments
     return parser.parse_args(args)
 
 
-def main(args: Sequence[str]) -> None:
+def main(args: Sequence[str] | None = None) -> None:
     """Main function to run the fraction value optimization.
 
     Parameters
     ----------
-    args : Sequence[str]
-        Input arguments
+    args : Sequence[str] | None
+        Input arguments, by default None
     """
     # Parse the command line arguments
     parsed_args = parse_args(args=args)
+
+    # Set the log level
+    set_log_level(tools_logger=logger, log_level=parsed_args.verbose)
 
     # Get the flavour class we will use
     flavours = LabelContainer.from_yaml(
@@ -402,14 +412,28 @@ def main(args: Sequence[str]) -> None:
         include_categories=[parsed_args.flavour_class],
     )
 
+    # Get the cuts that are to be applied
+    cuts = Cuts.from_list(parsed_args.cuts)
+
     # Get the probability names which need to be loaded from H5
     vars_to_load = [f"{parsed_args.tagger}_{flav.px}" for flav in flavours]
 
-    # Add pT and eta to the variables for the cuts
-    vars_to_load += ["pt_btagJes", "absEta_btagJes"]
+    # Add the variables that are needed for the cuts
+    vars_to_load += [
+        var for cut in parsed_args.cuts for var in re.compile(r"\b[A-Za-z_]\w*\b").findall(cut)
+    ]
 
-    # Get the cuts that are to be applied
-    cuts = Cuts.from_list(parsed_args.cuts)
+    # Add the variables needed for the flavours to the list
+    vars_to_load += flavours.cut_variables()
+
+    # Ensure that each variable only is once in the list
+    vars_to_load = list(set(vars_to_load))
+
+    # Debug statement before loading the jets
+    logger.debug(f"Flavours: {flavours}")
+    logger.debug(f"Flavour File: {parsed_args.flavour_file}")
+    logger.debug(f"Variables: {vars_to_load}")
+    logger.debug(f"Cuts: {vars_to_load}")
 
     # Load the actual jets from the file
     jets = H5Reader(
@@ -435,4 +459,4 @@ def main(args: Sequence[str]) -> None:
 
 
 if __name__ == "__main__":  # pragma: no cover
-    main(args=sys.argv[1:])
+    main()
