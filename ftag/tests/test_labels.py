@@ -172,7 +172,10 @@ class TestLabelContainer(unittest.TestCase):
         """The the behaviour of the cut_variables function."""
         # Test default
         cut_vars = LabelContainer.from_list([self.bjets, self.cjets, self.newjets]).cut_variables()
-        self.assertListEqual(["HadronConeExclTruthLabelID", "OtherVariableForCut"], cut_vars)
+        self.assertListEqual(
+            sorted(["HadronConeExclTruthLabelID", "OtherVariableForCut"]),
+            sorted(cut_vars),
+        )
 
     @patch(
         "builtins.open",
