@@ -16,7 +16,6 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-  "coverage<7.3",
   "ipykernel>=6.30.1",
   "mypy>=1.18.1",
   "pre-commit>=4.3.0",
@@ -85,4 +84,4 @@ convention = "numpy"  # Accepts: "google", "numpy", or "pep257".
 
 [tool.pytest.ini_options]
 nb_exec_timeout = "50"
-nb_coverage = "true"
+nb_coverage = "false"
