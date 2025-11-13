@@ -84,6 +84,13 @@ class TestLabelContainer(unittest.TestCase):
             colour="tab:green",
             category="single-btag",
         )
+        self.newjets = Label(
+            name="newjets",
+            label="Test-jets",
+            cuts=Cuts.from_list(["HadronConeExclTruthLabelID == 0", "OtherVariableForCut == 5"]),
+            colour="tab:yellow",
+            category="single-btag",
+        )
         self.container = LabelContainer.from_list([self.bjets, self.cjets, self.ujets])
 
     def test_len(self):
@@ -155,6 +162,17 @@ class TestLabelContainer(unittest.TestCase):
         single_cjets = LabelContainer.from_list([self.cjets])
         with self.assertRaises(TypeError):
             single_cjets.backgrounds(self.cjets)
+
+    def test_cut_variables_one_variable(self):
+        """The the behaviour of the cut_variables function."""
+        cut_vars = self.container.cut_variables()
+        self.assertListEqual(["HadronConeExclTruthLabelID"], cut_vars)
+
+    def test_cut_variables_multiple_variable(self):
+        """The the behaviour of the cut_variables function."""
+        # Test default
+        cut_vars = LabelContainer.from_list([self.bjets, self.cjets, self.newjets]).cut_variables()
+        self.assertListEqual(["HadronConeExclTruthLabelID", "OtherVariableForCut"], cut_vars)
 
     @patch(
         "builtins.open",
