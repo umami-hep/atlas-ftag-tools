@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import argparse
-import re
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -157,7 +156,7 @@ def calculate_rejection_sum(
     Returns
     -------
     float
-        Sum of the normalised rejections
+        Sum of the normalised rejections times -1 (for minimize)
     """
     # Get the background classes
     backgrounds = flavours.backgrounds(signal)
@@ -417,11 +416,6 @@ def main(args: Sequence[str] | None = None) -> None:
 
     # Get the probability names which need to be loaded from H5
     vars_to_load = [f"{parsed_args.tagger}_{flav.px}" for flav in flavours]
-
-    # Add the variables that are needed for the cuts
-    vars_to_load += [
-        var for cut in parsed_args.cuts for var in re.compile(r"\b[A-Za-z_]\w*\b").findall(cut)
-    ]
 
     # Add the variables needed for the flavours to the list
     vars_to_load += flavours.cut_variables()
