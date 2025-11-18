@@ -403,6 +403,15 @@ Package Contents
    .. py:method:: backgrounds(signal: Label, only_signals: bool = True) -> LabelContainer
 
 
+   .. py:method:: cut_variables() -> list[str]
+
+      Return all variable names appearing in any Label cuts.
+
+      :returns: Unique variable names used across all cuts in all labels.
+      :rtype: list[str]
+
+
+
 .. py:function:: get_mock_file(num_jets: int = 1000, fname: str | None = None, tracks_name: str = 'tracks', num_tracks: int = 40) -> tuple[str, h5py.File]
 
    Get a mock file for testing.

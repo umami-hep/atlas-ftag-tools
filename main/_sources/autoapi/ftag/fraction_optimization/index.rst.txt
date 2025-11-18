@@ -13,6 +13,8 @@ Functions
    ftag.fraction_optimization.get_bkg_norm_dict
    ftag.fraction_optimization.calculate_rejection_sum
    ftag.fraction_optimization.calculate_best_fraction_values
+   ftag.fraction_optimization.parse_args
+   ftag.fraction_optimization.main
 
 
 Module Contents
@@ -73,7 +75,7 @@ Module Contents
    :param rejection_weights: Weights for the rejections
    :type rejection_weights: dict
 
-   :returns: Sum of the normalised rejections
+   :returns: Sum of the normalised rejections times -1 (for minimize)
    :rtype: float
 
 
@@ -98,5 +100,24 @@ Module Contents
 
    :returns: Dict with the best fraction values
    :rtype: dict
+
+
+.. py:function:: parse_args(args: collections.abc.Sequence[str] | None) -> argparse.Namespace
+
+   Parse the input arguments into a Namespace.
+
+   :param args: Sequence of string inputs to the script
+   :type args: Sequence[str] | None
+
+   :returns: Namespace with the parsed arguments
+   :rtype: argparse.Namespace
+
+
+.. py:function:: main(args: collections.abc.Sequence[str] | None = None) -> None
+
+   Main function to run the fraction value optimization.
+
+   :param args: Input arguments, by default None
+   :type args: Sequence[str] | None
 
 

@@ -798,6 +798,56 @@ Output has &#39;number_of_tracks&#39;?  False
 </div>
 <p>Which will then <code class="docutils literal notranslate"><span class="pre">a_function1</span></code> from <code class="docutils literal notranslate"><span class="pre">/a/path/to/a/python/script.py</span></code> and  <code class="docutils literal notranslate"><span class="pre">a_function2</span></code> from <code class="docutils literal notranslate"><span class="pre">/a/differentpath/to/a/python/script.py</span></code></p>
 </section>
+<section id="optimization-of-fraction-values">
+<h2>Optimization of Fraction Values<a class="headerlink" href="#optimization-of-fraction-values" title="Link to this heading">#</a></h2>
+<p>In flavour tagging, we don’t use the output probabilities of our networks directly. To make them easier to use, the multi-dimensional output is broken down into a one dimensional flavour tagging discriminant, $D_b$. The index marks for which type of tagging the discriminant will be used. In the example here, we will discuss this for $b$-tagging. The full $b$-tagging discriminant for “single-btag”, meaning four classes in total ($b$, $c$, light, $\tau$), is defined as:</p>
+<p>$$ D_b = \ln \left(\frac{p_b}{f_c \cdot p_c + f_\text{light} \cdot p_u + f_\tau \cdot p_\tau} \right) \qquad \text{with } 1 = f_c + f_\text{light} + f_\tau $$</p>
+<p>While in the case of three total classes (one signal, two background) the optimization can still be done using 2D plots and “try and error”, the optimization for four or more total classes suffers under the high dimensionality of the problem. To counteract this and still be able to optimize the fraction values, the <code class="docutils literal notranslate"><span class="pre">atlas-ftag-tools</span></code> provide a callable script/function called <code class="docutils literal notranslate"><span class="pre">fraction_optimization</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">fraction_optimization</span></code> uses the jets provided to find the optimal fraction values using a minimization technique. The following steps are run during this optimization:</p>
+<ul class="simple">
+<li><p>For the given tagger/WP, calculate the maximally reachable rejection per flavour as a normalization for the final optimization.</p></li>
+<li><p>Calculate the sum of all rejections in a normalized way using the previously extracted maximally reachable rejection per flavour.</p></li>
+<li><p>To be able to optimize this, the total normalized sum of all rejections is multiplied by -1. This new function is given to a minimizer, which optimizes the fraction values based on the negative normalized sum of all rejections.</p></li>
+<li><p>The optimizer returns now a dict with the optimal fraction values.</p></li>
+<li><p>To manually balance each class against each other, one can introduce <code class="docutils literal notranslate"><span class="pre">rejection_weights</span></code>, with which you can balance and fine tune a bit the optimization process.</p></li>
+</ul>
+<section id="terminal-usage">
+<h3>Terminal Usage<a class="headerlink" href="#terminal-usage" title="Link to this heading">#</a></h3>
+<p>To use the script directly from your terminal, you can run the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fraction_optimization<span class="w"> </span>-i<span class="w"> </span>&lt;path-to-h5&gt;<span class="w"> </span>-t<span class="w"> </span>&lt;tagger-name&gt;<span class="w"> </span>-s<span class="w"> </span>&lt;signal-flavour&gt;<span class="w"> </span>-w<span class="w"> </span>&lt;working-point&gt;
+</pre></div>
+</div>
+<p>This will calculate the optimal fraction values and will print it to your terminal. Please make sure to run</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fraction_optimization<span class="w"> </span>-h
+</pre></div>
+</div>
+<p>once to check which other options are available and which defaults are set for them.</p>
+</section>
+<section id="usage-in-a-python-script">
+<h3>Usage in a Python Script<a class="headerlink" href="#usage-in-a-python-script" title="Link to this heading">#</a></h3>
+<p>In addition to the functionality as a callable script, you can also import the function to optimize your fraction values directly to your own script. In the example here, we assume that you loaded all the jets and their variables as data and the jet variables are in the key <code class="docutils literal notranslate"><span class="pre">jets</span></code>. The example will use the <code class="docutils literal notranslate"><span class="pre">MockTagger</span></code> tagger and will use the default <code class="docutils literal notranslate"><span class="pre">single-btag</span></code> flavours with <code class="docutils literal notranslate"><span class="pre">bjets</span></code> as signal. As working point, we will use the 70% working point.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ftag.fraction_optimization</span><span class="w"> </span><span class="kn">import</span> <span class="n">calculate_best_fraction_values</span>
+
+<span class="c1"># Get a test file and load the jets from it</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="n">get_mock_file</span><span class="p">()</span>
+<span class="n">jets</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s2">&quot;jets&quot;</span><span class="p">]</span>
+
+<span class="c1"># Get the optimal fraction dict</span>
+<span class="n">optimal_fraction_dict</span> <span class="o">=</span> <span class="n">calculate_best_fraction_values</span><span class="p">(</span>
+    <span class="n">jets</span><span class="o">=</span><span class="n">jets</span><span class="p">,</span>
+    <span class="n">tagger</span><span class="o">=</span><span class="s2">&quot;MockTagger&quot;</span><span class="p">,</span>
+    <span class="n">signal</span><span class="o">=</span><span class="n">Flavours</span><span class="p">[</span><span class="s2">&quot;bjets&quot;</span><span class="p">],</span>
+    <span class="n">flavours</span><span class="o">=</span><span class="n">Flavours</span><span class="o">.</span><span class="n">by_category</span><span class="p">(</span><span class="s2">&quot;single-btag&quot;</span><span class="p">),</span>
+    <span class="n">working_point</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+    <span class="n">rejection_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">optimizer_method</span><span class="o">=</span><span class="s2">&quot;Powell&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>In this example, we wrote out all possible options.</p>
+<p>The code will return a dict with the optimal fraction values, that you can then directly use in your code.</p>
+</section>
+</section>
 </section>
 
 
@@ -866,6 +916,11 @@ Output has &#39;number_of_tracks&#39;?  False
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#h5writer">H5Writer</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-transform">Data Transform</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-columns-to-an-h5-file">Adding columns to an h5 file.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization-of-fraction-values">Optimization of Fraction Values</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#terminal-usage">Terminal Usage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-in-a-python-script">Usage in a Python Script</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

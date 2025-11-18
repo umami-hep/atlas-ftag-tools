@@ -184,3 +184,12 @@ Module Contents
    .. py:method:: backgrounds(signal: Label, only_signals: bool = True) -> LabelContainer
 
 
+   .. py:method:: cut_variables() -> list[str]
+
+      Return all variable names appearing in any Label cuts.
+
+      :returns: Unique variable names used across all cuts in all labels.
+      :rtype: list[str]
+
+
+

@@ -25,7 +25,7 @@ fname, f = get_mock_file()
 jets = f["jets"]
 ```
 
-### Cuts
+## Cuts
 
 The `Cuts` class provides an interface for applying selections to structured nummpy arrays loaded from HDF5 files.
 To take a look, first import the `Cuts`:
@@ -66,7 +66,7 @@ idx = combined_cuts(jets).idx
 selected_jets = combined_cuts(jets).values
 ```
 
-### Flavours
+## Flavours
 
 A list of flavours is provided.
 
@@ -169,7 +169,7 @@ Flavours.from_cuts(["HadronConeExclTruthLabelID == 5"])
 
 
 
-### H5Reader
+## H5Reader
 
 The `H5Reader` class allows you to read (batches) of jets from one or more HDF5 files.
 
@@ -256,7 +256,7 @@ for batch in stream:
     # do processing on batch...
 ```
 
-### H5Writer
+## H5Writer
 
 
 The `H5Writer` class complents the reader class by allowing you to easily write batches of jets to a target file.
@@ -297,7 +297,7 @@ import h5py
 assert (h5py.File(fname)["jets"][:] == h5py.File(out_fname)["jets"][:]).all()
 ```
 
-### Data Transform
+## Data Transform
 
 The `transform.py` module allows for data to be transformed as it is loaded.
 Three operations are supported:
@@ -405,3 +405,62 @@ h5addcol --input [input file] --append_function /a/path/to/a/python/script.py:a_
 ```
 
 Which will then `a_function1` from `/a/path/to/a/python/script.py` and  `a_function2` from `/a/differentpath/to/a/python/script.py`
+
+## Optimization of Fraction Values
+
+In flavour tagging, we don't use the output probabilities of our networks directly. To make them easier to use, the multi-dimensional output is broken down into a one dimensional flavour tagging discriminant, $D_b$. The index marks for which type of tagging the discriminant will be used. In the example here, we will discuss this for $b$-tagging. The full $b$-tagging discriminant for "single-btag", meaning four classes in total ($b$, $c$, light, $\tau$), is defined as:
+
+$$ D_b = \ln \left(\frac{p_b}{f_c \cdot p_c + f_\text{light} \cdot p_u + f_\tau \cdot p_\tau} \right) \qquad \text{with } 1 = f_c + f_\text{light} + f_\tau $$
+
+While in the case of three total classes (one signal, two background) the optimization can still be done using 2D plots and "try and error", the optimization for four or more total classes suffers under the high dimensionality of the problem. To counteract this and still be able to optimize the fraction values, the `atlas-ftag-tools` provide a callable script/function called `fraction_optimization`.
+
+`fraction_optimization` uses the jets provided to find the optimal fraction values using a minimization technique. The following steps are run during this optimization:
+
+- For the given tagger/WP, calculate the maximally reachable rejection per flavour as a normalization for the final optimization.
+- Calculate the sum of all rejections in a normalized way using the previously extracted maximally reachable rejection per flavour.
+- To be able to optimize this, the total normalized sum of all rejections is multiplied by -1. This new function is given to a minimizer, which optimizes the fraction values based on the negative normalized sum of all rejections.
+- The optimizer returns now a dict with the optimal fraction values.
+- To manually balance each class against each other, one can introduce `rejection_weights`, with which you can balance and fine tune a bit the optimization process.
+
+### Terminal Usage
+To use the script directly from your terminal, you can run the following command:
+
+```bash
+fraction_optimization -i <path-to-h5> -t <tagger-name> -s <signal-flavour> -w <working-point>
+```
+
+This will calculate the optimal fraction values and will print it to your terminal. Please make sure to run 
+
+```bash
+fraction_optimization -h
+```
+
+once to check which other options are available and which defaults are set for them.
+
+### Usage in a Python Script
+
+In addition to the functionality as a callable script, you can also import the function to optimize your fraction values directly to your own script. In the example here, we assume that you loaded all the jets and their variables as data and the jet variables are in the key `jets`. The example will use the `MockTagger` tagger and will use the default `single-btag` flavours with `bjets` as signal. As working point, we will use the 70% working point.
+
+
+```python
+from ftag.fraction_optimization import calculate_best_fraction_values
+
+# Get a test file and load the jets from it
+_, f = get_mock_file()
+jets = f["jets"]
+
+# Get the optimal fraction dict
+optimal_fraction_dict = calculate_best_fraction_values(
+    jets=jets,
+    tagger="MockTagger",
+    signal=Flavours["bjets"],
+    flavours=Flavours.by_category("single-btag"),
+    working_point=0.7,
+    rejection_weights=None,
+    optimizer_method="Powell",
+)
+```
+
+In this example, we wrote out all possible options.
+
+The code will return a dict with the optimal fraction values, that you can then directly use in your code.
