@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
 from pathlib import Path
@@ -189,3 +190,22 @@ class LabelContainer:
                 f"flavour {signal.name}"
             )
         return LabelContainer.from_list(bkg)
+
+    def cut_variables(self) -> list[str]:
+        """Return all variable names appearing in any Label cuts.
+
+        Returns
+        -------
+        list[str]
+            Unique variable names used across all cuts in all labels.
+        """
+        vars_found: set[str] = set()
+        _var_regex = re.compile(r"[A-Za-z_]\w*")
+
+        for label in self:
+            for cut in label.cuts:
+                tokens = _var_regex.findall(str(cut))
+                # filter out boolean keywords
+                vars_found.update(tokens)
+
+        return list(vars_found)
