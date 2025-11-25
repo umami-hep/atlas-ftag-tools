@@ -77,7 +77,7 @@ def initialise_logger(
 
     Parameters
     ----------
-    log_level : str, optional
+    log_level : str | None, optional
         Logging level defining the verbose level. Accepted values are:
         CRITICAL, ERROR, WARNING, INFO, DEBUG, NOTSET, by default None
         If the log_level is not set, it will be set to info
@@ -103,14 +103,14 @@ def initialise_logger(
 
 
 def set_log_level(
-    tools_logger,
+    tools_logger: logging.Logger,
     log_level: str,
 ):
     """Setting log level.
 
     Parameters
     ----------
-    tools_logger : logger
+    tools_logger : logging.Logger
         logger object
     log_level : str
         Logging level corresponding CRITICAL, ERROR, WARNING, INFO, DEBUG, NOTSET

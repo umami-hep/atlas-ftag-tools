@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from collections.abc import Iterator
+import re
+from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -10,6 +11,20 @@ from ftag.cuts import Cuts
 
 
 def remove_suffix(string: str, suffix: str) -> str:
+    """Remove the suffix from a string.
+
+    Parameters
+    ----------
+    string : str
+        String from which the suffix is to be removed
+    suffix : str
+        Suffix to remove
+
+    Returns
+    -------
+    str
+        String with the suffix removed
+    """
     if string.endswith(suffix):
         return string[: -len(suffix)]
     return string
@@ -17,6 +32,22 @@ def remove_suffix(string: str, suffix: str) -> str:
 
 @dataclass(frozen=True)
 class Label:
+    """Dataclass to hold info about one flavour/label.
+
+    Attributes
+    ----------
+    name : str
+        Name of the flavour/label
+    label : str
+        Plot label for this flavour/label
+    cuts : Cuts
+        Cuts of this flavour/label
+    colour : str
+        Colour of this flavour/label
+    category : str
+        Flavour category, to which this flavour/label belongs
+    """
+
     name: str
     label: str
     cuts: Cuts
@@ -49,6 +80,14 @@ class Label:
 
 @dataclass
 class LabelContainer:
+    """Label container that holds multiple labels.
+
+    Attributes
+    ----------
+    labels : dict[str, Label]
+        Dict with the labels this container will hold
+    """
+
     labels: dict[str, Label]
 
     def __iter__(self) -> Iterator:
@@ -102,11 +141,29 @@ class LabelContainer:
         raise KeyError(f"Label with {cuts} not found")
 
     @classmethod
-    def from_yaml(cls, yaml_path: Path | None = None) -> LabelContainer:
+    def from_yaml(
+        cls,
+        yaml_path: Path | None = None,
+        include_categories: Iterable[str] | None = None,
+        exclude_categories: Iterable[str] | None = None,
+    ) -> LabelContainer:
         if yaml_path is None:
             yaml_path = Path(__file__).parent / "flavours.yaml"
         with open(yaml_path) as f:
             config = yaml.safe_load(f)
+
+        # Filter for categories to include
+        if include_categories is not None:
+            include_categories = set(include_categories)
+            config = [f for f in config if f.get("category") in include_categories]
+
+        # Filter for categories to exclude
+        if exclude_categories is not None:
+            exclude_categories = set(exclude_categories)
+            config = [f for f in config if f.get("category") not in exclude_categories]
+
+        if not config:
+            raise KeyError("No labels left after category filtering.")
 
         # sanity checks
         cuts = [Cuts.from_list(f["cuts"]) for f in config]
@@ -133,3 +190,22 @@ class LabelContainer:
                 f"flavour {signal.name}"
             )
         return LabelContainer.from_list(bkg)
+
+    def cut_variables(self) -> list[str]:
+        """Return all variable names appearing in any Label cuts.
+
+        Returns
+        -------
+        list[str]
+            Unique variable names used across all cuts in all labels.
+        """
+        vars_found: set[str] = set()
+        _var_regex = re.compile(r"[A-Za-z_]\w*")
+
+        for label in self:
+            for cut in label.cuts:
+                tokens = _var_regex.findall(str(cut))
+                # filter out boolean keywords
+                vars_found.update(tokens)
+
+        return list(vars_found)

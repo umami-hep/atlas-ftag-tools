@@ -4,21 +4,25 @@
   cuts: ["HadronConeExclTruthLabelID == 5"]
   colour: tab:blue
   category: single-btag
+  _px: pb
 - name: cjets
   label: $c$-jets
   cuts: ["HadronConeExclTruthLabelID == 4"]
   colour: tab:orange
   category: single-btag
+  _px: pc
 - name: ujets
   label: Light-jets
   cuts: ["HadronConeExclTruthLabelID == 0"]
   colour: tab:green
   category: single-btag
+  _px: pu
 - name: taujets
   label: $\tau$-jets
   cuts: ["HadronConeExclTruthLabelID == 15"]
   colour: tab:purple
   category: single-btag
+  _px: ptau
 
 # extended single b-tagging
 - name: singlebjets
@@ -26,26 +30,43 @@
   label: $b$-jets
   colour: tab:blue
   category: single-btag-extended
+  _px: pb
 - name: bcjets
   cuts: ["HadronConeExclExtendedTruthLabelID == 54"]
   label: $bc$-jets
   colour: aqua
   category: single-btag-extended
+  _px: pbc
 - name: bbjets
   cuts: ["HadronConeExclExtendedTruthLabelID == 55"]
   label: $bb$-jets
   colour: darkblue
   category: single-btag-extended
+  _px: pbb
 - name: singlecjets
   cuts: ["HadronConeExclExtendedTruthLabelID == 4"]
   label: $c$-jets
   colour: tab:orange
   category: single-btag-extended
+  _px: pc
 - name: ccjets
   cuts: ["HadronConeExclExtendedTruthLabelID == 44"]
   label: $cc$-jets
   colour: gold
   category: single-btag-extended
+  _px: pcc
+- name: ujets
+  label: Light-jets
+  cuts: ["HadronConeExclExtendedTruthLabelID == 0"]
+  colour: tab:green
+  category: single-btag-extended
+  _px: pu
+- name: taujets
+  label: $\tau$-jets
+  cuts: ["HadronConeExclExtendedTruthLabelID == 15"]
+  colour: tab:purple
+  category: single-btag-extended
+  _px: ptau
 
 # single b-tagging (ghost association)
 - name: ghostbjets
@@ -83,6 +104,62 @@
   cuts: ["HadronGhostTruthLabelID == 15"]
   colour: tab:purple
   category: single-btag-ghost
+  _px: ptau
+
+# Extended single b-tagging (ghost association)
+- name: ghostsinglebjets
+  label: $b$-jets
+  cuts: ["HadronGhostExtendedTruthLabelID == 5"]
+  colour: tab:blue
+  category: single-btag-extended-ghost
+  _px: pb
+- name: ghostbcjets
+  cuts: ["HadronGhostExtendedTruthLabelID == 54"]
+  label: $bc$-jets
+  colour: aqua
+  category: single-btag-extended-ghost
+  _px: pbc
+- name: ghostbbjets
+  cuts: ["HadronGhostExtendedTruthLabelID == 55"]
+  label: $bb$-jets
+  colour: darkblue
+  category: single-btag-extended-ghost
+  _px: pbb
+- name: ghostsinglecjets
+  cuts: ["HadronGhostExtendedTruthLabelID == 4"]
+  label: $c$-jets
+  colour: tab:orange
+  category: single-btag-extended-ghost
+  _px: pc
+- name: ghostccjets
+  cuts: ["HadronGhostExtendedTruthLabelID == 44"]
+  label: $cc$-jets
+  colour: gold
+  category: single-btag-extended-ghost
+  _px: pcc
+- name: ghostsjets
+  label: $s$-jets
+  cuts: ["HadronGhostExtendedTruthLabelID == 0", "PartonTruthLabelID == 3"]
+  colour: tab:red
+  category: single-btag-extended-ghost
+  _px: ps
+- name: ghostudjets
+  label: Light-quark-jets
+  cuts: ["HadronGhostExtendedTruthLabelID == 0", "PartonTruthLabelID <= 2"]
+  colour: tab:green
+  category: single-btag-extended-ghost
+  _px: pud
+- name: ghostgjets
+  label: Gluon-jets
+  cuts: ["HadronGhostExtendedTruthLabelID == 0", "PartonTruthLabelID == 21"]
+  colour: tab:gray
+  category: single-btag-extended-ghost
+  _px: pg
+- name: ghosttaujets
+  label: $\tau$-jets
+  cuts: ["HadronGhostExtendedTruthLabelID == 15"]
+  colour: tab:purple
+  category: single-btag-extended-ghost
   _px: ptau
 
 # Xbb tagging

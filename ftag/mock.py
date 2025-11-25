@@ -113,10 +113,10 @@ def get_mock_scores(labels: np.ndarray, is_xbb: bool = False) -> np.ndarray:
         scales.append(mean_scale_list[rng.integers(0, len(mean_scale_list))])
 
     # Map the labels to the means
-    label_mapping = dict(zip(label_dict.values(), means))
+    label_mapping = dict(zip(label_dict.values(), means, strict=False))
 
     # Generate random mock scores
-    for i, (label, count) in enumerate(zip(*np.unique(labels, return_counts=True))):
+    for i, (label, count) in enumerate(zip(*np.unique(labels, return_counts=True), strict=False)):
         scores[labels == label] = rng.normal(
             loc=label_mapping[label], scale=scales[i], size=(count, n_classes)
         )
@@ -166,11 +166,29 @@ def mock_tracks(num_jets=1000, num_tracks=40) -> np.ndarray:
 
 
 def get_mock_file(
-    num_jets=1000,
+    num_jets: int = 1000,
     fname: str | None = None,
     tracks_name: str = "tracks",
     num_tracks: int = 40,
 ) -> tuple[str, h5py.File]:
+    """Get a mock file for testing.
+
+    Parameters
+    ----------
+    num_jets : int, optional
+        Number of jets in the file, by default 1000
+    fname : str | None, optional
+        Name of the file, by default None
+    tracks_name : str, optional
+        Name of the tracks dataset, by default "tracks"
+    num_tracks : int, optional
+        Number of tracks per jet, by default 40
+
+    Returns
+    -------
+    tuple[str, h5py.File]
+        Tuple with the path and the h5 file
+    """
     jets = mock_jets(num_jets)
 
     # create a tempfile in a new folder
@@ -187,5 +205,10 @@ def get_mock_file(
     if tracks_name:
         tracks = mock_tracks(num_jets, num_tracks)
         f.create_dataset(tracks_name, data=tracks)
-
+    # Add some dummy meta-data
+    counts_dtype = np.dtype([("count", "i8"), ("sum", "f8"), ("sum2", "f8")])
+    counts_data = np.array([100, 200, 300], dtype=counts_dtype)
+    f.create_dataset("cutBookkeeper/nominal/counts", data=counts_data)
+    # add a test attribute to this group
+    f["cutBookkeeper/nominal"].attrs["test"] = "test"
     return fname, f

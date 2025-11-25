@@ -6,12 +6,25 @@ import os
 import re
 import sys
 from pathlib import Path
+from typing import Any
 
 import h5py
 import numpy as np
 
 
-def parse_args(args=None):
+def parse_args(args: Any | None) -> argparse.Namespace:
+    """Parse command line arguments.
+
+    Parameters
+    ----------
+    args : Any | None
+        Command line arguments
+
+    Returns
+    -------
+    argparse.Namespace
+        Namespace with the parsed command line arguments.
+    """
     parser = argparse.ArgumentParser(
         description="Create a lightweight HDF5 wrapper (virtual datasets + "
         "summed cutBookkeeper counts) around a set of .h5 files"
@@ -89,14 +102,14 @@ def glob_re(pattern: str | None, regex_path: str | None) -> list[str] | None:
 
     Parameters
     ----------
-    pattern : str
+    pattern : str | None
         Pattern for the input files
-    regex_path : str
+    regex_path : str | None
         Regex path for the input files
 
     Returns
     -------
-    list[str]
+    list[str] | None
         List of the file basenames that matched the regex pattern
     """
     if pattern is None or regex_path is None:
@@ -113,14 +126,14 @@ def regex_files_from_dir(
 
     Parameters
     ----------
-    reg_matched_fnames : list[str]
+    reg_matched_fnames : list[str] | None
         List of the regex matched file names
-    regex_path : str
+    regex_path : str | None
         Regex path for the input files
 
     Returns
     -------
-    list[str]
+    list[str] | None
         List of file paths (as strings) that matched the regex and any subsequent
         globbing inside matched directories.
     """
@@ -212,6 +225,8 @@ def aggregate_cutbookkeeper(
     ----------
     fnames : list[str]
         List of the input files
+    group_name: str, optional
+        Group name of the cutBookkeeper. By default "cutBookkeeper"
 
     Returns
     -------
@@ -340,7 +355,14 @@ def create_virtual_file(
     return out_fname
 
 
-def main(args=None) -> None:
+def main(args: Any | None = None) -> None:
+    """Run VDS creation.
+
+    Parameters
+    ----------
+    args : Any | None, optional
+        Command line arguments, by default None
+    """
     args = parse_args(args)
     matching_mode = "Applying regex to" if args.use_regex else "Globbing"
     print(f"{matching_mode} {args.pattern} ...")

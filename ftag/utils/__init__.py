@@ -1,3 +1,5 @@
+"""Utils package of the atlas-ftag-tools."""
+
 from __future__ import annotations
 
 from .logging import logger, set_log_level

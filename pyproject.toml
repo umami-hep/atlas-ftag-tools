@@ -1,40 +1,43 @@
 [project]
 name = "atlas-ftag-tools"
 description = "ATLAS Flavour Tagging Tools"
-authors = [{name="Sam Van Stroud"}, {name="Philipp Gadow"}]
+authors = [{name="Sam Van Stroud"}, {name="Philipp Gadow"}, {name="Alexander Froch"}]
 dynamic = ["version"]
 license = {text = "MIT"}
 readme = "README.md"
 requires-python = ">=3.10,<3.12"
 
 dependencies = [
-  "h5py>=3.0",
-  "numpy>=2.2.3",
-  "PyYAML>=5.1",
-  "scipy>=1.15.2"
+  "h5py>=3.14.0",
+  "numpy>=2.2.6",
+  "PyYAML>=6.0.2",
+  "scipy>=1.15.3"
 ]
 
 [project.optional-dependencies]
 dev = [
-  "ruff==0.6.2",
-  "mypy==1.11.2",
-  "pre-commit==3.1.1",
-  "pytest==7.2.2",
-  "pytest-cov==4.0.0",
-  "pytest_notebook==0.10.0",
-  "ipykernel==6.21.3",
+  "ipykernel>=6.30.1",
+  "mypy>=1.18.1",
+  "pre-commit>=4.3.0",
+  "pydoclint>=0.7.3",
+  "pytest_notebook>=0.10.0",
+  "pytest-cov>=7.0.0",
+  "pytest>=8.4.2",
+  "ruff>=0.13.0",
 ]
 
 [project.urls]
 "Homepage" = "https://github.com/umami-hep/atlas-ftag-tools/"
-
+"Issue Tracker" = "https://github.com/umami-hep/atlas-ftag-tools/issues"
 
 [project.scripts]
-vds = "ftag.vds:main"
-wps = "ftag.working_points:main"
+find_metadata = "ftag.find_metadata:main"
+h5addcol = "ftag.hdf5.h5add_col:main"
 h5move = "ftag.hdf5.h5move:main"
 h5split = "ftag.hdf5.h5split:main"
-h5addcol = "ftag.hdf5.h5add_col:main"
+vds = "ftag.vds:main"
+wps = "ftag.working_points:main"
+fraction_optimization = "ftag.fraction_optimization:main"
 
 [tool.setuptools]
 packages = ["ftag", "ftag.hdf5", "ftag.utils"]
@@ -48,20 +51,26 @@ requires = ["setuptools>=62"]
 build-backend = "setuptools.build_meta"
 
 [tool.ruff]
-target-version = "py38"
+target-version = "py310"
 line-length = 100
 preview = true
 lint.select = ["ALL"]
 lint.ignore = [
-    "COM", "D100", "D101", "D102", "D103", "D104", "D105", "D205", "D401", "EM", "FIX", "FBT",
-    "S101", "S404", "S602", "PLR2004", "PLR0912", "PLR0914", "CPY001", "TRY003",
-    "G004", "PD901", "N802", "C901", "DTZ005", "DTZ007", "INP", "EXE002",
-    "ANN001", "ANN002", "ANN003", "ANN101", "ANN201", "ANN202", "ANN204",
-    "T201", "PLW1514", "PTH123", "RUF017", "PLR6301", "ISC001", "S307",
-    "PT027", "NPY002", "PT009", "PLW1641", "PLR0904", "N817", "S603", "PD011",
-    "S113", "TCH", "PT011", "PLR1702", "S108", "PTH207", "S607", "E203", "SIM115", "PLR0913",
-    "PLR0917", "A005"
+  "COM", "D100", "D102", "D105", "D205", "D401", "EM", "FIX", "FBT",
+  "S101", "S404", "S602", "PLR2004", "PLR0912", "PLR0914", "CPY001", "TRY003",
+  "G004", "PD901", "N802", "C901", "DTZ005", "DTZ007", "INP", "EXE002",
+  "ANN001", "ANN002", "ANN003", "ANN101", "ANN201", "ANN202", "ANN204",
+  "T201", "PLW1514", "PTH123", "RUF017", "PLR6301", "ISC001", "S307",
+  "PT027", "NPY002", "PT009", "PLW1641", "PLR0904", "N817", "S603", "PD011",
+  "S113", "TCH", "PT011", "PLR1702", "S108", "PTH207", "S607", "E203", "SIM115", "PLR0913",
+  "PLR0917", "A005", "ANN401"
 ]
+
+[tool.ruff.lint.per-file-ignores]
+"ftag/tests/**" = ["D100", "D101", "D102", "D103", "D104", "D105", "PT019"]
+
+[tool.mypy]
+exclude = '^ftag/tests/.*\.py$'
 
 [tool.ruff.lint.flake8-pytest-style]
 fixture-parentheses = false
@@ -73,6 +82,6 @@ required-imports = ["from __future__ import annotations"]
 [tool.ruff.lint.pydocstyle]
 convention = "numpy"  # Accepts: "google", "numpy", or "pep257".
 
-[tool.pytest]
-nb_exec_timeout = 50
-nb_coverage = "True"
+[tool.pytest.ini_options]
+nb_exec_timeout = "50"
+nb_coverage = "false"

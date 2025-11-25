@@ -52,6 +52,7 @@ def build_docs_version(version: str) -> None:
 
 
 def main() -> None:
+    """Run sphinx docs creation."""
     with open("docs/source/_static/switcher.json") as f:  # pylint: disable=W1514
         versions = json.load(f)
 

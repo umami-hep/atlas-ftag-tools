@@ -3,6 +3,23 @@
 ### [Latest]
 
 - New W to light and c classes [#135](https://github.com/umami-hep/atlas-ftag-tools/pull/135)
+- Make the Fraction Optimization Script callable as Command [#146](https://github.com/umami-hep/atlas-ftag-tools/pull/146)
+
+### [v0.2.17](https://github.com/umami-hep/atlas-ftag-tools/releases/tag/v0.2.17) (01.10.2025)
+
+- Updating Package Versions [#145](https://github.com/umami-hep/atlas-ftag-tools/pull/145)
+
+### [v0.2.16](https://github.com/umami-hep/atlas-ftag-tools/releases/tag/v0.2.16) (22.08.2025)
+
+- Adding `cut_value` Option for `calculate_efficiency` and `calculate_rejection` Functions [#144](https://github.com/umami-hep/atlas-ftag-tools/pull/144)
+- Enabling Docstring Checks [#143](https://github.com/umami-hep/atlas-ftag-tools/pull/143)
+
+### [v0.2.15](https://github.com/umami-hep/atlas-ftag-tools/releases/tag/v0.2.15) (07.08.2025)
+
+- Updating flavours and allow duplicated flavours in different categories [#142](https://github.com/umami-hep/atlas-ftag-tools/pull/142)
+- Fix issue where h5 writer and other utils did not work with new file format which includes groups for meta data [#141](https://github.com/umami-hep/atlas-ftag-tools/pull/141)
+- Adding new Docstring Checker [#139](https://github.com/umami-hep/atlas-ftag-tools/pull/139)
+- Added `find_metadata` script for injecting metadata into `.h5` files [#133](https://github.com/umami-hep/atlas-ftag-tools/pull/133)
 - Allow not doing checks with sample.py [#138](https://github.com/umami-hep/atlas-ftag-tools/pull/138)
 
 ### [v0.2.14](https://github.com/umami-hep/atlas-ftag-tools/releases/tag/v0.2.14) (01.07.2025)

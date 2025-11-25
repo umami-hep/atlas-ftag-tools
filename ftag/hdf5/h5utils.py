@@ -1,15 +1,161 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
+import h5py
 import numpy as np
 from numpy.lib.recfunctions import unstructured_to_structured as u2s
 
 from ftag.transform import Transform
 
-__all__ = ["cast_dtype", "get_dtype", "join_structured_arrays"]
+if TYPE_CHECKING:  # pragma: no cover
+    import h5py
+
+__all__ = [
+    "cast_dtype",
+    "compare_groups",
+    "extract_group_full",
+    "get_dtype",
+    "join_structured_arrays",
+    "structured_from_dict",
+    "write_group_full",
+]
+
+
+def compare_groups(g1: h5py.Group | dict, g2: h5py.Group | dict, path: str = ""):
+    """Recursively compare two h5py.Groups or in-memory dicts.
+
+    Parameters
+    ----------
+    g1 : h5py.Group | dict
+        First group or dict to compare
+    g2 : h5py.Group | dict
+        Second group or dict to compare
+    path : str, optional
+        Path to the current group, by default ""
+
+    Raises
+    ------
+    TypeError
+        If the types of the items do not match
+    """
+    assert set(g1.keys()) == set(
+        g2.keys()
+    ), f"{path}: Keys mismatch: {set(g1.keys())} vs {set(g2.keys())}"
+
+    for key in g1:
+        item1 = g1[key]
+        item2 = g2[key]
+        subpath = f"{path}/{key}"
+
+        # Check for extracted group (dict) with 'data'
+        if isinstance(item1, dict) and "data" in item1:
+            assert isinstance(item2, dict), f"{subpath}: One side missing 'data'"
+            assert "data" in item2, f"{subpath}: One side missing 'data'"
+            np.testing.assert_array_equal(
+                item1["data"], item2["data"], err_msg=f"{subpath}: Data mismatch"
+            )
+            assert item1.get("attrs", {}) == item2.get("attrs", {}), f"{subpath}: Attr mismatch"
+
+        # Check for full extracted group
+        elif isinstance(item1, dict):
+            assert isinstance(item2, dict), f"{subpath}: Expected nested dict"
+            compare_groups(item1, item2, subpath)
+
+        # h5py.Dataset or Group objects
+        elif isinstance(item1, h5py.Dataset):
+            np.testing.assert_array_equal(item1[()], item2[()], err_msg=f"{subpath}: Data mismatch")
+            assert dict(item1.attrs) == dict(item2.attrs), f"{subpath}: Attr mismatch"
+
+        elif isinstance(item1, h5py.Group):
+            compare_groups(item1, item2, subpath)
+
+        else:
+            raise TypeError(f"{subpath}: Unexpected type: {type(item1)}")
+
+
+def write_group_full(h5group: h5py.Group, data: dict):
+    """Write a nested dictionary structure to an HDF5 group.
+
+    This function recursively writes a dictionary containing datasets and subgroups
+    to an HDF5 group. The dictionary should have the structure created by
+    extract_group_full().
+
+    Parameters
+    ----------
+    h5group : h5py.Group
+        The HDF5 group to write data to
+    data : dict
+        Dictionary containing the data structure to write. Can contain:
+        - '_group_attrs': dict of group-level attributes
+        - dataset entries: dict with 'data' and 'attrs' keys
+        - subgroup entries: nested dictionaries
+
+    Raises
+    ------
+    TypeError
+        If an unexpected value type is encountered in the data dict
+    """
+    # Write group-level attributes
+    if "_group_attrs" in data:
+        for k, v in data["_group_attrs"].items():
+            h5group.attrs[k] = v
+
+    for key, value in data.items():
+        if key == "_group_attrs":
+            continue
+        if isinstance(value, dict) and "data" in value:
+            dset = h5group.create_dataset(key, data=value["data"])
+            for attr_k, attr_v in value["attrs"].items():
+                dset.attrs[attr_k] = attr_v
+        elif isinstance(value, dict):
+            subgroup = h5group.create_group(key)
+            write_group_full(subgroup, value)
+        else:
+            raise TypeError(f"Unexpected value type for key '{key}': {type(value)}")
+
+
+def extract_group_full(group: h5py.Group) -> dict:
+    """Extract the full contents of an HDF5 group into a nested dictionary.
+
+    This function recursively extracts all datasets, subgroups, and attributes
+    from an HDF5 group into an in-memory dictionary structure. Group-level
+    attributes are stored under the '_group_attrs' key.
+
+    Parameters
+    ----------
+    group : h5py.Group
+        The HDF5 group to extract data from
+
+    Returns
+    -------
+    dict
+        Nested dictionary containing:
+        - '_group_attrs': dict of group-level attributes (if any)
+        - dataset entries: dict with 'data' (array) and 'attrs' (dict) keys
+        - subgroup entries: nested dictionaries with same structure
+
+    Raises
+    ------
+    TypeError
+        If an unsupported HDF5 item type is encountered
+    """
+    result = {}
+    # Save group-level attributes
+    if group.attrs:
+        result["_group_attrs"] = {k: group.attrs[k] for k in group.attrs}
+    for key, item in group.items():
+        if isinstance(item, h5py.Dataset):
+            result[key] = {"data": item[()], "attrs": {k: item.attrs[k] for k in item.attrs}}
+        elif isinstance(item, h5py.Group):
+            result[key] = extract_group_full(item)
+        else:
+            raise TypeError(f"Unsupported item {key}: {type(item)}")
+    return result
 
 
 def get_dtype(
-    ds,
+    ds: h5py.Dataset,
     variables: list[str] | None = None,
     precision: str | None = None,
     transform: Transform | None = None,
@@ -40,11 +186,13 @@ def get_dtype(
     ValueError
         If variables are not found in dataset
     """
+    variables = variables or ds.dtype.names
+    # If we have a non structured array we just return its dtype
     if variables is None:
-        variables = ds.dtype.names
+        return ds.dtype
+
     if full_precision_vars is None:
         full_precision_vars = []
-
     if (missing := set(variables) - set(ds.dtype.names)) and transform is not None:
         variables = transform.map_variable_names(ds.name, variables, inverse=True)
         missing = set(variables) - set(ds.dtype.names)
@@ -123,7 +271,7 @@ def structured_from_dict(d: dict[str, np.ndarray]) -> np.ndarray:
 
     Parameters
     ----------
-    d : dict
+    d : dict[str, np.ndarray]
         Input dict of numpy arrays
 
     Returns
