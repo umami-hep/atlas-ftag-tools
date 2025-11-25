@@ -101,6 +101,21 @@
   cuts: ["R10TruthLabel_R22v1 in (1,6,7)"]
   colour: "#A300A3"
   category: xbb
+- name: tqqb         
+  label: Contained Top
+  cuts: ["R10TruthLabel_R22v1 == 1"]
+  colour: orchid
+  category: xbb
+- name: WqqFromT         
+  label: Contained Top
+  cuts: ["R10TruthLabel_R22v1 == 6"]
+  colour: crimson
+  category: xbb
+- name: otherFromT     
+  label: Contained Top
+  cuts: ["R10TruthLabel_R22v1 == 7"]
+  colour: aliceblue
+  category: xbb
 - name: qcd
   label: QCD
   cuts: ["R10TruthLabel_R22v1 == 10"]
