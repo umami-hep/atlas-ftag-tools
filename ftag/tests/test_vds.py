@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import re
 import tempfile
+from collections.abc import Iterator
 from pathlib import Path
 
 import h5py
@@ -25,12 +26,12 @@ from ftag.vds import (
 # basic fixtures
 # ---------------------------------------------------------------------
 @pytest.fixture
-def test_h5_files():
+def test_h5_files() -> Iterator[list[Path]]:
     """Create five tiny `.h5` files, each with a dataset ``data``.
 
     Yields
     ------
-    list[pathlib.Path]
+    list[Path]
         Paths to the created files.  The files are deleted when the fixture
         scope ends.
     """
@@ -45,12 +46,12 @@ def test_h5_files():
 
 
 @pytest.fixture
-def test_h5_dirs():
+def test_h5_dirs() -> Iterator[list[Path]]:
     """Create three nested directories, each holding five small HDF5 files.
 
     Yields
     ------
-    list[pathlib.Path]
+    list[Path]
         Paths to **all** created files.  The directories are kept alive
         for the whole test by retaining references to the corresponding
         ``TemporaryDirectory`` objects.
@@ -60,7 +61,7 @@ def test_h5_dirs():
 
         # Keep a reference to every TemporaryDirectory so they are *not*
         # garbage-collected (and thus deleted) before the test finishes.
-        _keep_alive: list[tempfile.TemporaryDirectory] = []
+        keep_alive: list[tempfile.TemporaryDirectory] = []
 
         for _ in range(3):
             nested = tempfile.TemporaryDirectory(
@@ -68,7 +69,7 @@ def test_h5_dirs():
                 prefix="inner_tmp_",
                 suffix=".h5",
             )
-            _keep_alive.append(nested)  # <- retain
+            keep_alive.append(nested)  # <- retain
 
             for j in range(5):
                 fname = Path(nested.name) / f"test_file_{j}.h5"
@@ -122,7 +123,7 @@ def h5_with_bookkeeper(tmp_path_factory: pytest.TempPathFactory):
 
     Returns
     -------
-    list[pathlib.Path]
+    list[Path]
         Paths to the created files.
     """
     root = tmp_path_factory.mktemp("bk_files")
@@ -149,7 +150,7 @@ def h5_without_bookkeeper(tmp_path_factory: pytest.TempPathFactory):
 
     Returns
     -------
-    list[pathlib.Path]
+    list[Path]
         Paths to the created files.
     """
     root = tmp_path_factory.mktemp("plain_files")

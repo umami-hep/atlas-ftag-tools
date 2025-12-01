@@ -504,7 +504,7 @@ def test_parse_args_fraction_value_sum_unequal_to_one(ttbar_file):
 
     with pytest.raises(
         ValueError,
-        match=("Sum of the fraction values must be one! You gave " "1.1 for tagger MockTagger"),
+        match=(r"Sum of the fraction values must be one! You gave 1.1 for tagger MockTagger"),
     ):
         parse_args(args=args)
 

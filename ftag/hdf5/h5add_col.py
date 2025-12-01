@@ -112,7 +112,7 @@ def get_shape(num_jets: int, batch: dict[str, np.ndarray]) -> dict[str, tuple[in
         if values.ndim == 1:
             shape[key] = (num_jets,)
         else:
-            shape[key] = (num_jets,) + values.shape[1:]
+            shape[key] = (num_jets, *values.shape[1:])
     return shape
 
 
@@ -229,9 +229,9 @@ def h5_add_column(
     if output_groups is None:
         output_groups = list(input_variables.keys())
 
-    assert all(
-        o in input_variables for o in output_groups
-    ), f"Output groups {output_groups} not in input groups {input_variables.keys()}"
+    assert all(o in input_variables for o in output_groups), (
+        f"Output groups {output_groups} not in input groups {input_variables.keys()}"
+    )
 
     num_batches = njets // reader.batch_size + 1
     for i, batch in enumerate(reader.stream(input_variables, num_jets=njets)):

@@ -200,11 +200,11 @@ class LabelContainer:
             Unique variable names used across all cuts in all labels.
         """
         vars_found: set[str] = set()
-        _var_regex = re.compile(r"[A-Za-z_]\w*")
+        var_regex = re.compile(r"[A-Za-z_]\w*")
 
         for label in self:
             for cut in label.cuts:
-                tokens = _var_regex.findall(str(cut))
+                tokens = var_regex.findall(str(cut))
                 # filter out boolean keywords
                 vars_found.update(tokens)
 

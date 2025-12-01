@@ -39,7 +39,7 @@ class CustomFormatter(logging.Formatter):
 
 def get_log_level(
     level: str,
-):
+) -> int:
     """Get logging levels with string key.
 
     Parameters
@@ -49,7 +49,7 @@ def get_log_level(
 
     Returns
     -------
-    logging level
+    int
         logging object with log level info
 
     Raises
@@ -72,7 +72,7 @@ def get_log_level(
 
 def initialise_logger(
     log_level: str | None = None,
-):
+) -> logging.Logger:
     """Initialise.
 
     Parameters
@@ -84,7 +84,7 @@ def initialise_logger(
 
     Returns
     -------
-    logger
+    logging.Logger
         logger object with new level set
     """
     retrieved_log_level = get_log_level(

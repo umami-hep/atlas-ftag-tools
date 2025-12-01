@@ -17,7 +17,7 @@ def save_divide(
     numerator: np.ndarray | float,
     denominator: np.ndarray | float,
     default: float = 1.0,
-):
+) -> np.ndarray | float:
     """Save divide for denominator equal to 0.
 
     Division using numpy divide function returning default value in cases where
@@ -34,7 +34,7 @@ def save_divide(
 
     Returns
     -------
-    ratio: np.ndarray | float
+    np.ndarray | float
         Result of the division
     """
     logger.debug("Calculating save division.")
@@ -71,7 +71,7 @@ def weighted_percentile(
     arr: np.ndarray,
     percentile: np.ndarray,
     weights: np.ndarray = None,
-):
+) -> np.ndarray:
     """Calculate weighted percentile.
 
     Implementation according to https://stackoverflow.com/a/29677616/11509698
@@ -181,15 +181,17 @@ def calculate_efficiency(
     # Calculate the cut_vals based on the target_eff
     if target_eff is not None:
         # Flatten the target efficiencies
-        target_eff = np.asarray([target_eff]).flatten()
+        flat_target_eff: np.ndarray = np.asarray(target_eff, dtype=float).ravel()
 
         # Get the cut_vals for the given target efficiency
         cut_vals = weighted_percentile(
-            arr=sig_disc, percentile=1.0 - target_eff, weights=sig_weights
+            arr=sig_disc,
+            percentile=1.0 - flat_target_eff,
+            weights=sig_weights,
         )
 
         # Sort the cut_vals to get the correct order
-        sorted_args = np.argsort(1 - target_eff)
+        sorted_args = np.argsort(1 - flat_target_eff)
 
     # If the cut values are provided, use them
     else:

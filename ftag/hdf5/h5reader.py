@@ -1,8 +1,7 @@
 from __future__ import annotations
 
-import logging as log
 import math
-from collections.abc import Generator
+from collections.abc import Callable, Generator
 from dataclasses import dataclass
 from functools import cached_property
 from pathlib import Path
@@ -14,6 +13,7 @@ from ftag.cuts import Cuts
 from ftag.hdf5.h5utils import get_dtype
 from ftag.sample import Sample
 from ftag.transform import Transform
+from ftag.utils.logging import logger
 
 
 @dataclass
@@ -83,7 +83,7 @@ class H5SingleReader:
 
     def read_chunk(self, ds: h5py.Dataset, array: np.ndarray, low: int) -> np.ndarray:
         high = min(low + self.batch_size, self.num_jets)
-        shape = (high - low,) + ds.shape[1:]
+        shape = (high - low, *ds.shape[1:])
         array.resize(shape, refcheck=False)
         ds.read_direct(array, np.s_[low:high])
         return array
@@ -96,7 +96,7 @@ class H5SingleReader:
                 isinf = isinf if name == self.jets_name else isinf.any(axis=-1)
                 keep_idx &= ~isinf
                 if num_inf := isinf.sum():
-                    log.warning(
+                    logger.warning(
                         f"{num_inf} inf values detected for variable {var} in"
                         f" {name} array. Removing the affected jets."
                     )
@@ -146,7 +146,7 @@ class H5SingleReader:
         if skip_batches > 0:
             assert not self.shuffle, "Cannot skip batches if shuffle is True"
         if num_jets > self.num_jets:
-            log.warning(
+            logger.warning(
                 f"{num_jets:,} jets requested but only {self.num_jets:,} available in {self.fname}."
                 " Set to maximum available number!"
             )
@@ -188,7 +188,7 @@ class H5SingleReader:
         self,
         variables: dict | None = None,
         cuts: Cuts | None = None,
-    ):
+    ) -> Callable:
         """Get a function to read batches of selected jets.
 
         Parameters
@@ -200,7 +200,7 @@ class H5SingleReader:
 
         Returns
         -------
-        function
+        Callable
             Function that takes an index and returns a batch of selected jets.
         """
         if variables is None:
@@ -221,7 +221,7 @@ class H5SingleReader:
             Returns
             -------
             dict | None
-            Dictionary of arrays for each group, or None if no more batches are available.
+                Dictionary of arrays for each group, or None if no more batches are available.
             """
             low = idx * self.batch_size
             if low >= self.num_jets:
@@ -342,7 +342,7 @@ class H5Reader:
         with h5py.File(self.files[0]) as f:
             for group in groups:
                 shape = f[group].shape
-                shapes[group] = (num_jets,) + shape[1:]
+                shapes[group] = (num_jets, *shape[1:])
         return shapes
 
     def stream(
@@ -426,8 +426,11 @@ class H5Reader:
             yield data
 
     def get_batch_reader(
-        self, variables: dict | None = None, cuts: Cuts | None = None, shuffle: bool = True
-    ):
+        self,
+        variables: dict | None = None,
+        cuts: Cuts | None = None,
+        shuffle: bool = True,
+    ) -> Callable:
         """Get a function to read batches of selected jets.
 
         Parameters
@@ -441,7 +444,7 @@ class H5Reader:
 
         Returns
         -------
-        function
+        Callable
             Function that takes an index and returns a batch of selected jets.
         """
         if variables is None:

@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import argparse
 import glob
-import os
 import re
 import sys
 from pathlib import Path
@@ -32,8 +31,7 @@ def parse_args(args: Any | None) -> argparse.Namespace:
     parser.add_argument(
         "pattern",
         type=Path,
-        help="quotes-enclosed glob pattern of files to merge, "
-        "or a regex if --use_regex is given",
+        help="quotes-enclosed glob pattern of files to merge, or a regex if --use_regex is given",
     )
     parser.add_argument("output", type=Path, help="path to output virtual file")
     parser.add_argument(
@@ -84,7 +82,7 @@ def get_virtual_layout(fnames: list[str], group: str) -> h5py.VirtualLayout:
         shape = f[group].shape
 
     # Update the shape finalize the output layout
-    shape = (total,) + shape[1:]
+    shape = (total, *shape[1:])
     layout = h5py.VirtualLayout(shape=shape, dtype=dtype)
 
     # Fill the vds
@@ -98,24 +96,28 @@ def get_virtual_layout(fnames: list[str], group: str) -> h5py.VirtualLayout:
 
 
 def glob_re(pattern: str | None, regex_path: str | None) -> list[str] | None:
-    """Return list of filenames that match REGEX pattern inside regex_path.
+    """Return list of filenames that match a regex pattern inside `regex_path`.
 
     Parameters
     ----------
     pattern : str | None
-        Pattern for the input files
+        Regex pattern used to match filenames.
     regex_path : str | None
-        Regex path for the input files
+        Directory to search for files.
 
     Returns
     -------
     list[str] | None
-        List of the file basenames that matched the regex pattern
+        List of basenames that match the pattern, or None if inputs are missing.
     """
     if pattern is None or regex_path is None:
         return None
 
-    return list(filter(re.compile(pattern).match, os.listdir(regex_path)))
+    path = Path(regex_path)
+    regex = re.compile(pattern)
+
+    # Return only basenames, same as os.listdir
+    return [p.name for p in path.iterdir() if regex.match(p.name)]
 
 
 def regex_files_from_dir(
@@ -183,7 +185,7 @@ def check_subgroups(fnames: list[str], group_name: str = "cutBookkeeper") -> lis
 
     Returns
     -------
-    set[str]
+    list[str]
         Returns the files with common sub-groups
 
     Raises

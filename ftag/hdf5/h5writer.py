@@ -64,7 +64,7 @@ class H5Writer:
         else:
             self.fixed_mode = True
             for name in self.shapes:
-                self.shapes[name] = (self.num_jets,) + self.shapes[name][1:]
+                self.shapes[name] = (self.num_jets, *self.shapes[name][1:])
 
         if self.precision == "full":
             self.fp_dtype = np.float32
@@ -123,7 +123,7 @@ class H5Writer:
                 dtypes = new_dtye
                 shapes = new_shape
             if num_jets != 0:
-                shapes = {name: (num_jets,) + shape[1:] for name, shape in shapes.items()}
+                shapes = {name: (num_jets, *shape[1:]) for name, shape in shapes.items()}
 
             assert len(set(compression)) == 1, "Must have same compression for all groups"
             compression = compression[0]
@@ -156,18 +156,18 @@ class H5Writer:
         ])
 
         shape = self.shapes[name]
-        chunks = (100,) + shape[1:] if shape[1:] else None
+        chunks = (100, *shape[1:]) if shape[1:] else None
 
         if self.fixed_mode:
             self.file.create_dataset(
                 name, dtype=dtype, shape=shape, compression=self.compression, chunks=chunks
             )
         else:
-            maxshape = (None,) + shape[1:]
+            maxshape = (None, *shape[1:])
             self.file.create_dataset(
                 name,
                 dtype=dtype,
-                shape=(0,) + shape[1:],
+                shape=(0, *shape[1:]),
                 maxshape=maxshape,
                 compression=self.compression,
                 chunks=chunks,
@@ -218,7 +218,7 @@ class H5Writer:
         for group in self.dtypes:
             ds = self.file[group]
             if not self.fixed_mode:
-                ds.resize((high,) + ds.shape[1:])
+                ds.resize((high, *ds.shape[1:]))
             ds[low:high] = data[group]
 
         self.num_written += batch_size

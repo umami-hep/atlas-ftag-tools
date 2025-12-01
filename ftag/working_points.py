@@ -343,7 +343,7 @@ def setup_common_parts(
 
     Returns
     -------
-    tuple[dict, dict | None, list]
+    tuple[np.ndarray, np.ndarray | None, LabelContainer]
         Outputs the ttbar jets, the zprime jets (if wanted, else None), and the flavours used.
     """
     # Get the used flavours

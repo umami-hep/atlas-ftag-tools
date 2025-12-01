@@ -305,8 +305,7 @@ def parse_args(args: Sequence[str] | None) -> argparse.Namespace:
         "--input_file",
         required=True,
         type=Path,
-        help="Path to the H5 file that will be used. "
-        "Wildcard for multiple H5 files is supported",
+        help="Path to the H5 file that will be used. Wildcard for multiple H5 files is supported",
     )
     parser.add_argument(
         "-t",
