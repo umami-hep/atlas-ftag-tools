@@ -241,17 +241,17 @@
 - name: Zbb
   label: $Z \rightarrow b\bar{b}$
   cuts: ["R10TruthLabel_R22v1 == 3"]
-  colour: "#b40612"
+  colour: "#d2691e"
   category: xbb
 - name: Zcc
   label: $Z \rightarrow c\bar{c}$
   cuts: ["R10TruthLabel_R22v1 == 4"]
-  colour: "#b40657"
+  colour: "#04d8b2"
   category: xbb
 - name: Zqq
   label: $Z \rightarrow q\bar{q}$
   cuts: ["R10TruthLabel_R22v1 == 5"]
-  colour: "#b406a0"
+  colour: "#e6daa6"
   category: xbb
 
 # extended Xbb tagging
