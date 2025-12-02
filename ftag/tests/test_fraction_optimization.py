@@ -10,6 +10,7 @@ from ftag.fraction_optimization import (
     calculate_rejection_sum,
     convert_dict,
     get_bkg_norm_dict,
+    main,
 )
 from ftag.hdf5 import H5Reader
 from ftag.mock import get_mock_file
@@ -43,7 +44,7 @@ class TestConvertDict(unittest.TestCase):
 
     def test_wrong_input_type_value_error(self):
         """Test raising of ValueError if wrong type is given."""
-        with self.assertRaises(ValueError) as ctx:
+        with self.assertRaises(TypeError) as ctx:
             convert_dict(fraction_values="Error", backgrounds=self.backgrounds)
         self.assertEqual(
             "Only input of type `dict` or `np.ndarray` are accepted! You gave <class 'str'>",
@@ -191,3 +192,39 @@ class TestCalculateBestFractionValues(unittest.TestCase):
         for frac_key, val in final_dict.items():
             self.assertGreaterEqual(val, 0.0, f"Fraction {frac_key} < 0.0")
             self.assertLessEqual(val, 1.0, f"Fraction {frac_key} > 1.0")
+
+
+class TestFractionOptimizationMain(unittest.TestCase):
+    """
+    Testing the main method of the script to check the correct loading
+    and calculation of the fraction values.
+    """
+
+    def setUp(self) -> None:
+        self.input = TTBAR_FILE
+        self.tagger = "MockTagger"
+        self.signal = "bjets"
+        self.working_point = 0.70
+        self.num_jets = 100_000
+        self.cuts = ["pt >= 0", "abs_eta >= 0"]
+
+    def test_main(self):
+        """Minimal test for standard behaviour."""
+        args = [
+            "--input",
+            f"{self.input}",
+            "--tagger",
+            f"{self.tagger}",
+            "--signal",
+            f"{self.signal}",
+            "--working_point",
+            f"{self.working_point}",
+            "--num_jets",
+            f"{self.num_jets}",
+            "--cuts",
+            self.cuts,
+        ]
+
+        out = main(args=args)
+
+        assert out is None

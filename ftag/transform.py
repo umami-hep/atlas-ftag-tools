@@ -1,17 +1,29 @@
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Callable, Dict
 
 import numpy as np
 
 __all__ = ["Transform"]
 
-Batch = Dict[str, np.ndarray]
+Batch = dict[str, np.ndarray]
 
 
 @dataclass
 class Transform:
+    """Transform class to transform variables.
+
+    Attributes
+    ----------
+    variable_map: dict[str, dict[str, str]] | None, optional
+        Map with the old and new variables
+    ints_map: dict[str, dict[str, dict[int, int]]] | None, optional
+        Map with the old and new integer values
+    floats_map: dict[str, dict[str, str | Callable]] | None, optional
+        Map with the old and new float values
+    """
+
     variable_map: dict[str, dict[str, str]] | None = None
     ints_map: dict[str, dict[str, dict[int, int]]] | None = None
     floats_map: dict[str, dict[str, str | Callable]] | None = None

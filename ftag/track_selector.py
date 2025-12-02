@@ -16,11 +16,11 @@ class TrackSelector:
     Applying cuts will NaN out the tracks that do not pass the cuts,
     but leave the shape of the array unchanged.
 
-    Parameters
+    Attributes
     ----------
     cuts : Cuts
         The cuts to apply to the tracks
-    valid_str : str
+    valid_str : str, optional
         The name of the field in the tracks that indicates whether the track is
     """
 

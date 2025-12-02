@@ -7,21 +7,20 @@ import h5py
 import numpy as np
 
 import ftag
+from ftag.hdf5.h5utils import extract_group_full, write_group_full
 
 
 @dataclass
 class H5Writer:
     """Writes jets to an HDF5 file.
 
-    Parameters
+    Attributes
     ----------
     dst : Path | str
         Path to the output file.
     dtypes : dict[str, np.dtype]
         Dictionary of group names and their corresponding dtypes.
-    num_jets : int
-        Number of jets to write.
-    shapes : dict[str, int], optional
+    shapes : dict[str, tuple[int, ...]], optional
         Dictionary of group names and their corresponding shapes.
     jets_name : str, optional
         Name of the jets group. Default is "jets".
@@ -29,13 +28,16 @@ class H5Writer:
         Whether to add a flavour label to the jets group. Default is False.
     compression : str, optional
         Compression algorithm to use. Default is "lzf".
-    precision : str | None, optional
+    precision : str, optional
         Precision to use. Default is None.
     full_precision_vars : list[str] | None, optional
         List of variables to store in full precision. Default is None.
     shuffle : bool, optional
         Whether to shuffle the jets before writing. Default is True.
-
+    num_jets : int | None
+        Number of jets to write.
+    groups: dict[str, h5py.Group] | None
+        Groups to copy from the source file. Default is None.
     """
 
     dst: Path | str
@@ -48,6 +50,7 @@ class H5Writer:
     full_precision_vars: list[str] | None = None
     shuffle: bool = True
     num_jets: int | None = None  # Allow dynamic mode by defaulting to None
+    groups: dict[str, h5py.Group] | None = None  # Groups to copy from source file
 
     def __post_init__(self):
         self.num_written = 0
@@ -79,14 +82,30 @@ class H5Writer:
 
         for name, dtype in self.dtypes.items():
             self.create_ds(name, dtype)
+        if self.groups:
+            self.save_groups(self.groups)
 
     @classmethod
     def from_file(
-        cls, source: Path, num_jets: int | None = 0, variables=None, **kwargs
+        cls, source: Path, num_jets: int | None = 0, variables=None, copy_groups=True, **kwargs
     ) -> H5Writer:
         with h5py.File(source, "r") as f:
-            dtypes = {name: ds.dtype for name, ds in f.items()}
-            shapes = {name: ds.shape for name, ds in f.items()}
+            dtypes = {}
+            shapes = {}
+            compression = []
+            groups = {}
+            for name, ds in f.items():
+                if isinstance(ds, h5py.Group):
+                    if copy_groups:
+                        groups[name] = extract_group_full(ds)
+                    continue
+                if not isinstance(ds, h5py.Dataset):
+                    raise TypeError(
+                        f"Unsupported type {type(ds)} for dataset {name} in file {source}"
+                    )
+                dtypes[name] = ds.dtype
+                shapes[name] = ds.shape
+                compression.append(ds.compression)
 
             if variables:
                 new_dtye = {}
@@ -105,12 +124,17 @@ class H5Writer:
                 shapes = new_shape
             if num_jets != 0:
                 shapes = {name: (num_jets,) + shape[1:] for name, shape in shapes.items()}
-            compression = [ds.compression for ds in f.values()]
+
             assert len(set(compression)) == 1, "Must have same compression for all groups"
             compression = compression[0]
             if "compression" not in kwargs:
                 kwargs["compression"] = compression
-        return cls(dtypes=dtypes, shapes=shapes, **kwargs)
+        return cls(dtypes=dtypes, shapes=shapes, groups=groups, **kwargs)
+
+    def save_groups(self, groups: dict[str, dict]) -> None:
+        for name, group_data in groups.items():
+            if name not in self.file:
+                write_group_full(self.file.create_group(name), group_data)
 
     def create_ds(self, name: str, dtype: np.dtype) -> None:
         if name == self.jets_name and self.add_flavour_label and "flavour_label" not in dtype.names:

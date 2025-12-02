@@ -20,7 +20,7 @@ def sample():
 
 
 def test_sample_path(sample):
-    assert isinstance(sample.path, (list, tuple))
+    assert isinstance(sample.path, list | tuple)
 
 
 def test_sample_files(sample):

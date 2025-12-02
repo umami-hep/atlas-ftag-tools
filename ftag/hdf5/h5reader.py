@@ -18,6 +18,30 @@ from ftag.transform import Transform
 
 @dataclass
 class H5SingleReader:
+    """H5 single reader for a single file.
+
+    Attributes
+    ----------
+    fname: Path | str
+        Path to the file
+    batch_size: int, optional
+        Batch size to read, by default 100_000
+    jets_name: str, optional
+        Name of the jets dataset, by default "jets"
+    precision: str | None, optional
+        Precision that is to be used, by default None
+    shuffle: bool, optional
+        If random jets are loaded from the file, by default True
+    do_remove_inf: bool, optional
+        Remove infs from the jets, by default False
+    transform: Transform | None, optional
+        Transformation that should be applied, by default None
+    groups: list[str] | None, optional
+        List of the groups that hold metadata, by default None
+    dsets: list[str] | None, optional
+        List of the datsets, that hold the per jet/track data, by default None
+    """
+
     fname: Path | str
     batch_size: int = 100_000
     jets_name: str = "jets"
@@ -25,6 +49,10 @@ class H5SingleReader:
     shuffle: bool = True
     do_remove_inf: bool = False
     transform: Transform | None = None
+    # groups hold meta-data e.g. "cutBookkeeper"
+    groups: list[str] | None = None
+    # dsets hold data and all have a first dimension of njets
+    dsets: list[str] | None = None
 
     def __post_init__(self) -> None:
         self.rng = np.random.default_rng(42)
@@ -33,6 +61,9 @@ class H5SingleReader:
         if len(fname) != 1:
             raise ValueError("H5SingleReader should only read a single file")
         self.fname = fname[0]
+        with h5py.File(self.fname) as f:
+            self.groups = self.groups or [g for g in f if isinstance(f[g], h5py.Group)]
+            self.dsets = self.dsets or [d for d in f if isinstance(f[d], h5py.Dataset)]
 
     @cached_property
     def num_jets(self) -> int:
@@ -44,7 +75,10 @@ class H5SingleReader:
             obj = f[group] if group else f
             return obj.attrs[name]
 
-    def empty(self, ds: h5py.Dataset, variables: list[str]) -> np.ndarray:
+    def empty(self, ds: h5py.Dataset | h5py.Group, variables: list[str]) -> np.ndarray:
+        if variables is None:
+            variables = ds.dtype.names
+
         return np.array(0, dtype=get_dtype(ds, variables, self.precision, transform=self.transform))
 
     def read_chunk(self, ds: h5py.Dataset, array: np.ndarray, low: int) -> np.ndarray:
@@ -207,7 +241,7 @@ class H5SingleReader:
 class H5Reader:
     """Reads data from multiple HDF5 files.
 
-    Parameters
+    Attributes
     ----------
     fname : Path | str | list[Path | str]
         Path to the HDF5 file or list of paths
@@ -247,7 +281,7 @@ class H5Reader:
 
     def __post_init__(self) -> None:
         self.rng = np.random.default_rng(42)
-        if isinstance(self.fname, (str, Path)):
+        if isinstance(self.fname, str | Path):
             self.fname = [self.fname]
 
         # calculate batch sizes
@@ -271,7 +305,7 @@ class H5Reader:
                 self.do_remove_inf,
                 self.transform,
             )
-            for f, b in zip(self.fname, self.batch_sizes)
+            for f, b in zip(self.fname, self.batch_sizes, strict=False)
         ]
 
     @property
@@ -287,7 +321,10 @@ class H5Reader:
         with h5py.File(self.files[0]) as f:
             if variables is None:
                 for key in f:
-                    dtype = f[key].dtype
+                    if isinstance(f[key], h5py.Group):
+                        continue
+                    if isinstance(f[key], h5py.Dataset):
+                        dtype = f[key].dtype
                     if self.transform:
                         dtype = self.transform.map_dtype(key, dtype)
                     dtypes[key] = dtype

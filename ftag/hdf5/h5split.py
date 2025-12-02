@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 from pathlib import Path
+from typing import Any
 
 import h5py
 
@@ -11,7 +12,19 @@ from ftag.cli_utils import HelpFormatter
 from ftag.hdf5 import H5Reader, H5Writer
 
 
-def parse_args(args):
+def parse_args(args: Any | None) -> argparse.Namespace:
+    """Parse command line arguments.
+
+    Parameters
+    ----------
+    args : Any | None
+        Command line arguments
+
+    Returns
+    -------
+    argparse.Namespace
+        Namespace with the parsed command line arguments.
+    """
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=HelpFormatter)
     parser.add_argument("--src", required=True, type=Path, help="path to source h5 file")
     parser.add_argument(
@@ -35,7 +48,14 @@ def parse_args(args):
     return parser.parse_args(args)
 
 
-def main(args=None):
+def main(args: Any | None = None) -> None:
+    """Run HDF5 splitting.
+
+    Parameters
+    ----------
+    args : Any | None, optional
+        Command line arguments, by default None
+    """
     args = parse_args(args)
 
     src = args.src
@@ -47,7 +67,7 @@ def main(args=None):
     print(f"\nSplitting: {src}")
     print(f"Destination: {dst}")
     with h5py.File(src, "r") as f:
-        total_jets = next(iter(f.values())).shape[0]
+        total_jets = next(d.shape[0] for d in f.values() if isinstance(d, h5py.Dataset))
 
     num_full_files = total_jets // jets_per_file
     remainder = total_jets % jets_per_file

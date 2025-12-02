@@ -29,12 +29,32 @@ for i in range(2, 101):
 
 
 class CutsResult(NamedTuple):
+    """Namespace alss for the cut results.
+
+    Attributes
+    ----------
+    idx : np.ndarray
+        Positions of the cuts
+    values : np.ndarray
+        Values of the cuts
+    """
+
     idx: np.ndarray
     values: np.ndarray
 
 
 @dataclass(frozen=True)
 class Cut:
+    """Cut dataclass to store a single cut.
+
+    Attributes
+    ----------
+    variable : str
+        Variable on which the cut is applied
+    operator : str
+        Operator for the cut
+    """
+
     variable: str
     operator: str
     _value: str | int | float
@@ -71,6 +91,14 @@ class Cut:
 
 @dataclass(frozen=True)
 class Cuts:
+    """Cuts dataclass to store multiple Cut instances and apply them.
+
+    Attributes
+    ----------
+    cuts : tuple[Cut, ...]
+        Tuple with the Cut instances
+    """
+
     cuts: tuple[Cut, ...]
 
     @classmethod

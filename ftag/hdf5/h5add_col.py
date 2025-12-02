@@ -3,8 +3,9 @@ from __future__ import annotations
 
 import argparse
 import importlib.util
+from collections.abc import Callable
 from pathlib import Path
-from typing import Callable
+from typing import Any
 
 import h5py
 import numpy as np
@@ -115,7 +116,7 @@ def get_shape(num_jets: int, batch: dict[str, np.ndarray]) -> dict[str, tuple[in
     return shape
 
 
-def get_all_groups(file: Path | str) -> dict[str, None]:
+def get_all_datasets(file: Path | str) -> dict[str, None]:
     """Returns a dictionary with all the groups in the h5 file.
 
     Parameters
@@ -126,12 +127,12 @@ def get_all_groups(file: Path | str) -> dict[str, None]:
     Returns
     -------
     dict[str, None]
-        A dictionary with all the groups in the h5 file as keys and None as values,
+        A dictionary with all the datasets in the h5 file as keys and None as values,
         such that h5read.stream(all_groups) will return all the groups in the file.
     """
     with h5py.File(file, "r") as f:
-        groups = list(f.keys())
-        return dict.fromkeys(groups)
+        datasets = [d for d in f if isinstance(f[d], h5py.Dataset)]
+        return dict.fromkeys(datasets)
 
 
 def h5_add_column(
@@ -153,7 +154,7 @@ def h5_add_column(
         Input h5 file to read from.
     output_file : str | Path
         Output h5 file to write to.
-    append_function : callable | list[callable]
+    append_function : Callable | list[Callable]
         A function, or list of functions, which take a batch from H5Reader and returns a dictionary
         of the form:
             {
@@ -175,9 +176,9 @@ def h5_add_column(
         List of groups to write to the output file. If None, writes all groups. By default None.
         Note that this is a subset of the input groups, and must include all groups that the
         append functions wish to write to.
-    reader_kwargs : dict, optional
+    reader_kwargs : dict | None, optional
         Additional arguments to pass to the H5Reader. By default None.
-    writer_kwargs : dict, optional
+    writer_kwargs : dict | None, optional
         Additional arguments to pass to the H5Writer. By default None.
     overwrite : bool, optional
         If True, will overwrite the output file if it exists. By default False.
@@ -223,7 +224,7 @@ def h5_add_column(
     writer = None
 
     input_variables = (
-        get_all_groups(input_file) if input_groups is None else dict.fromkeys(input_groups)
+        get_all_datasets(input_file) if input_groups is None else dict.fromkeys(input_groups)
     )
     if output_groups is None:
         output_groups = list(input_variables.keys())
@@ -330,7 +331,19 @@ def parse_append_function(func_path: str) -> Callable:
     return getattr(module, func_name)
 
 
-def get_args(args):
+def parse_args(args: Any | None) -> argparse.Namespace:
+    """Parse command line arguments.
+
+    Parameters
+    ----------
+    args : Any | None
+        Command line arguments
+
+    Returns
+    -------
+    argparse.Namespace
+        Namespace with the parsed command line arguments.
+    """
     parser = argparse.ArgumentParser(description="Append columns to an h5 file.")
     parser.add_argument("--input", "-i", type=str, required=True, help="Input h5 file")
     parser.add_argument(
@@ -359,10 +372,16 @@ def get_args(args):
         help="List of groups to write to the output file",
     )
     parser.add_argument(
-        "--reader_kwargs", type=dict, default=None, help="Additional arguments for H5Reader"
+        "--reader_kwargs",
+        type=dict,  # type: ignore[arg-type]
+        default=None,
+        help="Additional arguments for H5Reader",
     )
     parser.add_argument(
-        "--writer_kwargs", type=dict, default=None, help="Additional arguments for H5Writer"
+        "--writer_kwargs",
+        type=dict,  # type: ignore[arg-type]
+        default=None,
+        help="Additional arguments for H5Writer",
     )
     parser.add_argument(
         "--overwrite", action="store_true", help="Overwrite the output file if it exists"
@@ -371,8 +390,15 @@ def get_args(args):
     return parser.parse_args(args)
 
 
-def main(args=None):
-    args = get_args(args)
+def main(args: Any | None = None) -> None:
+    """Run VDS creation.
+
+    Parameters
+    ----------
+    args : Any | None, optional
+        Command line arguments, by default None
+    """
+    args = parse_args(args)
     append_function = [
         parse_append_function(func_path) if isinstance(func_path, str) else func_path
         for func_path in args.append_function

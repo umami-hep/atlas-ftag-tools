@@ -357,7 +357,7 @@ def h5_files(tmp_path):
     # Total of 10k jets
     num_jets_list = [8000, 1500, 500]
     file_paths = [tmp_path / f"file_{i}.h5" for i in range(len(num_jets_list))]
-    for i, (path, num_jets) in enumerate(zip(file_paths, num_jets_list)):
+    for i, (path, num_jets) in enumerate(zip(file_paths, num_jets_list, strict=False)):
         with h5py.File(path, "w") as f:
             jets = np.zeros(num_jets, dtype=[("value", "i4"), ("index", "i4")])
             jets["value"] = i

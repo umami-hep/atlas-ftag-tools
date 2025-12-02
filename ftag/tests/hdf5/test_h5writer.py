@@ -8,6 +8,7 @@ import pytest
 
 from ftag import get_mock_file
 from ftag.hdf5 import H5Writer
+from ftag.hdf5.h5utils import compare_groups
 
 
 @pytest.fixture
@@ -107,6 +108,7 @@ def test_from_file(tmp_path, mock_data_path):
     f = get_mock_file()[1]
     jets = f["jets"][:]
     tracks = f["tracks"][:]
+    cutbookkeeper = f["cutBookkeeper"]
 
     dst_path = Path(tmp_path) / "test.h5"
     writer = H5Writer.from_file(source=mock_data_path, dst=dst_path, shuffle=False)
@@ -114,6 +116,21 @@ def test_from_file(tmp_path, mock_data_path):
     writer.write({"jets": jets, "tracks": tracks})
     with h5py.File(dst_path) as f:
         assert np.array_equal(f["jets"][:], jets)
+        assert np.array_equal(f["tracks"][:], tracks)
+        compare_groups(f["cutBookkeeper"], cutbookkeeper, path="cutBookkeeper")
+
+
+def test_from_file_no_groups(tmp_path, mock_data_path):
+    dst_path = Path(tmp_path) / "test.h5"
+    f = get_mock_file()[1]
+    jets = f["jets"][:]
+    tracks = f["tracks"][:]
+    writer = H5Writer.from_file(
+        source=mock_data_path, dst=dst_path, copy_groups=False, shuffle=False
+    )
+    writer.write({"jets": jets, "tracks": tracks})
+    with h5py.File(dst_path) as f:
+        assert "cutBookkeeper" not in f
 
 
 def test_half_full_precision(tmp_path, mock_data_path):

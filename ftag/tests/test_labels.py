@@ -84,6 +84,13 @@ class TestLabelContainer(unittest.TestCase):
             colour="tab:green",
             category="single-btag",
         )
+        self.newjets = Label(
+            name="newjets",
+            label="Test-jets",
+            cuts=Cuts.from_list(["HadronConeExclTruthLabelID == 0", "OtherVariableForCut == 5"]),
+            colour="tab:yellow",
+            category="single-btag",
+        )
         self.container = LabelContainer.from_list([self.bjets, self.cjets, self.ujets])
 
     def test_len(self):
@@ -156,6 +163,20 @@ class TestLabelContainer(unittest.TestCase):
         with self.assertRaises(TypeError):
             single_cjets.backgrounds(self.cjets)
 
+    def test_cut_variables_one_variable(self):
+        """The the behaviour of the cut_variables function."""
+        cut_vars = self.container.cut_variables()
+        self.assertListEqual(["HadronConeExclTruthLabelID"], cut_vars)
+
+    def test_cut_variables_multiple_variable(self):
+        """The the behaviour of the cut_variables function."""
+        # Test default
+        cut_vars = LabelContainer.from_list([self.bjets, self.cjets, self.newjets]).cut_variables()
+        self.assertListEqual(
+            sorted(["HadronConeExclTruthLabelID", "OtherVariableForCut"]),
+            sorted(cut_vars),
+        )
+
     @patch(
         "builtins.open",
         new_callable=mock_open,
@@ -172,9 +193,56 @@ class TestLabelContainer(unittest.TestCase):
   category: "single-btag"
 """,
     )
-    def test_from_yaml(self, _mock_file):  # noqa: PT019
+    def test_from_yaml(self, _mock_file):
         """Test that from_yaml reads and parses the YAML data correctly."""
         container = LabelContainer.from_yaml(Path("dummy.yaml"))
         self.assertEqual(len(container), 2)
         self.assertIn("bjets", container)
         self.assertIn("cjets", container)
+
+    def test_from_yaml_exclude(self):
+        """Test the loading from yaml with exluding categories."""
+        container = LabelContainer.from_yaml(
+            exclude_categories=[
+                "single-btag-extended",
+                "single-btag-extended-ghost",
+            ]
+        )
+        with self.assertRaises(KeyError):
+            _ = container.by_category("single-btag-extended")
+
+        self.assertEqual(
+            container.by_category("single-btag"),
+            LabelContainer.from_list([
+                container.bjets,
+                container.cjets,
+                container.ujets,
+                container.taujets,
+            ]),
+        )
+
+    def test_from_yaml_include(self):
+        """Test the loading from yaml with including categories."""
+        container = LabelContainer.from_yaml(
+            include_categories=[
+                "single-btag",
+                "single-btag-ghost",
+            ]
+        )
+        with self.assertRaises(KeyError):
+            _ = container.by_category("single-btag-extended-ghost")
+
+        self.assertEqual(
+            container.by_category("single-btag"),
+            LabelContainer.from_list([
+                container.bjets,
+                container.cjets,
+                container.ujets,
+                container.taujets,
+            ]),
+        )
+
+    def test_from_yaml_KeyError(self):
+        """Test the KeyError if no class survived the selection."""
+        with self.assertRaises(KeyError):
+            LabelContainer.from_yaml(include_categories=[])
