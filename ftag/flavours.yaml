@@ -137,12 +137,12 @@
   colour: "#0677b4"
   category: xbb
 - name: Wcl
-  label: $W \rightarrow cl$
+  label: $W^{\pm} \rightarrow c\text{light}$
   cuts: ["R10TruthLabel_R22v1 == 2", "GhostBHadronsFinalCount == 0", "GhostCHadronsFinalCount == 1"]
   colour: "#4fb406"
   category: xbb
 - name: Wll
-  label: $W \rightarrow ll$
+  label: $W^{\pm} \rightarrow \text{light}\text{light}$
   cuts: ["R10TruthLabel_R22v1 == 2", "GhostBHadronsFinalCount == 0", "GhostCHadronsFinalCount == 0"]
   colour: "#b48906"
   category: xbb
@@ -159,6 +159,21 @@
 - name: htautauhad
   label: $H \rightarrow \tau_{\mathrm{had}} \tau_{\mathrm{had}}$
   cuts: ["R10TruthLabel_R22v1 == 16"]
+  colour: "#b406a0"
+  category: xbb
+- name: Zbb
+  label: $Z \rightarrow b\bar{b}$
+  cuts: ["R10TruthLabel_R22v1 == 3"]
+  colour: "#b40612"
+  category: xbb
+- name: Zcc
+  label: $Z \rightarrow c\bar{c}$
+  cuts: ["R10TruthLabel_R22v1 == 4"]
+  colour: "#b40657"
+  category: xbb
+- name: Zqq
+  label: $Z \rightarrow q\bar{q}$
+  cuts: ["R10TruthLabel_R22v1 == 5"]
   colour: "#b406a0"
   category: xbb
 
