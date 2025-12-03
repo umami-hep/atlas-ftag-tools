@@ -1,12 +1,13 @@
+from __future__ import annotations
+
 import unittest
-from typing import Dict
 
 import numpy as np
 
 from ftag.transform import Transform
 
 
-def make_sample_batch() -> Dict[str, np.ndarray]:
+def make_sample_batch() -> dict[str, np.ndarray]:
     """Create a sample batch of structured numpy arrays.
 
     Returns
@@ -152,8 +153,8 @@ class TestTransformMapInts(unittest.TestCase):
         original = {k: v.copy() for k, v in batch.items()}
         tf = Transform()
         transformed = tf.map_ints(batch)
-        for key in original:
-            self.assertTrue(np.array_equal(original[key], transformed[key]))
+        for key, value in original.items():
+            self.assertTrue(np.array_equal(value, transformed[key]))
 
 
 class TestTransformMapFloats(unittest.TestCase):
@@ -193,8 +194,8 @@ class TestTransformMapFloats(unittest.TestCase):
         }
         tf = Transform(floats_map=floats_map)
         transformed = tf.map_floats(batch)
-        for key in original:
-            self.assertTrue(np.array_equal(original[key], transformed[key]))
+        for key, value in original.items():
+            self.assertTrue(np.array_equal(value, transformed[key]))
 
     def test_map_floats_no_mapping(self):
         """Test float transformation when no float map is provided.
@@ -208,8 +209,8 @@ class TestTransformMapFloats(unittest.TestCase):
         original = {k: v.copy() for k, v in batch.items()}
         tf = Transform()
         transformed = tf.map_floats(batch)
-        for key in original:
-            self.assertTrue(np.array_equal(original[key], transformed[key]))
+        for key, value in original.items():
+            self.assertTrue(np.array_equal(value, transformed[key]))
 
 
 class TestTransformMapDtypeAndVariables(unittest.TestCase):
@@ -313,8 +314,8 @@ class TestTransformMapDtypeAndVariables(unittest.TestCase):
         variable_map = {"missing_group": {"var1": "new_var1"}}
         tf = Transform(variable_map=variable_map)
         transformed = tf.map_variables(batch)
-        for key in original:
-            self.assertTrue(np.array_equal(original[key], transformed[key]))
+        for key, value in original.items():
+            self.assertTrue(np.array_equal(value, transformed[key]))
 
     def test_map_variables_existing_target_field_raises(self):
         """Test that map_variables raises when renaming to an existing field.

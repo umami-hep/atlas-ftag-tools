@@ -24,17 +24,17 @@ class Transform:
 
     Attributes
     ----------
-    variable_map : dict[str, dict[str, str]] | None, optional
+    variable_map : dict[str, dict[str, str]]
         A nested mapping where variable_map[group][old] = new specifies how
         variable names should be renamed inside a given group. If None, no
         variable renaming is applied.
 
-    ints_map : dict[str, dict[str, dict[int, int]]] | None, optional
+    ints_map : dict[str, dict[str, dict[int, int]]]
         A nested mapping where ints_map[group][variable][old] = new specifies
         how integer values should be remapped. If None, no integer remapping
         is applied.
 
-    floats_map : dict[str, dict[str, str | Callable]] | None, optional
+    floats_map : dict[str, dict[str, str | Callable]]
         A nested mapping where floats_map[group][variable] = func specifies
         a float transformation function. func may either be:
         - a callable
@@ -47,9 +47,9 @@ class Transform:
         variable lookup in :meth:`map_variable_names`.
     """
 
-    variable_map: dict[str, dict[str, str]] | None = None
-    ints_map: dict[str, dict[str, dict[int, int]]] | None = None
-    floats_map: dict[str, dict[str, str | Callable]] | None = None
+    variable_map: dict[str, dict[str, str]] = field(default_factory=dict)
+    ints_map: dict[str, dict[str, dict[int, int]]] = field(default_factory=dict)
+    floats_map: dict[str, dict[str, str | Callable]] = field(default_factory=dict)
 
     variable_map_inv: dict[str, dict[str, str]] = field(init=False)
 
@@ -197,8 +197,7 @@ class Transform:
         variables: list[str],
         inverse: bool = False,
     ) -> list[str]:
-        """
-        Map a list of variable names using variable_map or variable_map_inv.
+        """Map a list of variable names using variable_map or variable_map_inv.
 
         Parameters
         ----------
@@ -217,11 +216,10 @@ class Transform:
         """
         key = name.lstrip("/")
 
-        if inverse:
-            map_dict = self.variable_map_inv.get(key)
-        else:
-            map_dict = self.variable_map.get(key)
+        # Define the map dict
+        map_dict = self.variable_map_inv.get(key) if inverse else self.variable_map.get(key)
 
+        # Return variables if map_dict is None
         if not map_dict:
             return variables
 
