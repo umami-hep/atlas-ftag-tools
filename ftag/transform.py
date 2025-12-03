@@ -220,8 +220,6 @@ class Transform:
         if inverse:
             map_dict = self.variable_map_inv.get(key)
         else:
-            if self.variable_map is None:
-                return variables
             map_dict = self.variable_map.get(key)
 
         if not map_dict:
