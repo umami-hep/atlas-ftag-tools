@@ -211,7 +211,17 @@
 - name: Wqq
   label: $W \rightarrow q\bar{q}$
   cuts: ["R10TruthLabel_R22v1 == 2", "GhostBHadronsFinalCount < 2", "GhostCHadronsFinalCount < 2"]
-  colour: "purple"
+  colour: "#0677b4"
+  category: xbb
+- name: Wcl
+  label: $W^{\pm} \rightarrow c\text{light}$
+  cuts: ["R10TruthLabel_R22v1 == 2", "GhostBHadronsFinalCount == 0", "GhostCHadronsFinalCount == 1"]
+  colour: "#4fb406"
+  category: xbb
+- name: Wll
+  label: $W^{\pm} \rightarrow \text{light}\text{light}$
+  cuts: ["R10TruthLabel_R22v1 == 2", "GhostBHadronsFinalCount == 0", "GhostCHadronsFinalCount == 0"]
+  colour: "#b48906"
   category: xbb
 - name: htautauel
   label: $H \rightarrow \tau_{\mathrm{had}} \tau_{e}$
@@ -227,6 +237,21 @@
   label: $H \rightarrow \tau_{\mathrm{had}} \tau_{\mathrm{had}}$
   cuts: ["R10TruthLabel_R22v1 == 16"]
   colour: "#b406a0"
+  category: xbb
+- name: Zbb
+  label: $Z \rightarrow b\bar{b}$
+  cuts: ["R10TruthLabel_R22v1 == 3"]
+  colour: "#d2691e"
+  category: xbb
+- name: Zcc
+  label: $Z \rightarrow c\bar{c}$
+  cuts: ["R10TruthLabel_R22v1 == 4"]
+  colour: "#04d8b2"
+  category: xbb
+- name: Zqq
+  label: $Z \rightarrow q\bar{q}$
+  cuts: ["R10TruthLabel_R22v1 == 5"]
+  colour: "#e6daa6"
   category: xbb
 
 # extended Xbb tagging
