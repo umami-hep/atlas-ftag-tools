@@ -188,5 +188,5 @@ def test_Cut_call_nan_invalid_operator():
     """Operators other than '==' or '!=' with nan must raise ValueError."""
     c = Cut("x", "<", "nan")
     array = np.array([0.0, np.nan], dtype=[("x", float)])
-    with pytest.raises(ValueError, match="nan.*only makes sense"):
+    with pytest.raises(ValueError, match=r"nan.*only makes sense"):
         c(array)

@@ -39,9 +39,9 @@ def compare_groups(g1: h5py.Group | dict, g2: h5py.Group | dict, path: str = "")
     TypeError
         If the types of the items do not match
     """
-    assert set(g1.keys()) == set(
-        g2.keys()
-    ), f"{path}: Keys mismatch: {set(g1.keys())} vs {set(g2.keys())}"
+    assert set(g1.keys()) == set(g2.keys()), (
+        f"{path}: Keys mismatch: {set(g1.keys())} vs {set(g2.keys())}"
+    )
 
     for key in g1:
         item1 = g1[key]
@@ -242,7 +242,7 @@ def cast_dtype(typestr: str, precision: str) -> np.dtype:
     raise ValueError(f"Invalid precision {precision}")
 
 
-def join_structured_arrays(arrays: list):
+def join_structured_arrays(arrays: list) -> np.ndarray:
     """Join a list of structured numpy arrays.
 
     See https://github.com/numpy/numpy/issues/7811
@@ -254,7 +254,7 @@ def join_structured_arrays(arrays: list):
 
     Returns
     -------
-    np.array
+    np.ndarray
         A merged structured array
     """
     dtype: list = sum((a.dtype.descr for a in arrays), [])

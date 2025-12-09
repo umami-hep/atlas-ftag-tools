@@ -515,9 +515,9 @@ class GetDiscriminantTestCase(unittest.TestCase):
 
         # Now the denominator should only be pc and pu, ignoring ptau since fraction is 0
         expected = np.log([0.1 / (0.2 * 0.2 + 0.8 * 0.6), 0.2 / (0.2 * 0.2 + 0.8 * 0.5)])
-        assert np.allclose(
-            disc, expected
-        ), f"Unexpected discriminant with zero-fraction skipping: {disc}"
+        assert np.allclose(disc, expected), (
+            f"Unexpected discriminant with zero-fraction skipping: {disc}"
+        )
 
     def test_get_discriminant_missing_signal_raises(self):
         """Test that if the signal field is missing in the input array, a ValueError is raised."""
