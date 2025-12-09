@@ -121,7 +121,7 @@ Module Contents
 
 
 
-.. py:function:: get_log_level(level: str)
+.. py:function:: get_log_level(level: str) -> int
 
    Get logging levels with string key.
 
@@ -129,12 +129,12 @@ Module Contents
    :type level: str
 
    :returns: logging object with log level info
-   :rtype: logging level
+   :rtype: int
 
    :raises ValueError: If non-valid option is given
 
 
-.. py:function:: initialise_logger(log_level: str | None = None)
+.. py:function:: initialise_logger(log_level: str | None = None) -> logging.Logger
 
    Initialise.
 
@@ -144,7 +144,7 @@ Module Contents
    :type log_level: str | None, optional
 
    :returns: logger object with new level set
-   :rtype: logger
+   :rtype: logging.Logger
 
 
 .. py:function:: set_log_level(tools_logger: logging.Logger, log_level: str)

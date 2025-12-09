@@ -512,7 +512,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#ftag.hdf5.get_dtype" title="ftag.hdf5.get_dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_dtype</span></code></a>(→ numpy.dtype)</p></td>
 <td><p>Return a dtype based on an existing dataset and requested variables.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ftag.hdf5.join_structured_arrays" title="ftag.hdf5.join_structured_arrays"><code class="xref py py-obj docutils literal notranslate"><span class="pre">join_structured_arrays</span></code></a>(arrays)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ftag.hdf5.join_structured_arrays" title="ftag.hdf5.join_structured_arrays"><code class="xref py py-obj docutils literal notranslate"><span class="pre">join_structured_arrays</span></code></a>(→ numpy.ndarray)</p></td>
 <td><p>Join a list of structured numpy arrays.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ftag.hdf5.structured_from_dict" title="ftag.hdf5.structured_from_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">structured_from_dict</span></code></a>(→ numpy.ndarray)</p></td>
@@ -778,7 +778,7 @@ use all available jets from each sample.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ftag.hdf5.H5Reader.get_batch_reader">
-<span class="sig-name descname"><span class="pre">get_batch_reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cuts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><span class="pre">ftag.cuts.Cuts</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ftag.hdf5.H5Reader.get_batch_reader" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_batch_reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cuts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><span class="pre">ftag.cuts.Cuts</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">collections.abc.Callable</span></span></span><a class="headerlink" href="#ftag.hdf5.H5Reader.get_batch_reader" title="Link to this definition">#</a></dt>
 <dd><p>Get a function to read batches of selected jets.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -792,7 +792,7 @@ use all available jets from each sample.</p>
 <dd class="field-even"><p>Function that takes an index and returns a batch of selected jets.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>function</p>
+<dd class="field-odd"><p>Callable</p>
 </dd>
 </dl>
 </dd></dl>
@@ -891,7 +891,7 @@ use all available jets from each sample.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ftag.hdf5.join_structured_arrays">
-<span class="sig-prename descclassname"><span class="pre">ftag.hdf5.</span></span><span class="sig-name descname"><span class="pre">join_structured_arrays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arrays</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ftag.hdf5.join_structured_arrays" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">ftag.hdf5.</span></span><span class="sig-name descname"><span class="pre">join_structured_arrays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arrays</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#ftag.hdf5.join_structured_arrays" title="Link to this definition">#</a></dt>
 <dd><p>Join a list of structured numpy arrays.</p>
 <p>See <a class="github reference external" href="https://github.com/numpy/numpy/issues/7811">numpy/numpy#7811</a></p>
 <dl class="field-list simple">
@@ -902,7 +902,7 @@ use all available jets from each sample.</p>
 <dd class="field-even"><p>A merged structured array</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.array</p>
+<dd class="field-odd"><p>np.ndarray</p>
 </dd>
 </dl>
 </dd></dl>

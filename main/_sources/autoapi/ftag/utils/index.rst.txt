@@ -190,7 +190,7 @@ Package Contents
    :raises ValueError: If the signal flavour is not recognised.
 
 
-.. py:function:: save_divide(numerator: numpy.ndarray | float, denominator: numpy.ndarray | float, default: float = 1.0)
+.. py:function:: save_divide(numerator: numpy.ndarray | float, denominator: numpy.ndarray | float, default: float = 1.0) -> numpy.ndarray | float
 
    Save divide for denominator equal to 0.
 
@@ -204,11 +204,11 @@ Package Contents
    :param default: Default value which is returned if denominator is 0.
    :type default: float
 
-   :returns: **ratio** -- Result of the division
+   :returns: Result of the division
    :rtype: np.ndarray | float
 
 
-.. py:function:: weighted_percentile(arr: numpy.ndarray, percentile: numpy.ndarray, weights: numpy.ndarray = None)
+.. py:function:: weighted_percentile(arr: numpy.ndarray, percentile: numpy.ndarray, weights: numpy.ndarray = None) -> numpy.ndarray
 
    Calculate weighted percentile.
 

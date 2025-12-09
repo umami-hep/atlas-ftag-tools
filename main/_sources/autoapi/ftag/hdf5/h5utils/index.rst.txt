@@ -110,7 +110,7 @@ Module Contents
    :raises ValueError: If precision is not "half" or "full"
 
 
-.. py:function:: join_structured_arrays(arrays: list)
+.. py:function:: join_structured_arrays(arrays: list) -> numpy.ndarray
 
    Join a list of structured numpy arrays.
 
@@ -120,7 +120,7 @@ Module Contents
    :type arrays: list
 
    :returns: A merged structured array
-   :rtype: np.array
+   :rtype: np.ndarray
 
 
 .. py:function:: structured_from_dict(d: dict[str, numpy.ndarray]) -> numpy.ndarray

@@ -102,7 +102,7 @@ Module Contents
    :type args: argparse.Namespace
 
    :returns: Outputs the ttbar jets, the zprime jets (if wanted, else None), and the flavours used.
-   :rtype: tuple[dict, dict | None, list]
+   :rtype: tuple[np.ndarray, np.ndarray | None, LabelContainer]
 
 
 .. py:function:: get_working_points(args: argparse.Namespace) -> dict | None

@@ -476,7 +476,7 @@
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ftag.transform.Transform" title="ftag.transform.Transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Transform</span></code></a></p></td>
-<td><p>Transform class to transform variables.</p></td>
+<td><p>Apply variable name remapping, integer remapping, and float transformations.</p></td>
 </tr>
 </tbody>
 </table>
@@ -487,14 +487,22 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="ftag.transform.Transform">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ftag.transform.</span></span><span class="sig-name descname"><span class="pre">Transform</span></span><a class="headerlink" href="#ftag.transform.Transform" title="Link to this definition">#</a></dt>
-<dd><p>Transform class to transform variables.</p>
+<dd><p>Apply variable name remapping, integer remapping, and float transformations.</p>
+<p>The Transform class provides a unified mechanism to perform:
+- variable renaming (variable_map)
+- integer value remapping (ints_map)
+- float transformations (floats_map)</p>
+<p>Each transformation is applied to a <em>batch</em> consisting of a dictionary of
+structured numpy arrays.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.transform.Transform.variable_map">
 <span class="sig-name descname"><span class="pre">variable_map</span></span><a class="headerlink" href="#ftag.transform.Transform.variable_map" title="Link to this definition">#</a></dt>
-<dd><p>Map with the old and new variables</p>
+<dd><p>A nested mapping where variable_map[group][old] = new specifies how
+variable names should be renamed inside a given group. If None, no
+variable renaming is applied.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict[str, dict[str, str]] | None, optional</p>
+<dd class="field-odd"><p>dict[str, dict[str, str]]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -502,10 +510,12 @@
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.transform.Transform.ints_map">
 <span class="sig-name descname"><span class="pre">ints_map</span></span><a class="headerlink" href="#ftag.transform.Transform.ints_map" title="Link to this definition">#</a></dt>
-<dd><p>Map with the old and new integer values</p>
+<dd><p>A nested mapping where ints_map[group][variable][old] = new specifies
+how integer values should be remapped. If None, no integer remapping
+is applied.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict[str, dict[str, dict[int, int]]] | None, optional</p>
+<dd class="field-odd"><p>dict[str, dict[str, dict[int, int]]]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -513,49 +523,87 @@
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.transform.Transform.floats_map">
 <span class="sig-name descname"><span class="pre">floats_map</span></span><a class="headerlink" href="#ftag.transform.Transform.floats_map" title="Link to this definition">#</a></dt>
-<dd><p>Map with the old and new float values</p>
+<dd><p>A nested mapping where floats_map[group][variable] = func specifies
+a float transformation function. func may either be:
+- a callable
+- a string giving the name of a numpy function (e.g. “log”)</p>
+<p>Strings are resolved to numpy.&lt;func&gt; automatically.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict[str, dict[str, str | Callable]] | None, optional</p>
+<dd class="field-odd"><p>dict[str, dict[str, str | Callable]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ftag.transform.Transform.variable_map_inv">
+<span class="sig-name descname"><span class="pre">variable_map_inv</span></span><a class="headerlink" href="#ftag.transform.Transform.variable_map_inv" title="Link to this definition">#</a></dt>
+<dd><p>Automatically generated inverse of variable_map used for reverse
+variable lookup in <a class="reference internal" href="#ftag.transform.Transform.map_variable_names" title="ftag.transform.Transform.map_variable_names"><code class="xref py py-meth docutils literal notranslate"><span class="pre">map_variable_names()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, dict[str, str]]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id0">
-<span class="sig-name descname"><span class="pre">variable_map</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id0" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">variable_map</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#id0" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id1">
-<span class="sig-name descname"><span class="pre">ints_map</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id1" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">ints_map</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#id1" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id2">
-<span class="sig-name descname"><span class="pre">floats_map</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">collections.abc.Callable</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id2" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">floats_map</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">collections.abc.Callable</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#id2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">variable_map_inv</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#id3" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ftag.transform.Transform.__post_init__">
-<span class="sig-name descname"><span class="pre">__post_init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ftag.transform.Transform.__post_init__" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">__post_init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.transform.Transform.__post_init__" title="Link to this definition">#</a></dt>
+<dd><p>Initialize internal maps and convert float transformation strings.</p>
+<p>This method ensures that variable_map, ints_map, and
+floats_map are always dictionaries (never None), constructs the
+inverse variable map, and converts any string-based float
+transformations into their numpy equivalents.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ftag.transform.Transform.__call__">
 <span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Batch</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Batch</span></span></span><a class="headerlink" href="#ftag.transform.Transform.__call__" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Apply integer remapping, float transformations, and variable renaming.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>batch</strong> (<em>Batch</em>) – A mapping from group name to structured numpy arrays.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The transformed batch.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Batch</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ftag.transform.Transform.map_variables">
 <span class="sig-name descname"><span class="pre">map_variables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Batch</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Batch</span></span></span><a class="headerlink" href="#ftag.transform.Transform.map_variables" title="Link to this definition">#</a></dt>
-<dd><p>Rename variables in a batch of data.</p>
+<dd><p>Rename variables in each group according to variable_map.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>batch</strong> (<em>Batch</em>) – Dict of structured numpy arrays.</p>
+<dd class="field-odd"><p><strong>batch</strong> (<em>Batch</em>) – Dictionary mapping group names to structured numpy arrays.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Dict of structured numpy arrays with renamed variables.</p>
+<dd class="field-even"><p>The batch with variables renamed where applicable.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Batch</p>
@@ -566,13 +614,13 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="ftag.transform.Transform.map_ints">
 <span class="sig-name descname"><span class="pre">map_ints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Batch</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Batch</span></span></span><a class="headerlink" href="#ftag.transform.Transform.map_ints" title="Link to this definition">#</a></dt>
-<dd><p>Map integer values to new values.</p>
+<dd><p>Remap integer values for specified variables inside each group.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>batch</strong> (<em>Batch</em>) – Dict of structured numpy arrays.</p>
+<dd class="field-odd"><p><strong>batch</strong> (<em>Batch</em>) – Dictionary mapping group names to structured numpy arrays.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Dict of structured numpy arrays with mapped integer values.</p>
+<dd class="field-even"><p>The batch with integer values remapped.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Batch</p>
@@ -583,13 +631,13 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="ftag.transform.Transform.map_floats">
 <span class="sig-name descname"><span class="pre">map_floats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Batch</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Batch</span></span></span><a class="headerlink" href="#ftag.transform.Transform.map_floats" title="Link to this definition">#</a></dt>
-<dd><p>Transform float values.</p>
+<dd><p>Apply float transformations to selected variables.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>batch</strong> (<em>Batch</em>) – Dict of structured numpy arrays.</p>
+<dd class="field-odd"><p><strong>batch</strong> (<em>Batch</em>) – Dictionary mapping group names to structured numpy arrays.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Dict of structured numpy arrays with transformed float values.</p>
+<dd class="field-even"><p>The batch with float transformations applied.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Batch</p>
@@ -600,12 +648,47 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="ftag.transform.Transform.map_dtype">
 <span class="sig-name descname"><span class="pre">map_dtype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.dtype</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.dtype</span></span></span><a class="headerlink" href="#ftag.transform.Transform.map_dtype" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Compute a new dtype with renamed fields according to variable_map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – Group name associated with the dtype.</p></li>
+<li><p><strong>dtype</strong> (<em>np.dtype</em>) – Structured dtype whose field names may be modified.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dtype with renamed fields where required.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.dtype</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – When the variables already exist in the dataset.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ftag.transform.Transform.map_variable_names">
-<span class="sig-name descname"><span class="pre">map_variable_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inverse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ftag.transform.Transform.map_variable_names" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">map_variable_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inverse</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ftag.transform.Transform.map_variable_names" title="Link to this definition">#</a></dt>
+<dd><p>Map a list of variable names using variable_map or variable_map_inv.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – Group name used to select the appropriate name-mapping dictionary.</p></li>
+<li><p><strong>variables</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of variable names to be mapped.</p></li>
+<li><p><strong>inverse</strong> (<em>bool</em><em>, </em><em>optional</em>) – If False (default), apply variable_map.
+If True, apply the inverse mapping variable_map_inv.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A new list of mapped variable names.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -665,9 +748,11 @@
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.transform.Transform.variable_map"><code class="docutils literal notranslate"><span class="pre">Transform.variable_map</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.transform.Transform.ints_map"><code class="docutils literal notranslate"><span class="pre">Transform.ints_map</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.transform.Transform.floats_map"><code class="docutils literal notranslate"><span class="pre">Transform.floats_map</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.transform.Transform.variable_map_inv"><code class="docutils literal notranslate"><span class="pre">Transform.variable_map_inv</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">Transform.variable_map</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><code class="docutils literal notranslate"><span class="pre">Transform.ints_map</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><code class="docutils literal notranslate"><span class="pre">Transform.floats_map</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><code class="docutils literal notranslate"><span class="pre">Transform.variable_map_inv</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.transform.Transform.__post_init__"><code class="docutils literal notranslate"><span class="pre">Transform.__post_init__()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.transform.Transform.__call__"><code class="docutils literal notranslate"><span class="pre">Transform.__call__()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.transform.Transform.map_variables"><code class="docutils literal notranslate"><span class="pre">Transform.map_variables()</span></code></a></li>

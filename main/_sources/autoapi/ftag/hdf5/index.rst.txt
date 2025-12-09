@@ -248,7 +248,7 @@ Package Contents
 
 
 
-   .. py:method:: get_batch_reader(variables: dict | None = None, cuts: ftag.cuts.Cuts | None = None, shuffle: bool = True)
+   .. py:method:: get_batch_reader(variables: dict | None = None, cuts: ftag.cuts.Cuts | None = None, shuffle: bool = True) -> collections.abc.Callable
 
       Get a function to read batches of selected jets.
 
@@ -260,7 +260,7 @@ Package Contents
       :type shuffle: bool, optional
 
       :returns: Function that takes an index and returns a batch of selected jets.
-      :rtype: function
+      :rtype: Callable
 
 
 
@@ -330,7 +330,7 @@ Package Contents
    :raises ValueError: If variables are not found in dataset
 
 
-.. py:function:: join_structured_arrays(arrays: list)
+.. py:function:: join_structured_arrays(arrays: list) -> numpy.ndarray
 
    Join a list of structured numpy arrays.
 
@@ -340,7 +340,7 @@ Package Contents
    :type arrays: list
 
    :returns: A merged structured array
-   :rtype: np.array
+   :rtype: np.ndarray
 
 
 .. py:function:: structured_from_dict(d: dict[str, numpy.ndarray]) -> numpy.ndarray

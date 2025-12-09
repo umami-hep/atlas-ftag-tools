@@ -165,7 +165,7 @@ Module Contents
    .. py:method:: stream(variables: dict | None = None, num_jets: int | None = None, cuts: ftag.cuts.Cuts | None = None, start: int = 0, skip_batches: int = 0) -> collections.abc.Generator
 
 
-   .. py:method:: get_batch_reader(variables: dict | None = None, cuts: ftag.cuts.Cuts | None = None)
+   .. py:method:: get_batch_reader(variables: dict | None = None, cuts: ftag.cuts.Cuts | None = None) -> collections.abc.Callable
 
       Get a function to read batches of selected jets.
 
@@ -175,7 +175,7 @@ Module Contents
       :type cuts: Cuts | None, optional
 
       :returns: Function that takes an index and returns a batch of selected jets.
-      :rtype: function
+      :rtype: Callable
 
 
 
@@ -334,7 +334,7 @@ Module Contents
 
 
 
-   .. py:method:: get_batch_reader(variables: dict | None = None, cuts: ftag.cuts.Cuts | None = None, shuffle: bool = True)
+   .. py:method:: get_batch_reader(variables: dict | None = None, cuts: ftag.cuts.Cuts | None = None, shuffle: bool = True) -> collections.abc.Callable
 
       Get a function to read batches of selected jets.
 
@@ -346,7 +346,7 @@ Module Contents
       :type shuffle: bool, optional
 
       :returns: Function that takes an index and returns a batch of selected jets.
-      :rtype: function
+      :rtype: Callable
 
 
 

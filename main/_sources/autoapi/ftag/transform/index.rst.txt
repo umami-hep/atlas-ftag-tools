@@ -17,90 +17,156 @@ Module Contents
 
 .. py:class:: Transform
 
-   Transform class to transform variables.
+   Apply variable name remapping, integer remapping, and float transformations.
+
+   The Transform class provides a unified mechanism to perform:
+   - variable renaming (variable_map)
+   - integer value remapping (ints_map)
+   - float transformations (floats_map)
+
+   Each transformation is applied to a *batch* consisting of a dictionary of
+   structured numpy arrays.
 
    .. attribute:: variable_map
 
-      Map with the old and new variables
+      A nested mapping where variable_map[group][old] = new specifies how
+      variable names should be renamed inside a given group. If None, no
+      variable renaming is applied.
 
-      :type: dict[str, dict[str, str]] | None, optional
+      :type: dict[str, dict[str, str]]
 
    .. attribute:: ints_map
 
-      Map with the old and new integer values
+      A nested mapping where ints_map[group][variable][old] = new specifies
+      how integer values should be remapped. If None, no integer remapping
+      is applied.
 
-      :type: dict[str, dict[str, dict[int, int]]] | None, optional
+      :type: dict[str, dict[str, dict[int, int]]]
 
    .. attribute:: floats_map
 
-      Map with the old and new float values
+      A nested mapping where floats_map[group][variable] = func specifies
+      a float transformation function. func may either be:
+      - a callable
+      - a string giving the name of a numpy function (e.g. "log")
 
-      :type: dict[str, dict[str, str | Callable]] | None, optional
+      Strings are resolved to numpy.<func> automatically.
+
+      :type: dict[str, dict[str, str | Callable]]
+
+   .. attribute:: variable_map_inv
+
+      Automatically generated inverse of variable_map used for reverse
+      variable lookup in :meth:`map_variable_names`.
+
+      :type: dict[str, dict[str, str]]
 
 
    .. py:attribute:: variable_map
-      :type:  dict[str, dict[str, str]] | None
-      :value: None
-
+      :type:  dict[str, dict[str, str]]
 
 
    .. py:attribute:: ints_map
-      :type:  dict[str, dict[str, dict[int, int]]] | None
-      :value: None
-
+      :type:  dict[str, dict[str, dict[int, int]]]
 
 
    .. py:attribute:: floats_map
-      :type:  dict[str, dict[str, str | collections.abc.Callable]] | None
-      :value: None
+      :type:  dict[str, dict[str, str | collections.abc.Callable]]
 
 
+   .. py:attribute:: variable_map_inv
+      :type:  dict[str, dict[str, str]]
 
-   .. py:method:: __post_init__()
+
+   .. py:method:: __post_init__() -> None
+
+      Initialize internal maps and convert float transformation strings.
+
+      This method ensures that variable_map, ints_map, and
+      floats_map are always dictionaries (never None), constructs the
+      inverse variable map, and converts any string-based float
+      transformations into their numpy equivalents.
+
 
 
    .. py:method:: __call__(batch: Batch) -> Batch
 
+      Apply integer remapping, float transformations, and variable renaming.
+
+      :param batch: A mapping from group name to structured numpy arrays.
+      :type batch: Batch
+
+      :returns: The transformed batch.
+      :rtype: Batch
+
+
 
    .. py:method:: map_variables(batch: Batch) -> Batch
 
-      Rename variables in a batch of data.
+      Rename variables in each group according to variable_map.
 
-      :param batch: Dict of structured numpy arrays.
+      :param batch: Dictionary mapping group names to structured numpy arrays.
       :type batch: Batch
 
-      :returns: Dict of structured numpy arrays with renamed variables.
+      :returns: The batch with variables renamed where applicable.
       :rtype: Batch
 
 
 
    .. py:method:: map_ints(batch: Batch) -> Batch
 
-      Map integer values to new values.
+      Remap integer values for specified variables inside each group.
 
-      :param batch: Dict of structured numpy arrays.
+      :param batch: Dictionary mapping group names to structured numpy arrays.
       :type batch: Batch
 
-      :returns: Dict of structured numpy arrays with mapped integer values.
+      :returns: The batch with integer values remapped.
       :rtype: Batch
 
 
 
    .. py:method:: map_floats(batch: Batch) -> Batch
 
-      Transform float values.
+      Apply float transformations to selected variables.
 
-      :param batch: Dict of structured numpy arrays.
+      :param batch: Dictionary mapping group names to structured numpy arrays.
       :type batch: Batch
 
-      :returns: Dict of structured numpy arrays with transformed float values.
+      :returns: The batch with float transformations applied.
       :rtype: Batch
 
 
 
    .. py:method:: map_dtype(name: str, dtype: numpy.dtype) -> numpy.dtype
 
+      Compute a new dtype with renamed fields according to variable_map.
 
-   .. py:method:: map_variable_names(name: str, variables: list[str], inverse=False) -> list[str]
+      :param name: Group name associated with the dtype.
+      :type name: str
+      :param dtype: Structured dtype whose field names may be modified.
+      :type dtype: np.dtype
+
+      :returns: A dtype with renamed fields where required.
+      :rtype: np.dtype
+
+      :raises ValueError: When the variables already exist in the dataset.
+
+
+
+   .. py:method:: map_variable_names(name: str, variables: list[str], inverse: bool = False) -> list[str]
+
+      Map a list of variable names using variable_map or variable_map_inv.
+
+      :param name: Group name used to select the appropriate name-mapping dictionary.
+      :type name: str
+      :param variables: List of variable names to be mapped.
+      :type variables: list[str]
+      :param inverse: If False (default), apply variable_map.
+                      If True, apply the inverse mapping variable_map_inv.
+      :type inverse: bool, optional
+
+      :returns: A new list of mapped variable names.
+      :rtype: list[str]
+
 
 

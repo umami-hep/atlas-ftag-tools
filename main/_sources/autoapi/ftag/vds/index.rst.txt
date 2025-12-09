@@ -49,14 +49,14 @@ Module Contents
 
 .. py:function:: glob_re(pattern: str | None, regex_path: str | None) -> list[str] | None
 
-   Return list of filenames that match REGEX pattern inside regex_path.
+   Return list of filenames that match a regex pattern inside `regex_path`.
 
-   :param pattern: Pattern for the input files
+   :param pattern: Regex pattern used to match filenames.
    :type pattern: str | None
-   :param regex_path: Regex path for the input files
+   :param regex_path: Directory to search for files.
    :type regex_path: str | None
 
-   :returns: List of the file basenames that matched the regex pattern
+   :returns: List of basenames that match the pattern, or None if inputs are missing.
    :rtype: list[str] | None
 
 
@@ -99,7 +99,7 @@ Module Contents
    :type group_name: str, optional
 
    :returns: Returns the files with common sub-groups
-   :rtype: set[str]
+   :rtype: list[str]
 
    :raises KeyError: When a file does not have a bookkeeper
    :raises ValueError: When no common bookkeeper sub-groups were found

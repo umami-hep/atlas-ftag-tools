@@ -493,7 +493,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#ftag.hdf5.h5utils.cast_dtype" title="ftag.hdf5.h5utils.cast_dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cast_dtype</span></code></a>(→ numpy.dtype)</p></td>
 <td><p>Cast float type to half or full precision.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ftag.hdf5.h5utils.join_structured_arrays" title="ftag.hdf5.h5utils.join_structured_arrays"><code class="xref py py-obj docutils literal notranslate"><span class="pre">join_structured_arrays</span></code></a>(arrays)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ftag.hdf5.h5utils.join_structured_arrays" title="ftag.hdf5.h5utils.join_structured_arrays"><code class="xref py py-obj docutils literal notranslate"><span class="pre">join_structured_arrays</span></code></a>(→ numpy.ndarray)</p></td>
 <td><p>Join a list of structured numpy arrays.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ftag.hdf5.h5utils.structured_from_dict" title="ftag.hdf5.h5utils.structured_from_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">structured_from_dict</span></code></a>(→ numpy.ndarray)</p></td>
@@ -623,7 +623,7 @@ attributes are stored under the ‘_group_attrs’ key.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ftag.hdf5.h5utils.join_structured_arrays">
-<span class="sig-prename descclassname"><span class="pre">ftag.hdf5.h5utils.</span></span><span class="sig-name descname"><span class="pre">join_structured_arrays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arrays</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ftag.hdf5.h5utils.join_structured_arrays" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">ftag.hdf5.h5utils.</span></span><span class="sig-name descname"><span class="pre">join_structured_arrays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arrays</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#ftag.hdf5.h5utils.join_structured_arrays" title="Link to this definition">#</a></dt>
 <dd><p>Join a list of structured numpy arrays.</p>
 <p>See <a class="github reference external" href="https://github.com/numpy/numpy/issues/7811">numpy/numpy#7811</a></p>
 <dl class="field-list simple">
@@ -634,7 +634,7 @@ attributes are stored under the ‘_group_attrs’ key.</p>
 <dd class="field-even"><p>A merged structured array</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.array</p>
+<dd class="field-odd"><p>np.ndarray</p>
 </dd>
 </dl>
 </dd></dl>
