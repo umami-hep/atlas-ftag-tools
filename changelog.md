@@ -2,6 +2,8 @@
 
 ### [Latest]
 
+### [v0.2.18](https://github.com/umami-hep/atlas-ftag-tools/releases/tag/v0.2.18) (15.12.2025)
+
 - Updating Pre-Commit Versions [#147](https://github.com/umami-hep/atlas-ftag-tools/pull/147)
 - New W to light and c classes, Z classes [#135](https://github.com/umami-hep/atlas-ftag-tools/pull/135)
 - Make the Fraction Optimization Script callable as Command [#146](https://github.com/umami-hep/atlas-ftag-tools/pull/146)
