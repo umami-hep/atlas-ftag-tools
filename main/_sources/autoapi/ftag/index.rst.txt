@@ -80,7 +80,7 @@ Package Contents
 ----------------
 
 .. py:data:: __version__
-   :value: 'v0.2.17'
+   :value: 'v0.2.18'
 
 
 .. py:class:: Cuts
