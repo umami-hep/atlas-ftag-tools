@@ -31,6 +31,7 @@ class Sample:
     name: str | None = None
     weights: list[float] | None = None
     skip_checks: bool = False
+    vds_dir: Path | str | None = None
 
     def __post_init__(self) -> None:
         if self.skip_checks:
@@ -86,8 +87,23 @@ class Sample:
         return list(set(hashes))
 
     def virtual_file(self, **kwargs) -> list[Path | str]:
-        return [create_virtual_file(p, **kwargs) if "*" in str(p) else p for p in self.path]
+        out = []
+        for p in self.path:
+            if "*" not in str(p):
+                out.append(p)
+                continue
 
+            if self.vds_dir is None:
+                # current default behaviour (backwards compatible)
+                out.append(create_virtual_file(p, **kwargs))
+                continue
+
+            p = Path(p)
+            out_fname = Path(self.vds_dir) / p.parent.name / "vds" / "vds.h5"
+            out.append(create_virtual_file(p, out_fname=out_fname, **kwargs))
+
+        return out
+    
     def __str__(self):
         return self.name
 
