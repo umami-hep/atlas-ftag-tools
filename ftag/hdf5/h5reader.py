@@ -53,10 +53,12 @@ class H5SingleReader:
     groups: list[str] | None = None
     # dsets hold data and all have a first dimension of njets
     dsets: list[str] | None = None
+    vds_dir: Path | str | None = None
+
 
     def __post_init__(self) -> None:
         self.rng = np.random.default_rng(42)
-        self.sample = Sample(self.fname)
+        self.sample = Sample(self.fname, vds_dir=self.vds_dir)
         fname = self.sample.virtual_file()
         if len(fname) != 1:
             raise ValueError("H5SingleReader should only read a single file")
@@ -278,6 +280,7 @@ class H5Reader:
     do_remove_inf: bool = False
     transform: Transform | None = None
     equal_jets: bool = False
+    vds_dir: Path | str | None = None
 
     def __post_init__(self) -> None:
         self.rng = np.random.default_rng(42)
@@ -287,7 +290,7 @@ class H5Reader:
         # calculate batch sizes
         if self.weights is None:
             rows_per_file = [
-                H5SingleReader(f, jets_name=self.jets_name).num_jets for f in self.fname
+                H5SingleReader(f, jets_name=self.jets_name, vds_dir=self.vds_dir).num_jets for f in self.fname
             ]
             num_total = sum(rows_per_file)
             self.weights = [num / num_total for num in rows_per_file]
@@ -304,6 +307,7 @@ class H5Reader:
                 self.shuffle,
                 self.do_remove_inf,
                 self.transform,
+                vds_dir=self.vds_dir,
             )
             for f, b in zip(self.fname, self.batch_sizes, strict=False)
         ]
