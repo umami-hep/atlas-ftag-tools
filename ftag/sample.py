@@ -24,6 +24,9 @@ class Sample:
         List of weights for this sample, by default None
     skip_checks: bool, optional
         Decide, if certain checks are skipped, by default False
+    vds_dir: Path | str | None, optional
+        Directory where virtual datasets will be stored if wildcard is used, by default None.
+        If None, the virtual files will be created in the same directory as the input files.
     """
 
     pattern: Path | str | tuple[Path | str, ...]
@@ -87,23 +90,23 @@ class Sample:
         return list(set(hashes))
 
     def virtual_file(self, **kwargs) -> list[Path | str]:
-        out = []
-        for p in self.path:
-            if "*" not in str(p):
-                out.append(p)
+        out: list[Path | str] = []
+        for filepath in self.path:
+            if "*" not in str(filepath):
+                out.append(filepath)
                 continue
 
             if self.vds_dir is None:
                 # current default behaviour (backwards compatible)
-                out.append(create_virtual_file(p, **kwargs))
+                out.append(create_virtual_file(filepath, **kwargs))
                 continue
 
-            p = Path(p)
+            p = Path(filepath)
             out_fname = Path(self.vds_dir) / p.parent.name / "vds" / "vds.h5"
             out.append(create_virtual_file(p, out_fname=out_fname, **kwargs))
 
         return out
-    
+
     def __str__(self):
         return self.name
 
