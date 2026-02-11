@@ -2,6 +2,8 @@
 
 ### [Latest]
 
+- Make vds creation directory configurable when using wildcard [#148](https://github.com/umami-hep/atlas-ftag-tools/pull/148)
+
 ### [v0.2.18](https://github.com/umami-hep/atlas-ftag-tools/releases/tag/v0.2.18) (15.12.2025)
 
 - Updating Pre-Commit Versions [#147](https://github.com/umami-hep/atlas-ftag-tools/pull/147)
