@@ -88,3 +88,41 @@ def test_sample_eq(sample):
     fname = get_mock_file()[0]
     assert (sample == Sample(pattern=fname, name="test_sample")) is True
     assert (sample == Sample(pattern=fname, name="test_sample_2")) is False
+
+
+def test_sample_virtual_file_wildcard(tmp_path):
+    """Test virtual_file with wildcard pattern and vds_dir=None (default)."""
+    dsid_dir = tmp_path / DSID
+    dsid_dir.mkdir()
+    for i in range(3):
+        fname = dsid_dir / f"file_{i}.h5"
+        get_mock_file(fname=str(fname))
+
+    pattern = str(dsid_dir / "*.h5")
+    sample = Sample(pattern=pattern, name="wildcard_test", skip_checks=True)
+    result = sample.virtual_file()
+    assert len(result) == 1
+    assert isinstance(result[0], Path)
+    expected_dir = dsid_dir / "vds"
+    assert result[0].parent == expected_dir
+    assert result[0].exists()
+
+
+def test_sample_virtual_file_wildcard_with_vds_dir(tmp_path):
+    """Test virtual_file with wildcard pattern and a custom vds_dir."""
+    dsid_dir = tmp_path / DSID
+    dsid_dir.mkdir()
+    for i in range(3):
+        fname = dsid_dir / f"file_{i}.h5"
+        get_mock_file(fname=str(fname))
+
+    vds_dir = tmp_path / "custom_vds"
+    pattern = str(dsid_dir / "*.h5")
+    sample = Sample(pattern=pattern, name="vds_dir_test", skip_checks=True, vds_dir=vds_dir)
+    result = sample.virtual_file()
+    assert len(result) == 1
+    assert isinstance(result[0], Path)
+    # check vds file is created under the custom vds_dir
+    expected_dir = vds_dir / dsid_dir.name / "vds"
+    assert result[0].parent == expected_dir
+    assert result[0].exists()
