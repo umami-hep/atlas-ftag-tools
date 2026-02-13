@@ -102,7 +102,7 @@ class Sample:
                 continue
 
             p = Path(filepath)
-            out_fname = Path(self.vds_dir) / p.parent.name / "vds" / "vds.h5"
+            out_fname = Path(self.vds_dir) / f"{p.parent.name}_vds.h5"
             out.append(create_virtual_file(p, out_fname=out_fname, **kwargs))
 
         return out

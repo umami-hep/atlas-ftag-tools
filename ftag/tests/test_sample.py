@@ -123,6 +123,6 @@ def test_sample_virtual_file_wildcard_with_vds_dir(tmp_path):
     assert len(result) == 1
     assert isinstance(result[0], Path)
     # check vds file is created under the custom vds_dir
-    expected_dir = vds_dir / dsid_dir.name / "vds"
-    assert result[0].parent == expected_dir
+    expected = vds_dir / f"{DSID}_vds.h5"
+    assert result[0] == expected
     assert result[0].exists()
