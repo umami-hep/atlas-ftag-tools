@@ -41,8 +41,8 @@
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../../../_static/documentation_options.js?v=269a13a8"></script>
-    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'autoapi/ftag/working_points/index';</script>
@@ -378,7 +378,6 @@
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">ftag</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../cli_utils/index.html">ftag.cli_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../cuts/index.html">ftag.cuts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../flavours/index.html">ftag.flavours</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../fraction_optimization/index.html">ftag.fraction_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../git_check/index.html">ftag.git_check</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../hdf5/index.html">ftag.hdf5</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -389,10 +388,8 @@
 <li class="toctree-l3"><a class="reference internal" href="../hdf5/h5writer/index.html">ftag.hdf5.h5writer</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2"><a class="reference internal" href="../labels/index.html">ftag.labels</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mock/index.html">ftag.mock</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../sample/index.html">ftag.sample</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../track_selector/index.html">ftag.track_selector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../transform/index.html">ftag.transform</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../utils/index.html">ftag.utils</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../utils/logging/index.html">ftag.utils.logging</a></li>
@@ -530,13 +527,13 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ftag.working_points.get_fxs_from_args">
-<span class="sig-prename descclassname"><span class="pre">ftag.working_points.</span></span><span class="sig-name descname"><span class="pre">get_fxs_from_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">argparse.Namespace</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flavours</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../labels/index.html#ftag.labels.LabelContainer" title="ftag.labels.LabelContainer"><span class="pre">ftag.labels.LabelContainer</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#ftag.working_points.get_fxs_from_args" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">ftag.working_points.</span></span><span class="sig-name descname"><span class="pre">get_fxs_from_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">argparse.Namespace</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flavours</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ftag.labels.LabelContainer</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#ftag.working_points.get_fxs_from_args" title="Link to this definition">#</a></dt>
 <dd><p>Get the fraction values for each tagger from the argparsed inputs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>args</strong> (<em>argparse.Namespace</em>) – Input arguments parsed by the argparser</p></li>
-<li><p><strong>flavours</strong> (<a class="reference internal" href="../index.html#ftag.LabelContainer" title="ftag.LabelContainer"><em>LabelContainer</em></a>) – LabelContainer instance of the labels that are used</p></li>
+<li><p><strong>flavours</strong> (<em>LabelContainer</em>) – LabelContainer instance of the labels that are used</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -550,7 +547,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ftag.working_points.get_eff_rej">
-<span class="sig-prename descclassname"><span class="pre">ftag.working_points.</span></span><span class="sig-name descname"><span class="pre">get_eff_rej</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flavours</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../labels/index.html#ftag.labels.LabelContainer" title="ftag.labels.LabelContainer"><span class="pre">ftag.labels.LabelContainer</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#ftag.working_points.get_eff_rej" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">ftag.working_points.</span></span><span class="sig-name descname"><span class="pre">get_eff_rej</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flavours</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ftag.labels.LabelContainer</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#ftag.working_points.get_eff_rej" title="Link to this definition">#</a></dt>
 <dd><p>Calculate the efficiency/rejection for each flavour.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -558,7 +555,7 @@
 <li><p><strong>jets</strong> (<em>np.ndarray</em>) – Loaded jets</p></li>
 <li><p><strong>disc</strong> (<em>np.ndarray</em>) – Discriminant values of the jets</p></li>
 <li><p><strong>wp</strong> (<em>float</em>) – Working point that is used</p></li>
-<li><p><strong>flavours</strong> (<a class="reference internal" href="../index.html#ftag.LabelContainer" title="ftag.LabelContainer"><em>LabelContainer</em></a>) – LabelContainer instance of the flavours used</p></li>
+<li><p><strong>flavours</strong> (<em>LabelContainer</em>) – LabelContainer instance of the flavours used</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -572,16 +569,16 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ftag.working_points.get_rej_eff_at_disc">
-<span class="sig-prename descclassname"><span class="pre">ftag.working_points.</span></span><span class="sig-name descname"><span class="pre">get_rej_eff_at_disc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tagger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../labels/index.html#ftag.labels.Label" title="ftag.labels.Label"><span class="pre">ftag.labels.Label</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">disc_cuts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flavours</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../labels/index.html#ftag.labels.LabelContainer" title="ftag.labels.LabelContainer"><span class="pre">ftag.labels.LabelContainer</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fraction_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#ftag.working_points.get_rej_eff_at_disc" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">ftag.working_points.</span></span><span class="sig-name descname"><span class="pre">get_rej_eff_at_disc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tagger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ftag.labels.Label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disc_cuts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flavours</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ftag.labels.LabelContainer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fraction_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#ftag.working_points.get_rej_eff_at_disc" title="Link to this definition">#</a></dt>
 <dd><p>Calculate the efficiency/rejection at a certain discriminant values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>jets</strong> (<em>np.ndarray</em>) – Loaded jets used</p></li>
 <li><p><strong>tagger</strong> (<em>str</em>) – Name of the tagger</p></li>
-<li><p><strong>signal</strong> (<a class="reference internal" href="../index.html#ftag.Label" title="ftag.Label"><em>Label</em></a>) – Label instance of the signal flavour</p></li>
+<li><p><strong>signal</strong> (<em>Label</em>) – Label instance of the signal flavour</p></li>
 <li><p><strong>disc_cuts</strong> (<em>list</em>) – List of discriminant cut values for which the efficiency/rejection is calculated</p></li>
-<li><p><strong>flavours</strong> (<a class="reference internal" href="../index.html#ftag.LabelContainer" title="ftag.LabelContainer"><em>LabelContainer</em></a>) – LabelContainer instance of the flavours that are used</p></li>
+<li><p><strong>flavours</strong> (<em>LabelContainer</em>) – LabelContainer instance of the flavours that are used</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -595,7 +592,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ftag.working_points.setup_common_parts">
-<span class="sig-prename descclassname"><span class="pre">ftag.working_points.</span></span><span class="sig-name descname"><span class="pre">setup_common_parts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">argparse.Namespace</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../labels/index.html#ftag.labels.LabelContainer" title="ftag.labels.LabelContainer"><span class="pre">ftag.labels.LabelContainer</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ftag.working_points.setup_common_parts" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">ftag.working_points.</span></span><span class="sig-name descname"><span class="pre">setup_common_parts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">argparse.Namespace</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ftag.labels.LabelContainer</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ftag.working_points.setup_common_parts" title="Link to this definition">#</a></dt>
 <dd><p>Load the jets from the files and setup the taggers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -753,7 +750,7 @@ was given, the return value is None</p>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
     <br/>
   </p>
 </div>

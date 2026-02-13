@@ -74,6 +74,13 @@ Module Contents
 
       :type: list[str] | None, optional
 
+   .. attribute:: vds_dir
+
+      Directory where virtual datasets will be stored if wildcard is used, by default None.
+      If None, the virtual files will be created in the same directory as the input files.
+
+      :type: Path | str | None, optional
+
 
    .. py:attribute:: fname
       :type:  pathlib.Path | str
@@ -123,6 +130,12 @@ Module Contents
 
    .. py:attribute:: dsets
       :type:  list[str] | None
+      :value: None
+
+
+
+   .. py:attribute:: vds_dir
+      :type:  pathlib.Path | str | None
       :value: None
 
 
@@ -243,6 +256,13 @@ Module Contents
 
       :type: bool, optional
 
+   .. attribute:: vds_dir
+
+      Directory where virtual datasets will be stored if wildcard is used, by default None.
+      If None, the virtual files will be created in the same directory as the input files.
+
+      :type: Path | str | None, optional
+
 
    .. py:attribute:: fname
       :type:  pathlib.Path | str | list[pathlib.Path | str]
@@ -293,6 +313,12 @@ Module Contents
    .. py:attribute:: equal_jets
       :type:  bool
       :value: False
+
+
+
+   .. py:attribute:: vds_dir
+      :type:  pathlib.Path | str | None
+      :value: None
 
 
 

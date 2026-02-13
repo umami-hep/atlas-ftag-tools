@@ -18,14 +18,11 @@ Submodules
    /autoapi/ftag/cli_utils/index
    /autoapi/ftag/cuts/index
    /autoapi/ftag/find_metadata/index
-   /autoapi/ftag/flavours/index
    /autoapi/ftag/fraction_optimization/index
    /autoapi/ftag/git_check/index
    /autoapi/ftag/hdf5/index
-   /autoapi/ftag/labels/index
    /autoapi/ftag/mock/index
    /autoapi/ftag/sample/index
-   /autoapi/ftag/track_selector/index
    /autoapi/ftag/transform/index
    /autoapi/ftag/utils/index
    /autoapi/ftag/vds/index
@@ -38,8 +35,6 @@ Attributes
 .. autoapisummary::
 
    ftag.__version__
-   ftag.Extended_Flavours
-   ftag.Flavours
 
 
 Exceptions
@@ -56,8 +51,6 @@ Classes
 .. autoapisummary::
 
    ftag.Cuts
-   ftag.Label
-   ftag.LabelContainer
    ftag.Sample
    ftag.Transform
 
@@ -136,10 +129,6 @@ Package Contents
 
    .. py:method:: __repr__() -> str
 
-
-.. py:data:: Extended_Flavours
-
-.. py:data:: Flavours
 
 .. py:function:: calculate_best_fraction_values(jets: numpy.ndarray, tagger: str, signal: ftag.labels.Label, flavours: ftag.labels.LabelContainer, working_point: float, rejection_weights: dict | None = None, optimizer_method: str = 'Powell') -> dict
 
@@ -256,162 +245,6 @@ Package Contents
    available on the system, an :class:`OSError` may be raised by :mod:`subprocess`.
 
 
-.. py:class:: Label
-
-   Dataclass to hold info about one flavour/label.
-
-   .. attribute:: name
-
-      Name of the flavour/label
-
-      :type: str
-
-   .. attribute:: label
-
-      Plot label for this flavour/label
-
-      :type: str
-
-   .. attribute:: cuts
-
-      Cuts of this flavour/label
-
-      :type: Cuts
-
-   .. attribute:: colour
-
-      Colour of this flavour/label
-
-      :type: str
-
-   .. attribute:: category
-
-      Flavour category, to which this flavour/label belongs
-
-      :type: str
-
-
-   .. py:attribute:: name
-      :type:  str
-
-
-   .. py:attribute:: label
-      :type:  str
-
-
-   .. py:attribute:: cuts
-      :type:  ftag.cuts.Cuts
-
-
-   .. py:attribute:: colour
-      :type:  str
-
-
-   .. py:attribute:: category
-      :type:  str
-
-
-   .. py:attribute:: _px
-      :type:  str | None
-      :value: None
-
-
-
-   .. py:property:: px
-      :type: str
-
-
-
-   .. py:property:: eff_str
-      :type: str
-
-
-
-   .. py:property:: rej_str
-      :type: str
-
-
-
-   .. py:property:: frac_str
-      :type: str
-
-
-
-   .. py:method:: __str__() -> str
-
-
-   .. py:method:: __lt__(other) -> bool
-
-
-.. py:class:: LabelContainer
-
-   Label container that holds multiple labels.
-
-   .. attribute:: labels
-
-      Dict with the labels this container will hold
-
-      :type: dict[str, Label]
-
-
-   .. py:attribute:: labels
-      :type:  dict[str, Label]
-
-
-   .. py:method:: __iter__() -> collections.abc.Iterator
-
-
-   .. py:method:: __getitem__(key) -> Label
-
-
-   .. py:method:: __len__() -> int
-
-
-   .. py:method:: __getattr__(name) -> Label
-
-
-   .. py:method:: __contains__(label: str | Label) -> bool
-
-
-   .. py:method:: __eq__(other) -> bool
-
-
-   .. py:method:: __repr__() -> str
-
-
-   .. py:property:: categories
-      :type: list[str]
-
-
-
-   .. py:method:: by_category(category: str) -> LabelContainer
-
-
-   .. py:method:: from_cuts(cuts: list | ftag.cuts.Cuts) -> Label
-
-
-   .. py:method:: from_yaml(yaml_path: pathlib.Path | None = None, include_categories: collections.abc.Iterable[str] | None = None, exclude_categories: collections.abc.Iterable[str] | None = None) -> LabelContainer
-      :classmethod:
-
-
-
-   .. py:method:: from_list(labels: list[Label]) -> LabelContainer
-      :classmethod:
-
-
-
-   .. py:method:: backgrounds(signal: Label, only_signals: bool = True) -> LabelContainer
-
-
-   .. py:method:: cut_variables() -> list[str]
-
-      Return all variable names appearing in any Label cuts.
-
-      :returns: Unique variable names used across all cuts in all labels.
-      :rtype: list[str]
-
-
-
 .. py:function:: get_mock_file(num_jets: int = 1000, fname: str | None = None, tracks_name: str = 'tracks', num_tracks: int = 40) -> tuple[str, h5py.File]
 
    Get a mock file for testing.
@@ -463,6 +296,13 @@ Package Contents
 
       :type: bool, optional
 
+   .. attribute:: vds_dir
+
+      Directory where virtual datasets will be stored if wildcard is used, by default None.
+      If None, the virtual files will be created in the same directory as the input files.
+
+      :type: Path | str | None, optional
+
 
    .. py:attribute:: pattern
       :type:  pathlib.Path | str | tuple[pathlib.Path | str, Ellipsis]
@@ -489,6 +329,12 @@ Package Contents
    .. py:attribute:: skip_checks
       :type:  bool
       :value: False
+
+
+
+   .. py:attribute:: vds_dir
+      :type:  pathlib.Path | str | None
+      :value: None
 
 
 

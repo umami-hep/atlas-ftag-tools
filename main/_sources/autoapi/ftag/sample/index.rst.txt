@@ -49,6 +49,13 @@ Module Contents
 
       :type: bool, optional
 
+   .. attribute:: vds_dir
+
+      Directory where virtual datasets will be stored if wildcard is used, by default None.
+      If None, the virtual files will be created in the same directory as the input files.
+
+      :type: Path | str | None, optional
+
 
    .. py:attribute:: pattern
       :type:  pathlib.Path | str | tuple[pathlib.Path | str, Ellipsis]
@@ -75,6 +82,12 @@ Module Contents
    .. py:attribute:: skip_checks
       :type:  bool
       :value: False
+
+
+
+   .. py:attribute:: vds_dir
+      :type:  pathlib.Path | str | None
+      :value: None
 
 
 

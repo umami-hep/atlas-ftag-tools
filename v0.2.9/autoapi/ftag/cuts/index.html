@@ -41,8 +41,8 @@
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../../../_static/documentation_options.js?v=efd3c4f5"></script>
-    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'autoapi/ftag/cuts/index';</script>
@@ -55,7 +55,7 @@
         </script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="ftag.flavours" href="../flavours/index.html" />
+    <link rel="next" title="ftag.git_check" href="../git_check/index.html" />
     <link rel="prev" title="ftag.cli_utils" href="../cli_utils/index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -379,7 +379,6 @@
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">ftag</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../cli_utils/index.html">ftag.cli_utils</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">ftag.cuts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../flavours/index.html">ftag.flavours</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../git_check/index.html">ftag.git_check</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../hdf5/index.html">ftag.hdf5</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../hdf5/h5move/index.html">ftag.hdf5.h5move</a></li>
@@ -389,10 +388,8 @@
 <li class="toctree-l3"><a class="reference internal" href="../hdf5/h5writer/index.html">ftag.hdf5.h5writer</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2"><a class="reference internal" href="../labels/index.html">ftag.labels</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mock/index.html">ftag.mock</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../sample/index.html">ftag.sample</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../track_selector/index.html">ftag.track_selector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../transform/index.html">ftag.transform</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../vds/index.html">ftag.vds</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../wps/index.html">ftag.wps</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -504,41 +501,41 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ftag.cuts.CutsResult">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ftag.cuts.</span></span><span class="sig-name descname"><span class="pre">CutsResult</span></span><a class="headerlink" href="#ftag.cuts.CutsResult" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ftag.cuts.</span></span><span class="sig-name descname"><span class="pre">CutsResult</span></span><a class="headerlink" href="#ftag.cuts.CutsResult" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">NamedTuple</span></code></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.cuts.CutsResult.idx">
-<span class="sig-name descname"><span class="pre">idx</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span></em><a class="headerlink" href="#ftag.cuts.CutsResult.idx" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">idx</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span></span><a class="headerlink" href="#ftag.cuts.CutsResult.idx" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.cuts.CutsResult.values">
-<span class="sig-name descname"><span class="pre">values</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span></em><a class="headerlink" href="#ftag.cuts.CutsResult.values" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">values</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span></span><a class="headerlink" href="#ftag.cuts.CutsResult.values" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ftag.cuts.Cut">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ftag.cuts.</span></span><span class="sig-name descname"><span class="pre">Cut</span></span><a class="headerlink" href="#ftag.cuts.Cut" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ftag.cuts.</span></span><span class="sig-name descname"><span class="pre">Cut</span></span><a class="headerlink" href="#ftag.cuts.Cut" title="Link to this definition">#</a></dt>
 <dd><dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.cuts.Cut.variable">
-<span class="sig-name descname"><span class="pre">variable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ftag.cuts.Cut.variable" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">variable</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#ftag.cuts.Cut.variable" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.cuts.Cut.operator">
-<span class="sig-name descname"><span class="pre">operator</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ftag.cuts.Cut.operator" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">operator</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#ftag.cuts.Cut.operator" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.cuts.Cut._value">
-<span class="sig-name descname"><span class="pre">_value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#ftag.cuts.Cut._value" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">_value</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#ftag.cuts.Cut._value" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ftag.cuts.Cut.value">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#ftag.cuts.Cut.value" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">value</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#ftag.cuts.Cut.value" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -555,20 +552,20 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ftag.cuts.Cuts">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ftag.cuts.</span></span><span class="sig-name descname"><span class="pre">Cuts</span></span><a class="headerlink" href="#ftag.cuts.Cuts" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ftag.cuts.</span></span><span class="sig-name descname"><span class="pre">Cuts</span></span><a class="headerlink" href="#ftag.cuts.Cuts" title="Link to this definition">#</a></dt>
 <dd><dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.cuts.Cuts.cuts">
-<span class="sig-name descname"><span class="pre">cuts</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ftag.cuts.Cut" title="ftag.cuts.Cut"><span class="pre">Cut</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ftag.cuts.Cuts.cuts" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">cuts</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ftag.cuts.Cut" title="ftag.cuts.Cut"><span class="pre">Cut</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#ftag.cuts.Cuts.cuts" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ftag.cuts.Cuts.from_list">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cuts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><span class="pre">Cuts</span></a></span></span><a class="headerlink" href="#ftag.cuts.Cuts.from_list" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cuts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><span class="pre">Cuts</span></a></span></span><a class="headerlink" href="#ftag.cuts.Cuts.from_list" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ftag.cuts.Cuts.empty">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">empty</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><span class="pre">Cuts</span></a></span></span><a class="headerlink" href="#ftag.cuts.Cuts.empty" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">empty</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><span class="pre">Cuts</span></a></span></span><a class="headerlink" href="#ftag.cuts.Cuts.empty" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -578,7 +575,7 @@
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ftag.cuts.Cuts.variables">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">variables</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ftag.cuts.Cuts.variables" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">variables</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#ftag.cuts.Cuts.variables" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -641,11 +638,11 @@
       </div>
     </a>
     <a class="right-next"
-       href="../flavours/index.html"
+       href="../git_check/index.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">ftag.flavours</p>
+        <p class="prev-next-title">ftag.git_check</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -739,7 +736,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
     <br/>
   </p>
 </div>

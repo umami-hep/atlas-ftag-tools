@@ -41,8 +41,8 @@
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../../../../_static/documentation_options.js?v=269a13a8"></script>
-    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../../_static/copybutton.js?v=f281be69"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'autoapi/ftag/utils/logging/index';</script>
@@ -379,7 +379,6 @@
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../../index.html">ftag</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../cli_utils/index.html">ftag.cli_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../cuts/index.html">ftag.cuts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../flavours/index.html">ftag.flavours</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../fraction_optimization/index.html">ftag.fraction_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../git_check/index.html">ftag.git_check</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../hdf5/index.html">ftag.hdf5</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -390,10 +389,8 @@
 <li class="toctree-l3"><a class="reference internal" href="../../hdf5/h5writer/index.html">ftag.hdf5.h5writer</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2"><a class="reference internal" href="../../labels/index.html">ftag.labels</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../mock/index.html">ftag.mock</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../sample/index.html">ftag.sample</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../track_selector/index.html">ftag.track_selector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../transform/index.html">ftag.transform</a></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="../index.html">ftag.utils</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">ftag.utils.logging</a></li>
@@ -516,7 +513,7 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="ftag.utils.logging.CustomFormatter">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ftag.utils.logging.</span></span><span class="sig-name descname"><span class="pre">CustomFormatter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datefmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'%'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">defaults</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ftag.utils.logging.CustomFormatter" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ftag.utils.logging.</span></span><span class="sig-name descname"><span class="pre">CustomFormatter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datefmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'%'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">defaults</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ftag.utils.logging.CustomFormatter" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">logging.Formatter</span></code></p>
 <p>Logging Formatter to add colours and count warning / errors using implementation
 from
@@ -534,47 +531,47 @@ use one of %-formatting, <code class="xref py py-meth docutils literal notransla
 </div>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.utils.logging.CustomFormatter.grey">
-<span class="sig-name descname"><span class="pre">grey</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\x1b[38;21m'</span></em><a class="headerlink" href="#ftag.utils.logging.CustomFormatter.grey" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">grey</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\x1b[38;21m'</span></span><a class="headerlink" href="#ftag.utils.logging.CustomFormatter.grey" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.utils.logging.CustomFormatter.yellow">
-<span class="sig-name descname"><span class="pre">yellow</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\x1b[33;21m'</span></em><a class="headerlink" href="#ftag.utils.logging.CustomFormatter.yellow" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">yellow</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\x1b[33;21m'</span></span><a class="headerlink" href="#ftag.utils.logging.CustomFormatter.yellow" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.utils.logging.CustomFormatter.green">
-<span class="sig-name descname"><span class="pre">green</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\x1b[32;21m'</span></em><a class="headerlink" href="#ftag.utils.logging.CustomFormatter.green" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">green</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\x1b[32;21m'</span></span><a class="headerlink" href="#ftag.utils.logging.CustomFormatter.green" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.utils.logging.CustomFormatter.red">
-<span class="sig-name descname"><span class="pre">red</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\x1b[31;21m'</span></em><a class="headerlink" href="#ftag.utils.logging.CustomFormatter.red" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">red</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\x1b[31;21m'</span></span><a class="headerlink" href="#ftag.utils.logging.CustomFormatter.red" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.utils.logging.CustomFormatter.bold_red">
-<span class="sig-name descname"><span class="pre">bold_red</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\x1b[31;1m'</span></em><a class="headerlink" href="#ftag.utils.logging.CustomFormatter.bold_red" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">bold_red</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\x1b[31;1m'</span></span><a class="headerlink" href="#ftag.utils.logging.CustomFormatter.bold_red" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.utils.logging.CustomFormatter.reset">
-<span class="sig-name descname"><span class="pre">reset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\x1b[0m'</span></em><a class="headerlink" href="#ftag.utils.logging.CustomFormatter.reset" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\x1b[0m'</span></span><a class="headerlink" href="#ftag.utils.logging.CustomFormatter.reset" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.utils.logging.CustomFormatter.debugformat">
-<span class="sig-name descname"><span class="pre">debugformat</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'%(asctime)s</span> <span class="pre">-</span> <span class="pre">%(levelname)s:%(name)s:</span> <span class="pre">%(message)s</span> <span class="pre">(%(filename)s:%(lineno)d)'</span></em><a class="headerlink" href="#ftag.utils.logging.CustomFormatter.debugformat" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">debugformat</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'%(asctime)s</span> <span class="pre">-</span> <span class="pre">%(levelname)s:%(name)s:</span> <span class="pre">%(message)s</span> <span class="pre">(%(filename)s:%(lineno)d)'</span></span><a class="headerlink" href="#ftag.utils.logging.CustomFormatter.debugformat" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.utils.logging.CustomFormatter.date_format">
-<span class="sig-name descname"><span class="pre">date_format</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'%(levelname)s:%(name)s:</span> <span class="pre">%(message)s'</span></em><a class="headerlink" href="#ftag.utils.logging.CustomFormatter.date_format" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">date_format</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'%(levelname)s:%(name)s:</span> <span class="pre">%(message)s'</span></span><a class="headerlink" href="#ftag.utils.logging.CustomFormatter.date_format" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.utils.logging.CustomFormatter.formats">
-<span class="sig-name descname"><span class="pre">formats</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span></em><a class="headerlink" href="#ftag.utils.logging.CustomFormatter.formats" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">formats</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span></span><a class="headerlink" href="#ftag.utils.logging.CustomFormatter.formats" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -627,7 +624,7 @@ If the log_level is not set, it will be set to info</p>
 <dd class="field-even"><p>logger object with new level set</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>logger</p>
+<dd class="field-odd"><p><a class="reference internal" href="#ftag.utils.logging.logger" title="ftag.utils.logging.logger">logger</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -639,7 +636,7 @@ If the log_level is not set, it will be set to info</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>tools_logger</strong> (<em>logger</em>) – logger object</p></li>
+<li><p><strong>tools_logger</strong> (<a class="reference internal" href="#ftag.utils.logging.logger" title="ftag.utils.logging.logger"><em>logger</em></a>) – logger object</p></li>
 <li><p><strong>log_level</strong> (<em>str</em>) – Logging level corresponding CRITICAL, ERROR, WARNING, INFO, DEBUG, NOTSET</p></li>
 </ul>
 </dd>
@@ -760,7 +757,7 @@ If the log_level is not set, it will be set to info</p>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
     <br/>
   </p>
 </div>
