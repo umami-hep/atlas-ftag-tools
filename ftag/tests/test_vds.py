@@ -21,6 +21,8 @@ from ftag.vds import (
     sum_counts_once,
 )
 
+TEMPDIR_LOC = tempfile.gettempdir()
+
 
 # ---------------------------------------------------------------------
 # basic fixtures
@@ -242,7 +244,7 @@ def test_h5dir_files(test_h5_files):
 
 def test_h5dir_dirs(test_h5_dirs):
     to_match = str(test_h5_dirs[0].parent)
-    inner_part = re.match(r"(/tmp/)(outer_tmp.*)(inner_tmp.*h5)", to_match).group(3)
+    inner_part = re.match(rf"({TEMPDIR_LOC}/)(outer_tmp.*)(inner_tmp.*h5)", to_match).group(3)
     matched_reg = [inner_part]
     regex_path = str(Path(test_h5_dirs[0]).parent.parent)
     fnames = regex_files_from_dir(matched_reg, regex_path)
