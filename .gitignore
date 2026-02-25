@@ -22,3 +22,6 @@ env/
 *_cache/
 .coverage*
 .cometml-runs
+
+# UV files
+uv.lock
