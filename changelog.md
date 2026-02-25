@@ -3,6 +3,7 @@
 ### [Latest]
 
 - Fix MacOS test, use proper tempdir path [#149](https://github.com/umami-hep/atlas-ftag-tools/pull/149)
+- Add uv info and allow python up to 3.14.* [#150](https://github.com/umami-hep/atlas-ftag-tools/pull/150)
 
 ### [v0.3.1](https://github.com/umami-hep/atlas-ftag-tools/releases/tag/v0.3.1) (19.02.2026)
 
