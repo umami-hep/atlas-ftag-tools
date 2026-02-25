@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-__version__ = "v0.3.1"
+__version__ = "v0.3.2"
 
 from . import hdf5, utils
 from .cuts import Cuts
