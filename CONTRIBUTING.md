@@ -9,11 +9,18 @@ If this is your first visit, please start with our detailed [Developer Guideline
 ## Quick start
 
 1. **Fork** the repository and clone it locally.
-2. Create and activate a Python ≥ 3.9 virtual environment (or conda env).
+2. Create and activate a Python ≥ 3.10 virtual environment (or conda env).
 3. Install the package *plus* development extras:
 
    ```bash
-   python -m pip install -e ".[dev]"
+   cd atlas-ftag-tools
+   
+   # Using uv (recommended)
+   uv sync --extra dev 
+   # Or with pip
+   pip install -e .[dev]
+   
+   # Pre-commit hooks
    pre-commit install
    ```
 4. Run the hook chain once to auto‑format and lint the existing code base:
@@ -38,8 +45,7 @@ If this is your first visit, please start with our detailed [Developer Guideline
 
 ## Style & static checks
 
-* **Formatting:** [Black](https://black.readthedocs.io/)
-* **Linting & simple refactors:** [Ruff](https://docs.astral.sh/ruff/)
+* **Formatting & Linting & simple refactors:** [Ruff](https://docs.astral.sh/ruff/)
 * **Type safety:** [mypy](https://mypy-lang.org/)
 * **Import order:** isort (via ruff)
 

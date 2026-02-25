@@ -2,6 +2,8 @@
 
 ### [Latest]
 
+- Add uv info and allow python up to 3.14.* [#150](https://github.com/umami-hep/atlas-ftag-tools/pull/150)
+
 ### [v0.3.1](https://github.com/umami-hep/atlas-ftag-tools/releases/tag/v0.3.1) (19.02.2026)
 
 - Make vds creation directory configurable when using wildcard [#148](https://github.com/umami-hep/atlas-ftag-tools/pull/148)
