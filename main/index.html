@@ -399,7 +399,8 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <p><a class="reference external" href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg" /></a>
+  <p><a class="reference external" href="https://github.com/astral-sh/uv"><img alt="uv" src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json" /></a>
+<a class="reference external" href="https://github.com/astral-sh/ruff"><img alt="Ruff" src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json" /></a>
 <a class="reference external" href="https://umami-hep.github.io/atlas-ftag-tools/main"><img alt="Docs" src="https://img.shields.io/badge/info-documentation-informational" /></a>
 <a class="reference external" href="https://badge.fury.io/py/atlas-ftag-tools"><img alt="PyPI version" src="https://badge.fury.io/py/atlas-ftag-tools.svg" /></a>
 <a class="reference external" href="https://codecov.io/gh/umami-hep/atlas-ftag-tools"><img alt="codecov" src="https://codecov.io/gh/umami-hep/atlas-ftag-tools/branch/main/graph/badge.svg?token=MBHLIYYQ7I" /></a></p>
@@ -413,14 +414,55 @@ Please see the <a class="reference internal" href="#ftag/example.ipynb"><span cl
 <h1>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading">#</a></h1>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h2>
-<p>If you want to use this package without modification, you can install from <a class="reference external" href="https://pypi.org/project/atlas-ftag-tools/">pypi</a> using <code class="docutils literal notranslate"><span class="pre">pip</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">atlas-ftag-tools</span></code> can be installed from <a class="reference external" href="https://pypi.org/project/atlas-ftag-tools/">PyPI</a> or using the latest code from this repository.</p>
+<section id="install-latest-release-from-pypi">
+<h3>Install latest release from PyPI<a class="headerlink" href="#install-latest-release-from-pypi" title="Link to this heading">#</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>atlas-ftag-tools
 </pre></div>
 </div>
-<p>To additionally install the development dependencies (for formatting and linting) use</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>atlas-ftag-tools<span class="o">[</span>dev<span class="o">]</span>
+<p>The installation from PyPI only allows to install tagged releases, meaning you can not
+install the latest code from this repo using the above command.
+If you just want to use a stable release of <code class="docutils literal notranslate"><span class="pre">atlas-ftag-tools</span></code>, this is the way to go.</p>
+</section>
+<section id="install-latest-version-from-github">
+<h3>Install latest version from GitHub<a class="headerlink" href="#install-latest-version-from-github" title="Link to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>https://github.com/umami-hep/atlas-ftag-tools/archive/main.tar.gz
 </pre></div>
 </div>
+<p>This will install the latest version of <code class="docutils literal notranslate"><span class="pre">atlas-ftag-tools</span></code>, i.e. the current version
+from the <code class="docutils literal notranslate"><span class="pre">main</span></code> branch (no matter if it is a release/tagged commit).
+If you plan on contributing to <code class="docutils literal notranslate"><span class="pre">atlas-ftag-tools</span></code> and/or want the latest version possible, this
+is what you want.</p>
+</section>
+<section id="install-for-development-with-uv-recommended">
+<h3>Install for development with <code class="docutils literal notranslate"><span class="pre">uv</span></code> (recommended)<a class="headerlink" href="#install-for-development-with-uv-recommended" title="Link to this heading">#</a></h3>
+<p>For development, we recommend using <a class="reference external" href="https://docs.astral.sh/uv/"><code class="docutils literal notranslate"><span class="pre">uv</span></code></a>, a fast Python package installer and resolver. First, install <code class="docutils literal notranslate"><span class="pre">uv</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># On macOS and Linux</span>
+curl<span class="w"> </span>-LsSf<span class="w"> </span>https://astral.sh/uv/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh
+
+<span class="c1"># On Windows</span>
+powershell<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;irm https://astral.sh/uv/install.ps1 | iex&quot;</span>
+
+<span class="c1"># Or with pip (If installing from PyPI, we recommend installing uv into an isolated environment)</span>
+pip<span class="w"> </span>install<span class="w"> </span>uv
+</pre></div>
+</div>
+<p>Then clone the repository and install <code class="docutils literal notranslate"><span class="pre">atlas-ftag-tools</span></code> with development dependencies:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/umami-hep/atlas-ftag-tools.git
+<span class="nb">cd</span><span class="w"> </span>atlas-ftag-tools
+uv<span class="w"> </span>sync<span class="w"> </span>--extra<span class="w"> </span>dev
+</pre></div>
+</div>
+<p>This will install <code class="docutils literal notranslate"><span class="pre">atlas-ftag-tools</span></code> in editable mode along with all development tools (testing, linting, etc.).</p>
+<blockquote>
+<div><p>[!TIP]
+In order to use locally installed version of <code class="docutils literal notranslate"><span class="pre">atlas-ftag-tools</span></code> in other <code class="docutils literal notranslate"><span class="pre">uv</span></code>-managed projects, you can add the following to the <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> of the other project:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[tool.uv.sources]</span>
+<span class="n">atlas-ftag-tools</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;path_to/atlas-ftag-tools&quot;</span><span class="w"> </span><span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
 </section>
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">#</a></h2>
@@ -480,7 +522,12 @@ Please see the <a class="reference internal" href="#ftag/example.ipynb"><span cl
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">ATLAS FTAG Python Tools</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#quickstart">Quickstart</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-latest-release-from-pypi">Install latest release from PyPI</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-latest-version-from-github">Install latest version from GitHub</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-for-development-with-uv-recommended">Install for development with <code class="docutils literal notranslate"><span class="pre">uv</span></code> (recommended)</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
 </ul>
 </li>
