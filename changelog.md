@@ -3,6 +3,7 @@
 ### [Latest]
 
 - Adding LZ4 to H5Writer as Default [#152](https://github.com/umami-hep/atlas-ftag-tools/pull/152)
+
 ### [v0.3.2](https://github.com/umami-hep/atlas-ftag-tools/releases/tag/v0.3.2) (25.02.2026)
 
 - Fix MacOS test, use proper tempdir path [#149](https://github.com/umami-hep/atlas-ftag-tools/pull/149)
