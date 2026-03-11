@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import h5py
+import hdf5plugin
 import numpy as np
 import pytest
 
@@ -268,3 +269,115 @@ def test_from_file_with_variable_subset(tmp_path):
     # Check shapes respect the updated num_jets
     assert writer.shapes["jets"][0] == 10
     assert writer.shapes["tracks"][0] == 10
+
+
+@pytest.mark.parametrize(
+    ("compression", "expected_compression"),
+    [
+        (None, None),
+        ("none", None),
+        ("lzf", "lzf"),
+        ("gzip", "gzip"),
+        ("lz4", hdf5plugin.LZ4.filter_id),
+        ("zstd", hdf5plugin.Zstd.filter_id),
+    ],
+)
+def test_create_ds_with_compression(tmp_path, jet_dtype, compression, expected_compression):
+    writer = H5Writer(
+        dst=Path(tmp_path) / f"test_{compression}.h5",
+        dtypes={"jets": jet_dtype},
+        shapes={"jets": (100,)},
+        compression=compression,
+    )
+
+    ds = writer.file["jets"]
+    assert "jets" in writer.file
+
+    if compression in {None, "none", "lzf", "gzip"}:
+        assert ds.compression == expected_compression
+    else:
+        assert ds.compression is None
+        assert ds.compression_opts is not None
+
+    writer.close()
+
+
+@pytest.mark.parametrize("compression", [None, "none", "lzf", "gzip", "lz4", "zstd"])
+def test_write_with_compression(tmp_path, mock_data, compression):
+    jets, tracks = mock_data
+    dtypes = {"jets": jets.dtype, "tracks": tracks.dtype}
+    shapes = {"jets": jets.shape, "tracks": tracks.shape}
+
+    writer = H5Writer(
+        dst=Path(tmp_path) / f"test_write_{compression}.h5",
+        dtypes=dtypes,
+        shapes=shapes,
+        compression=compression,
+        shuffle=False,
+    )
+
+    writer.write({"jets": jets, "tracks": tracks})
+    writer.close()
+
+    with h5py.File(writer.dst) as f:
+        assert np.array_equal(f["jets"][:], jets)
+        assert np.array_equal(f["tracks"][:], tracks)
+
+
+@pytest.mark.parametrize("compression", ["invalid", "foo", "lz5"])
+def test_invalid_compression_raises(tmp_path, jet_dtype, compression):
+    with pytest.raises(ValueError, match="Unsupported compression"):
+        H5Writer(
+            dst=Path(tmp_path) / "test_invalid_compression.h5",
+            dtypes={"jets": jet_dtype},
+            shapes={"jets": (100,)},
+            compression=compression,
+        )
+
+
+@pytest.mark.parametrize("compression", ["lzf", "gzip"])
+def test_from_file_preserves_compression(tmp_path, compression):
+    src_path = tmp_path / f"source_{compression}.h5"
+    dst_path = tmp_path / f"dest_{compression}.h5"
+
+    jets = np.zeros(10, dtype=[("pt", "f4"), ("eta", "f4")])
+    tracks = np.zeros((10, 5), dtype=[("d0", "f4"), ("z0", "f4")])
+
+    with h5py.File(src_path, "w") as f:
+        f.create_dataset("jets", data=jets, compression=compression)
+        f.create_dataset("tracks", data=tracks, compression=compression)
+
+    writer = H5Writer.from_file(source=src_path, dst=dst_path, shuffle=False)
+    writer.write({"jets": jets, "tracks": tracks})
+    writer.close()
+
+    with h5py.File(dst_path) as f:
+        assert f["jets"].compression == compression
+        assert f["tracks"].compression == compression
+        assert np.array_equal(f["jets"][:], jets)
+        assert np.array_equal(f["tracks"][:], tracks)
+
+
+def test_from_file_override_compression(tmp_path):
+    src_path = tmp_path / "source_lzf.h5"
+    dst_path = tmp_path / "dest_gzip.h5"
+
+    jets = np.zeros(10, dtype=[("pt", "f4"), ("eta", "f4")])
+    tracks = np.zeros((10, 5), dtype=[("d0", "f4"), ("z0", "f4")])
+
+    with h5py.File(src_path, "w") as f:
+        f.create_dataset("jets", data=jets, compression="lzf")
+        f.create_dataset("tracks", data=tracks, compression="lzf")
+
+    writer = H5Writer.from_file(
+        source=src_path,
+        dst=dst_path,
+        shuffle=False,
+        compression="gzip",
+    )
+    writer.write({"jets": jets, "tracks": tracks})
+    writer.close()
+
+    with h5py.File(dst_path) as f:
+        assert f["jets"].compression == "gzip"
+        assert f["tracks"].compression == "gzip"

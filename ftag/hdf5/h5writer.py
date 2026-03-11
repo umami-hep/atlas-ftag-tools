@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 import h5py
+import hdf5plugin
 import numpy as np
 
 import ftag
@@ -26,8 +27,8 @@ class H5Writer:
         Name of the jets group. Default is "jets".
     add_flavour_label : bool, optional
         Whether to add a flavour label to the jets group. Default is False.
-    compression : str, optional
-        Compression algorithm to use. Default is "lzf".
+    compression : str | None, optional
+        Compression algorithm to use. Default is lz4.
     precision : str, optional
         Precision to use. Default is None.
     full_precision_vars : list[str] | None, optional
@@ -45,7 +46,7 @@ class H5Writer:
     shapes: dict[str, tuple[int, ...]]
     jets_name: str = "jets"
     add_flavour_label: bool = False
-    compression: str = "lzf"
+    compression: str | None = "lz4"
     precision: str = "full"
     full_precision_vars: list[str] | None = None
     shuffle: bool = True
@@ -75,6 +76,9 @@ class H5Writer:
         else:
             raise ValueError(f"Invalid precision: {self.precision}")
 
+        # Check compression
+        self.compression = self._resolve_compression(self.compression)
+
         self.dst = Path(self.dst)
         self.dst.parent.mkdir(parents=True, exist_ok=True)
         self.file = h5py.File(self.dst, "w")
@@ -84,6 +88,55 @@ class H5Writer:
             self.create_ds(name, dtype)
         if self.groups:
             self.save_groups(self.groups)
+
+    def _resolve_compression(self, compression: str | None) -> str | object | None:
+        """Resolve a user-facing compression string into an HDF5 compression spec.
+
+        This method converts a human-readable compression identifier into the
+        corresponding object or string expected by :func:`h5py.File.create_dataset`.
+        Built-in HDF5 filters (e.g. ``"gzip"``, ``"lzf"``) are returned unchanged,
+        while plugin-based filters (e.g. ``"lz4"``, ``"zstd"``) are converted into
+        the appropriate filter objects provided by ``hdf5plugin``.
+
+        Parameters
+        ----------
+        compression : str | None
+            Compression algorithm identifier. Supported values are
+
+            - ``None`` or ``"none"``: disable compression
+            - ``"lzf"``: built-in fast compression
+            - ``"gzip"``: gzip/deflate compression
+            - ``"lz4"``: LZ4 compression via ``hdf5plugin``
+            - ``"zstd"``: Zstandard compression via ``hdf5plugin``
+
+        Returns
+        -------
+        str | object | None
+            Compression specification compatible with ``h5py.create_dataset``.
+            This is either a string (for built-in filters), an object returned
+            by ``hdf5plugin`` (for plugin filters), or ``None`` if compression
+            is disabled.
+
+        Raises
+        ------
+        ValueError
+            If the provided compression identifier is not supported.
+        """
+        if compression is None or compression == "none":
+            return None
+
+        if compression in {"lzf", "gzip"}:
+            return compression
+
+        if compression == "lz4":
+            return hdf5plugin.LZ4()
+
+        if compression == "zstd":
+            return hdf5plugin.Zstd()
+
+        raise ValueError(
+            f"Unsupported compression '{compression}'. Supported: none, lzf, gzip, lz4, zstd."
+        )
 
     @classmethod
     def from_file(
