@@ -182,3 +182,15 @@ class TestMetadataFinder:
         ):
             finder.inject_metadata()
             assert "No metadata found in PMG DB" in capsys.readouterr().out
+
+    def test_inject_metadata_no_container(self, mock_h5, capsys):
+        """Cover the specific branch: if not container."""
+        finder = MetadataFinder(mock_h5)
+        with (
+            patch.object(finder, "_extract_taskid", return_value="12345678"),
+            patch.object(finder, "_fetch_taskinfo", return_value={"some": "info"}),
+            patch.object(finder, "_extract_container", return_value=None),
+        ):
+            finder.inject_metadata()
+            captured = capsys.readouterr()
+            assert "Failed to extract container name" in captured.out
