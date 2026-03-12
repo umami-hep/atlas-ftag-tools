@@ -65,7 +65,7 @@ class H5Writer:
         Expected total number of jets to write. If given, datasets are created
         in fixed-size mode. If ``None``, datasets are created in dynamic mode
         and resized during writing. Default is ``None``.
-    groups : dict[str, dict] | None, optional
+    groups : dict[str, h5py.Group] | None, optional
         Mapping of metadata group names to extracted group contents to be copied
         into the output file. Default is ``None``.
 
@@ -85,11 +85,11 @@ class H5Writer:
     add_flavour_label: bool = False
     compression: str | None = "lz4"
     compression_opts: int | None = None
-    precision: str = "full"
+    precision: str | None = "full"
     full_precision_vars: list[str] | None = None
     shuffle: bool = True
     num_jets: int | None = None
-    groups: dict[str, dict] | None = None
+    groups: dict[str, h5py.Group] | None = None
 
     def __post_init__(self) -> None:
         self.num_written = 0
@@ -114,7 +114,9 @@ class H5Writer:
         else:
             raise ValueError(f"Invalid precision: {self.precision}")
 
-        self.compression, self.compression_opts = self._resolve_compression(self.compression)
+        self.resolved_compression, self.resolved_compression_opts = self._resolve_compression(
+            self.compression
+        )
 
         self.dst = Path(self.dst)
         self.dst.parent.mkdir(parents=True, exist_ok=True)
@@ -169,25 +171,37 @@ class H5Writer:
             If the provided compression identifier is not supported.
         """
         if compression is None or compression == "none":
-            return None, None
+            used_compression = None
+            used_opts = None
 
-        if compression == "gzip":
-            return "gzip", self.compression_opts
+        elif compression == "gzip":
+            used_compression = "gzip"
+            used_opts = self.compression_opts
 
-        if compression == "lzf":
-            return "lzf", None
+        elif compression == "lzf":
+            used_compression = "lzf"
+            used_opts = None
 
-        if compression == "lz4":
+        elif compression == "lz4":
+            used_opts = None
             if self.compression_opts is None:
-                return hdf5plugin.LZ4(), None
-            return hdf5plugin.LZ4(clevel=self.compression_opts), None
+                used_compression = hdf5plugin.LZ4()
 
-        if compression == "zstd":
+            else:
+                used_compression = hdf5plugin.LZ4(clevel=self.compression_opts)
+
+        elif compression == "zstd":
+            used_opts = None
             if self.compression_opts is None:
-                return hdf5plugin.Zstd(), None
-            return hdf5plugin.Zstd(clevel=self.compression_opts), None
+                used_compression = hdf5plugin.Zstd()
 
-        raise ValueError(f"Unsupported compression: {compression}")
+            else:
+                used_compression = hdf5plugin.Zstd(clevel=self.compression_opts)
+
+        else:
+            raise ValueError(f"Unsupported compression: {compression}")
+
+        return used_compression, used_opts
 
     @classmethod
     def from_file(
@@ -235,9 +249,6 @@ class H5Writer:
         ------
         TypeError
             If an object in the source file is neither an HDF5 dataset nor group.
-        AssertionError
-            If the source file datasets do not all use the same compression and
-            no explicit ``compression`` override is provided.
         """
         with h5py.File(source, "r") as f:
             dtypes = {}
@@ -309,33 +320,27 @@ class H5Writer:
             dtype = np.dtype([*dtype.descr, ("flavour_label", "i4")])
 
         fp_vars = self.full_precision_vars or []
-        dtype = np.dtype(
-            [
+        dtype = np.dtype([
+            (
+                field,
                 (
-                    field,
-                    (
-                        self.fp_dtype
-                        if (
-                            self.fp_dtype
-                            and field not in fp_vars
-                            and np.issubdtype(dt, np.floating)
-                        )
-                        else dt
-                    ),
-                )
-                for field, dt in dtype.descr
-            ]
-        )
+                    self.fp_dtype
+                    if (self.fp_dtype and field not in fp_vars and np.issubdtype(dt, np.floating))
+                    else dt
+                ),
+            )
+            for field, dt in dtype.descr
+        ])
 
         shape = self.shapes[name]
         chunks = (100, *shape[1:]) if shape[1:] else None
         kwargs = {
             "dtype": dtype,
-            "compression": self.compression,
+            "compression": self.resolved_compression,
             "chunks": chunks,
         }
-        if self.compression_opts is not None:
-            kwargs["compression_opts"] = self.compression_opts
+        if self.resolved_compression_opts is not None:
+            kwargs["compression_opts"] = self.resolved_compression_opts
 
         if self.fixed_mode:
             self.file.create_dataset(name, shape=shape, **kwargs)
@@ -366,14 +371,40 @@ class H5Writer:
                 )
         self.file.close()
 
-    def get_attr(self, name, group=None):
-        """Return an attribute from the output file or one of its groups."""
+    def get_attr(self, name: str, group: str | None = None) -> Any:
+        """Return an attribute from the output file or one of its groups.
+
+        Parameters
+        ----------
+        name : str
+            Name of the attribute to retrieve.
+        group : str | None, optional
+            Name of the group from which the attribute should be read.
+            If ``None``, the attribute is read from the root of the HDF5 file.
+
+        Returns
+        -------
+        Any
+            Value of the requested attribute.
+        """
         with h5py.File(self.dst) as f:
             obj = f[group] if group else f
             return obj.attrs[name]
 
-    def add_attr(self, name, data, group=None) -> None:
-        """Add an attribute to the output file or one of its groups."""
+    def add_attr(self, name: str, data: Any, group: str | None = None) -> None:
+        """Add an attribute to the output file or one of its groups.
+
+        Parameters
+        ----------
+        name : str
+            Name of the attribute to create.
+        data : Any
+            Attribute value to store. The value must be compatible with
+            HDF5 attribute storage.
+        group : str | None, optional
+            Name of the group to which the attribute should be added.
+            If ``None``, the attribute is written to the root of the HDF5 file.
+        """
         obj = self.file[group] if group else self.file
         obj.attrs.create(name, data)
 
@@ -414,10 +445,12 @@ class H5Writer:
         low = self.num_written
         high = low + batch_size
 
-        if self.fixed_mode and high > self.num_jets:
-            raise ValueError(
-                f"Attempted to write more jets than expected: {high:,} > {self.num_jets:,}"
-            )
+        if self.fixed_mode:
+            assert self.num_jets is not None
+            if high > self.num_jets:
+                raise ValueError(
+                    f"Attempted to write more jets than expected: {high:,} > {self.num_jets:,}"
+                )
 
         for group in self.dtypes:
             ds = self.file[group]
