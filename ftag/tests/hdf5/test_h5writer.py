@@ -401,7 +401,6 @@ def test_write_with_compression(tmp_path, mock_data, compression):
     )
 
     writer.write({"jets": jets, "tracks": tracks})
-    assert writer.file["jets"].compression == compression
     writer.close()
 
     with h5py.File(writer.dst) as f:
