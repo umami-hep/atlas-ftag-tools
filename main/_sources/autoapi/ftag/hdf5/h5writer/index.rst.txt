@@ -17,7 +17,13 @@ Module Contents
 
 .. py:class:: H5Writer
 
-   Writes jets to an HDF5 file.
+   Write jet-based data to an HDF5 file.
+
+   This class creates one dataset per entry in ``dtypes``/``shapes`` and
+   supports both fixed-size and dynamically growing output files. Floating-point
+   fields can optionally be downcast before writing, selected metadata groups
+   can be copied from an existing file, and several HDF5 compression backends
+   are supported.
 
    .. attribute:: dst
 
@@ -27,63 +33,93 @@ Module Contents
 
    .. attribute:: dtypes
 
-      Dictionary of group names and their corresponding dtypes.
+      Mapping from dataset name to output dtype.
 
       :type: dict[str, np.dtype]
 
    .. attribute:: shapes
 
-      Dictionary of group names and their corresponding shapes.
+      Mapping from dataset name to output shape. All datasets must agree in
+      their first dimension unless ``num_jets`` is explicitly given.
 
-      :type: dict[str, tuple[int, ...]], optional
+      :type: dict[str, tuple[int, ...]]
 
    .. attribute:: jets_name
 
-      Name of the jets group. Default is "jets".
+      Name of the jet dataset. This dataset is used to determine batch sizes
+      during writing. Default is ``"jets"``.
 
       :type: str, optional
 
    .. attribute:: add_flavour_label
 
-      Whether to add a flavour label to the jets group. Default is False.
+      If ``True``, append a ``"flavour_label"`` field of type ``i4`` to the
+      jet dataset if it is not already present. Default is ``False``.
 
       :type: bool, optional
 
    .. attribute:: compression
 
-      Compression algorithm to use. Default is "lzf".
+      Compression algorithm to use. Supported values are ``None``,
+      ``"none"``, ``"gzip"``, ``"lzf"``, ``"lz4"``, and ``"zstd"``.
+      Default is ``"lz4"``.
 
-      :type: str, optional
+      :type: str | None, optional
+
+   .. attribute:: compression_opts
+
+      Optional compression level or backend-specific compression setting.
+      For ``"gzip"``, this is passed as ``compression_opts`` to HDF5.
+      For plugin-based compressors such as ``"lz4"`` and ``"zstd"``, this is
+      interpreted as the plugin compression level and folded into the filter
+      object. Ignored for compressors that do not support an explicit level.
+      Default is ``None``.
+
+      :type: int | None, optional
 
    .. attribute:: precision
 
-      Precision to use. Default is None.
+      Floating-point storage precision for output fields. Supported values are
 
-      :type: str, optional
+      - ``"full"``: cast floating-point fields to ``np.float32``
+      - ``"half"``: cast floating-point fields to ``np.float16``
+      - ``None``: keep original floating-point dtypes
+
+      Default is ``"full"``.
+
+      :type: str | None, optional
 
    .. attribute:: full_precision_vars
 
-      List of variables to store in full precision. Default is None.
+      Variables that should keep their original dtype even when ``precision``
+      requests downcasting. Default is ``None``.
 
       :type: list[str] | None, optional
 
    .. attribute:: shuffle
 
-      Whether to shuffle the jets before writing. Default is True.
+      If ``True``, shuffle each batch before writing. Default is ``True``.
 
       :type: bool, optional
 
    .. attribute:: num_jets
 
-      Number of jets to write.
+      Expected total number of jets to write. If given, datasets are created
+      in fixed-size mode. If ``None``, datasets are created in dynamic mode
+      and resized during writing. Default is ``None``.
 
-      :type: int | None
+      :type: int | None, optional
 
    .. attribute:: groups
 
-      Groups to copy from the source file. Default is None.
+      Mapping of metadata group names to extracted group contents to be copied
+      into the output file. Default is ``None``.
 
-      :type: dict[str, h5py.Group] | None
+      :type: dict[str, h5py.Group] | None, optional
+
+   :raises ValueError: If an unsupported precision or compression setting is provided.
+   :raises AssertionError: If dataset shapes disagree in their first dimension when ``num_jets``
+       is not explicitly specified.
 
 
    .. py:attribute:: dst
@@ -111,13 +147,19 @@ Module Contents
 
 
    .. py:attribute:: compression
-      :type:  str
-      :value: 'lzf'
+      :type:  str | None
+      :value: 'lz4'
+
+
+
+   .. py:attribute:: compression_opts
+      :type:  int | None
+      :value: None
 
 
 
    .. py:attribute:: precision
-      :type:  str
+      :type:  str | None
       :value: 'full'
 
 
@@ -146,32 +188,158 @@ Module Contents
 
 
 
-   .. py:method:: __post_init__()
+   .. py:method:: __post_init__() -> None
 
 
-   .. py:method:: from_file(source: pathlib.Path, num_jets: int | None = 0, variables=None, copy_groups=True, **kwargs) -> H5Writer
+   .. py:method:: _resolve_compression(compression: str | None) -> tuple[str | object | None, int | None]
+
+      Resolve a user-facing compression setting into HDF5 write arguments.
+
+      This method converts a human-readable compression identifier into the
+      values used when calling :meth:`h5py.File.create_dataset`. Built-in HDF5
+      filters such as ``"gzip"`` and ``"lzf"`` are returned as strings,
+      optionally together with an HDF5 ``compression_opts`` value. Plugin-based
+      filters such as ``"lz4"`` and ``"zstd"`` are converted into the
+      corresponding filter objects provided by ``hdf5plugin``. In that case,
+      any user-provided ``compression_opts`` value is absorbed into the plugin
+      object and the returned HDF5 ``compression_opts`` is ``None``.
+
+      :param compression: Compression algorithm identifier. Supported values are
+
+                          - ``None`` or ``"none"``: disable compression
+                          - ``"gzip"``: gzip/deflate compression
+                          - ``"lzf"``: built-in fast compression
+                          - ``"lz4"``: LZ4 compression via ``hdf5plugin``
+                          - ``"zstd"``: Zstandard compression via ``hdf5plugin``
+      :type compression: str | None
+
+      :returns: Two-element tuple ``(compression, compression_opts)`` suitable for
+                passing to :meth:`h5py.File.create_dataset`.
+
+                - For no compression, returns ``(None, None)``.
+                - For built-in HDF5 filters, returns the filter name and optional
+                  HDF5 ``compression_opts``.
+                - For plugin filters, returns the instantiated plugin object and
+                  ``None``.
+      :rtype: tuple[str | object | None, int | None]
+
+      :raises ValueError: If the provided compression identifier is not supported.
+
+
+
+   .. py:method:: from_file(source: pathlib.Path | str, num_jets: int | None = 0, variables: dict[str, list[str] | None] | None = None, copy_groups: bool = True, **kwargs: Any) -> H5Writer
       :classmethod:
+
+
+      Construct a writer from the structure of an existing HDF5 file.
+
+      This class method inspects an input file and derives output dataset
+      dtypes, shapes, compression, and optionally metadata groups from it.
+      It can be used to create a writer that mirrors the input file layout,
+      optionally restricted to a subset of variables and/or a different number
+      of output jets.
+
+      :param source: Source HDF5 file from which to infer the output structure.
+      :type source: Path | str
+      :param num_jets: If non-zero, override the first dimension of all dataset shapes with
+                       this value. If ``0``, keep the original dataset lengths. Default is
+                       ``0``.
+      :type num_jets: int | None, optional
+      :param variables: Optional mapping from dataset name to a list of variables to keep.
+                        If provided, output dtypes are reduced accordingly. Default is
+                        ``None``.
+      :type variables: dict[str, list[str] | None] | None, optional
+      :param copy_groups: If ``True``, copy non-dataset groups from the source file into the
+                          created writer. Default is ``True``.
+      :type copy_groups: bool, optional
+      :param \*\*kwargs: Additional keyword arguments forwarded to the class constructor.
+                         This can be used, for example, to override ``compression``,
+                         ``compression_opts``, ``precision``, or ``full_precision_vars``.
+      :type \*\*kwargs: Any
+
+      :returns: Writer initialized from the source file structure.
+      :rtype: H5Writer
+
+      :raises TypeError: If an object in the source file is neither an HDF5 dataset nor group.
 
 
 
    .. py:method:: save_groups(groups: dict[str, dict]) -> None
 
+      Write extracted metadata groups into the output file.
+
+      :param groups: Mapping from group name to extracted group contents.
+      :type groups: dict[str, dict]
+
+
 
    .. py:method:: create_ds(name: str, dtype: numpy.dtype) -> None
+
+      Create one output dataset.
+
+      :param name: Dataset name.
+      :type name: str
+      :param dtype: Input dtype definition for the dataset.
+      :type dtype: np.dtype
+
 
 
    .. py:method:: close() -> None
 
+      Close the output file.
 
-   .. py:method:: get_attr(name, group=None)
+      :raises ValueError: If the writer is closed before the expected number of jets has been
+          written in fixed-size mode.
 
 
-   .. py:method:: add_attr(name, data, group=None) -> None
+
+   .. py:method:: get_attr(name: str, group: str | None = None) -> Any
+
+      Return an attribute from the output file or one of its groups.
+
+      :param name: Name of the attribute to retrieve.
+      :type name: str
+      :param group: Name of the group from which the attribute should be read.
+                    If ``None``, the attribute is read from the root of the HDF5 file.
+      :type group: str | None, optional
+
+      :returns: Value of the requested attribute.
+      :rtype: Any
+
+
+
+   .. py:method:: add_attr(name: str, data: Any, group: str | None = None) -> None
+
+      Add an attribute to the output file or one of its groups.
+
+      :param name: Name of the attribute to create.
+      :type name: str
+      :param data: Attribute value to store. The value must be compatible with
+                   HDF5 attribute storage.
+      :type data: Any
+      :param group: Name of the group to which the attribute should be added.
+                    If ``None``, the attribute is written to the root of the HDF5 file.
+      :type group: str | None, optional
+
 
 
    .. py:method:: copy_attrs(fname: pathlib.Path) -> None
 
+      Copy file- and dataset-level attributes from another HDF5 file.
+
+      :param fname: Path to the source HDF5 file.
+      :type fname: Path
+
+
 
    .. py:method:: write(data: dict[str, numpy.ndarray]) -> None
+
+      Write one batch of data to the output file.
+
+      :param data: Mapping from dataset name to batch array.
+      :type data: dict[str, np.ndarray]
+
+      :raises ValueError: If writing this batch would exceed ``num_jets`` in fixed-size mode.
+
 
 

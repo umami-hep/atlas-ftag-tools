@@ -380,7 +380,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../cli_utils/index.html">ftag.cli_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../cuts/index.html">ftag.cuts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../find_metadata/index.html">ftag.find_metadata</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../flavours/index.html">ftag.flavours</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../fraction_optimization/index.html">ftag.fraction_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../git_check/index.html">ftag.git_check</a></li>
 <li class="toctree-l2 current active has-children"><a class="current reference internal" href="#">ftag.hdf5</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -392,10 +391,8 @@
 <li class="toctree-l3"><a class="reference internal" href="h5writer/index.html">ftag.hdf5.h5writer</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2"><a class="reference internal" href="../labels/index.html">ftag.labels</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mock/index.html">ftag.mock</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../sample/index.html">ftag.sample</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../track_selector/index.html">ftag.track_selector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../transform/index.html">ftag.transform</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../utils/index.html">ftag.utils</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../utils/logging/index.html">ftag.utils.logging</a></li>
@@ -493,7 +490,7 @@
 <td><p>Reads data from multiple HDF5 files.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ftag.hdf5.H5Writer" title="ftag.hdf5.H5Writer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">H5Writer</span></code></a></p></td>
-<td><p>Writes jets to an HDF5 file.</p></td>
+<td><p>Write jet-based data to an HDF5 file.</p></td>
 </tr>
 </tbody>
 </table>
@@ -944,7 +941,12 @@ If None, the virtual files will be created in the same directory as the input fi
 <dl class="py class">
 <dt class="sig sig-object py" id="ftag.hdf5.H5Writer">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ftag.hdf5.</span></span><span class="sig-name descname"><span class="pre">H5Writer</span></span><a class="headerlink" href="#ftag.hdf5.H5Writer" title="Link to this definition">#</a></dt>
-<dd><p>Writes jets to an HDF5 file.</p>
+<dd><p>Write jet-based data to an HDF5 file.</p>
+<p>This class creates one dataset per entry in <code class="docutils literal notranslate"><span class="pre">dtypes</span></code>/<code class="docutils literal notranslate"><span class="pre">shapes</span></code> and
+supports both fixed-size and dynamically growing output files. Floating-point
+fields can optionally be downcast before writing, selected metadata groups
+can be copied from an existing file, and several HDF5 compression backends
+are supported.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.hdf5.H5Writer.dst">
 <span class="sig-name descname"><span class="pre">dst</span></span><a class="headerlink" href="#ftag.hdf5.H5Writer.dst" title="Link to this definition">#</a></dt>
@@ -959,7 +961,7 @@ If None, the virtual files will be created in the same directory as the input fi
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.hdf5.H5Writer.dtypes">
 <span class="sig-name descname"><span class="pre">dtypes</span></span><a class="headerlink" href="#ftag.hdf5.H5Writer.dtypes" title="Link to this definition">#</a></dt>
-<dd><p>Dictionary of group names and their corresponding dtypes.</p>
+<dd><p>Mapping from dataset name to output dtype.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict[str, np.dtype]</p>
@@ -970,10 +972,11 @@ If None, the virtual files will be created in the same directory as the input fi
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.hdf5.H5Writer.shapes">
 <span class="sig-name descname"><span class="pre">shapes</span></span><a class="headerlink" href="#ftag.hdf5.H5Writer.shapes" title="Link to this definition">#</a></dt>
-<dd><p>Dictionary of group names and their corresponding shapes.</p>
+<dd><p>Mapping from dataset name to output shape. All datasets must agree in
+their first dimension unless <code class="docutils literal notranslate"><span class="pre">num_jets</span></code> is explicitly given.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict[str, tuple[int, …]], optional</p>
+<dd class="field-odd"><p>dict[str, tuple[int, …]]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -981,7 +984,8 @@ If None, the virtual files will be created in the same directory as the input fi
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.hdf5.H5Writer.jets_name">
 <span class="sig-name descname"><span class="pre">jets_name</span></span><a class="headerlink" href="#ftag.hdf5.H5Writer.jets_name" title="Link to this definition">#</a></dt>
-<dd><p>Name of the jets group. Default is “jets”.</p>
+<dd><p>Name of the jet dataset. This dataset is used to determine batch sizes
+during writing. Default is <code class="docutils literal notranslate"><span class="pre">&quot;jets&quot;</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str, optional</p>
@@ -992,7 +996,8 @@ If None, the virtual files will be created in the same directory as the input fi
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.hdf5.H5Writer.add_flavour_label">
 <span class="sig-name descname"><span class="pre">add_flavour_label</span></span><a class="headerlink" href="#ftag.hdf5.H5Writer.add_flavour_label" title="Link to this definition">#</a></dt>
-<dd><p>Whether to add a flavour label to the jets group. Default is False.</p>
+<dd><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, append a <code class="docutils literal notranslate"><span class="pre">&quot;flavour_label&quot;</span></code> field of type <code class="docutils literal notranslate"><span class="pre">i4</span></code> to the
+jet dataset if it is not already present. Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool, optional</p>
@@ -1003,10 +1008,28 @@ If None, the virtual files will be created in the same directory as the input fi
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.hdf5.H5Writer.compression">
 <span class="sig-name descname"><span class="pre">compression</span></span><a class="headerlink" href="#ftag.hdf5.H5Writer.compression" title="Link to this definition">#</a></dt>
-<dd><p>Compression algorithm to use. Default is “lzf”.</p>
+<dd><p>Compression algorithm to use. Supported values are <code class="docutils literal notranslate"><span class="pre">None</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&quot;none&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;gzip&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;lzf&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;lz4&quot;</span></code>, and <code class="docutils literal notranslate"><span class="pre">&quot;zstd&quot;</span></code>.
+Default is <code class="docutils literal notranslate"><span class="pre">&quot;lz4&quot;</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str, optional</p>
+<dd class="field-odd"><p>str | None, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ftag.hdf5.H5Writer.compression_opts">
+<span class="sig-name descname"><span class="pre">compression_opts</span></span><a class="headerlink" href="#ftag.hdf5.H5Writer.compression_opts" title="Link to this definition">#</a></dt>
+<dd><p>Optional compression level or backend-specific compression setting.
+For <code class="docutils literal notranslate"><span class="pre">&quot;gzip&quot;</span></code>, this is passed as <code class="docutils literal notranslate"><span class="pre">compression_opts</span></code> to HDF5.
+For plugin-based compressors such as <code class="docutils literal notranslate"><span class="pre">&quot;lz4&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;zstd&quot;</span></code>, this is
+interpreted as the plugin compression level and folded into the filter
+object. Ignored for compressors that do not support an explicit level.
+Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int | None, optional</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1014,10 +1037,16 @@ If None, the virtual files will be created in the same directory as the input fi
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.hdf5.H5Writer.precision">
 <span class="sig-name descname"><span class="pre">precision</span></span><a class="headerlink" href="#ftag.hdf5.H5Writer.precision" title="Link to this definition">#</a></dt>
-<dd><p>Precision to use. Default is None.</p>
+<dd><p>Floating-point storage precision for output fields. Supported values are</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;full&quot;</span></code>: cast floating-point fields to <code class="docutils literal notranslate"><span class="pre">np.float32</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;half&quot;</span></code>: cast floating-point fields to <code class="docutils literal notranslate"><span class="pre">np.float16</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">None</span></code>: keep original floating-point dtypes</p></li>
+</ul>
+<p>Default is <code class="docutils literal notranslate"><span class="pre">&quot;full&quot;</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str, optional</p>
+<dd class="field-odd"><p>str | None, optional</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1025,7 +1054,8 @@ If None, the virtual files will be created in the same directory as the input fi
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.hdf5.H5Writer.full_precision_vars">
 <span class="sig-name descname"><span class="pre">full_precision_vars</span></span><a class="headerlink" href="#ftag.hdf5.H5Writer.full_precision_vars" title="Link to this definition">#</a></dt>
-<dd><p>List of variables to store in full precision. Default is None.</p>
+<dd><p>Variables that should keep their original dtype even when <code class="docutils literal notranslate"><span class="pre">precision</span></code>
+requests downcasting. Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list[str] | None, optional</p>
@@ -1036,7 +1066,7 @@ If None, the virtual files will be created in the same directory as the input fi
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.hdf5.H5Writer.shuffle">
 <span class="sig-name descname"><span class="pre">shuffle</span></span><a class="headerlink" href="#ftag.hdf5.H5Writer.shuffle" title="Link to this definition">#</a></dt>
-<dd><p>Whether to shuffle the jets before writing. Default is True.</p>
+<dd><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, shuffle each batch before writing. Default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool, optional</p>
@@ -1047,10 +1077,12 @@ If None, the virtual files will be created in the same directory as the input fi
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.hdf5.H5Writer.num_jets">
 <span class="sig-name descname"><span class="pre">num_jets</span></span><a class="headerlink" href="#ftag.hdf5.H5Writer.num_jets" title="Link to this definition">#</a></dt>
-<dd><p>Number of jets to write.</p>
+<dd><p>Expected total number of jets to write. If given, datasets are created
+in fixed-size mode. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, datasets are created in dynamic mode
+and resized during writing. Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int | None</p>
+<dd class="field-odd"><p>int | None, optional</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1058,14 +1090,24 @@ If None, the virtual files will be created in the same directory as the input fi
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.hdf5.H5Writer.groups">
 <span class="sig-name descname"><span class="pre">groups</span></span><a class="headerlink" href="#ftag.hdf5.H5Writer.groups" title="Link to this definition">#</a></dt>
-<dd><p>Groups to copy from the source file. Default is None.</p>
+<dd><p>Mapping of metadata group names to extracted group contents to be copied
+into the output file. Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict[str, h5py.Group] | None</p>
+<dd class="field-odd"><p>dict[str, h5py.Group] | None, optional</p>
 </dd>
 </dl>
 </dd></dl>
 
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If an unsupported precision or compression setting is provided.</p></li>
+<li><p><strong>AssertionError</strong> – If dataset shapes disagree in their first dimension when <code class="docutils literal notranslate"><span class="pre">num_jets</span></code>
+is not explicitly specified.</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id10">
 <span class="sig-name descname"><span class="pre">dst</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#id10" title="Link to this definition">#</a></dt>
@@ -1093,78 +1135,226 @@ If None, the virtual files will be created in the same directory as the input fi
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id15">
-<span class="sig-name descname"><span class="pre">compression</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'lzf'</span></span><a class="headerlink" href="#id15" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">compression</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'lz4'</span></span><a class="headerlink" href="#id15" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id16">
-<span class="sig-name descname"><span class="pre">precision</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'full'</span></span><a class="headerlink" href="#id16" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">compression_opts</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#id16" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id17">
-<span class="sig-name descname"><span class="pre">full_precision_vars</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#id17" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">precision</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'full'</span></span><a class="headerlink" href="#id17" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id18">
-<span class="sig-name descname"><span class="pre">shuffle</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></span><a class="headerlink" href="#id18" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">full_precision_vars</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#id18" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id19">
-<span class="sig-name descname"><span class="pre">num_jets</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#id19" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">shuffle</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></span><a class="headerlink" href="#id19" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id20">
-<span class="sig-name descname"><span class="pre">groups</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">h5py.Group</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#id20" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">num_jets</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#id20" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id21">
+<span class="sig-name descname"><span class="pre">groups</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">h5py.Group</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#id21" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ftag.hdf5.H5Writer.__post_init__">
-<span class="sig-name descname"><span class="pre">__post_init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ftag.hdf5.H5Writer.__post_init__" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__post_init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.hdf5.H5Writer.__post_init__" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="ftag.hdf5.H5Writer._resolve_compression">
+<span class="sig-name descname"><span class="pre">_resolve_compression</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compression</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">object</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ftag.hdf5.H5Writer._resolve_compression" title="Link to this definition">#</a></dt>
+<dd><p>Resolve a user-facing compression setting into HDF5 write arguments.</p>
+<p>This method converts a human-readable compression identifier into the
+values used when calling <code class="xref py py-meth docutils literal notranslate"><span class="pre">h5py.File.create_dataset()</span></code>. Built-in HDF5
+filters such as <code class="docutils literal notranslate"><span class="pre">&quot;gzip&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;lzf&quot;</span></code> are returned as strings,
+optionally together with an HDF5 <code class="docutils literal notranslate"><span class="pre">compression_opts</span></code> value. Plugin-based
+filters such as <code class="docutils literal notranslate"><span class="pre">&quot;lz4&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;zstd&quot;</span></code> are converted into the
+corresponding filter objects provided by <code class="docutils literal notranslate"><span class="pre">hdf5plugin</span></code>. In that case,
+any user-provided <code class="docutils literal notranslate"><span class="pre">compression_opts</span></code> value is absorbed into the plugin
+object and the returned HDF5 <code class="docutils literal notranslate"><span class="pre">compression_opts</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>compression</strong> (<em>str</em><em> | </em><em>None</em>) – <p>Compression algorithm identifier. Supported values are</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">None</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;none&quot;</span></code>: disable compression</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;gzip&quot;</span></code>: gzip/deflate compression</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;lzf&quot;</span></code>: built-in fast compression</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;lz4&quot;</span></code>: LZ4 compression via <code class="docutils literal notranslate"><span class="pre">hdf5plugin</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;zstd&quot;</span></code>: Zstandard compression via <code class="docutils literal notranslate"><span class="pre">hdf5plugin</span></code></p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Two-element tuple <code class="docutils literal notranslate"><span class="pre">(compression,</span> <span class="pre">compression_opts)</span></code> suitable for
+passing to <code class="xref py py-meth docutils literal notranslate"><span class="pre">h5py.File.create_dataset()</span></code>.</p>
+<ul class="simple">
+<li><p>For no compression, returns <code class="docutils literal notranslate"><span class="pre">(None,</span> <span class="pre">None)</span></code>.</p></li>
+<li><p>For built-in HDF5 filters, returns the filter name and optional
+HDF5 <code class="docutils literal notranslate"><span class="pre">compression_opts</span></code>.</p></li>
+<li><p>For plugin filters, returns the instantiated plugin object and
+<code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[str | object | None, int | None]</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the provided compression identifier is not supported.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="ftag.hdf5.H5Writer.from_file">
-<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_jets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy_groups</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ftag.hdf5.H5Writer" title="ftag.hdf5.H5Writer"><span class="pre">H5Writer</span></a></span></span><a class="headerlink" href="#ftag.hdf5.H5Writer.from_file" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_jets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy_groups</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ftag.hdf5.H5Writer" title="ftag.hdf5.H5Writer"><span class="pre">H5Writer</span></a></span></span><a class="headerlink" href="#ftag.hdf5.H5Writer.from_file" title="Link to this definition">#</a></dt>
+<dd><p>Construct a writer from the structure of an existing HDF5 file.</p>
+<p>This class method inspects an input file and derives output dataset
+dtypes, shapes, compression, and optionally metadata groups from it.
+It can be used to create a writer that mirrors the input file layout,
+optionally restricted to a subset of variables and/or a different number
+of output jets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source</strong> (<em>Path</em><em> | </em><em>str</em>) – Source HDF5 file from which to infer the output structure.</p></li>
+<li><p><strong>num_jets</strong> (<em>int</em><em> | </em><em>None</em><em>, </em><em>optional</em>) – If non-zero, override the first dimension of all dataset shapes with
+this value. If <code class="docutils literal notranslate"><span class="pre">0</span></code>, keep the original dataset lengths. Default is
+<code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
+<li><p><strong>variables</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>list</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em><em>] </em><em>| </em><em>None</em><em>, </em><em>optional</em>) – Optional mapping from dataset name to a list of variables to keep.
+If provided, output dtypes are reduced accordingly. Default is
+<code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>copy_groups</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, copy non-dataset groups from the source file into the
+created writer. Default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>**kwargs</strong> (<em>Any</em>) – Additional keyword arguments forwarded to the class constructor.
+This can be used, for example, to override <code class="docutils literal notranslate"><span class="pre">compression</span></code>,
+<code class="docutils literal notranslate"><span class="pre">compression_opts</span></code>, <code class="docutils literal notranslate"><span class="pre">precision</span></code>, or <code class="docutils literal notranslate"><span class="pre">full_precision_vars</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Writer initialized from the source file structure.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ftag.hdf5.H5Writer" title="ftag.hdf5.H5Writer">H5Writer</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TypeError</strong> – If an object in the source file is neither an HDF5 dataset nor group.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ftag.hdf5.H5Writer.save_groups">
 <span class="sig-name descname"><span class="pre">save_groups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">groups</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.hdf5.H5Writer.save_groups" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Write extracted metadata groups into the output file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>groups</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>dict</em><em>]</em>) – Mapping from group name to extracted group contents.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ftag.hdf5.H5Writer.create_ds">
 <span class="sig-name descname"><span class="pre">create_ds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.dtype</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.hdf5.H5Writer.create_ds" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Create one output dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – Dataset name.</p></li>
+<li><p><strong>dtype</strong> (<em>np.dtype</em>) – Input dtype definition for the dataset.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ftag.hdf5.H5Writer.close">
 <span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.hdf5.H5Writer.close" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Close the output file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the writer is closed before the expected number of jets has been
+written in fixed-size mode.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ftag.hdf5.H5Writer.get_attr">
-<span class="sig-name descname"><span class="pre">get_attr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ftag.hdf5.H5Writer.get_attr" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">get_attr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#ftag.hdf5.H5Writer.get_attr" title="Link to this definition">#</a></dt>
+<dd><p>Return an attribute from the output file or one of its groups.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – Name of the attribute to retrieve.</p></li>
+<li><p><strong>group</strong> (<em>str</em><em> | </em><em>None</em><em>, </em><em>optional</em>) – Name of the group from which the attribute should be read.
+If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the attribute is read from the root of the HDF5 file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Value of the requested attribute.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Any</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ftag.hdf5.H5Writer.add_attr">
-<span class="sig-name descname"><span class="pre">add_attr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.hdf5.H5Writer.add_attr" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">add_attr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.hdf5.H5Writer.add_attr" title="Link to this definition">#</a></dt>
+<dd><p>Add an attribute to the output file or one of its groups.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – Name of the attribute to create.</p></li>
+<li><p><strong>data</strong> (<em>Any</em>) – Attribute value to store. The value must be compatible with
+HDF5 attribute storage.</p></li>
+<li><p><strong>group</strong> (<em>str</em><em> | </em><em>None</em><em>, </em><em>optional</em>) – Name of the group to which the attribute should be added.
+If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the attribute is written to the root of the HDF5 file.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ftag.hdf5.H5Writer.copy_attrs">
 <span class="sig-name descname"><span class="pre">copy_attrs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.hdf5.H5Writer.copy_attrs" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Copy file- and dataset-level attributes from another HDF5 file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fname</strong> (<em>Path</em>) – Path to the source HDF5 file.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ftag.hdf5.H5Writer.write">
 <span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.hdf5.H5Writer.write" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Write one batch of data to the output file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>np.ndarray</em><em>]</em>) – Mapping from dataset name to batch array.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If writing this batch would exceed <code class="docutils literal notranslate"><span class="pre">num_jets</span></code> in fixed-size mode.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -1266,6 +1456,7 @@ If None, the virtual files will be created in the same directory as the input fi
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.H5Writer.jets_name"><code class="docutils literal notranslate"><span class="pre">H5Writer.jets_name</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.H5Writer.add_flavour_label"><code class="docutils literal notranslate"><span class="pre">H5Writer.add_flavour_label</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.H5Writer.compression"><code class="docutils literal notranslate"><span class="pre">H5Writer.compression</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.H5Writer.compression_opts"><code class="docutils literal notranslate"><span class="pre">H5Writer.compression_opts</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.H5Writer.precision"><code class="docutils literal notranslate"><span class="pre">H5Writer.precision</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.H5Writer.full_precision_vars"><code class="docutils literal notranslate"><span class="pre">H5Writer.full_precision_vars</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.H5Writer.shuffle"><code class="docutils literal notranslate"><span class="pre">H5Writer.shuffle</span></code></a></li>
@@ -1277,12 +1468,14 @@ If None, the virtual files will be created in the same directory as the input fi
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id13"><code class="docutils literal notranslate"><span class="pre">H5Writer.jets_name</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id14"><code class="docutils literal notranslate"><span class="pre">H5Writer.add_flavour_label</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id15"><code class="docutils literal notranslate"><span class="pre">H5Writer.compression</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id16"><code class="docutils literal notranslate"><span class="pre">H5Writer.precision</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id17"><code class="docutils literal notranslate"><span class="pre">H5Writer.full_precision_vars</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id18"><code class="docutils literal notranslate"><span class="pre">H5Writer.shuffle</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id19"><code class="docutils literal notranslate"><span class="pre">H5Writer.num_jets</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id20"><code class="docutils literal notranslate"><span class="pre">H5Writer.groups</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id16"><code class="docutils literal notranslate"><span class="pre">H5Writer.compression_opts</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id17"><code class="docutils literal notranslate"><span class="pre">H5Writer.precision</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id18"><code class="docutils literal notranslate"><span class="pre">H5Writer.full_precision_vars</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id19"><code class="docutils literal notranslate"><span class="pre">H5Writer.shuffle</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id20"><code class="docutils literal notranslate"><span class="pre">H5Writer.num_jets</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id21"><code class="docutils literal notranslate"><span class="pre">H5Writer.groups</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.H5Writer.__post_init__"><code class="docutils literal notranslate"><span class="pre">H5Writer.__post_init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.H5Writer._resolve_compression"><code class="docutils literal notranslate"><span class="pre">H5Writer._resolve_compression()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.H5Writer.from_file"><code class="docutils literal notranslate"><span class="pre">H5Writer.from_file()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.H5Writer.save_groups"><code class="docutils literal notranslate"><span class="pre">H5Writer.save_groups()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.H5Writer.create_ds"><code class="docutils literal notranslate"><span class="pre">H5Writer.create_ds()</span></code></a></li>

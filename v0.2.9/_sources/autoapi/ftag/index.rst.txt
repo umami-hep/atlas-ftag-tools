@@ -17,13 +17,10 @@ Submodules
 
    /autoapi/ftag/cli_utils/index
    /autoapi/ftag/cuts/index
-   /autoapi/ftag/flavours/index
    /autoapi/ftag/git_check/index
    /autoapi/ftag/hdf5/index
-   /autoapi/ftag/labels/index
    /autoapi/ftag/mock/index
    /autoapi/ftag/sample/index
-   /autoapi/ftag/track_selector/index
    /autoapi/ftag/transform/index
    /autoapi/ftag/vds/index
    /autoapi/ftag/wps/index
@@ -35,7 +32,6 @@ Attributes
 .. autoapisummary::
 
    ftag.__version__
-   ftag.Flavours
 
 
 Classes
@@ -44,8 +40,6 @@ Classes
 .. autoapisummary::
 
    ftag.Cuts
-   ftag.Label
-   ftag.LabelContainer
    ftag.Sample
    ftag.Transform
 
@@ -110,110 +104,6 @@ Package Contents
 
 
    .. py:method:: __repr__() -> str
-
-
-.. py:data:: Flavours
-
-.. py:class:: Label
-
-   .. py:attribute:: name
-      :type:  str
-
-
-   .. py:attribute:: label
-      :type:  str
-
-
-   .. py:attribute:: cuts
-      :type:  ftag.cuts.Cuts
-
-
-   .. py:attribute:: colour
-      :type:  str
-
-
-   .. py:attribute:: category
-      :type:  str
-
-
-   .. py:attribute:: _px
-      :type:  str | None
-      :value: None
-
-
-
-   .. py:property:: px
-      :type: str
-
-
-
-   .. py:property:: eff_str
-      :type: str
-
-
-
-   .. py:property:: rej_str
-      :type: str
-
-
-
-   .. py:property:: frac_str
-      :type: str
-
-
-
-   .. py:method:: __str__() -> str
-
-
-   .. py:method:: __lt__(other) -> bool
-
-
-.. py:class:: LabelContainer
-
-   .. py:attribute:: labels
-      :type:  dict[str, Label]
-
-
-   .. py:method:: __iter__() -> collections.abc.Iterator
-
-
-   .. py:method:: __getitem__(key) -> Label
-
-
-   .. py:method:: __getattr__(name) -> Label
-
-
-   .. py:method:: __contains__(label: str | Label) -> bool
-
-
-   .. py:method:: __eq__(other) -> bool
-
-
-   .. py:method:: __repr__() -> str
-
-
-   .. py:property:: categories
-      :type: list[str]
-
-
-
-   .. py:method:: by_category(category: str) -> LabelContainer
-
-
-   .. py:method:: from_cuts(cuts: list | ftag.cuts.Cuts) -> Label
-
-
-   .. py:method:: from_yaml(yaml_path: pathlib.Path | None = None) -> LabelContainer
-      :classmethod:
-
-
-
-   .. py:method:: from_list(labels: list[Label]) -> LabelContainer
-      :classmethod:
-
-
-
-   .. py:method:: backgrounds(label: Label, only_signals: bool = True) -> LabelContainer
 
 
 .. py:function:: get_mock_file(num_jets=1000, fname: str | None = None, tracks_name: str = 'tracks', num_tracks: int = 40) -> tuple[str, h5py.File]
