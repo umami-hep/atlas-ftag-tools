@@ -258,6 +258,15 @@ def test_get_virtual_layout(test_h5_files):
     assert layout.dtype == np.dtype("int64")
 
 
+def test_get_virtual_layout_raises_type_error(tmp_path):
+    bad_file = tmp_path / "bad_structure.h5"
+    with h5py.File(bad_file, "w") as f:
+        f.create_group("not_a_dataset")
+
+    with pytest.raises(TypeError, match="is a Group, but a Dataset is required for VDS"):
+        get_virtual_layout([str(bad_file)], "not_a_dataset")
+
+
 def test_create_virtual_file(test_h5_files):
     with tempfile.NamedTemporaryFile() as tmpfile:
         pattern = Path(test_h5_files[0]).parent / "test_file_*"
