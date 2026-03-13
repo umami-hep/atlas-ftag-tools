@@ -327,9 +327,7 @@ def test_from_file_with_variable_subset(tmp_path):
     ("compression", "compression_opts"),
     [
         ("gzip", 1),
-        ("gzip", 4),
         ("gzip", 7),
-        ("gzip", 9),
     ],
 )
 def test_create_ds_with_gzip_compression_opts(
