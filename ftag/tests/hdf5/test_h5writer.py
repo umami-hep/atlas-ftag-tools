@@ -16,8 +16,6 @@ _PADDING_FIELD_RE = re.compile(r"^f\d+$")
 
 
 def _named_fields(dtype: np.dtype) -> tuple[str, ...]:
-    if dtype.names is None:
-        return ()
     return tuple(name for name in dtype.names if not _PADDING_FIELD_RE.fullmatch(name))
 
 

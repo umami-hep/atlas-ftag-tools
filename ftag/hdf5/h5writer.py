@@ -184,11 +184,7 @@ class H5Writer:
 
         elif compression == "lz4":
             used_opts = None
-            if self.compression_opts is None:
-                used_compression = hdf5plugin.LZ4()
-
-            else:
-                used_compression = hdf5plugin.LZ4(clevel=self.compression_opts)
+            used_compression = hdf5plugin.LZ4()
 
         elif compression == "zstd":
             used_opts = None
