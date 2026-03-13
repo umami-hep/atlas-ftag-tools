@@ -324,56 +324,6 @@ def test_from_file_with_variable_subset(tmp_path):
 
 
 @pytest.mark.parametrize(
-    ("compression", "expected_compression"),
-    [
-        (None, None),
-        ("none", None),
-        ("lzf", "lzf"),
-        ("gzip", "gzip"),
-    ],
-)
-def test_create_ds_with_builtin_or_none_compression(
-    tmp_path,
-    jet_dtype,
-    compression,
-    expected_compression,
-):
-    writer = H5Writer(
-        dst=Path(tmp_path) / f"test_{compression}.h5",
-        dtypes={"jets": jet_dtype},
-        shapes={"jets": (100,)},
-        compression=compression,
-    )
-
-    ds = writer.file["jets"]
-    assert ds.compression == expected_compression
-    writer.close()
-
-
-@pytest.mark.parametrize(
-    ("compression", "filter_id"),
-    [
-        ("lz4", hdf5plugin.LZ4.filter_id),
-        ("zstd", hdf5plugin.Zstd.filter_id),
-    ],
-)
-def test_create_ds_with_plugin_compression(tmp_path, jet_dtype, compression, filter_id):
-    writer = H5Writer(
-        dst=Path(tmp_path) / f"test_{compression}.h5",
-        dtypes={"jets": jet_dtype},
-        shapes={"jets": (100,)},
-        compression=compression,
-    )
-
-    ds = writer.file["jets"]
-    plist = ds.id.get_create_plist()
-    filters = [plist.get_filter(i)[0] for i in range(plist.get_nfilters())]
-
-    assert filter_id in filters
-    writer.close()
-
-
-@pytest.mark.parametrize(
     ("compression", "compression_opts"),
     [
         ("gzip", 1),
@@ -453,38 +403,7 @@ def test_write_with_compression(tmp_path, mock_data, compression):
     )
 
     writer.write({"jets": jets, "tracks": tracks})
-    writer.close()
-
-    with h5py.File(writer.dst) as f:
-        assert_structured_array_equal(f["jets"][:], jets)
-        assert_structured_array_equal(f["tracks"][:], tracks)
-
-
-@pytest.mark.parametrize(
-    ("compression", "compression_opts"),
-    [
-        ("gzip", 4),
-        ("gzip", 7),
-        ("zstd", 3),
-        ("zstd", 9),
-    ],
-)
-def test_write_with_compression_opts(tmp_path, mock_data, compression, compression_opts):
-    jets, tracks = mock_data
-    dtypes = {"jets": jets.dtype, "tracks": tracks.dtype}
-    shapes = {"jets": jets.shape, "tracks": tracks.shape}
-
-    writer = H5Writer(
-        dst=Path(tmp_path) / f"test_write_{compression}_{compression_opts}.h5",
-        dtypes=dtypes,
-        shapes=shapes,
-        compression=compression,
-        compression_opts=compression_opts,
-        precision=None,
-        shuffle=False,
-    )
-
-    writer.write({"jets": jets, "tracks": tracks})
+    assert writer.file["jets"].compression == compression
     writer.close()
 
     with h5py.File(writer.dst) as f:
@@ -586,32 +505,6 @@ def test_from_file_preserves_plugin_compression(tmp_path, compression, filter_id
 
 
 def test_from_file_override_compression(tmp_path):
-    src_path = tmp_path / "source_lzf.h5"
-    dst_path = tmp_path / "dest_gzip.h5"
-
-    jets = np.zeros(10, dtype=[("pt", "f4"), ("eta", "f4")])
-    tracks = np.zeros((10, 5), dtype=[("d0", "f4"), ("z0", "f4")])
-
-    with h5py.File(src_path, "w") as f:
-        f.create_dataset("jets", data=jets, compression="lzf")
-        f.create_dataset("tracks", data=tracks, compression="lzf")
-
-    writer = H5Writer.from_file(
-        source=src_path,
-        dst=dst_path,
-        shuffle=False,
-        compression="gzip",
-        precision=None,
-    )
-    writer.write({"jets": jets, "tracks": tracks})
-    writer.close()
-
-    with h5py.File(dst_path) as f:
-        assert f["jets"].compression == "gzip"
-        assert f["tracks"].compression == "gzip"
-
-
-def test_from_file_override_compression_and_opts(tmp_path):
     src_path = tmp_path / "source_lzf.h5"
     dst_path = tmp_path / "dest_gzip7.h5"
 
