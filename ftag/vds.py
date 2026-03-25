@@ -64,6 +64,11 @@ def get_virtual_layout(fnames: list[str], group: str) -> h5py.VirtualLayout:
     -------
     h5py.VirtualLayout
         Virtual layout of the new virtual dataset
+
+    Raises
+    ------
+    TypeError
+        If the target path in any input file is a Group instead of a Dataset.
     """
     sources = []
     total = 0
@@ -71,8 +76,16 @@ def get_virtual_layout(fnames: list[str], group: str) -> h5py.VirtualLayout:
     # Loop over the input files
     for fname in fnames:
         with h5py.File(fname, "r") as f:
-            # Get the file and append its length
-            vsrc = h5py.VirtualSource(f[group])
+            target = f[group]
+
+            # If this is a Group instead of a Dataset, VDS cannot create a layout for it directly.
+            # However, UPP usually passes specific dataset paths.
+            if not isinstance(target, h5py.Dataset):
+                msg = f"'{group}' in {fname} is a Group, but a Dataset is required for VDS."
+                raise TypeError(msg)
+
+            # Explicitly use the path and name, while passing the exact shape.
+            vsrc = h5py.VirtualSource(fname, group, shape=target.shape)
             total += vsrc.shape[0]
             sources.append(vsrc)
 
@@ -330,6 +343,7 @@ def create_virtual_file(
             common_groups = groups if not common_groups else common_groups & groups
 
     # Ditch the bookkeeper. We will process it separately
+    common_groups.discard("metadata")
     common_groups.discard("cutBookkeeper")
 
     # Check that the directory of the output file exists
