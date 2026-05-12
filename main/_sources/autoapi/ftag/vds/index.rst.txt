@@ -46,6 +46,8 @@ Module Contents
    :returns: Virtual layout of the new virtual dataset
    :rtype: h5py.VirtualLayout
 
+   :raises TypeError: If the target path in any input file is a Group instead of a Dataset.
+
 
 .. py:function:: glob_re(pattern: str | None, regex_path: str | None) -> list[str] | None
 

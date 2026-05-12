@@ -27,18 +27,18 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d75fae25" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
   
   <!-- So that users can add custom icons -->
-  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
     <script src="../../../_static/documentation_options.js?v=8a6d37c9"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
@@ -47,33 +47,40 @@
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'autoapi/ftag/find_metadata/index';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_version = '0.17.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://umami-hep.github.io/atlas-ftag-tools/main/_static/switcher.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="ftag.fraction_optimization" href="../fraction_optimization/index.html" />
+    <link rel="next" title="ftag.flavours" href="../flavours/index.html" />
     <link rel="prev" title="ftag.cuts" href="../cuts/index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
-
+  <body data-default-mode="light">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
+  
+  
+  
   
   <dialog id="pst-search-dialog">
     
@@ -99,7 +106,7 @@
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
   <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
@@ -371,7 +378,14 @@
   </div>
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar"><svg class="pst-icon svg-inline--fa" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
         <div class="sidebar-primary-item">
+
 <nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
@@ -380,6 +394,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../cli_utils/index.html">ftag.cli_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../cuts/index.html">ftag.cuts</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">ftag.find_metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../flavours/index.html">ftag.flavours</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../fraction_optimization/index.html">ftag.fraction_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../git_check/index.html">ftag.git_check</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../hdf5/index.html">ftag.hdf5</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -392,7 +407,9 @@
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="../mock/index.html">ftag.mock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../region/index.html">ftag.region</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../sample/index.html">ftag.sample</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../track_selector/index.html">ftag.track_selector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../transform/index.html">ftag.transform</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../utils/index.html">ftag.utils</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../utils/logging/index.html">ftag.utils.logging</a></li>
@@ -482,51 +499,23 @@
 </table>
 </div>
 </section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.find_metadata.MetadataFinder" title="ftag.find_metadata.MetadataFinder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MetadataFinder</span></code></a></p></td>
+<td><p>Fetch and inject metadata into .h5 files.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
 <section id="functions">
 <h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.find_metadata.validate_url_scheme" title="ftag.find_metadata.validate_url_scheme"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_url_scheme</span></code></a>(→ urllib.parse.ParseResult)</p></td>
-<td><p>Validate the scheme of a given URL, ensuring it is http or https.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ftag.find_metadata.download_xsecdb_files" title="ftag.find_metadata.download_xsecdb_files"><code class="xref py py-obj docutils literal notranslate"><span class="pre">download_xsecdb_files</span></code></a>(→ None)</p></td>
-<td><p>Download the PMG xsecDB files from CERN if they are not present locally.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.find_metadata.extract_taskid_from_filename" title="ftag.find_metadata.extract_taskid_from_filename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract_taskid_from_filename</span></code></a>(→ str | None)</p></td>
-<td><p>Extract the BigPanDA Task ID (8-digit) from an HDF5 filename.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ftag.find_metadata.fetch_taskinfo_from_bigpanda" title="ftag.find_metadata.fetch_taskinfo_from_bigpanda"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fetch_taskinfo_from_bigpanda</span></code></a>(→ dict[str, Any] | None)</p></td>
-<td><p>Fetch task information from BigPanDA for a given Task ID.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.find_metadata.extract_mc_container_from_json" title="ftag.find_metadata.extract_mc_container_from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract_mc_container_from_json</span></code></a>(→ str | None)</p></td>
-<td><p>Extract the MC container name (e.g., mc16_13TeV.&lt;something&gt;) from a task JSON.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ftag.find_metadata.parse_line_from_taskname" title="ftag.find_metadata.parse_line_from_taskname"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_line_from_taskname</span></code></a>(→ tuple[int | None, str | None])</p></td>
-<td><p>Extract DSID and etag from a task name string.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.find_metadata.parse_campaign_from_taskname" title="ftag.find_metadata.parse_campaign_from_taskname"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_campaign_from_taskname</span></code></a>(→ str | None)</p></td>
-<td><p>Derive campaign (mc15/mc16/etc.) from a task or container name.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ftag.find_metadata.extract_info_from_container" title="ftag.find_metadata.extract_info_from_container"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract_info_from_container</span></code></a>(→ tuple[int, str, str] | None)</p></td>
-<td><p>Extract DSID, etag, and campaign name from a container string.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.find_metadata.query_xsecdb" title="ftag.find_metadata.query_xsecdb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">query_xsecdb</span></code></a>(→ dict[str, Any] | None)</p></td>
-<td><p>Look up cross-section metadata in the PMG xsecDB.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ftag.find_metadata.write_metadata_to_h5" title="ftag.find_metadata.write_metadata_to_h5"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_metadata_to_h5</span></code></a>(→ None)</p></td>
-<td><p>Write metadata values into an HDF5 file under metadata/&lt;DSID&gt;.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.find_metadata.handle_yaml_fallback" title="ftag.find_metadata.handle_yaml_fallback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">handle_yaml_fallback</span></code></a>(→ None)</p></td>
-<td><p>Use fallback metadata from YAML if automatic lookup fails.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ftag.find_metadata.parse_args_and_yaml" title="ftag.find_metadata.parse_args_and_yaml"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_args_and_yaml</span></code></a>(→ tuple[list[str], dict[str, Any]])</p></td>
-<td><p>Parse CLI arguments and load YAML metadata if provided.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.find_metadata.process_single_file" title="ftag.find_metadata.process_single_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">process_single_file</span></code></a>(→ None)</p></td>
-<td><p>Process a single .h5 file by attempting BigPanDA lookup, then fallback to YAML.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ftag.find_metadata.main" title="ftag.find_metadata.main"><code class="xref py py-obj docutils literal notranslate"><span class="pre">main</span></code></a>(→ None)</p></td>
-<td><p>Entry point: parse arguments, download xsecDBs, process each file, and clean up.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.find_metadata.main" title="ftag.find_metadata.main"><code class="xref py py-obj docutils literal notranslate"><span class="pre">main</span></code></a>(→ None)</p></td>
+<td><p>Command line entry point to fetch and inject PMG metadata.</p></td>
 </tr>
 </tbody>
 </table>
@@ -536,84 +525,69 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">#</a></h2>
 <dl class="py data">
 <dt class="sig sig-object py" id="ftag.find_metadata.XSECDB_MAP">
-<span class="sig-prename descclassname"><span class="pre">ftag.find_metadata.</span></span><span class="sig-name descname"><span class="pre">XSECDB_MAP</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#ftag.find_metadata.XSECDB_MAP" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">ftag.find_metadata.</span></span><span class="sig-name descname"><span class="pre">XSECDB_MAP</span></span><a class="headerlink" href="#ftag.find_metadata.XSECDB_MAP" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="ftag.find_metadata.XSECDB_URL_BASE">
-<span class="sig-prename descclassname"><span class="pre">ftag.find_metadata.</span></span><span class="sig-name descname"><span class="pre">XSECDB_URL_BASE</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://atlas-groupdata.web.cern.ch/atlas-groupdata/dev/PMGTools/'</span></span><a class="headerlink" href="#ftag.find_metadata.XSECDB_URL_BASE" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">ftag.find_metadata.</span></span><span class="sig-name descname"><span class="pre">XSECDB_URL_BASE</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://atlas-groupdata.web.cern.ch/atlas-groupdata/dev/PMGTools/'</span></span><a class="headerlink" href="#ftag.find_metadata.XSECDB_URL_BASE" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="ftag.find_metadata.validate_url_scheme">
-<span class="sig-prename descclassname"><span class="pre">ftag.find_metadata.</span></span><span class="sig-name descname"><span class="pre">validate_url_scheme</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">urllib.parse.ParseResult</span></span></span><a class="headerlink" href="#ftag.find_metadata.validate_url_scheme" title="Link to this definition">#</a></dt>
-<dd><p>Validate the scheme of a given URL, ensuring it is http or https.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ftag.find_metadata.MetadataFinder">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ftag.find_metadata.</span></span><span class="sig-name descname"><span class="pre">MetadataFinder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">h5_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ftag.find_metadata.MetadataFinder" title="Link to this definition">#</a></dt>
+<dd><p>Fetch and inject metadata into .h5 files.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>url</strong> (<em>str</em>) – URL string to validate.</p>
+<dd class="field-odd"><p><strong>h5_path</strong> (<em>str</em>) – Path to the HDF5 file where metadata should be injected.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Parsed URL object.</p>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ftag.find_metadata.MetadataFinder.h5_path">
+<span class="sig-name descname"><span class="pre">h5_path</span></span><a class="headerlink" href="#ftag.find_metadata.MetadataFinder.h5_path" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ftag.find_metadata.MetadataFinder._extract_taskid">
+<span class="sig-name descname"><span class="pre">_extract_taskid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.find_metadata.MetadataFinder._extract_taskid" title="Link to this definition">#</a></dt>
+<dd><p>Extract the 8-digit BigPanDA Task ID from the filename.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The extracted Task ID, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if no match is found.</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ParseResult</p>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> – If the URL scheme is not supported.</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str | None</p>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="ftag.find_metadata.download_xsecdb_files">
-<span class="sig-prename descclassname"><span class="pre">ftag.find_metadata.</span></span><span class="sig-name descname"><span class="pre">download_xsecdb_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.find_metadata.download_xsecdb_files" title="Link to this definition">#</a></dt>
-<dd><p>Download the PMG xsecDB files from CERN if they are not present locally.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="ftag.find_metadata.extract_taskid_from_filename">
-<span class="sig-prename descclassname"><span class="pre">ftag.find_metadata.</span></span><span class="sig-name descname"><span class="pre">extract_taskid_from_filename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">h5_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.find_metadata.extract_taskid_from_filename" title="Link to this definition">#</a></dt>
-<dd><p>Extract the BigPanDA Task ID (8-digit) from an HDF5 filename.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ftag.find_metadata.MetadataFinder._fetch_taskinfo">
+<span class="sig-name descname"><span class="pre">_fetch_taskinfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taskid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.find_metadata.MetadataFinder._fetch_taskinfo" title="Link to this definition">#</a></dt>
+<dd><p>Fetch task details from the BigPanDA JSON API.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>h5_path</strong> (<em>Path</em>) – Path object pointing to the .h5 file.</p>
+<dd class="field-odd"><p><strong>taskid</strong> (<em>str</em>) – The BigPanDA Task ID.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The Task ID as a string if found, otherwise None.</p>
+<dd class="field-even"><p>The first task record from the API response, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if unavailable.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str | None</p>
+<dd class="field-odd"><p>dict | None</p>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="ftag.find_metadata.fetch_taskinfo_from_bigpanda">
-<span class="sig-prename descclassname"><span class="pre">ftag.find_metadata.</span></span><span class="sig-name descname"><span class="pre">fetch_taskinfo_from_bigpanda</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taskid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.find_metadata.fetch_taskinfo_from_bigpanda" title="Link to this definition">#</a></dt>
-<dd><p>Fetch task information from BigPanDA for a given Task ID.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ftag.find_metadata.MetadataFinder._extract_container">
+<span class="sig-name descname"><span class="pre">_extract_container</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.find_metadata.MetadataFinder._extract_container" title="Link to this definition">#</a></dt>
+<dd><p>Find the MC container name within the task information.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>taskid</strong> (<em>str</em>) – BigPanDA task ID.</p>
+<dd class="field-odd"><p><strong>info</strong> (<em>dict</em>) – The task information dictionary from BigPanDA.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Task info as a dictionary if found, otherwise None.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict[str, Any] | None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="ftag.find_metadata.extract_mc_container_from_json">
-<span class="sig-prename descclassname"><span class="pre">ftag.find_metadata.</span></span><span class="sig-name descname"><span class="pre">extract_mc_container_from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.find_metadata.extract_mc_container_from_json" title="Link to this definition">#</a></dt>
-<dd><p>Extract the MC container name (e.g., mc16_13TeV.&lt;something&gt;) from a task JSON.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>data</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – Task info dictionary from BigPanDA.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The container string if found, otherwise None.</p>
+<dd class="field-even"><p>The container name (e.g., ‘mc16_13TeV…’), or <code class="docutils literal notranslate"><span class="pre">None</span></code> if not found.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str | None</p>
@@ -621,50 +595,17 @@
 </dl>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="ftag.find_metadata.parse_line_from_taskname">
-<span class="sig-prename descclassname"><span class="pre">ftag.find_metadata.</span></span><span class="sig-name descname"><span class="pre">parse_line_from_taskname</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taskname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ftag.find_metadata.parse_line_from_taskname" title="Link to this definition">#</a></dt>
-<dd><p>Extract DSID and etag from a task name string.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ftag.find_metadata.MetadataFinder._parse_info">
+<span class="sig-name descname"><span class="pre">_parse_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">container</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.find_metadata.MetadataFinder._parse_info" title="Link to this definition">#</a></dt>
+<dd><p>Parse DSID, etag, and campaign from a container name.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>taskname</strong> (<em>str</em>) – Full task name.</p>
+<dd class="field-odd"><p><strong>container</strong> (<em>str</em>) – The full MC container name.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A tuple of (DSID as int, etag as string), or (None, None) if not found.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple[int | None, str | None]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="ftag.find_metadata.parse_campaign_from_taskname">
-<span class="sig-prename descclassname"><span class="pre">ftag.find_metadata.</span></span><span class="sig-name descname"><span class="pre">parse_campaign_from_taskname</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taskname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.find_metadata.parse_campaign_from_taskname" title="Link to this definition">#</a></dt>
-<dd><p>Derive campaign (mc15/mc16/etc.) from a task or container name.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>taskname</strong> (<em>str</em>) – The name string.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Campaign string, or None if not found.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str | None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="ftag.find_metadata.extract_info_from_container">
-<span class="sig-prename descclassname"><span class="pre">ftag.find_metadata.</span></span><span class="sig-name descname"><span class="pre">extract_info_from_container</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">container</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.find_metadata.extract_info_from_container" title="Link to this definition">#</a></dt>
-<dd><p>Extract DSID, etag, and campaign name from a container string.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>container</strong> (<em>str</em>) – The MC container string.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A tuple of (DSID, etag, campaign), or None if parsing fails.</p>
+<dd class="field-even"><p>A tuple of (DSID, etag, campaign), or <code class="docutils literal notranslate"><span class="pre">None</span></code> if parsing fails.
+Note: ‘mc20’ is automatically mapped to ‘mc16’.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>tuple[int, str, str] | None</p>
@@ -672,91 +613,60 @@
 </dl>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="ftag.find_metadata.query_xsecdb">
-<span class="sig-prename descclassname"><span class="pre">ftag.find_metadata.</span></span><span class="sig-name descname"><span class="pre">query_xsecdb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">campaign</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dsid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">etag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.find_metadata.query_xsecdb" title="Link to this definition">#</a></dt>
-<dd><p>Look up cross-section metadata in the PMG xsecDB.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ftag.find_metadata.MetadataFinder._download_db">
+<span class="sig-name descname"><span class="pre">_download_db</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">campaign</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#ftag.find_metadata.MetadataFinder._download_db" title="Link to this definition">#</a></dt>
+<dd><p>Download the PMG database for a specific campaign.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>campaign</strong> (<em>str</em>) – The MC campaign name (e.g., ‘mc16’).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The local path to the downloaded database file.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ftag.find_metadata.MetadataFinder._query_xsecdb">
+<span class="sig-name descname"><span class="pre">_query_xsecdb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">campaign</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dsid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">etag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.find_metadata.MetadataFinder._query_xsecdb" title="Link to this definition">#</a></dt>
+<dd><p>Search the PMG database for metadata matching a DSID and etag.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>campaign</strong> (<em>str</em>) – Campaign name (e.g., mc16).</p></li>
+<li><p><strong>campaign</strong> (<em>str</em>) – The MC campaign name.</p></li>
 <li><p><strong>dsid</strong> (<em>int</em>) – Dataset ID.</p></li>
-<li><p><strong>etag</strong> (<em>str</em>) – Event tag.</p></li>
+<li><p><strong>etag</strong> (<em>str</em>) – The AMI tag (e.g., ‘e1234’).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Dictionary with cross_section_pb, genFiltEff, kfactor, and etag if found, otherwise None.</p>
+<dd class="field-even"><p>Dictionary containing ‘cross_section_pb’, ‘genFiltEff’, and ‘kfactor’,
+or <code class="docutils literal notranslate"><span class="pre">None</span></code> if no matching record is found.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict[str, Any] | None</p>
+<dd class="field-odd"><p>dict | None</p>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="ftag.find_metadata.write_metadata_to_h5">
-<span class="sig-prename descclassname"><span class="pre">ftag.find_metadata.</span></span><span class="sig-name descname"><span class="pre">write_metadata_to_h5</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">h5_filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dsid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.find_metadata.write_metadata_to_h5" title="Link to this definition">#</a></dt>
-<dd><p>Write metadata values into an HDF5 file under metadata/&lt;DSID&gt;.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>h5_filename</strong> (<em>str</em>) – Target HDF5 file.</p></li>
-<li><p><strong>dsid</strong> (<em>int</em>) – Dataset ID to write metadata for.</p></li>
-<li><p><strong>metadata_dict</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – Dictionary of metadata to inject.</p></li>
-</ul>
-</dd>
-</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ftag.find_metadata.MetadataFinder.inject_metadata">
+<span class="sig-name descname"><span class="pre">inject_metadata</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.find_metadata.MetadataFinder.inject_metadata" title="Link to this definition">#</a></dt>
+<dd><p>Execute the full workflow to inject metadata into the HDF5 file.</p>
+<p>This method coordinates Task ID extraction, API fetching, DB querying,
+and final HDF5 attribute writing. Metadata is stored in a group
+named <code class="docutils literal notranslate"><span class="pre">metadata/{dsid}</span></code>.</p>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="ftag.find_metadata.handle_yaml_fallback">
-<span class="sig-prename descclassname"><span class="pre">ftag.find_metadata.</span></span><span class="sig-name descname"><span class="pre">handle_yaml_fallback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">h5_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yaml_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.find_metadata.handle_yaml_fallback" title="Link to this definition">#</a></dt>
-<dd><p>Use fallback metadata from YAML if automatic lookup fails.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>h5_path</strong> (<em>Path</em>) – Path to the HDF5 file.</p></li>
-<li><p><strong>yaml_data</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – Metadata dictionary loaded from YAML.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> – If YAML is invalid, empty, or missing required fields.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="ftag.find_metadata.parse_args_and_yaml">
-<span class="sig-prename descclassname"><span class="pre">ftag.find_metadata.</span></span><span class="sig-name descname"><span class="pre">parse_args_and_yaml</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ftag.find_metadata.parse_args_and_yaml" title="Link to this definition">#</a></dt>
-<dd><p>Parse CLI arguments and load YAML metadata if provided.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A tuple of (list of HDF5 file paths, YAML metadata dict).</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>tuple[list[str], dict[str, Any]]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="ftag.find_metadata.process_single_file">
-<span class="sig-prename descclassname"><span class="pre">ftag.find_metadata.</span></span><span class="sig-name descname"><span class="pre">process_single_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yaml_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.find_metadata.process_single_file" title="Link to this definition">#</a></dt>
-<dd><p>Process a single .h5 file by attempting BigPanDA lookup, then fallback to YAML.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> (<em>Path</em>) – Path to the HDF5 file.</p></li>
-<li><p><strong>yaml_data</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – Optional fallback metadata.</p></li>
-</ul>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ftag.find_metadata.main">
 <span class="sig-prename descclassname"><span class="pre">ftag.find_metadata.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.find_metadata.main" title="Link to this definition">#</a></dt>
-<dd><p>Entry point: parse arguments, download xsecDBs, process each file, and clean up.</p>
+<dd><p>Command line entry point to fetch and inject PMG metadata.</p>
 </dd></dl>
 
 </section>
@@ -782,11 +692,11 @@
       </div>
     </a>
     <a class="right-next"
-       href="../fraction_optimization/index.html"
+       href="../flavours/index.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">ftag.fraction_optimization</p>
+        <p class="prev-next-title">ftag.flavours</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -807,26 +717,25 @@
     class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> On this page
   </div>
-  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="visible nav section-nav flex-column">
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attributes">Attributes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classes">Classes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functions">Functions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">Module Contents</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.find_metadata.XSECDB_MAP"><code class="docutils literal notranslate"><span class="pre">XSECDB_MAP</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.find_metadata.XSECDB_URL_BASE"><code class="docutils literal notranslate"><span class="pre">XSECDB_URL_BASE</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.find_metadata.validate_url_scheme"><code class="docutils literal notranslate"><span class="pre">validate_url_scheme()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.find_metadata.download_xsecdb_files"><code class="docutils literal notranslate"><span class="pre">download_xsecdb_files()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.find_metadata.extract_taskid_from_filename"><code class="docutils literal notranslate"><span class="pre">extract_taskid_from_filename()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.find_metadata.fetch_taskinfo_from_bigpanda"><code class="docutils literal notranslate"><span class="pre">fetch_taskinfo_from_bigpanda()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.find_metadata.extract_mc_container_from_json"><code class="docutils literal notranslate"><span class="pre">extract_mc_container_from_json()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.find_metadata.parse_line_from_taskname"><code class="docutils literal notranslate"><span class="pre">parse_line_from_taskname()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.find_metadata.parse_campaign_from_taskname"><code class="docutils literal notranslate"><span class="pre">parse_campaign_from_taskname()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.find_metadata.extract_info_from_container"><code class="docutils literal notranslate"><span class="pre">extract_info_from_container()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.find_metadata.query_xsecdb"><code class="docutils literal notranslate"><span class="pre">query_xsecdb()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.find_metadata.write_metadata_to_h5"><code class="docutils literal notranslate"><span class="pre">write_metadata_to_h5()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.find_metadata.handle_yaml_fallback"><code class="docutils literal notranslate"><span class="pre">handle_yaml_fallback()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.find_metadata.parse_args_and_yaml"><code class="docutils literal notranslate"><span class="pre">parse_args_and_yaml()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.find_metadata.process_single_file"><code class="docutils literal notranslate"><span class="pre">process_single_file()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.find_metadata.MetadataFinder"><code class="docutils literal notranslate"><span class="pre">MetadataFinder</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.find_metadata.MetadataFinder.h5_path"><code class="docutils literal notranslate"><span class="pre">MetadataFinder.h5_path</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.find_metadata.MetadataFinder._extract_taskid"><code class="docutils literal notranslate"><span class="pre">MetadataFinder._extract_taskid()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.find_metadata.MetadataFinder._fetch_taskinfo"><code class="docutils literal notranslate"><span class="pre">MetadataFinder._fetch_taskinfo()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.find_metadata.MetadataFinder._extract_container"><code class="docutils literal notranslate"><span class="pre">MetadataFinder._extract_container()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.find_metadata.MetadataFinder._parse_info"><code class="docutils literal notranslate"><span class="pre">MetadataFinder._parse_info()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.find_metadata.MetadataFinder._download_db"><code class="docutils literal notranslate"><span class="pre">MetadataFinder._download_db()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.find_metadata.MetadataFinder._query_xsecdb"><code class="docutils literal notranslate"><span class="pre">MetadataFinder._query_xsecdb()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.find_metadata.MetadataFinder.inject_metadata"><code class="docutils literal notranslate"><span class="pre">MetadataFinder.inject_metadata()</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.find_metadata.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 </ul>
 </li>
@@ -834,13 +743,13 @@
   </nav></div>
 
   <div class="sidebar-secondary-item">
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../../../_sources/autoapi/ftag/find_metadata/index.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div></div>
+
+  <div class="tocsection sourcelink">
+    <a href="../../../_sources/autoapi/ftag/find_metadata/index.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
 
 </div></div>
               
@@ -855,8 +764,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -880,7 +789,7 @@
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.17.1.
 </p></div>
       
     </div>

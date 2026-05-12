@@ -13,24 +13,19 @@ Attributes
    ftag.find_metadata.XSECDB_URL_BASE
 
 
+Classes
+-------
+
+.. autoapisummary::
+
+   ftag.find_metadata.MetadataFinder
+
+
 Functions
 ---------
 
 .. autoapisummary::
 
-   ftag.find_metadata.validate_url_scheme
-   ftag.find_metadata.download_xsecdb_files
-   ftag.find_metadata.extract_taskid_from_filename
-   ftag.find_metadata.fetch_taskinfo_from_bigpanda
-   ftag.find_metadata.extract_mc_container_from_json
-   ftag.find_metadata.parse_line_from_taskname
-   ftag.find_metadata.parse_campaign_from_taskname
-   ftag.find_metadata.extract_info_from_container
-   ftag.find_metadata.query_xsecdb
-   ftag.find_metadata.write_metadata_to_h5
-   ftag.find_metadata.handle_yaml_fallback
-   ftag.find_metadata.parse_args_and_yaml
-   ftag.find_metadata.process_single_file
    ftag.find_metadata.main
 
 
@@ -38,156 +33,109 @@ Module Contents
 ---------------
 
 .. py:data:: XSECDB_MAP
-   :type:  dict[str, str]
 
 .. py:data:: XSECDB_URL_BASE
-   :type:  str
    :value: 'https://atlas-groupdata.web.cern.ch/atlas-groupdata/dev/PMGTools/'
 
 
-.. py:function:: validate_url_scheme(url: str) -> urllib.parse.ParseResult
+.. py:class:: MetadataFinder(h5_path: str)
 
-   Validate the scheme of a given URL, ensuring it is http or https.
+   Fetch and inject metadata into .h5 files.
 
-   :param url: URL string to validate.
-   :type url: str
-
-   :returns: Parsed URL object.
-   :rtype: ParseResult
-
-   :raises ValueError: If the URL scheme is not supported.
+   :param h5_path: Path to the HDF5 file where metadata should be injected.
+   :type h5_path: str
 
 
-.. py:function:: download_xsecdb_files() -> None
-
-   Download the PMG xsecDB files from CERN if they are not present locally.
+   .. py:attribute:: h5_path
 
 
-.. py:function:: extract_taskid_from_filename(h5_path: pathlib.Path) -> str | None
+   .. py:method:: _extract_taskid() -> str | None
 
-   Extract the BigPanDA Task ID (8-digit) from an HDF5 filename.
+      Extract the 8-digit BigPanDA Task ID from the filename.
 
-   :param h5_path: Path object pointing to the .h5 file.
-   :type h5_path: Path
-
-   :returns: The Task ID as a string if found, otherwise None.
-   :rtype: str | None
+      :returns: The extracted Task ID, or ``None`` if no match is found.
+      :rtype: str | None
 
 
-.. py:function:: fetch_taskinfo_from_bigpanda(taskid: str) -> dict[str, Any] | None
 
-   Fetch task information from BigPanDA for a given Task ID.
+   .. py:method:: _fetch_taskinfo(taskid: str) -> dict | None
 
-   :param taskid: BigPanDA task ID.
-   :type taskid: str
+      Fetch task details from the BigPanDA JSON API.
 
-   :returns: Task info as a dictionary if found, otherwise None.
-   :rtype: dict[str, Any] | None
+      :param taskid: The BigPanDA Task ID.
+      :type taskid: str
 
-
-.. py:function:: extract_mc_container_from_json(data: dict[str, Any]) -> str | None
-
-   Extract the MC container name (e.g., mc16_13TeV.<something>) from a task JSON.
-
-   :param data: Task info dictionary from BigPanDA.
-   :type data: dict[str, Any]
-
-   :returns: The container string if found, otherwise None.
-   :rtype: str | None
+      :returns: The first task record from the API response, or ``None`` if unavailable.
+      :rtype: dict | None
 
 
-.. py:function:: parse_line_from_taskname(taskname: str) -> tuple[int | None, str | None]
 
-   Extract DSID and etag from a task name string.
+   .. py:method:: _extract_container(info: dict) -> str | None
 
-   :param taskname: Full task name.
-   :type taskname: str
+      Find the MC container name within the task information.
 
-   :returns: A tuple of (DSID as int, etag as string), or (None, None) if not found.
-   :rtype: tuple[int | None, str | None]
+      :param info: The task information dictionary from BigPanDA.
+      :type info: dict
 
-
-.. py:function:: parse_campaign_from_taskname(taskname: str) -> str | None
-
-   Derive campaign (mc15/mc16/etc.) from a task or container name.
-
-   :param taskname: The name string.
-   :type taskname: str
-
-   :returns: Campaign string, or None if not found.
-   :rtype: str | None
+      :returns: The container name (e.g., 'mc16_13TeV...'), or ``None`` if not found.
+      :rtype: str | None
 
 
-.. py:function:: extract_info_from_container(container: str) -> tuple[int, str, str] | None
 
-   Extract DSID, etag, and campaign name from a container string.
+   .. py:method:: _parse_info(container: str) -> tuple[int, str, str] | None
 
-   :param container: The MC container string.
-   :type container: str
+      Parse DSID, etag, and campaign from a container name.
 
-   :returns: A tuple of (DSID, etag, campaign), or None if parsing fails.
-   :rtype: tuple[int, str, str] | None
+      :param container: The full MC container name.
+      :type container: str
 
-
-.. py:function:: query_xsecdb(campaign: str, dsid: int, etag: str) -> dict[str, Any] | None
-
-   Look up cross-section metadata in the PMG xsecDB.
-
-   :param campaign: Campaign name (e.g., mc16).
-   :type campaign: str
-   :param dsid: Dataset ID.
-   :type dsid: int
-   :param etag: Event tag.
-   :type etag: str
-
-   :returns: Dictionary with cross_section_pb, genFiltEff, kfactor, and etag if found, otherwise None.
-   :rtype: dict[str, Any] | None
+      :returns: A tuple of (DSID, etag, campaign), or ``None`` if parsing fails.
+                Note: 'mc20' is automatically mapped to 'mc16'.
+      :rtype: tuple[int, str, str] | None
 
 
-.. py:function:: write_metadata_to_h5(h5_filename: str, dsid: int, metadata_dict: dict[str, Any]) -> None
 
-   Write metadata values into an HDF5 file under metadata/<DSID>.
+   .. py:method:: _download_db(campaign: str) -> str
 
-   :param h5_filename: Target HDF5 file.
-   :type h5_filename: str
-   :param dsid: Dataset ID to write metadata for.
-   :type dsid: int
-   :param metadata_dict: Dictionary of metadata to inject.
-   :type metadata_dict: dict[str, Any]
+      Download the PMG database for a specific campaign.
 
+      :param campaign: The MC campaign name (e.g., 'mc16').
+      :type campaign: str
 
-.. py:function:: handle_yaml_fallback(h5_path: pathlib.Path, yaml_data: dict[str, Any]) -> None
-
-   Use fallback metadata from YAML if automatic lookup fails.
-
-   :param h5_path: Path to the HDF5 file.
-   :type h5_path: Path
-   :param yaml_data: Metadata dictionary loaded from YAML.
-   :type yaml_data: dict[str, Any]
-
-   :raises ValueError: If YAML is invalid, empty, or missing required fields.
+      :returns: The local path to the downloaded database file.
+      :rtype: str
 
 
-.. py:function:: parse_args_and_yaml() -> tuple[list[str], dict[str, Any]]
 
-   Parse CLI arguments and load YAML metadata if provided.
+   .. py:method:: _query_xsecdb(campaign: str, dsid: int, etag: str) -> dict | None
 
-   :returns: A tuple of (list of HDF5 file paths, YAML metadata dict).
-   :rtype: tuple[list[str], dict[str, Any]]
+      Search the PMG database for metadata matching a DSID and etag.
+
+      :param campaign: The MC campaign name.
+      :type campaign: str
+      :param dsid: Dataset ID.
+      :type dsid: int
+      :param etag: The AMI tag (e.g., 'e1234').
+      :type etag: str
+
+      :returns: Dictionary containing 'cross_section_pb', 'genFiltEff', and 'kfactor',
+                or ``None`` if no matching record is found.
+      :rtype: dict | None
 
 
-.. py:function:: process_single_file(path: pathlib.Path, yaml_data: dict[str, Any]) -> None
 
-   Process a single .h5 file by attempting BigPanDA lookup, then fallback to YAML.
+   .. py:method:: inject_metadata() -> None
 
-   :param path: Path to the HDF5 file.
-   :type path: Path
-   :param yaml_data: Optional fallback metadata.
-   :type yaml_data: dict[str, Any]
+      Execute the full workflow to inject metadata into the HDF5 file.
+
+      This method coordinates Task ID extraction, API fetching, DB querying,
+      and final HDF5 attribute writing. Metadata is stored in a group
+      named ``metadata/{dsid}``.
+
 
 
 .. py:function:: main() -> None
 
-   Entry point: parse arguments, download xsecDBs, process each file, and clean up.
+   Command line entry point to fetch and inject PMG metadata.
 
 

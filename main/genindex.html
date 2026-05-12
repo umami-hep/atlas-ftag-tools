@@ -26,18 +26,18 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d75fae25" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
   
   <!-- So that users can add custom icons -->
-  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
     <script src="_static/documentation_options.js?v=8a6d37c9"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
@@ -46,31 +46,38 @@
     <script src="_static/copybutton.js?v=f281be69"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'genindex';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_version = '0.17.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://umami-hep.github.io/atlas-ftag-tools/main/_static/switcher.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
-
+  <body data-default-mode="light">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
+  
+  
+  
   
   <dialog id="pst-search-dialog">
     
@@ -96,7 +103,7 @@
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
   <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
@@ -413,7 +420,6 @@
  | <a href="#N"><strong>N</strong></a>
  | <a href="#O"><strong>O</strong></a>
  | <a href="#P"><strong>P</strong></a>
- | <a href="#Q"><strong>Q</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
@@ -439,14 +445,18 @@
 </li>
         <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.Cuts.__call__">(ftag.cuts.Cuts method)</a>
 </li>
+        <li><a href="autoapi/ftag/track_selector/index.html#ftag.track_selector.TrackSelector.__call__">(ftag.track_selector.TrackSelector method)</a>
+</li>
         <li><a href="autoapi/ftag/index.html#ftag.Transform.__call__">(ftag.Transform method)</a>
 </li>
         <li><a href="autoapi/ftag/transform/index.html#ftag.transform.Transform.__call__">(ftag.transform.Transform method)</a>
 </li>
       </ul></li>
-      <li><a href="autoapi/ftag/index.html#ftag.Sample.__eq__">__eq__() (ftag.Sample method)</a>
+      <li><a href="autoapi/ftag/region/index.html#ftag.region.Region.__eq__">__eq__() (ftag.region.Region method)</a>
 
       <ul>
+        <li><a href="autoapi/ftag/index.html#ftag.Sample.__eq__">(ftag.Sample method)</a>
+</li>
         <li><a href="autoapi/ftag/sample/index.html#ftag.sample.Sample.__eq__">(ftag.sample.Sample method)</a>
 </li>
       </ul></li>
@@ -468,9 +478,11 @@
         <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.Cuts.__len__">(ftag.cuts.Cuts method)</a>
 </li>
       </ul></li>
-      <li><a href="autoapi/ftag/index.html#ftag.Sample.__lt__">__lt__() (ftag.Sample method)</a>
+      <li><a href="autoapi/ftag/region/index.html#ftag.region.Region.__lt__">__lt__() (ftag.region.Region method)</a>
 
       <ul>
+        <li><a href="autoapi/ftag/index.html#ftag.Sample.__lt__">(ftag.Sample method)</a>
+</li>
         <li><a href="autoapi/ftag/sample/index.html#ftag.sample.Sample.__lt__">(ftag.sample.Sample method)</a>
 </li>
       </ul></li>
@@ -509,6 +521,8 @@
       <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.Cut.__str__">__str__() (ftag.cuts.Cut method)</a>
 
       <ul>
+        <li><a href="autoapi/ftag/region/index.html#ftag.region.Region.__str__">(ftag.region.Region method)</a>
+</li>
         <li><a href="autoapi/ftag/index.html#ftag.Sample.__str__">(ftag.Sample method)</a>
 </li>
         <li><a href="autoapi/ftag/sample/index.html#ftag.sample.Sample.__str__">(ftag.sample.Sample method)</a>
@@ -516,7 +530,21 @@
       </ul></li>
       <li><a href="autoapi/ftag/index.html#ftag.__version__">__version__ (in module ftag)</a>
 </li>
+      <li><a href="autoapi/ftag/find_metadata/index.html#ftag.find_metadata.MetadataFinder._download_db">_download_db() (ftag.find_metadata.MetadataFinder method)</a>
+</li>
+      <li><a href="autoapi/ftag/find_metadata/index.html#ftag.find_metadata.MetadataFinder._extract_container">_extract_container() (ftag.find_metadata.MetadataFinder method)</a>
+</li>
+      <li><a href="autoapi/ftag/find_metadata/index.html#ftag.find_metadata.MetadataFinder._extract_taskid">_extract_taskid() (ftag.find_metadata.MetadataFinder method)</a>
+</li>
+      <li><a href="autoapi/ftag/find_metadata/index.html#ftag.find_metadata.MetadataFinder._fetch_taskinfo">_fetch_taskinfo() (ftag.find_metadata.MetadataFinder method)</a>
+</li>
+      <li><a href="autoapi/ftag/track_selector/index.html#ftag.track_selector.TrackSelector._nshared_cut">_nshared_cut() (ftag.track_selector.TrackSelector method)</a>
+</li>
+      <li><a href="autoapi/ftag/find_metadata/index.html#ftag.find_metadata.MetadataFinder._parse_info">_parse_info() (ftag.find_metadata.MetadataFinder method)</a>
+</li>
       <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5SingleReader._process_batch">_process_batch() (ftag.hdf5.h5reader.H5SingleReader method)</a>
+</li>
+      <li><a href="autoapi/ftag/find_metadata/index.html#ftag.find_metadata.MetadataFinder._query_xsecdb">_query_xsecdb() (ftag.find_metadata.MetadataFinder method)</a>
 </li>
       <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Writer._resolve_compression">_resolve_compression() (ftag.hdf5.H5Writer method)</a>
 
@@ -630,10 +658,10 @@
         <li><a href="autoapi/ftag/hdf5/h5writer/index.html#ftag.hdf5.h5writer.H5Writer.close">(ftag.hdf5.h5writer.H5Writer method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="autoapi/ftag/hdf5/h5utils/index.html#ftag.hdf5.h5utils.compare_groups">compare_groups() (in module ftag.hdf5.h5utils)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Writer.compression">compression (ftag.hdf5.H5Writer attribute)</a>, <a href="autoapi/ftag/hdf5/index.html#id15">[1]</a>
 
       <ul>
@@ -683,6 +711,10 @@
       <ul>
         <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.Cuts.cuts">(ftag.cuts.Cuts attribute)</a>, <a href="autoapi/ftag/cuts/index.html#id4">[1]</a>
 </li>
+        <li><a href="autoapi/ftag/region/index.html#ftag.region.Region.cuts">(ftag.region.Region attribute)</a>, <a href="autoapi/ftag/region/index.html#id1">[1]</a>
+</li>
+        <li><a href="autoapi/ftag/track_selector/index.html#ftag.track_selector.TrackSelector.cuts">(ftag.track_selector.TrackSelector attribute)</a>, <a href="autoapi/ftag/track_selector/index.html#id0">[1]</a>
+</li>
       </ul></li>
       <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.CutsResult">CutsResult (class in ftag.cuts)</a>
 </li>
@@ -704,8 +736,6 @@
         <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5SingleReader.do_remove_inf">(ftag.hdf5.h5reader.H5SingleReader attribute)</a>, <a href="autoapi/ftag/hdf5/h5reader/index.html#id5">[1]</a>
 </li>
       </ul></li>
-      <li><a href="autoapi/ftag/find_metadata/index.html#ftag.find_metadata.download_xsecdb_files">download_xsecdb_files() (in module ftag.find_metadata)</a>
-</li>
       <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5SingleReader.dsets">dsets (ftag.hdf5.h5reader.H5SingleReader attribute)</a>, <a href="autoapi/ftag/hdf5/h5reader/index.html#id8">[1]</a>
 </li>
       <li><a href="autoapi/ftag/index.html#ftag.Sample.dsid">dsid (ftag.Sample property)</a>
@@ -768,13 +798,13 @@
         <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5Reader.estimate_available_jets">(ftag.hdf5.h5reader.H5Reader method)</a>
 </li>
       </ul></li>
+      <li><a href="autoapi/ftag/index.html#ftag.Extended_Flavours">Extended_Flavours (in module ftag)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/flavours/index.html#ftag.flavours.Extended_Flavours">(in module ftag.flavours)</a>
+</li>
+      </ul></li>
       <li><a href="autoapi/ftag/hdf5/h5utils/index.html#ftag.hdf5.h5utils.extract_group_full">extract_group_full() (in module ftag.hdf5.h5utils)</a>
-</li>
-      <li><a href="autoapi/ftag/find_metadata/index.html#ftag.find_metadata.extract_info_from_container">extract_info_from_container() (in module ftag.find_metadata)</a>
-</li>
-      <li><a href="autoapi/ftag/find_metadata/index.html#ftag.find_metadata.extract_mc_container_from_json">extract_mc_container_from_json() (in module ftag.find_metadata)</a>
-</li>
-      <li><a href="autoapi/ftag/find_metadata/index.html#ftag.find_metadata.extract_taskid_from_filename">extract_taskid_from_filename() (in module ftag.find_metadata)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -782,8 +812,6 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="autoapi/ftag/find_metadata/index.html#ftag.find_metadata.fetch_taskinfo_from_bigpanda">fetch_taskinfo_from_bigpanda() (in module ftag.find_metadata)</a>
-</li>
       <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Reader.files">files (ftag.hdf5.H5Reader property)</a>
 
       <ul>
@@ -792,6 +820,12 @@
         <li><a href="autoapi/ftag/index.html#ftag.Sample.files">(ftag.Sample property)</a>
 </li>
         <li><a href="autoapi/ftag/sample/index.html#ftag.sample.Sample.files">(ftag.sample.Sample property)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/ftag/index.html#ftag.Flavours">Flavours (in module ftag)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/flavours/index.html#ftag.flavours.Flavours">(in module ftag.flavours)</a>
 </li>
       </ul></li>
       <li><a href="autoapi/ftag/index.html#ftag.Transform.floats_map">floats_map (ftag.Transform attribute)</a>, <a href="autoapi/ftag/index.html#id9">[1]</a>
@@ -850,6 +884,13 @@
 
       <ul>
         <li><a href="autoapi/ftag/find_metadata/index.html#module-ftag.find_metadata">module</a>
+</li>
+      </ul></li>
+      <li>
+    ftag.flavours
+
+      <ul>
+        <li><a href="autoapi/ftag/flavours/index.html#module-ftag.flavours">module</a>
 </li>
       </ul></li>
       <li>
@@ -925,10 +966,24 @@
 </li>
       </ul></li>
       <li>
+    ftag.region
+
+      <ul>
+        <li><a href="autoapi/ftag/region/index.html#module-ftag.region">module</a>
+</li>
+      </ul></li>
+      <li>
     ftag.sample
 
       <ul>
         <li><a href="autoapi/ftag/sample/index.html#module-ftag.sample">module</a>
+</li>
+      </ul></li>
+      <li>
+    ftag.track_selector
+
+      <ul>
+        <li><a href="autoapi/ftag/track_selector/index.html#module-ftag.track_selector">module</a>
 </li>
       </ul></li>
       <li>
@@ -1075,6 +1130,8 @@
         <li><a href="autoapi/ftag/hdf5/h5add_col/index.html#ftag.hdf5.h5add_col.h5_add_column">(in module ftag.hdf5.h5add_col)</a>
 </li>
       </ul></li>
+      <li><a href="autoapi/ftag/find_metadata/index.html#ftag.find_metadata.MetadataFinder.h5_path">h5_path (ftag.find_metadata.MetadataFinder attribute)</a>
+</li>
       <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Reader">H5Reader (class in ftag.hdf5)</a>
 
       <ul>
@@ -1091,8 +1148,6 @@
         <li><a href="autoapi/ftag/hdf5/h5writer/index.html#ftag.hdf5.h5writer.H5Writer">(class in ftag.hdf5.h5writer)</a>
 </li>
       </ul></li>
-      <li><a href="autoapi/ftag/find_metadata/index.html#ftag.find_metadata.handle_yaml_fallback">handle_yaml_fallback() (in module ftag.find_metadata)</a>
-</li>
       <li><a href="autoapi/ftag/cli_utils/index.html#ftag.cli_utils.HelpFormatter">HelpFormatter (class in ftag.cli_utils)</a>
 </li>
   </ul></td>
@@ -1113,6 +1168,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/find_metadata/index.html#ftag.find_metadata.MetadataFinder.inject_metadata">inject_metadata() (ftag.find_metadata.MetadataFinder method)</a>
+</li>
       <li><a href="autoapi/ftag/index.html#ftag.Transform.ints_map">ints_map (ftag.Transform attribute)</a>, <a href="autoapi/ftag/index.html#id8">[1]</a>
 
       <ul>
@@ -1225,6 +1282,8 @@
       </ul></li>
       <li><a href="autoapi/ftag/hdf5/h5add_col/index.html#ftag.hdf5.h5add_col.merge_dicts">merge_dicts() (in module ftag.hdf5.h5add_col)</a>
 </li>
+      <li><a href="autoapi/ftag/find_metadata/index.html#ftag.find_metadata.MetadataFinder">MetadataFinder (class in ftag.find_metadata)</a>
+</li>
       <li>
     module
 
@@ -1236,6 +1295,8 @@
         <li><a href="autoapi/ftag/cuts/index.html#module-ftag.cuts">ftag.cuts</a>
 </li>
         <li><a href="autoapi/ftag/find_metadata/index.html#module-ftag.find_metadata">ftag.find_metadata</a>
+</li>
+        <li><a href="autoapi/ftag/flavours/index.html#module-ftag.flavours">ftag.flavours</a>
 </li>
         <li><a href="autoapi/ftag/fraction_optimization/index.html#module-ftag.fraction_optimization">ftag.fraction_optimization</a>
 </li>
@@ -1257,7 +1318,11 @@
 </li>
         <li><a href="autoapi/ftag/mock/index.html#module-ftag.mock">ftag.mock</a>
 </li>
+        <li><a href="autoapi/ftag/region/index.html#module-ftag.region">ftag.region</a>
+</li>
         <li><a href="autoapi/ftag/sample/index.html#module-ftag.sample">ftag.sample</a>
+</li>
+        <li><a href="autoapi/ftag/track_selector/index.html#module-ftag.track_selector">ftag.track_selector</a>
 </li>
         <li><a href="autoapi/ftag/transform/index.html#module-ftag.transform">ftag.transform</a>
 </li>
@@ -1278,9 +1343,11 @@
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="autoapi/ftag/index.html#ftag.Sample.name">name (ftag.Sample attribute)</a>, <a href="autoapi/ftag/index.html#id3">[1]</a>
+      <li><a href="autoapi/ftag/region/index.html#ftag.region.Region.name">name (ftag.region.Region attribute)</a>, <a href="autoapi/ftag/region/index.html#id0">[1]</a>
 
       <ul>
+        <li><a href="autoapi/ftag/index.html#ftag.Sample.name">(ftag.Sample attribute)</a>, <a href="autoapi/ftag/index.html#id3">[1]</a>
+</li>
         <li><a href="autoapi/ftag/sample/index.html#ftag.sample.Sample.name">(ftag.sample.Sample attribute)</a>, <a href="autoapi/ftag/sample/index.html#id2">[1]</a>
 </li>
       </ul></li>
@@ -1344,12 +1411,6 @@
         <li><a href="autoapi/ftag/working_points/index.html#ftag.working_points.parse_args">(in module ftag.working_points)</a>
 </li>
       </ul></li>
-      <li><a href="autoapi/ftag/find_metadata/index.html#ftag.find_metadata.parse_args_and_yaml">parse_args_and_yaml() (in module ftag.find_metadata)</a>
-</li>
-      <li><a href="autoapi/ftag/find_metadata/index.html#ftag.find_metadata.parse_campaign_from_taskname">parse_campaign_from_taskname() (in module ftag.find_metadata)</a>
-</li>
-      <li><a href="autoapi/ftag/find_metadata/index.html#ftag.find_metadata.parse_line_from_taskname">parse_line_from_taskname() (in module ftag.find_metadata)</a>
-</li>
       <li><a href="autoapi/ftag/index.html#ftag.Sample.path">path (ftag.Sample property)</a>
 
       <ul>
@@ -1376,22 +1437,12 @@
         <li><a href="autoapi/ftag/hdf5/h5writer/index.html#ftag.hdf5.h5writer.H5Writer.precision">(ftag.hdf5.h5writer.H5Writer attribute)</a>, <a href="autoapi/ftag/hdf5/h5writer/index.html#id7">[1]</a>
 </li>
       </ul></li>
-      <li><a href="autoapi/ftag/find_metadata/index.html#ftag.find_metadata.process_single_file">process_single_file() (in module ftag.find_metadata)</a>
-</li>
       <li><a href="autoapi/ftag/index.html#ftag.Sample.ptag">ptag (ftag.Sample property)</a>
 
       <ul>
         <li><a href="autoapi/ftag/sample/index.html#ftag.sample.Sample.ptag">(ftag.sample.Sample property)</a>
 </li>
       </ul></li>
-  </ul></td>
-</tr></table>
-
-<h2 id="Q">Q</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="autoapi/ftag/find_metadata/index.html#ftag.find_metadata.query_xsecdb">query_xsecdb() (in module ftag.find_metadata)</a>
-</li>
   </ul></td>
 </tr></table>
 
@@ -1403,6 +1454,8 @@
       <li><a href="autoapi/ftag/utils/logging/index.html#ftag.utils.logging.CustomFormatter.red">red (ftag.utils.logging.CustomFormatter attribute)</a>
 </li>
       <li><a href="autoapi/ftag/vds/index.html#ftag.vds.regex_files_from_dir">regex_files_from_dir() (in module ftag.vds)</a>
+</li>
+      <li><a href="autoapi/ftag/region/index.html#ftag.region.Region">Region (class in ftag.region)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -1514,6 +1567,8 @@
         <li><a href="autoapi/ftag/sample/index.html#ftag.sample.Sample.tags">(ftag.sample.Sample property)</a>
 </li>
       </ul></li>
+      <li><a href="autoapi/ftag/track_selector/index.html#ftag.track_selector.TrackSelector">TrackSelector (class in ftag.track_selector)</a>
+</li>
       <li><a href="autoapi/ftag/index.html#ftag.Transform">Transform (class in ftag)</a>
 
       <ul>
@@ -1538,7 +1593,7 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="autoapi/ftag/cli_utils/index.html#ftag.cli_utils.valid_path">valid_path() (in module ftag.cli_utils)</a>
 </li>
-      <li><a href="autoapi/ftag/find_metadata/index.html#ftag.find_metadata.validate_url_scheme">validate_url_scheme() (in module ftag.find_metadata)</a>
+      <li><a href="autoapi/ftag/track_selector/index.html#ftag.track_selector.TrackSelector.valid_str">valid_str (ftag.track_selector.TrackSelector attribute)</a>, <a href="autoapi/ftag/track_selector/index.html#id1">[1]</a>
 </li>
       <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.Cut.value">value (ftag.cuts.Cut property)</a>
 </li>
@@ -1616,8 +1671,6 @@
       </ul></li>
       <li><a href="autoapi/ftag/hdf5/h5utils/index.html#ftag.hdf5.h5utils.write_group_full">write_group_full() (in module ftag.hdf5.h5utils)</a>
 </li>
-      <li><a href="autoapi/ftag/find_metadata/index.html#ftag.find_metadata.write_metadata_to_h5">write_metadata_to_h5() (in module ftag.find_metadata)</a>
-</li>
   </ul></td>
 </tr></table>
 
@@ -1670,8 +1723,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1695,7 +1748,7 @@
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.17.1.
 </p></div>
       
     </div>

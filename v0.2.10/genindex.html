@@ -26,18 +26,18 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d75fae25" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
   
   <!-- So that users can add custom icons -->
-  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
     <script src="_static/documentation_options.js?v=269a13a8"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
@@ -46,31 +46,38 @@
     <script src="_static/copybutton.js?v=f281be69"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'genindex';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_version = '0.17.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://umami-hep.github.io/atlas-ftag-tools/main/_static/switcher.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'vv0.2.10';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
-
+  <body data-default-mode="light">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
+  
+  
+  
   
   <dialog id="pst-search-dialog">
     
@@ -96,7 +103,7 @@
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
   <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
@@ -437,14 +444,18 @@
 </li>
         <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.Cuts.__call__">(ftag.cuts.Cuts method)</a>
 </li>
+        <li><a href="autoapi/ftag/track_selector/index.html#ftag.track_selector.TrackSelector.__call__">(ftag.track_selector.TrackSelector method)</a>
+</li>
         <li><a href="autoapi/ftag/index.html#ftag.Transform.__call__">(ftag.Transform method)</a>
 </li>
         <li><a href="autoapi/ftag/transform/index.html#ftag.transform.Transform.__call__">(ftag.transform.Transform method)</a>
 </li>
       </ul></li>
-      <li><a href="autoapi/ftag/index.html#ftag.Sample.__eq__">__eq__() (ftag.Sample method)</a>
+      <li><a href="autoapi/ftag/region/index.html#ftag.region.Region.__eq__">__eq__() (ftag.region.Region method)</a>
 
       <ul>
+        <li><a href="autoapi/ftag/index.html#ftag.Sample.__eq__">(ftag.Sample method)</a>
+</li>
         <li><a href="autoapi/ftag/sample/index.html#ftag.sample.Sample.__eq__">(ftag.sample.Sample method)</a>
 </li>
       </ul></li>
@@ -466,9 +477,11 @@
         <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.Cuts.__len__">(ftag.cuts.Cuts method)</a>
 </li>
       </ul></li>
-      <li><a href="autoapi/ftag/index.html#ftag.Sample.__lt__">__lt__() (ftag.Sample method)</a>
+      <li><a href="autoapi/ftag/region/index.html#ftag.region.Region.__lt__">__lt__() (ftag.region.Region method)</a>
 
       <ul>
+        <li><a href="autoapi/ftag/index.html#ftag.Sample.__lt__">(ftag.Sample method)</a>
+</li>
         <li><a href="autoapi/ftag/sample/index.html#ftag.sample.Sample.__lt__">(ftag.sample.Sample method)</a>
 </li>
       </ul></li>
@@ -507,12 +520,16 @@
       <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.Cut.__str__">__str__() (ftag.cuts.Cut method)</a>
 
       <ul>
+        <li><a href="autoapi/ftag/region/index.html#ftag.region.Region.__str__">(ftag.region.Region method)</a>
+</li>
         <li><a href="autoapi/ftag/index.html#ftag.Sample.__str__">(ftag.Sample method)</a>
 </li>
         <li><a href="autoapi/ftag/sample/index.html#ftag.sample.Sample.__str__">(ftag.sample.Sample method)</a>
 </li>
       </ul></li>
       <li><a href="autoapi/ftag/index.html#ftag.__version__">__version__ (in module ftag)</a>
+</li>
+      <li><a href="autoapi/ftag/track_selector/index.html#ftag.track_selector.TrackSelector._nshared_cut">_nshared_cut() (ftag.track_selector.TrackSelector method)</a>
 </li>
       <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.Cut._value">_value (ftag.cuts.Cut attribute)</a>
 </li>
@@ -604,14 +621,14 @@
         <li><a href="autoapi/ftag/hdf5/h5writer/index.html#ftag.hdf5.h5writer.H5Writer.close">(ftag.hdf5.h5writer.H5Writer method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Writer.compression">compression (ftag.hdf5.H5Writer attribute)</a>
 
       <ul>
         <li><a href="autoapi/ftag/hdf5/h5writer/index.html#ftag.hdf5.h5writer.H5Writer.compression">(ftag.hdf5.h5writer.H5Writer attribute)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="autoapi/ftag/fraction_optimization/index.html#ftag.fraction_optimization.convert_dict">convert_dict() (in module ftag.fraction_optimization)</a>
 </li>
       <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Writer.copy_attrs">copy_attrs() (ftag.hdf5.H5Writer method)</a>
@@ -644,6 +661,10 @@
 
       <ul>
         <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.Cuts.cuts">(ftag.cuts.Cuts attribute)</a>
+</li>
+        <li><a href="autoapi/ftag/region/index.html#ftag.region.Region.cuts">(ftag.region.Region attribute)</a>
+</li>
+        <li><a href="autoapi/ftag/track_selector/index.html#ftag.track_selector.TrackSelector.cuts">(ftag.track_selector.TrackSelector attribute)</a>
 </li>
       </ul></li>
       <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.CutsResult">CutsResult (class in ftag.cuts)</a>
@@ -742,6 +763,12 @@
         <li><a href="autoapi/ftag/sample/index.html#ftag.sample.Sample.files">(ftag.sample.Sample property)</a>
 </li>
       </ul></li>
+      <li><a href="autoapi/ftag/index.html#ftag.Flavours">Flavours (in module ftag)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/flavours/index.html#ftag.flavours.Flavours">(in module ftag.flavours)</a>
+</li>
+      </ul></li>
       <li><a href="autoapi/ftag/index.html#ftag.Transform.floats_map">floats_map (ftag.Transform attribute)</a>
 
       <ul>
@@ -791,6 +818,13 @@
 
       <ul>
         <li><a href="autoapi/ftag/cuts/index.html#module-ftag.cuts">module</a>
+</li>
+      </ul></li>
+      <li>
+    ftag.flavours
+
+      <ul>
+        <li><a href="autoapi/ftag/flavours/index.html#module-ftag.flavours">module</a>
 </li>
       </ul></li>
       <li>
@@ -859,10 +893,24 @@
 </li>
       </ul></li>
       <li>
+    ftag.region
+
+      <ul>
+        <li><a href="autoapi/ftag/region/index.html#module-ftag.region">module</a>
+</li>
+      </ul></li>
+      <li>
     ftag.sample
 
       <ul>
         <li><a href="autoapi/ftag/sample/index.html#module-ftag.sample">module</a>
+</li>
+      </ul></li>
+      <li>
+    ftag.track_selector
+
+      <ul>
+        <li><a href="autoapi/ftag/track_selector/index.html#module-ftag.track_selector">module</a>
 </li>
       </ul></li>
       <li>
@@ -1121,6 +1169,8 @@
 </li>
         <li><a href="autoapi/ftag/cuts/index.html#module-ftag.cuts">ftag.cuts</a>
 </li>
+        <li><a href="autoapi/ftag/flavours/index.html#module-ftag.flavours">ftag.flavours</a>
+</li>
         <li><a href="autoapi/ftag/fraction_optimization/index.html#module-ftag.fraction_optimization">ftag.fraction_optimization</a>
 </li>
         <li><a href="autoapi/ftag/git_check/index.html#module-ftag.git_check">ftag.git_check</a>
@@ -1139,7 +1189,11 @@
 </li>
         <li><a href="autoapi/ftag/mock/index.html#module-ftag.mock">ftag.mock</a>
 </li>
+        <li><a href="autoapi/ftag/region/index.html#module-ftag.region">ftag.region</a>
+</li>
         <li><a href="autoapi/ftag/sample/index.html#module-ftag.sample">ftag.sample</a>
+</li>
+        <li><a href="autoapi/ftag/track_selector/index.html#module-ftag.track_selector">ftag.track_selector</a>
 </li>
         <li><a href="autoapi/ftag/transform/index.html#module-ftag.transform">ftag.transform</a>
 </li>
@@ -1160,9 +1214,11 @@
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="autoapi/ftag/index.html#ftag.Sample.name">name (ftag.Sample attribute)</a>
+      <li><a href="autoapi/ftag/region/index.html#ftag.region.Region.name">name (ftag.region.Region attribute)</a>
 
       <ul>
+        <li><a href="autoapi/ftag/index.html#ftag.Sample.name">(ftag.Sample attribute)</a>
+</li>
         <li><a href="autoapi/ftag/sample/index.html#ftag.sample.Sample.name">(ftag.sample.Sample attribute)</a>
 </li>
       </ul></li>
@@ -1258,10 +1314,12 @@
 </li>
       <li><a href="autoapi/ftag/utils/logging/index.html#ftag.utils.logging.CustomFormatter.red">red (ftag.utils.logging.CustomFormatter attribute)</a>
 </li>
-      <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5SingleReader.remove_inf">remove_inf() (ftag.hdf5.h5reader.H5SingleReader method)</a>
+      <li><a href="autoapi/ftag/region/index.html#ftag.region.Region">Region (class in ftag.region)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5SingleReader.remove_inf">remove_inf() (ftag.hdf5.h5reader.H5SingleReader method)</a>
+</li>
       <li><a href="autoapi/ftag/utils/logging/index.html#ftag.utils.logging.CustomFormatter.reset">reset (ftag.utils.logging.CustomFormatter attribute)</a>
 </li>
       <li><a href="autoapi/ftag/index.html#ftag.Sample.rtag">rtag (ftag.Sample property)</a>
@@ -1350,6 +1408,8 @@
         <li><a href="autoapi/ftag/sample/index.html#ftag.sample.Sample.tags">(ftag.sample.Sample property)</a>
 </li>
       </ul></li>
+      <li><a href="autoapi/ftag/track_selector/index.html#ftag.track_selector.TrackSelector">TrackSelector (class in ftag.track_selector)</a>
+</li>
       <li><a href="autoapi/ftag/index.html#ftag.Transform">Transform (class in ftag)</a>
 
       <ul>
@@ -1374,20 +1434,22 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="autoapi/ftag/cli_utils/index.html#ftag.cli_utils.valid_path">valid_path() (in module ftag.cli_utils)</a>
 </li>
+      <li><a href="autoapi/ftag/track_selector/index.html#ftag.track_selector.TrackSelector.valid_str">valid_str (ftag.track_selector.TrackSelector attribute)</a>
+</li>
       <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.Cut.value">value (ftag.cuts.Cut property)</a>
 </li>
       <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.CutsResult.values">values (ftag.cuts.CutsResult attribute)</a>
 </li>
       <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.Cut.variable">variable (ftag.cuts.Cut attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="autoapi/ftag/index.html#ftag.Transform.variable_map">variable_map (ftag.Transform attribute)</a>
 
       <ul>
         <li><a href="autoapi/ftag/transform/index.html#ftag.transform.Transform.variable_map">(ftag.transform.Transform attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="autoapi/ftag/index.html#ftag.Cuts.variables">variables (ftag.Cuts property)</a>
 
       <ul>
@@ -1470,8 +1532,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1495,7 +1557,7 @@
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.17.1.
 </p></div>
       
     </div>

@@ -1,0 +1,19 @@
+ftag.flavours
+=============
+
+.. py:module:: ftag.flavours
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   ftag.flavours.Flavours
+
+
+Module Contents
+---------------
+
+.. py:data:: Flavours
+
