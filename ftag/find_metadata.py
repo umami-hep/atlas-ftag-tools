@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import json
 import re
 from pathlib import Path
@@ -189,3 +190,23 @@ class MetadataFinder:
                     del g[k]
                 g.create_dataset(k, data=v)
         print(f"Metadata injected for {self.h5_path.name}")
+
+
+def main() -> None:
+    """Command line entry point to fetch and inject PMG metadata."""
+    parser = argparse.ArgumentParser(description="Fetch and inject PMG metadata into HDF5 files.")
+    parser.add_argument(
+        "h5_paths", nargs="+", type=str, help="Path(s) to the HDF5 file(s) to process."
+    )
+
+    args = parser.parse_args()
+
+    # Process each provided HDF5 file
+    for h5_path in args.h5_paths:
+        print(f"Processing: {h5_path}")
+        finder = MetadataFinder(h5_path)
+        finder.inject_metadata()
+
+
+if __name__ == "__main__":
+    main()

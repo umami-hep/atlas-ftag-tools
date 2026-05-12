@@ -7,7 +7,7 @@ from unittest.mock import MagicMock, patch
 import h5py
 import pytest
 
-from ftag.find_metadata import MetadataFinder
+from ftag.find_metadata import MetadataFinder, main
 
 # === 1. Mock Data Setup ===
 
@@ -194,3 +194,27 @@ class TestMetadataFinder:
             finder.inject_metadata()
             captured = capsys.readouterr()
             assert "Failed to extract container name" in captured.out
+
+    # --- CLI Entry Point Test ---
+    @patch("sys.argv", ["find_metadata.py", "test_file_1.h5", "test_file_2.h5"])
+    @patch("ftag.find_metadata.MetadataFinder")
+    def test_main_block(self, mock_finder_class, capsys):
+        """Test the command-line execution block via the main() function."""
+        # Setup the mock instance returned when MetadataFinder is instantiated
+        mock_instance = mock_finder_class.return_value
+
+        # Call the main function directly
+        main()
+
+        # Verify stdout prints
+        captured = capsys.readouterr()
+        assert "Processing: test_file_1.h5" in captured.out
+        assert "Processing: test_file_2.h5" in captured.out
+
+        # Verify MetadataFinder was instantiated with correct arguments
+        assert mock_finder_class.call_count == 2
+        mock_finder_class.assert_any_call("test_file_1.h5")
+        mock_finder_class.assert_any_call("test_file_2.h5")
+
+        # Verify the injection method was triggered for each provided file
+        assert mock_instance.inject_metadata.call_count == 2
