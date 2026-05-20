@@ -35,7 +35,6 @@ def parse_args(args: Any | None) -> argparse.Namespace:
     parser.add_argument("output", type=Path, help="path to output virtual file")
     parser.add_argument(
         "--use_regex",
-        "--use-regex",
         action="store_true",
         help="treat PATTERN as a regular expression instead of a glob",
     )
