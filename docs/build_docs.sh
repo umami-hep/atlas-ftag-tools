@@ -9,6 +9,12 @@ python -m pip install -r docs/requirements.txt
 # add current working directory to PYTHONPATH such that package is found
 export PYTHONPATH=$PWD:$PYTHONPATH
 
+# convert notebook examples included by docs/source/examples/index.md
+jupyter nbconvert ftag/example.ipynb \
+    --to markdown \
+    --output example \
+    --output-dir docs/source/examples
+
 # build the documentation
 rm -rf docs/_*
 python docs/sphinx_build_multiversion.py

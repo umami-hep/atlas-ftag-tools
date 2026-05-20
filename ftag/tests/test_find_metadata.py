@@ -86,8 +86,8 @@ class TestMetadataFinder:
         finder = MetadataFinder(mock_h5)
         with patch.object(finder, "_download_db", return_value=str(db_file)):
             meta = finder._query_xsecdb("mc23", 601229, "e8514")
-            assert meta["cross_section_pb"] == 0.015
-            assert meta["genFiltEff"] == 1.0
+            assert meta["cross_section_pb"] == pytest.approx(0.015)
+            assert meta["genFiltEff"] == pytest.approx(1.0)
 
     def test_query_xsecdb_not_found(self, mock_h5, tmp_path):
         """Cover branch where _query_xsecdb returns None when no data is found."""
@@ -122,7 +122,7 @@ class TestMetadataFinder:
         # Verify results
         with h5py.File(mock_h5, "r") as f:
             assert "metadata/601229/cross_section_pb" in f
-            assert f["metadata/601229/cross_section_pb"][()] == 0.015
+            assert f["metadata/601229/cross_section_pb"][()] == pytest.approx(0.015)
 
     def test_inject_metadata_overwrite(self, mock_h5):
         """Ensure the overwrite logic 'if k in g: del g[k]' is executed."""
@@ -144,7 +144,7 @@ class TestMetadataFinder:
             finder.inject_metadata()
 
         with h5py.File(mock_h5, "r") as f:
-            assert f[f"metadata/{dsid}/cross_section_pb"][()] == 0.015
+            assert f[f"metadata/{dsid}/cross_section_pb"][()] == pytest.approx(0.015)
 
     # --- Exception Branch Tests ---
     def test_inject_metadata_fail_branches(self, mock_h5, capsys):
