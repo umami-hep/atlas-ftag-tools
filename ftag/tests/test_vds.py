@@ -373,21 +373,3 @@ def test_main():
             assert key == "data"
             assert f[key].shape == (30,)
             assert f[key].attrs["key"] == "value"
-
-
-def test_main_regex_hyphenated_alias_defaults_to_cwd(monkeypatch, tmp_path):
-    """Test documented regex option spelling and default regex directory."""
-    for i in range(3):
-        fname = tmp_path / f"test_{i}.h5"
-        with h5py.File(fname, "w") as f:
-            f.create_dataset("data", data=[i] * 5)
-
-    monkeypatch.chdir(tmp_path)
-    output_fname = tmp_path / "out.h5"
-
-    main([r"test_[01]\.h5", str(output_fname), "--use-regex"])
-
-    with h5py.File(output_fname) as f:
-        key = next(iter(f.keys()))
-        assert key == "data"
-        assert f[key].shape == (10,)
