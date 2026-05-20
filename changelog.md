@@ -3,6 +3,9 @@
 ### [Latest]
 
 - Fix CLI entry points and `vds` regex option handling [#158](https://github.com/umami-hep/atlas-ftag-tools/pull/158)
+- Update contributor workflow documentation [#165](https://github.com/umami-hep/atlas-ftag-tools/pull/165)
+- Fix documentation examples and local docs build [#162](https://github.com/umami-hep/atlas-ftag-tools/pull/162)
+- Clean lint and AutoAPI documentation warnings [#168](https://github.com/umami-hep/atlas-ftag-tools/pull/168)
 - Adding LZ4 to H5Writer as Default [#152](https://github.com/umami-hep/atlas-ftag-tools/pull/152)
 - Refactored `find_metadata.py` into a formal `MetadataFinder` class to improve modularity and facilitate integration with the ftag library for UPP. [#153](https://github.com/umami-hep/atlas-ftag-tools/pull/153)
 

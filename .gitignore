@@ -25,3 +25,7 @@ env/
 
 # UV files
 uv.lock
+
+# Generated docs files
+docs/source/examples/example.md
+docs/source/examples/example_files/
