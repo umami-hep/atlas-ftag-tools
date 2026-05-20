@@ -3,7 +3,6 @@ from __future__ import annotations
 import argparse
 import glob
 import re
-import sys
 from pathlib import Path
 from typing import Any
 
@@ -42,7 +41,6 @@ def parse_args(args: Any | None) -> argparse.Namespace:
     parser.add_argument(
         "--regex_path",
         type=str,
-        required="--use_regex" in (args or sys.argv),
         default=None,
         help="directory whose entries the regex is applied to "
         "(defaults to the current working directory)",
@@ -314,6 +312,7 @@ def create_virtual_file(
 
     # Use regex to find input files else use glob
     if use_regex is True:
+        regex_path = regex_path or str(Path.cwd())
         matched = glob_re(pattern_str, regex_path)
         fnames = regex_files_from_dir(matched, regex_path)
     else:
