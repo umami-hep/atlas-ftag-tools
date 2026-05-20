@@ -522,17 +522,17 @@ editing the source in place.</p>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><strong>black</strong></p></td>
-<td><p>formatting</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">black</span> <span class="pre">.</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>ruff</strong> (<code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>)</p></td>
+<tr class="row-even"><td><p><strong>ruff</strong> (<code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>)</p></td>
 <td><p>lint + simple refactors</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ruff</span> <span class="pre">check</span> <span class="pre">.</span> <span class="pre">--fix</span></code></p></td>
 </tr>
+<tr class="row-odd"><td><p><strong>ruff format</strong></p></td>
+<td><p>formatting</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ruff</span> <span class="pre">format</span> <span class="pre">.</span></code></p></td>
+</tr>
 <tr class="row-even"><td><p><strong>mypy</strong></p></td>
 <td><p>type safety</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">mypy</span> <span class="pre">ftag</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pre-commit</span> <span class="pre">run</span> <span class="pre">mypy</span> <span class="pre">--all-files</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>isort</strong> (via ruff)</p></td>
 <td><p>import order</p></td>
@@ -547,7 +547,7 @@ editing the source in place.</p>
 </div>
 <section id="how-the-hook-chain-works">
 <h3>How the hook chain works<a class="headerlink" href="#how-the-hook-chain-works" title="Link to this heading">#</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>pre-commit ➜ ruff ➜ black ➜ mypy
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>pre-commit ➜ ruff ➜ ruff format ➜ mypy ➜ yamllint ➜ pydoclint
 </pre></div>
 </div>
 <p>If a stage fails the commit is rejected. Run the hook manually to fix issues
@@ -561,7 +561,7 @@ before pushing:</p>
 <h2>4  Testing strategy<a class="headerlink" href="#testing-strategy" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p><strong>Unit tests</strong> live in <code class="docutils literal notranslate"><span class="pre">ftag/tests/</span></code> and follow the <em>pytest</em> conventions.</p></li>
-<li><p>CI executes the suite on 3 Python versions (3.9, 3.11, 3.12) and uploads a coverage report.</p></li>
+<li><p>CI executes the suite on Python 3.10, 3.11, 3.12, 3.13, and 3.14 and uploads a coverage report.</p></li>
 </ul>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># local one-liner</span>
 pytest<span class="w"> </span>ftag/tests/

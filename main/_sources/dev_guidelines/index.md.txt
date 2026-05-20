@@ -37,16 +37,16 @@ pre-commit run --all-files
 
 | Tool | Checked in CI | Fix command |
 |------|---------------|-------------|
-| **black** | formatting | `black .` |
 | **ruff** (`pyproject.toml`) | lint + simple refactors | `ruff check . --fix` |
-| **mypy** | type safety | `mypy ftag` |
+| **ruff format** | formatting | `ruff format .` |
+| **mypy** | type safety | `pre-commit run mypy --all-files` |
 | **isort** (via ruff) | import order | auto-fixed by *ruff* |
 | **pre-commit** | umbrella runner | `pre-commit run --all-files` |
 
 ### How the hook chain works
 
 ```
-pre-commit ➜ ruff ➜ black ➜ mypy
+pre-commit ➜ ruff ➜ ruff format ➜ mypy ➜ yamllint ➜ pydoclint
 ```
 
 If a stage fails the commit is rejected. Run the hook manually to fix issues
@@ -59,7 +59,7 @@ pre-commit run --all-files
 ## 4  Testing strategy
 
 * **Unit tests** live in `ftag/tests/` and follow the *pytest* conventions.
-* CI executes the suite on 3 Python versions (3.9, 3.11, 3.12) and uploads a coverage report.
+* CI executes the suite on Python 3.10, 3.11, 3.12, 3.13, and 3.14 and uploads a coverage report.
 
 ```bash
 # local one-liner
