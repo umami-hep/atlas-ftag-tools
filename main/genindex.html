@@ -26,18 +26,18 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d75fae25" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <script defer src="_static/scripts/fontawesome.js?digest=0790524f97105ba85085"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
 
     <script src="_static/documentation_options.js?v=8a6d37c9"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
@@ -46,7 +46,7 @@
     <script src="_static/copybutton.js?v=f281be69"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'genindex';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.17.1';
+        DOCUMENTATION_OPTIONS.theme_version = '0.18.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://umami-hep.github.io/atlas-ftag-tools/main/_static/switcher.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
@@ -194,11 +194,18 @@
       
         <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
       
         <div class="navbar-item">
 <div class="version-switcher__container dropdown pst-js-only">
@@ -231,8 +238,7 @@
           
           
           
-          <a href="https://github.com/umami-hep/atlas-ftag-tools" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github-square fa-lg" aria-hidden="true"></i>
-            <span class="sr-only">GitHub</span></a>
+          <a href="https://github.com/umami-hep/atlas-ftag-tools" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github-square fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
         </li>
 </ul></div>
       
@@ -326,11 +332,18 @@
         
           <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
         
           <div class="navbar-item">
 <div class="version-switcher__container dropdown pst-js-only">
@@ -363,8 +376,7 @@
           
           
           
-          <a href="https://github.com/umami-hep/atlas-ftag-tools" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github-square fa-lg" aria-hidden="true"></i>
-            <span class="sr-only">GitHub</span></a>
+          <a href="https://github.com/umami-hep/atlas-ftag-tools" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github-square fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
         </li>
 </ul></div>
         
@@ -501,6 +513,8 @@
 </li>
         <li><a href="autoapi/ftag/hdf5/h5writer/index.html#ftag.hdf5.h5writer.H5Writer.__post_init__">(ftag.hdf5.h5writer.H5Writer method)</a>
 </li>
+        <li><a href="autoapi/ftag/labeller/index.html#ftag.labeller.Labeller.__post_init__">(ftag.labeller.Labeller method)</a>
+</li>
         <li><a href="autoapi/ftag/index.html#ftag.Sample.__post_init__">(ftag.Sample method)</a>
 </li>
         <li><a href="autoapi/ftag/sample/index.html#ftag.sample.Sample.__post_init__">(ftag.sample.Sample method)</a>
@@ -566,14 +580,16 @@
         <li><a href="autoapi/ftag/hdf5/h5writer/index.html#ftag.hdf5.h5writer.H5Writer.add_attr">(ftag.hdf5.h5writer.H5Writer method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Writer.add_flavour_label">add_flavour_label (ftag.hdf5.H5Writer attribute)</a>, <a href="autoapi/ftag/hdf5/index.html#id14">[1]</a>
 
       <ul>
         <li><a href="autoapi/ftag/hdf5/h5writer/index.html#ftag.hdf5.h5writer.H5Writer.add_flavour_label">(ftag.hdf5.h5writer.H5Writer attribute)</a>, <a href="autoapi/ftag/hdf5/h5writer/index.html#id4">[1]</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/labeller/index.html#ftag.labeller.Labeller.add_labels">add_labels() (ftag.labeller.Labeller method)</a>
+</li>
       <li><a href="autoapi/ftag/vds/index.html#ftag.vds.aggregate_cutbookkeeper">aggregate_cutbookkeeper() (in module ftag.vds)</a>
 </li>
   </ul></td>
@@ -914,8 +930,6 @@
         <li><a href="autoapi/ftag/hdf5/index.html#module-ftag.hdf5">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     ftag.hdf5.h5add_col
 
@@ -923,6 +937,8 @@
         <li><a href="autoapi/ftag/hdf5/h5add_col/index.html#module-ftag.hdf5.h5add_col">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     ftag.hdf5.h5move
 
@@ -956,6 +972,13 @@
 
       <ul>
         <li><a href="autoapi/ftag/hdf5/h5writer/index.html#module-ftag.hdf5.h5writer">module</a>
+</li>
+      </ul></li>
+      <li>
+    ftag.labeller
+
+      <ul>
+        <li><a href="autoapi/ftag/labeller/index.html#module-ftag.labeller">module</a>
 </li>
       </ul></li>
       <li>
@@ -1078,14 +1101,16 @@
 </li>
       <li><a href="autoapi/ftag/working_points/index.html#ftag.working_points.get_fxs_from_args">get_fxs_from_args() (in module ftag.working_points)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="autoapi/ftag/index.html#ftag.get_git_hash">get_git_hash() (in module ftag)</a>
 
       <ul>
         <li><a href="autoapi/ftag/git_check/index.html#ftag.git_check.get_git_hash">(in module ftag.git_check)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/labeller/index.html#ftag.labeller.Labeller.get_labels">get_labels() (ftag.labeller.Labeller method)</a>
+</li>
       <li><a href="autoapi/ftag/utils/logging/index.html#ftag.utils.logging.get_log_level">get_log_level() (in module ftag.utils.logging)</a>
 </li>
       <li><a href="autoapi/ftag/index.html#ftag.get_mock_file">get_mock_file() (in module ftag)</a>
@@ -1100,8 +1125,12 @@
 </li>
       <li><a href="autoapi/ftag/vds/index.html#ftag.vds.get_virtual_layout">get_virtual_layout() (in module ftag.vds)</a>
 </li>
-      <li><a href="autoapi/ftag/working_points/index.html#ftag.working_points.get_working_points">get_working_points() (in module ftag.working_points)</a>
+      <li><a href="autoapi/ftag/index.html#ftag.get_working_points">get_working_points() (in module ftag)</a>
+
+      <ul>
+        <li><a href="autoapi/ftag/working_points/index.html#ftag.working_points.get_working_points">(in module ftag.working_points)</a>
 </li>
+      </ul></li>
       <li><a href="autoapi/ftag/git_check/index.html#ftag.git_check.GitError">GitError</a>, <a href="autoapi/ftag/index.html#ftag.GitError">[1]</a>
 </li>
       <li><a href="autoapi/ftag/vds/index.html#ftag.vds.glob_re">glob_re() (in module ftag.vds)</a>
@@ -1214,6 +1243,10 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/ftag/labeller/index.html#ftag.labeller.Labeller">Labeller (class in ftag.labeller)</a>
+</li>
+      <li><a href="autoapi/ftag/labeller/index.html#ftag.labeller.Labeller.labels">labels (ftag.labeller.Labeller attribute)</a>, <a href="autoapi/ftag/labeller/index.html#id0">[1]</a>
+</li>
       <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Reader.load">load() (ftag.hdf5.H5Reader method)</a>
 
       <ul>
@@ -1315,6 +1348,8 @@
         <li><a href="autoapi/ftag/hdf5/h5utils/index.html#module-ftag.hdf5.h5utils">ftag.hdf5.h5utils</a>
 </li>
         <li><a href="autoapi/ftag/hdf5/h5writer/index.html#module-ftag.hdf5.h5writer">ftag.hdf5.h5writer</a>
+</li>
+        <li><a href="autoapi/ftag/labeller/index.html#module-ftag.labeller">ftag.labeller</a>
 </li>
         <li><a href="autoapi/ftag/mock/index.html#module-ftag.mock">ftag.mock</a>
 </li>
@@ -1460,6 +1495,8 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="autoapi/ftag/hdf5/h5reader/index.html#ftag.hdf5.h5reader.H5SingleReader.remove_inf">remove_inf() (ftag.hdf5.h5reader.H5SingleReader method)</a>
+</li>
+      <li><a href="autoapi/ftag/labeller/index.html#ftag.labeller.Labeller.require_labels">require_labels (ftag.labeller.Labeller attribute)</a>, <a href="autoapi/ftag/labeller/index.html#id1">[1]</a>
 </li>
       <li><a href="autoapi/ftag/utils/logging/index.html#ftag.utils.logging.CustomFormatter.reset">reset (ftag.utils.logging.CustomFormatter attribute)</a>
 </li>
@@ -1620,6 +1657,8 @@
       <ul>
         <li><a href="autoapi/ftag/cuts/index.html#ftag.cuts.Cuts.variables">(ftag.cuts.Cuts property)</a>
 </li>
+        <li><a href="autoapi/ftag/labeller/index.html#ftag.labeller.Labeller.variables">(ftag.labeller.Labeller property)</a>
+</li>
       </ul></li>
       <li><a href="autoapi/ftag/hdf5/index.html#ftag.hdf5.H5Reader.vds_dir">vds_dir (ftag.hdf5.H5Reader attribute)</a>, <a href="autoapi/ftag/hdf5/index.html#id9">[1]</a>
 
@@ -1723,8 +1762,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=0790524f97105ba85085"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1748,7 +1787,7 @@
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.17.1.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.18.0.
 </p></div>
       
     </div>

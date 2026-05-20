@@ -25,56 +25,14 @@ Module Contents
 
    Merges a list of dictionaries.
 
-   Each dict is of the form:
-    {
-       group1: {
-           variable_1: np.array
-           variable_2: np.array
-       },
-       group2: {
-           variable_1: np.array
-           variable_2: np.array
-       }
-    }
+   Each input dictionary is keyed by group name. The nested dictionaries map
+   variable names to arrays. Variables from later dictionaries are appended to
+   the corresponding group unless a variable with the same name already exists.
 
-    E.g.
-
-    dict1 = {
-       "jets": {
-           "pt": np.array([1, 2, 3]),
-           "eta": np.array([4, 5, 6])
-       },
-   }
-   dict2 = {
-       "jets": {
-           "phi": np.array([7, 8, 9]),
-           "energy": np.array([10, 11, 12])
-       },
-   }
-
-   merged = {
-       "jets": {
-           "pt": np.array([1, 2, 3]),
-           "eta": np.array([4, 5, 6]),
-           "phi": np.array([7, 8, 9]),
-           "energy": np.array([10, 11, 12])
-       }
-   }
-
-   :param dicts: List of dictionaries to merge. Each dictionary should be of the form:
+   :param dicts: Dictionaries to merge.
    :type dicts: list[dict[str, dict[str, np.ndarray]]]
 
-   :returns: Merged dictionary of the form:
-             {
-                 group1: {
-                     variable_1: np.array
-                     variable_2: np.array
-                 },
-                 group2: {
-                     variable_1: np.array
-                     variable_2: np.array
-                 }
-             }
+   :returns: Merged dictionary with the same nested structure as the input.
    :rtype: dict[str, dict[str, np.ndarray]]
 
    :raises ValueError: If a variable already exists in the merged dictionary.
@@ -113,19 +71,9 @@ Module Contents
    :type input_file: str | Path
    :param output_file: Output h5 file to write to.
    :type output_file: str | Path
-   :param append_function: A function, or list of functions, which take a batch from H5Reader and returns a dictionary
-                           of the form:
-                               {
-                                   group1 : {
-                                       new_column1 : data,
-                                       new_column2 : data,
-                                   },
-                                   group2 : {
-                                       new_column3 : data,
-                                       new_column4 : data,
-                                   },
-                                   ...
-                               }
+   :param append_function: A function, or list of functions, which take a batch from H5Reader and return a
+                           dictionary keyed by group name. The nested dictionaries map new column names to
+                           arrays.
    :type append_function: Callable | list[Callable]
    :param num_jets: Number of jets to read from the input file. If -1, reads all jets. By default -1.
    :type num_jets: int, optional

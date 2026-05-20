@@ -55,19 +55,9 @@ Package Contents
    :type input_file: str | Path
    :param output_file: Output h5 file to write to.
    :type output_file: str | Path
-   :param append_function: A function, or list of functions, which take a batch from H5Reader and returns a dictionary
-                           of the form:
-                               {
-                                   group1 : {
-                                       new_column1 : data,
-                                       new_column2 : data,
-                                   },
-                                   group2 : {
-                                       new_column3 : data,
-                                       new_column4 : data,
-                                   },
-                                   ...
-                               }
+   :param append_function: A function, or list of functions, which take a batch from H5Reader and return a
+                           dictionary keyed by group name. The nested dictionaries map new column names to
+                           arrays.
    :type append_function: Callable | list[Callable]
    :param num_jets: Number of jets to read from the input file. If -1, reads all jets. By default -1.
    :type num_jets: int, optional

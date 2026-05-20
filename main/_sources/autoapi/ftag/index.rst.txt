@@ -22,6 +22,7 @@ Submodules
    /autoapi/ftag/fraction_optimization/index
    /autoapi/ftag/git_check/index
    /autoapi/ftag/hdf5/index
+   /autoapi/ftag/labeller/index
    /autoapi/ftag/mock/index
    /autoapi/ftag/region/index
    /autoapi/ftag/sample/index
@@ -72,6 +73,7 @@ Functions
    ftag.get_git_hash
    ftag.is_git_repo
    ftag.get_mock_file
+   ftag.get_working_points
 
 
 Package Contents
@@ -560,5 +562,17 @@ Package Contents
       :returns: A new list of mapped variable names.
       :rtype: list[str]
 
+
+
+.. py:function:: get_working_points(args: argparse.Namespace) -> dict | None
+
+   Calculate the working points.
+
+   :param args: Input arguments from the argparser
+   :type args: argparse.Namespace
+
+   :returns: Dict with the working points. If args.outfile is given, the function returns None and
+             stored the resulting dict in a yaml file in args.outfile.
+   :rtype: dict | None
 
 
