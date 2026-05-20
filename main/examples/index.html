@@ -469,11 +469,14 @@ The script is <code class="docutils literal notranslate"><span class="pre">worki
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wps</span> \
     <span class="o">--</span><span class="n">ttbar</span> <span class="s2">&quot;path/to/ttbar/*.h5&quot;</span> \
     <span class="o">--</span><span class="n">tagger</span> <span class="n">GN2v01</span> \
-    <span class="o">--</span><span class="n">fc</span> <span class="mf">0.1</span>
+    <span class="o">--</span><span class="n">fc</span> <span class="mf">0.1</span> \
+    <span class="o">--</span><span class="n">fu</span> <span class="mf">0.8</span> \
+    <span class="o">--</span><span class="n">ftau</span> <span class="mf">0.1</span> \
+    <span class="o">--</span><span class="n">effs</span> <span class="mi">60</span> <span class="mi">70</span> <span class="mi">77</span> <span class="mi">85</span>
 </pre></div>
 </div>
-<p>Both the <code class="docutils literal notranslate"><span class="pre">--tagger</span></code> and <code class="docutils literal notranslate"><span class="pre">--fc</span></code> options accept a list if you want to get the WPs for multiple taggers.
-If you are doing c-tagging or xbb-tagging, dedicated fx arguments are available ()you can find them all with <code class="docutils literal notranslate"><span class="pre">-h</span></code>.</p>
+<p>Both the <code class="docutils literal notranslate"><span class="pre">--tagger</span></code> and fraction options accept a list if you want to get the WPs for multiple taggers.
+If you are doing c-tagging or xbb-tagging, dedicated fraction arguments are available; you can find them all with <code class="docutils literal notranslate"><span class="pre">-h</span></code>.</p>
 <p>If you want to use the <code class="docutils literal notranslate"><span class="pre">ttbar</span></code> WPs get the efficiencies and rejections for the <code class="docutils literal notranslate"><span class="pre">zprime</span></code> sample, you can add <code class="docutils literal notranslate"><span class="pre">--zprime</span> <span class="pre">&quot;path/to/zprime/*.h5&quot;</span></code> to the command.
 Note that a default selection of $p_T &gt; 250 ~GeV$ to jets in the <code class="docutils literal notranslate"><span class="pre">zprime</span></code> sample.</p>
 <p>If instead of defining the working points for a series of signal efficiencies, you wish to calculate a WP corresponding to a specific background rejection, the <code class="docutils literal notranslate"><span class="pre">--rejection</span></code> option can be given along with the desired background.</p>
@@ -483,15 +486,17 @@ Note that a default selection of $p_T &gt; 250 ~GeV$ to jets in the <code class=
 <section id="calculate-efficiency-at-discriminant-cut">
 <h2>Calculate efficiency at discriminant cut<a class="headerlink" href="#calculate-efficiency-at-discriminant-cut" title="Link to this heading">#</a></h2>
 <p>The same script can be used to calculate the efficiency and rejection values at a given discriminant cut value.
-The script <code class="docutils literal notranslate"><span class="pre">working_points.py</span></code> can be run after intalling this package as follows</p>
+The script <code class="docutils literal notranslate"><span class="pre">working_points.py</span></code> can be run after installing this package as follows</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wps</span> \
     <span class="o">--</span><span class="n">ttbar</span> <span class="s2">&quot;path/to/ttbar/*.h5&quot;</span> \
     <span class="o">--</span><span class="n">tagger</span> <span class="n">GN2v01</span> \
-    <span class="o">--</span><span class="n">fx</span> <span class="mf">0.1</span>
+    <span class="o">--</span><span class="n">fc</span> <span class="mf">0.1</span> \
+    <span class="o">--</span><span class="n">fu</span> <span class="mf">0.8</span> \
+    <span class="o">--</span><span class="n">ftau</span> <span class="mf">0.1</span> \
     <span class="o">--</span><span class="n">disc_cuts</span> <span class="mf">1.0</span> <span class="mf">1.5</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">--tagger</span></code>, <code class="docutils literal notranslate"><span class="pre">--fx</span></code>, and <code class="docutils literal notranslate"><span class="pre">--outfile</span></code> follow the same procedure as in the ‘Calculate WPs’ script as described above.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">--tagger</span></code>, fraction arguments, and <code class="docutils literal notranslate"><span class="pre">--outfile</span></code> follow the same procedure as in the ‘Calculate WPs’ script as described above.</p>
 </section>
 <section id="h5-utils">
 <h2>H5 Utils<a class="headerlink" href="#h5-utils" title="Link to this heading">#</a></h2>
@@ -514,16 +519,16 @@ You can also regex match files located in a different folder, specifying the opt
 <p>See <code class="docutils literal notranslate"><span class="pre">vds</span> <span class="pre">--help</span></code> for more options and information.</p>
 </section>
 <section id="h5move">
-<h3><a class="reference internal" href="#ftag/hdf5/h5move.py"><span class="xref myst">h5move</span></a><a class="headerlink" href="#h5move" title="Link to this heading">#</a></h3>
+<h3>h5move<a class="headerlink" href="#h5move" title="Link to this heading">#</a></h3>
 <p>A script to move/rename datasets inside an h5file.
 Useful for correcting discrepancies between group names.
-See <a class="reference internal" href="#ftag/hdf5/h5move.py"><span class="xref myst">h5move.py</span></a> for more info.</p>
+See the <code class="docutils literal notranslate"><span class="pre">h5move</span></code> command help or the <a class="reference internal" href="../autoapi/ftag/hdf5/h5move/index.html#module-ftag.hdf5.h5move" title="ftag.hdf5.h5move"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ftag.hdf5.h5move</span></code></a> API documentation for more info.</p>
 </section>
 <section id="h5split">
-<h3><a class="reference internal" href="#ftag/hdf5/h5split.py"><span class="xref myst">h5split</span></a><a class="headerlink" href="#h5split" title="Link to this heading">#</a></h3>
+<h3>h5split<a class="headerlink" href="#h5split" title="Link to this heading">#</a></h3>
 <p>A script to split a large h5 file into several smaller files.
 Useful if output files are too large for EOS/grid storage.
-See <a class="reference internal" href="#ftag/hdf5/h5split.py"><span class="xref myst">h5split.py</span></a> for more info.</p>
+See the <code class="docutils literal notranslate"><span class="pre">h5split</span></code> command help or the <a class="reference internal" href="../autoapi/ftag/hdf5/h5split/index.html#module-ftag.hdf5.h5split" title="ftag.hdf5.h5split"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ftag.hdf5.h5split</span></code></a> API documentation for more info.</p>
 </section>
 </section>
 <section id="extensive-examples">
@@ -535,10 +540,8 @@ See <a class="reference internal" href="#ftag/hdf5/h5split.py"><span class="xref
 <span class="o">%</span><span class="n">autoreload</span> <span class="mi">2</span>
 </pre></div>
 </div>
-</section>
-</section>
 <section id="example-usage">
-<h1>Example Usage<a class="headerlink" href="#example-usage" title="Link to this heading">#</a></h1>
+<h3>Example Usage<a class="headerlink" href="#example-usage" title="Link to this heading">#</a></h3>
 <p>This notebooks demonstrates how to use this package.
 The main features are:</p>
 <ul class="simple">
@@ -555,7 +558,7 @@ The main features are:</p>
 </pre></div>
 </div>
 <section id="cuts">
-<h2>Cuts<a class="headerlink" href="#cuts" title="Link to this heading">#</a></h2>
+<h4>Cuts<a class="headerlink" href="#cuts" title="Link to this heading">#</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">Cuts</span></code> class provides an interface for applying selections to structured nummpy arrays loaded from HDF5 files.
 To take a look, first import the <code class="docutils literal notranslate"><span class="pre">Cuts</span></code>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ftag</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cuts</span>
@@ -581,7 +584,7 @@ To take a look, first import the <code class="docutils literal notranslate"><spa
 </div>
 </section>
 <section id="flavours">
-<h2>Flavours<a class="headerlink" href="#flavours" title="Link to this heading">#</a></h2>
+<h4>Flavours<a class="headerlink" href="#flavours" title="Link to this heading">#</a></h4>
 <p>A list of flavours is provided.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ftag</span><span class="w"> </span><span class="kn">import</span> <span class="n">Flavours</span>
 
@@ -641,7 +644,7 @@ For example:</p>
 </div>
 </section>
 <section id="h5reader">
-<h2>H5Reader<a class="headerlink" href="#h5reader" title="Link to this heading">#</a></h2>
+<h4>H5Reader<a class="headerlink" href="#h5reader" title="Link to this heading">#</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">H5Reader</span></code> class allows you to read (batches) of jets from one or more HDF5 files.</p>
 <ul class="simple">
 <li><p>Variables are specified as <code class="docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">list[str]]</span></code>.</p></li>
@@ -698,7 +701,7 @@ This is useful when you want to work with a large number of jets, but don’t wa
 </div>
 </section>
 <section id="h5writer">
-<h2>H5Writer<a class="headerlink" href="#h5writer" title="Link to this heading">#</a></h2>
+<h4>H5Writer<a class="headerlink" href="#h5writer" title="Link to this heading">#</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">H5Writer</span></code> class complents the reader class by allowing you to easily write batches of jets to a target file.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tempfile</span><span class="w"> </span><span class="kn">import</span> <span class="n">NamedTemporaryFile</span>
 
@@ -730,7 +733,7 @@ The two files will now have the same contents (since we disabled shuffling):</p>
 </div>
 </section>
 <section id="data-transform">
-<h2>Data Transform<a class="headerlink" href="#data-transform" title="Link to this heading">#</a></h2>
+<h4>Data Transform<a class="headerlink" href="#data-transform" title="Link to this heading">#</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">transform.py</span></code> module allows for data to be transformed as it is loaded.
 Three operations are supported:</p>
 <ul class="simple">
@@ -764,7 +767,7 @@ The resulting object will return transformed values.</p>
 </div>
 </section>
 <section id="adding-columns-to-an-h5-file">
-<h2>Adding columns to an h5 file.<a class="headerlink" href="#adding-columns-to-an-h5-file" title="Link to this heading">#</a></h2>
+<h4>Adding columns to an h5 file.<a class="headerlink" href="#adding-columns-to-an-h5-file" title="Link to this heading">#</a></h4>
 <p>Quite often we wish to make minor changes to h5 files, e.g. adding a single new jet or track variable. A helper function, <code class="docutils literal notranslate"><span class="pre">h5_add_column</span></code> is available to aid here.
 The function requires an input file, and output file, and a function (or list of functions) which return a dictionary detailing what needs to be appended. An example is included below</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
@@ -825,7 +828,7 @@ Output has &#39;number_of_tracks&#39;?  False
 <p>Which will then <code class="docutils literal notranslate"><span class="pre">a_function1</span></code> from <code class="docutils literal notranslate"><span class="pre">/a/path/to/a/python/script.py</span></code> and  <code class="docutils literal notranslate"><span class="pre">a_function2</span></code> from <code class="docutils literal notranslate"><span class="pre">/a/differentpath/to/a/python/script.py</span></code></p>
 </section>
 <section id="optimization-of-fraction-values">
-<h2>Optimization of Fraction Values<a class="headerlink" href="#optimization-of-fraction-values" title="Link to this heading">#</a></h2>
+<h4>Optimization of Fraction Values<a class="headerlink" href="#optimization-of-fraction-values" title="Link to this heading">#</a></h4>
 <p>In flavour tagging, we don’t use the output probabilities of our networks directly. To make them easier to use, the multi-dimensional output is broken down into a one dimensional flavour tagging discriminant, $D_b$. The index marks for which type of tagging the discriminant will be used. In the example here, we will discuss this for $b$-tagging. The full $b$-tagging discriminant for “single-btag”, meaning four classes in total ($b$, $c$, light, $\tau$), is defined as:</p>
 <p>$$ D_b = \ln \left(\frac{p_b}{f_c \cdot p_c + f_\text{light} \cdot p_u + f_\tau \cdot p_\tau} \right) \qquad \text{with } 1 = f_c + f_\text{light} + f_\tau $$</p>
 <p>While in the case of three total classes (one signal, two background) the optimization can still be done using 2D plots and “try and error”, the optimization for four or more total classes suffers under the high dimensionality of the problem. To counteract this and still be able to optimize the fraction values, the <code class="docutils literal notranslate"><span class="pre">atlas-ftag-tools</span></code> provide a callable script/function called <code class="docutils literal notranslate"><span class="pre">fraction_optimization</span></code>.</p>
@@ -838,7 +841,7 @@ Output has &#39;number_of_tracks&#39;?  False
 <li><p>To manually balance each class against each other, one can introduce <code class="docutils literal notranslate"><span class="pre">rejection_weights</span></code>, with which you can balance and fine tune a bit the optimization process.</p></li>
 </ul>
 <section id="terminal-usage">
-<h3>Terminal Usage<a class="headerlink" href="#terminal-usage" title="Link to this heading">#</a></h3>
+<h5>Terminal Usage<a class="headerlink" href="#terminal-usage" title="Link to this heading">#</a></h5>
 <p>To use the script directly from your terminal, you can run the following command:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fraction_optimization<span class="w"> </span>-i<span class="w"> </span>&lt;path-to-h5&gt;<span class="w"> </span>-t<span class="w"> </span>&lt;tagger-name&gt;<span class="w"> </span>-s<span class="w"> </span>&lt;signal-flavour&gt;<span class="w"> </span>-w<span class="w"> </span>&lt;working-point&gt;
 </pre></div>
@@ -850,7 +853,7 @@ Output has &#39;number_of_tracks&#39;?  False
 <p>once to check which other options are available and which defaults are set for them.</p>
 </section>
 <section id="usage-in-a-python-script">
-<h3>Usage in a Python Script<a class="headerlink" href="#usage-in-a-python-script" title="Link to this heading">#</a></h3>
+<h5>Usage in a Python Script<a class="headerlink" href="#usage-in-a-python-script" title="Link to this heading">#</a></h5>
 <p>In addition to the functionality as a callable script, you can also import the function to optimize your fraction values directly to your own script. In the example here, we assume that you loaded all the jets and their variables as data and the jet variables are in the key <code class="docutils literal notranslate"><span class="pre">jets</span></code>. The example will use the <code class="docutils literal notranslate"><span class="pre">MockTagger</span></code> tagger and will use the default <code class="docutils literal notranslate"><span class="pre">single-btag</span></code> flavours with <code class="docutils literal notranslate"><span class="pre">bjets</span></code> as signal. As working point, we will use the 70% working point.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ftag.fraction_optimization</span><span class="w"> </span><span class="kn">import</span> <span class="n">calculate_best_fraction_values</span>
 
@@ -872,6 +875,8 @@ Output has &#39;number_of_tracks&#39;?  False
 </div>
 <p>In this example, we wrote out all possible options.</p>
 <p>The code will return a dict with the optimal fraction values, that you can then directly use in your code.</p>
+</section>
+</section>
 </section>
 </section>
 </section>
@@ -923,34 +928,32 @@ Output has &#39;number_of_tracks&#39;?  False
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Examples</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-wps">Calculate WPs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-efficiency-at-discriminant-cut">Calculate efficiency at discriminant cut</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#h5-utils">H5 Utils</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-virtual-file">Create virtual file</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#h5move"><span class="xref myst">h5move</span></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#h5split"><span class="xref myst">h5split</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#h5move">h5move</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#h5split">h5split</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extensive-examples">Extensive Examples</a></li>
-</ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#example-usage">Example Usage</a><ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cuts">Cuts</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flavours">Flavours</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#h5reader">H5Reader</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#h5writer">H5Writer</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-transform">Data Transform</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-columns-to-an-h5-file">Adding columns to an h5 file.</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization-of-fraction-values">Optimization of Fraction Values</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#terminal-usage">Terminal Usage</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-in-a-python-script">Usage in a Python Script</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extensive-examples">Extensive Examples</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-usage">Example Usage</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cuts">Cuts</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flavours">Flavours</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#h5reader">H5Reader</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#h5writer">H5Writer</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#data-transform">Data Transform</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-columns-to-an-h5-file">Adding columns to an h5 file.</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization-of-fraction-values">Optimization of Fraction Values</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#terminal-usage">Terminal Usage</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-in-a-python-script">Usage in a Python Script</a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
-
+</li>
+</ul>
   </nav></div>
 
   <div class="sidebar-secondary-item">
