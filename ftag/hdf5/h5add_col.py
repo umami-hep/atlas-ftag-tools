@@ -17,61 +17,19 @@ from ftag.hdf5.h5writer import H5Writer
 def merge_dicts(dicts: list[dict[str, dict[str, np.ndarray]]]) -> dict[str, dict[str, np.ndarray]]:
     """Merges a list of dictionaries.
 
-    Each dict is of the form:
-     {
-        group1: {
-            variable_1: np.array
-            variable_2: np.array
-        },
-        group2: {
-            variable_1: np.array
-            variable_2: np.array
-        }
-     }
-
-     E.g.
-
-     dict1 = {
-        "jets": {
-            "pt": np.array([1, 2, 3]),
-            "eta": np.array([4, 5, 6])
-        },
-    }
-    dict2 = {
-        "jets": {
-            "phi": np.array([7, 8, 9]),
-            "energy": np.array([10, 11, 12])
-        },
-    }
-
-    merged = {
-        "jets": {
-            "pt": np.array([1, 2, 3]),
-            "eta": np.array([4, 5, 6]),
-            "phi": np.array([7, 8, 9]),
-            "energy": np.array([10, 11, 12])
-        }
-    }
+    Each input dictionary is keyed by group name. The nested dictionaries map
+    variable names to arrays. Variables from later dictionaries are appended to
+    the corresponding group unless a variable with the same name already exists.
 
     Parameters
     ----------
     dicts : list[dict[str, dict[str, np.ndarray]]]
-        List of dictionaries to merge. Each dictionary should be of the form:
+        Dictionaries to merge.
 
     Returns
     -------
     dict[str, dict[str, np.ndarray]]
-        Merged dictionary of the form:
-        {
-            group1: {
-                variable_1: np.array
-                variable_2: np.array
-            },
-            group2: {
-                variable_1: np.array
-                variable_2: np.array
-            }
-        }
+        Merged dictionary with the same nested structure as the input.
 
     Raises
     ------
@@ -155,19 +113,9 @@ def h5_add_column(
     output_file : str | Path
         Output h5 file to write to.
     append_function : Callable | list[Callable]
-        A function, or list of functions, which take a batch from H5Reader and returns a dictionary
-        of the form:
-            {
-                group1 : {
-                    new_column1 : data,
-                    new_column2 : data,
-                },
-                group2 : {
-                    new_column3 : data,
-                    new_column4 : data,
-                },
-                ...
-            }
+        A function, or list of functions, which take a batch from H5Reader and return a
+        dictionary keyed by group name. The nested dictionaries map new column names to
+        arrays.
     num_jets : int, optional
         Number of jets to read from the input file. If -1, reads all jets. By default -1.
     input_groups : list[str] | None, optional
