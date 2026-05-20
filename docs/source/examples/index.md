@@ -13,11 +13,14 @@ The script is `working_points.py` and can be run after installing this package w
 wps \
     --ttbar "path/to/ttbar/*.h5" \
     --tagger GN2v01 \
-    --fc 0.1
+    --fc 0.1 \
+    --fu 0.8 \
+    --ftau 0.1 \
+    --effs 60 70 77 85
 ```
 
-Both the `--tagger` and `--fc` options accept a list if you want to get the WPs for multiple taggers.
-If you are doing c-tagging or xbb-tagging, dedicated fx arguments are available ()you can find them all with `-h`.
+Both the `--tagger` and fraction options accept a list if you want to get the WPs for multiple taggers.
+If you are doing c-tagging or xbb-tagging, dedicated fraction arguments are available; you can find them all with `-h`.
 
 If you want to use the `ttbar` WPs get the efficiencies and rejections for the `zprime` sample, you can add `--zprime "path/to/zprime/*.h5"` to the command.
 Note that a default selection of $p_T > 250 ~GeV$ to jets in the `zprime` sample.
@@ -28,19 +31,21 @@ By default the working points are printed to the terminal, but you can save the 
 
 See `wps --help` for more options and information.
 
-## Calculate efficiency at discriminant cut 
+## Calculate efficiency at discriminant cut
 
 The same script can be used to calculate the efficiency and rejection values at a given discriminant cut value.
-The script `working_points.py` can be run after intalling this package as follows
+The script `working_points.py` can be run after installing this package as follows
 
 ```
 wps \
     --ttbar "path/to/ttbar/*.h5" \
     --tagger GN2v01 \
-    --fx 0.1
+    --fc 0.1 \
+    --fu 0.8 \
+    --ftau 0.1 \
     --disc_cuts 1.0 1.5
 ```
-The `--tagger`, `--fx`, and `--outfile` follow the same procedure as in the 'Calculate WPs' script as described above.
+The `--tagger`, fraction arguments, and `--outfile` follow the same procedure as in the 'Calculate WPs' script as described above.
 
 ## H5 Utils
 
@@ -70,23 +75,23 @@ You can also regex match files located in a different folder, specifying the opt
 See `vds --help` for more options and information.
 
 
-### [h5move](ftag/hdf5/h5move.py)
+### h5move
 
 A script to move/rename datasets inside an h5file.
 Useful for correcting discrepancies between group names.
-See [h5move.py](ftag/hdf5/h5move.py) for more info.
+See the `h5move` command help or the {mod}`ftag.hdf5.h5move` API documentation for more info.
 
 
-### [h5split](ftag/hdf5/h5split.py)
+### h5split
 
 A script to split a large h5 file into several smaller files.
 Useful if output files are too large for EOS/grid storage.
-See [h5split.py](ftag/hdf5/h5split.py) for more info.
+See the `h5split` command help or the {mod}`ftag.hdf5.h5split` API documentation for more info.
 
 ## Extensive Examples
 
 The content below is generated automatically from `ftag/example.ipynb`.
 
 ```{include} example.md
-:level: 3
+:heading-offset: 2
 ```
