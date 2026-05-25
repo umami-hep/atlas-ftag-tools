@@ -27,12 +27,13 @@ Functions
 Module Contents
 ---------------
 
-.. py:function:: parse_args(args: collections.abc.Sequence[str]) -> argparse.Namespace
+.. py:function:: parse_args(args: collections.abc.Sequence[str] | None) -> argparse.Namespace
 
    Parse the input arguments into a Namespace.
 
-   :param args: Sequence of string inputs to the script
-   :type args: Sequence[str]
+   :param args: Sequence of string inputs to the script. If not provided, arguments are
+                read from the command line.
+   :type args: Sequence[str] | None
 
    :returns: Namespace with the parsed arguments
    :rtype: argparse.Namespace
@@ -129,12 +130,12 @@ Module Contents
    :rtype: dict | None
 
 
-.. py:function:: main(args: collections.abc.Sequence[str]) -> dict | None
+.. py:function:: main(args: collections.abc.Sequence[str] | None = None) -> dict | None
 
    Main function to run working point calculation.
 
-   :param args: Input arguments
-   :type args: Sequence[str]
+   :param args: Input arguments. If not provided, arguments are read from the command line.
+   :type args: Sequence[str] | None, optional
 
    :returns: The output dict with the calculated values. When --outfile
              was given, the return value is None
