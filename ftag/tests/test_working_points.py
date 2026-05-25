@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import sys
 from pathlib import Path
 from tempfile import NamedTemporaryFile, mkdtemp
 from types import SimpleNamespace
@@ -599,3 +600,14 @@ def test_main_with_output_file(ttbar_file, zprime_file):
 
     assert out is None
     assert outfile_path.exists()
+
+
+def test_main_without_explicit_args_uses_sys_argv(monkeypatch, capsys):
+    """Test console-entry-point style invocation."""
+    monkeypatch.setattr(sys, "argv", ["wps", "--help"])
+
+    with pytest.raises(SystemExit) as err:
+        main()
+
+    assert err.value.code == 0
+    assert "Calculate tagger working points." in capsys.readouterr().out

@@ -22,13 +22,14 @@ if TYPE_CHECKING:  # pragma: no cover
     from ftag.labels import Label, LabelContainer
 
 
-def parse_args(args: Sequence[str]) -> argparse.Namespace:
+def parse_args(args: Sequence[str] | None) -> argparse.Namespace:
     """Parse the input arguments into a Namespace.
 
     Parameters
     ----------
-    args : Sequence[str]
-        Sequence of string inputs to the script
+    args : Sequence[str] | None
+        Sequence of string inputs to the script. If not provided, arguments are
+        read from the command line.
 
     Returns
     -------
@@ -513,13 +514,13 @@ def get_efficiencies(args: argparse.Namespace) -> dict | None:
         return out
 
 
-def main(args: Sequence[str]) -> dict | None:
+def main(args: Sequence[str] | None = None) -> dict | None:
     """Main function to run working point calculation.
 
     Parameters
     ----------
-    args : Sequence[str]
-        Input arguments
+    args : Sequence[str] | None, optional
+        Input arguments. If not provided, arguments are read from the command line.
 
     Returns
     -------
