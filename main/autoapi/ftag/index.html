@@ -406,7 +406,6 @@
 <li class="toctree-l2"><a class="reference internal" href="cli_utils/index.html">ftag.cli_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cuts/index.html">ftag.cuts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="find_metadata/index.html">ftag.find_metadata</a></li>
-<li class="toctree-l2"><a class="reference internal" href="flavours/index.html">ftag.flavours</a></li>
 <li class="toctree-l2"><a class="reference internal" href="fraction_optimization/index.html">ftag.fraction_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="git_check/index.html">ftag.git_check</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="hdf5/index.html">ftag.hdf5</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -422,7 +421,6 @@
 <li class="toctree-l2"><a class="reference internal" href="mock/index.html">ftag.mock</a></li>
 <li class="toctree-l2"><a class="reference internal" href="region/index.html">ftag.region</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sample/index.html">ftag.sample</a></li>
-<li class="toctree-l2"><a class="reference internal" href="track_selector/index.html">ftag.track_selector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transform/index.html">ftag.transform</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="utils/index.html">ftag.utils</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="utils/logging/index.html">ftag.utils.logging</a></li>
@@ -503,7 +501,6 @@
 <li class="toctree-l1"><a class="reference internal" href="cli_utils/index.html">ftag.cli_utils</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cuts/index.html">ftag.cuts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="find_metadata/index.html">ftag.find_metadata</a></li>
-<li class="toctree-l1"><a class="reference internal" href="flavours/index.html">ftag.flavours</a></li>
 <li class="toctree-l1"><a class="reference internal" href="fraction_optimization/index.html">ftag.fraction_optimization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="git_check/index.html">ftag.git_check</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hdf5/index.html">ftag.hdf5</a></li>
@@ -511,7 +508,6 @@
 <li class="toctree-l1"><a class="reference internal" href="mock/index.html">ftag.mock</a></li>
 <li class="toctree-l1"><a class="reference internal" href="region/index.html">ftag.region</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sample/index.html">ftag.sample</a></li>
-<li class="toctree-l1"><a class="reference internal" href="track_selector/index.html">ftag.track_selector</a></li>
 <li class="toctree-l1"><a class="reference internal" href="transform/index.html">ftag.transform</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utils/index.html">ftag.utils</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vds/index.html">ftag.vds</a></li>
@@ -524,12 +520,6 @@
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ftag.__version__" title="ftag.__version__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__version__</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ftag.Extended_Flavours" title="ftag.Extended_Flavours"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Extended_Flavours</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.Flavours" title="ftag.Flavours"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Flavours</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -554,10 +544,13 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#ftag.Cuts" title="ftag.Cuts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cuts</span></code></a></p></td>
 <td><p>Cuts dataclass to store multiple Cut instances and apply them.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ftag.Sample" title="ftag.Sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sample</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ftag.Labeller" title="ftag.Labeller"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Labeller</span></code></a></p></td>
+<td><p>Defines a labelling scheme.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.Sample" title="ftag.Sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sample</span></code></a></p></td>
 <td><p>Dataclass which holds info about a specific sample.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ftag.Transform" title="ftag.Transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Transform</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ftag.Transform" title="ftag.Transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Transform</span></code></a></p></td>
 <td><p>Apply variable name remapping, integer remapping, and float transformations.</p></td>
 </tr>
 </tbody>
@@ -679,16 +672,6 @@
 <dd></dd></dl>
 
 </dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="ftag.Extended_Flavours">
-<span class="sig-prename descclassname"><span class="pre">ftag.</span></span><span class="sig-name descname"><span class="pre">Extended_Flavours</span></span><a class="headerlink" href="#ftag.Extended_Flavours" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="ftag.Flavours">
-<span class="sig-prename descclassname"><span class="pre">ftag.</span></span><span class="sig-name descname"><span class="pre">Flavours</span></span><a class="headerlink" href="#ftag.Flavours" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ftag.calculate_best_fraction_values">
@@ -822,6 +805,107 @@ not a Git repository.</p>
 available on the system, an <code class="xref py py-class docutils literal notranslate"><span class="pre">OSError</span></code> may be raised by <code class="xref py py-mod docutils literal notranslate"><span class="pre">subprocess</span></code>.</p>
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="ftag.Labeller">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ftag.</span></span><span class="sig-name descname"><span class="pre">Labeller</span></span><a class="headerlink" href="#ftag.Labeller" title="Link to this definition">#</a></dt>
+<dd><p>Defines a labelling scheme.</p>
+<p>Classes are assigned integer labels in [0, …, n] based on pre-defined selections.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ftag.Labeller.labels">
+<span class="sig-name descname"><span class="pre">labels</span></span><a class="headerlink" href="#ftag.Labeller.labels" title="Link to this definition">#</a></dt>
+<dd><p>The labels to be use.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>LabelContainer | list[str | Label]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ftag.Labeller.require_labels">
+<span class="sig-name descname"><span class="pre">require_labels</span></span><a class="headerlink" href="#ftag.Labeller.require_labels" title="Link to this definition">#</a></dt>
+<dd><p>Whether to require that all objects are labelled.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">labels</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ftag.labels.LabelContainer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ftag.labels.Label</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#id1" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">require_labels</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></span><a class="headerlink" href="#id2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ftag.Labeller.__post_init__">
+<span class="sig-name descname"><span class="pre">__post_init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.Labeller.__post_init__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ftag.Labeller.variables">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">variables</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#ftag.Labeller.variables" title="Link to this definition">#</a></dt>
+<dd><p>Returns the variables used for labelling.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The variables used for labelling.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ftag.Labeller.get_labels">
+<span class="sig-name descname"><span class="pre">get_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#ftag.Labeller.get_labels" title="Link to this definition">#</a></dt>
+<dd><p>Returns the labels for the given array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>array</strong> (<em>np.ndarray</em>) – The array to label.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The labels for the given array.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the <code class="code docutils literal notranslate"><span class="pre">require_labels</span></code> attribute is set to <code class="code docutils literal notranslate"><span class="pre">True</span></code> and some objects were not labelled.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ftag.Labeller.add_labels">
+<span class="sig-name descname"><span class="pre">add_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'labels'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#ftag.Labeller.add_labels" title="Link to this definition">#</a></dt>
+<dd><p>Adds the labels to the given array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>array</strong> (<em>np.ndarray</em>) – The array to label.</p></li>
+<li><p><strong>label_name</strong> (<em>str</em>) – The name of the label column.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The array with the labels added.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the <code class="code docutils literal notranslate"><span class="pre">require_labels</span></code> attribute is set to <code class="code docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="ftag.get_mock_file">
 <span class="sig-prename descclassname"><span class="pre">ftag.</span></span><span class="sig-name descname"><span class="pre">get_mock_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_jets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tracks_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'tracks'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_tracks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">40</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">h5py.File</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ftag.get_mock_file" title="Link to this definition">#</a></dt>
@@ -916,33 +1000,33 @@ If None, the virtual files will be created in the same directory as the input fi
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id1">
-<span class="sig-name descname"><span class="pre">pattern</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">pathlib.Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#id1" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id2">
-<span class="sig-name descname"><span class="pre">ntuple_dir</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#id2" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="id3">
-<span class="sig-name descname"><span class="pre">name</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#id3" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">pattern</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">pathlib.Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#id3" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id4">
-<span class="sig-name descname"><span class="pre">weights</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#id4" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">ntuple_dir</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#id4" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id5">
-<span class="sig-name descname"><span class="pre">skip_checks</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#id5" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">name</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#id5" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id6">
-<span class="sig-name descname"><span class="pre">vds_dir</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#id6" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">weights</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#id6" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id7">
+<span class="sig-name descname"><span class="pre">skip_checks</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#id7" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id8">
+<span class="sig-name descname"><span class="pre">vds_dir</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#id8" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -1081,23 +1165,23 @@ variable lookup in <a class="reference internal" href="#ftag.Transform.map_varia
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id7">
-<span class="sig-name descname"><span class="pre">variable_map</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#id7" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id8">
-<span class="sig-name descname"><span class="pre">ints_map</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#id8" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="id9">
-<span class="sig-name descname"><span class="pre">floats_map</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">collections.abc.Callable</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#id9" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">variable_map</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#id9" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id10">
-<span class="sig-name descname"><span class="pre">variable_map_inv</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#id10" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">ints_map</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#id10" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id11">
+<span class="sig-name descname"><span class="pre">floats_map</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">collections.abc.Callable</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#id11" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id12">
+<span class="sig-name descname"><span class="pre">variable_map_inv</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#id12" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -1316,8 +1400,6 @@ stored the resulting dict in a yaml file in args.outfile.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Cuts.__repr__"><code class="docutils literal notranslate"><span class="pre">Cuts.__repr__()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Extended_Flavours"><code class="docutils literal notranslate"><span class="pre">Extended_Flavours</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Flavours"><code class="docutils literal notranslate"><span class="pre">Flavours</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.calculate_best_fraction_values"><code class="docutils literal notranslate"><span class="pre">calculate_best_fraction_values()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.GitError"><code class="docutils literal notranslate"><span class="pre">GitError</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.check_for_fork"><code class="docutils literal notranslate"><span class="pre">check_for_fork()</span></code></a></li>
@@ -1325,6 +1407,17 @@ stored the resulting dict in a yaml file in args.outfile.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.create_and_push_tag"><code class="docutils literal notranslate"><span class="pre">create_and_push_tag()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.get_git_hash"><code class="docutils literal notranslate"><span class="pre">get_git_hash()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.is_git_repo"><code class="docutils literal notranslate"><span class="pre">is_git_repo()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Labeller"><code class="docutils literal notranslate"><span class="pre">Labeller</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Labeller.labels"><code class="docutils literal notranslate"><span class="pre">Labeller.labels</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Labeller.require_labels"><code class="docutils literal notranslate"><span class="pre">Labeller.require_labels</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><code class="docutils literal notranslate"><span class="pre">Labeller.labels</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><code class="docutils literal notranslate"><span class="pre">Labeller.require_labels</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Labeller.__post_init__"><code class="docutils literal notranslate"><span class="pre">Labeller.__post_init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Labeller.variables"><code class="docutils literal notranslate"><span class="pre">Labeller.variables</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Labeller.get_labels"><code class="docutils literal notranslate"><span class="pre">Labeller.get_labels()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Labeller.add_labels"><code class="docutils literal notranslate"><span class="pre">Labeller.add_labels()</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.get_mock_file"><code class="docutils literal notranslate"><span class="pre">get_mock_file()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Sample"><code class="docutils literal notranslate"><span class="pre">Sample</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Sample.pattern"><code class="docutils literal notranslate"><span class="pre">Sample.pattern</span></code></a></li>
@@ -1333,12 +1426,12 @@ stored the resulting dict in a yaml file in args.outfile.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Sample.weights"><code class="docutils literal notranslate"><span class="pre">Sample.weights</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Sample.skip_checks"><code class="docutils literal notranslate"><span class="pre">Sample.skip_checks</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Sample.vds_dir"><code class="docutils literal notranslate"><span class="pre">Sample.vds_dir</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><code class="docutils literal notranslate"><span class="pre">Sample.pattern</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><code class="docutils literal notranslate"><span class="pre">Sample.ntuple_dir</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><code class="docutils literal notranslate"><span class="pre">Sample.name</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><code class="docutils literal notranslate"><span class="pre">Sample.weights</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5"><code class="docutils literal notranslate"><span class="pre">Sample.skip_checks</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6"><code class="docutils literal notranslate"><span class="pre">Sample.vds_dir</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><code class="docutils literal notranslate"><span class="pre">Sample.pattern</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><code class="docutils literal notranslate"><span class="pre">Sample.ntuple_dir</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5"><code class="docutils literal notranslate"><span class="pre">Sample.name</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6"><code class="docutils literal notranslate"><span class="pre">Sample.weights</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7"><code class="docutils literal notranslate"><span class="pre">Sample.skip_checks</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8"><code class="docutils literal notranslate"><span class="pre">Sample.vds_dir</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Sample.__post_init__"><code class="docutils literal notranslate"><span class="pre">Sample.__post_init__()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Sample.path"><code class="docutils literal notranslate"><span class="pre">Sample.path</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Sample.files"><code class="docutils literal notranslate"><span class="pre">Sample.files</span></code></a></li>
@@ -1360,10 +1453,10 @@ stored the resulting dict in a yaml file in args.outfile.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Transform.ints_map"><code class="docutils literal notranslate"><span class="pre">Transform.ints_map</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Transform.floats_map"><code class="docutils literal notranslate"><span class="pre">Transform.floats_map</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Transform.variable_map_inv"><code class="docutils literal notranslate"><span class="pre">Transform.variable_map_inv</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7"><code class="docutils literal notranslate"><span class="pre">Transform.variable_map</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8"><code class="docutils literal notranslate"><span class="pre">Transform.ints_map</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9"><code class="docutils literal notranslate"><span class="pre">Transform.floats_map</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10"><code class="docutils literal notranslate"><span class="pre">Transform.variable_map_inv</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9"><code class="docutils literal notranslate"><span class="pre">Transform.variable_map</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10"><code class="docutils literal notranslate"><span class="pre">Transform.ints_map</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11"><code class="docutils literal notranslate"><span class="pre">Transform.floats_map</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id12"><code class="docutils literal notranslate"><span class="pre">Transform.variable_map_inv</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Transform.__post_init__"><code class="docutils literal notranslate"><span class="pre">Transform.__post_init__()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Transform.__call__"><code class="docutils literal notranslate"><span class="pre">Transform.__call__()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.Transform.map_variables"><code class="docutils literal notranslate"><span class="pre">Transform.map_variables()</span></code></a></li>
