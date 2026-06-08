@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -262,6 +263,8 @@ def calculate_best_fraction_values(
         working_point=working_point,
     )
 
+    logger.info(bkg_norm_dict)
+
     # Get the best fraction values combination
     result = minimize(
         fun=calculate_rejection_sum,
@@ -355,16 +358,28 @@ def parse_args(args: Sequence[str] | None) -> argparse.Namespace:
         help="Cuts that are to be applied as list. Default is the ttbar selection we use. ",
     )
     parser.add_argument(
+        "-b",
         "--batch_size",
         default=100_000,
         type=int,
         help="Batch size used when loading the jets from H5.",
     )
     parser.add_argument(
+        "-j",
         "--jets_name",
         default="jets",
         type=str,
         help="Name of the jet collection in the H5 file.",
+    )
+    parser.add_argument(
+        "-r",
+        "--rejection_weights",
+        default=None,
+        type=json.loads,
+        help=(
+            'Rejection weights as dict, e.g. \'{"a": 1, "b": "test"}\'. These weights are used \n'
+            "to allow the user to tell the optimizer, which fractions are more important."
+        ),
     )
     parser.add_argument(
         "--flavour_file",
@@ -448,6 +463,7 @@ def main(args: Sequence[str] | None = None) -> None:
         flavours=flavours,
         working_point=parsed_args.working_point,
         optimizer_method=parsed_args.optimizer_method,
+        rejection_weights=parsed_args.rejection_weights,
     )
 
 
