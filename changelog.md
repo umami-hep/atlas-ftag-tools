@@ -2,6 +2,8 @@
 
 ### [Latest]
 
+- Adding command line options for fraction optimization [#169](https://github.com/umami-hep/atlas-ftag-tools/pull/169)
+
 ### [v0.3.3](https://github.com/umami-hep/atlas-ftag-tools/releases/tag/v0.3.3) (25.05.2026)
 
 - Fix CLI entry points and `vds` regex option handling [#158](https://github.com/umami-hep/atlas-ftag-tools/pull/158)
