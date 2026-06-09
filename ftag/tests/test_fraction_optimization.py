@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import unittest
+from types import SimpleNamespace
+from unittest.mock import patch
 
 import numpy as np
 
@@ -11,6 +13,7 @@ from ftag.fraction_optimization import (
     convert_dict,
     get_bkg_norm_dict,
     main,
+    parse_args,
 )
 from ftag.hdf5 import H5Reader
 from ftag.mock import get_mock_file
@@ -193,6 +196,34 @@ class TestCalculateBestFractionValues(unittest.TestCase):
             self.assertGreaterEqual(val, 0.0, f"Fraction {frac_key} < 0.0")
             self.assertLessEqual(val, 1.0, f"Fraction {frac_key} > 1.0")
 
+    @patch("ftag.fraction_optimization.differential_evolution")
+    def test_calculate_best_fraction_values_differential_evolution(self, mock_optimizer):
+        """Test the differential evolution optimizer configuration."""
+        mock_optimizer.return_value = SimpleNamespace(
+            x=np.array([0.2, 0.3, 0.5]),
+            success=True,
+        )
+
+        final_dict = calculate_best_fraction_values(
+            jets=self.jets,
+            tagger=self.tagger,
+            signal="bjets",
+            flavours=self.flavours,
+            working_point=self.working_point,
+            optimizer_method="differential_evolution",
+            optimizer_options={"maxiter": 10, "rng": 7},
+            optimization_variable="n_bkg_sum",
+        )
+
+        self.assertEqual(final_dict, {"fc": 0.2, "fu": 0.3, "ftau": 0.5})
+        optimizer_kwargs = mock_optimizer.call_args.kwargs
+        self.assertEqual(optimizer_kwargs["init"], "sobol")
+        self.assertEqual(optimizer_kwargs["popsize"], 15)
+        self.assertFalse(optimizer_kwargs["polish"])
+        self.assertEqual(optimizer_kwargs["rng"], 7)
+        self.assertEqual(optimizer_kwargs["maxiter"], 10)
+        np.testing.assert_array_equal(optimizer_kwargs["x0"], np.full(3, 1 / 3))
+
 
 class TestFractionOptimizationMain(unittest.TestCase):
     """
@@ -228,3 +259,21 @@ class TestFractionOptimizationMain(unittest.TestCase):
         out = main(args=args)
 
         assert out is None
+
+    def test_parse_optimizer_options(self):
+        """Test parsing differential evolution options from the CLI."""
+        args = parse_args([
+            "--input",
+            f"{self.input}",
+            "--tagger",
+            self.tagger,
+            "--working_point",
+            f"{self.working_point}",
+            "--optimizer_method",
+            "differential_evolution",
+            "--optimizer_options",
+            '{"maxiter": 10, "rng": 7}',
+        ])
+
+        self.assertEqual(args.optimizer_method, "differential_evolution")
+        self.assertEqual(args.optimizer_options, {"maxiter": 10, "rng": 7})
