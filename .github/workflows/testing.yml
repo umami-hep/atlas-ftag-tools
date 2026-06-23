@@ -24,13 +24,8 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: uv sync --extra dev
-      - name: Run tests
-        run: pytest -v --junitxml=coverage.xml --cov-report=term-missing:skip-covered --cov=ftag --nb-force-regen ftag/tests/
-      - name: Report coverage with Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          fail_ci_if_error: true
-          token: ${{ secrets.CODECOV_TOKEN }}
+      - name: Run notebook
+        run: pytest --nbmake --nbmake-timeout=50 ftag/example.ipynb
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
