@@ -12,6 +12,7 @@ dependencies = [
   "hdf5plugin>=6.0.0",
   "numpy>=2.2.6",
   "PyYAML>=6.0.2",
+  "requests>=2.31.0",
   "scipy>=1.15.3"
 ]
 
@@ -21,7 +22,7 @@ dev = [
   "mypy>=1.18.1",
   "pre-commit>=4.3.0",
   "pydoclint>=0.7.3",
-  "pytest_notebook>=0.10.0",
+  "nbmake>=1.5.4",
   "pytest-cov>=7.0.0",
   "pytest>=8.4.2",
   "ruff>=0.13.0",
@@ -82,7 +83,3 @@ required-imports = ["from __future__ import annotations"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "numpy"  # Accepts: "google", "numpy", or "pep257".
-
-[tool.pytest.ini_options]
-nb_exec_timeout = "50"
-nb_coverage = "false"
