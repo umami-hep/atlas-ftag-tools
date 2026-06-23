@@ -2,6 +2,7 @@
 
 ### [Latest]
 
+- Replace stale `pytest_notebook` with `nbmake` for example notebook testing (fixes incompatibility with matplotlib >= 3.11) and declare `requests` as an explicit dependency [#171](https://github.com/umami-hep/atlas-ftag-tools/pull/171)
 - Adding command line options for fraction optimization [#169](https://github.com/umami-hep/atlas-ftag-tools/pull/169)
 
 ### [v0.3.3](https://github.com/umami-hep/atlas-ftag-tools/releases/tag/v0.3.3) (25.05.2026)
