@@ -14,7 +14,7 @@ from ftag.hdf5.h5utils import extract_group_full, write_group_full
 
 @dataclass
 class H5Writer:
-    """Write jet-based data to an HDF5 file.
+    """Write global-object-based data to an HDF5 file.
 
     This class creates one dataset per entry in ``dtypes``/``shapes`` and
     supports both fixed-size and dynamically growing output files. Floating-point
@@ -30,13 +30,13 @@ class H5Writer:
         Mapping from dataset name to output dtype.
     shapes : dict[str, tuple[int, ...]]
         Mapping from dataset name to output shape. All datasets must agree in
-        their first dimension unless ``num_jets`` is explicitly given.
-    jets_name : str, optional
-        Name of the jet dataset. This dataset is used to determine batch sizes
-        during writing. Default is ``"jets"``.
+        their first dimension unless ``num_global_objects`` is explicitly given.
+    global_objects_name : str, optional
+        Name of the global object dataset. This dataset is used to determine batch
+        sizes during writing. Default is ``"jets"``.
     add_flavour_label : bool, optional
         If ``True``, append a ``"flavour_label"`` field of type ``i4`` to the
-        jet dataset if it is not already present. Default is ``False``.
+        global object dataset if it is not already present. Default is ``False``.
     compression : str | None, optional
         Compression algorithm to use. Supported values are ``None``,
         ``"none"``, ``"gzip"``, ``"lzf"``, ``"lz4"``, and ``"zstd"``.
@@ -61,10 +61,10 @@ class H5Writer:
         requests downcasting. Default is ``None``.
     shuffle : bool, optional
         If ``True``, shuffle each batch before writing. Default is ``True``.
-    num_jets : int | None, optional
-        Expected total number of jets to write. If given, datasets are created
-        in fixed-size mode. If ``None``, datasets are created in dynamic mode
-        and resized during writing. Default is ``None``.
+    num_global_objects : int | None, optional
+        Expected total number of global objects to write. If given, datasets are
+        created in fixed-size mode. If ``None``, datasets are created in dynamic
+        mode and resized during writing. Default is ``None``.
     groups : dict[str, h5py.Group] | None, optional
         Mapping of metadata group names to extracted group contents to be copied
         into the output file. Default is ``None``.
@@ -74,36 +74,38 @@ class H5Writer:
     ValueError
         If an unsupported precision or compression setting is provided.
     AssertionError
-        If dataset shapes disagree in their first dimension when ``num_jets``
-        is not explicitly specified.
+        If dataset shapes disagree in their first dimension when
+        ``num_global_objects`` is not explicitly specified.
     """
 
     dst: Path | str
     dtypes: dict[str, np.dtype]
     shapes: dict[str, tuple[int, ...]]
-    jets_name: str = "jets"
+    global_objects_name: str = "jets"
     add_flavour_label: bool = False
     compression: str | None = "lz4"
     compression_opts: int | None = None
     precision: str | None = "full"
     full_precision_vars: list[str] | None = None
     shuffle: bool = True
-    num_jets: int | None = None
+    num_global_objects: int | None = None
     groups: dict[str, h5py.Group] | None = None
 
     def __post_init__(self) -> None:
         self.num_written = 0
         self.rng = np.random.default_rng(42)
 
-        # Infer number of jets from shapes if not explicitly passed
-        inferred_num_jets = [shape[0] for shape in self.shapes.values()]
-        if self.num_jets is None:
-            assert len(set(inferred_num_jets)) == 1, "Shapes must agree in first dimension"
+        # Infer number of global objects from shapes if not explicitly passed
+        inferred_num_global_objects = [shape[0] for shape in self.shapes.values()]
+        if self.num_global_objects is None:
+            assert len(set(inferred_num_global_objects)) == 1, (
+                "Shapes must agree in first dimension"
+            )
             self.fixed_mode = False
         else:
             self.fixed_mode = True
             for name in self.shapes:
-                self.shapes[name] = (self.num_jets, *self.shapes[name][1:])
+                self.shapes[name] = (self.num_global_objects, *self.shapes[name][1:])
 
         if self.precision == "full":
             self.fp_dtype = np.float32
@@ -203,7 +205,7 @@ class H5Writer:
     def from_file(
         cls,
         source: Path | str,
-        num_jets: int | None = 0,
+        num_global_objects: int | None = 0,
         variables: dict[str, list[str] | None] | None = None,
         copy_groups: bool = True,
         **kwargs: Any,
@@ -214,13 +216,13 @@ class H5Writer:
         dtypes, shapes, compression, and optionally metadata groups from it.
         It can be used to create a writer that mirrors the input file layout,
         optionally restricted to a subset of variables and/or a different number
-        of output jets.
+        of output global objects.
 
         Parameters
         ----------
         source : Path | str
             Source HDF5 file from which to infer the output structure.
-        num_jets : int | None, optional
+        num_global_objects : int | None, optional
             If non-zero, override the first dimension of all dataset shapes with
             this value. If ``0``, keep the original dataset lengths. Default is
             ``0``.
@@ -280,8 +282,8 @@ class H5Writer:
                 dtypes = new_dtype
                 shapes = new_shape
 
-            if num_jets != 0:
-                shapes = {name: (num_jets, *shape[1:]) for name, shape in shapes.items()}
+            if num_global_objects != 0:
+                shapes = {name: (num_global_objects, *shape[1:]) for name, shape in shapes.items()}
 
             assert len(set(compression)) == 1, "Must have same compression for all groups"
             compression = compression[0]
@@ -312,7 +314,11 @@ class H5Writer:
         dtype : np.dtype
             Input dtype definition for the dataset.
         """
-        if name == self.jets_name and self.add_flavour_label and "flavour_label" not in dtype.names:
+        if (
+            name == self.global_objects_name
+            and self.add_flavour_label
+            and "flavour_label" not in dtype.names
+        ):
             dtype = np.dtype([*dtype.descr, ("flavour_label", "i4")])
 
         fp_vars = self.full_precision_vars or []
@@ -355,15 +361,15 @@ class H5Writer:
         Raises
         ------
         ValueError
-            If the writer is closed before the expected number of jets has been
-            written in fixed-size mode.
+            If the writer is closed before the expected number of global objects
+            has been written in fixed-size mode.
         """
         if self.fixed_mode:
-            written = len(self.file[self.jets_name])
+            written = len(self.file[self.global_objects_name])
             if self.num_written != written:
                 raise ValueError(
                     f"Attempted to close file {self.dst} when only {self.num_written:,} out of"
-                    f" {written:,} jets have been written"
+                    f" {written:,} global objects have been written"
                 )
         self.file.close()
 
@@ -430,9 +436,9 @@ class H5Writer:
         Raises
         ------
         ValueError
-            If writing this batch would exceed ``num_jets`` in fixed-size mode.
+            If writing this batch would exceed ``num_global_objects`` in fixed-size mode.
         """
-        batch_size = len(data[self.jets_name])
+        batch_size = len(data[self.global_objects_name])
         idx = np.arange(batch_size)
         if self.shuffle:
             self.rng.shuffle(idx)
@@ -442,10 +448,11 @@ class H5Writer:
         high = low + batch_size
 
         if self.fixed_mode:
-            assert self.num_jets is not None
-            if high > self.num_jets:
+            assert self.num_global_objects is not None
+            if high > self.num_global_objects:
                 raise ValueError(
-                    f"Attempted to write more jets than expected: {high:,} > {self.num_jets:,}"
+                    "Attempted to write more global objects than expected:"
+                    f" {high:,} > {self.num_global_objects:,}"
                 )
 
         for group in self.dtypes:

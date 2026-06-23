@@ -20,8 +20,8 @@ np.random.seed(42)
 # parameterise the test
 @pytest.mark.parametrize("num", [1, 2, 3])
 @pytest.mark.parametrize("length", [200, 301])
-@pytest.mark.parametrize("equal_jets", [True, False])
-def test_H5Reader(num, length, equal_jets):
+@pytest.mark.parametrize("equal_global_objects", [True, False])
+def test_H5Reader(num, length, equal_global_objects):
     # calculate all possible effective batch sizes, from single file batch sizes and remainders
     batch_size = 100
     effective_bs_file = batch_size // num
@@ -50,7 +50,7 @@ def test_H5Reader(num, length, equal_jets):
     sample = Sample([f"{x}/*.h5" for x in tmpdirs], name="test")
 
     # test reading from multiple paths
-    reader = H5Reader(sample.path, batch_size=batch_size, equal_jets=equal_jets)
+    reader = H5Reader(sample.path, batch_size=batch_size, equal_global_objects=equal_global_objects)
     # dynamically compute valid total batch sizes (sum over per-file batch_sizes)
     total_jets = sum(file_lengths)
     weights = [n / total_jets for n in file_lengths]
@@ -66,7 +66,7 @@ def test_H5Reader(num, length, equal_jets):
                 effective_bs_options.append(val)
     effective_bs_options = list(set(effective_bs_options))  # remove duplicates
 
-    assert reader.num_jets == total_jets
+    assert reader.num_global_objects == total_jets
 
     variables = {"jets": ["x", "y"], "tracks": None}
     for data in reader.stream(variables=variables):
@@ -76,7 +76,7 @@ def test_H5Reader(num, length, equal_jets):
         assert "tracks" in data
         assert data["tracks"].shape in [(effective_bs, 40) for effective_bs in effective_bs_options]
         assert len(data["tracks"].dtype.names) == 2
-        if equal_jets:  # if equal_jets is off, batches won't necessarily have data from all files
+        if equal_global_objects:  # if off, batches won't necessarily have data from all files
             assert (np.unique(data["jets"]["x"]) == np.array(list(range(num)))).all()
 
         # check that the tracks are correctly matched to the jets
@@ -90,10 +90,10 @@ def test_H5Reader(num, length, equal_jets):
             np.testing.assert_allclose(corr, 1)
 
     # testing load method
-    loaded_data = reader.load(num_jets=-1)
+    loaded_data = reader.load(num_global_objects=-1)
 
     # check if -1 is passed, all data is loaded
-    if not equal_jets:
+    if not equal_global_objects:
         expected_shape = (num * (num + 1) / 2 * length,)
         assert loaded_data["jets"].shape == expected_shape
 
@@ -103,32 +103,34 @@ def test_H5Reader(num, length, equal_jets):
 
 @pytest.mark.parametrize("batch_size", [10_000, 11_001, 50_123, 101_234])
 @pytest.mark.parametrize("num_jets", [100_000, 200_000])
-def test_estimate_available_jets(batch_size, num_jets):
+def test_estimate_available_global_objects(batch_size, num_jets):
     fname, _ = get_mock_file(num_jets=num_jets)
     reader = H5Reader(fname, batch_size=batch_size, shuffle=False)
     with h5py.File(reader.files[0]) as f2:
         jets = f2["jets"][:]
 
     cuts = Cuts.from_list(["pt > 50"])
-    estimated_num_jets = reader.estimate_available_jets(cuts, num=100_000)
-    actual_num_jets = np.sum(jets["pt"] > 50)
-    assert estimated_num_jets <= actual_num_jets
-    assert estimated_num_jets > 0.95 * actual_num_jets
+    estimated_num_global_objects = reader.estimate_available_global_objects(cuts, num=100_000)
+    actual_num_global_objects = np.sum(jets["pt"] > 50)
+    assert estimated_num_global_objects <= actual_num_global_objects
+    assert estimated_num_global_objects > 0.95 * actual_num_global_objects
 
     cuts = Cuts.from_list(["HadronConeExclTruthLabelID == 5"])
-    estimated_num_jets = reader.estimate_available_jets(cuts, num=100_000)
-    actual_num_jets = np.sum(jets["HadronConeExclTruthLabelID"] == 5)
-    assert estimated_num_jets <= actual_num_jets
-    assert estimated_num_jets > 0.95 * actual_num_jets
+    estimated_num_global_objects = reader.estimate_available_global_objects(cuts, num=100_000)
+    actual_num_global_objects = np.sum(jets["HadronConeExclTruthLabelID"] == 5)
+    assert estimated_num_global_objects <= actual_num_global_objects
+    assert estimated_num_global_objects > 0.95 * actual_num_global_objects
 
-    # check that the estimate_available_jets function returns the same
-    # number of jets on subsequent calls
-    assert reader.estimate_available_jets(cuts, num=100_000) == estimated_num_jets
+    # check that the estimate_available_global_objects function returns the same
+    # number of global objects on subsequent calls
+    assert (
+        reader.estimate_available_global_objects(cuts, num=100_000) == estimated_num_global_objects
+    )
 
 
-@pytest.mark.parametrize("equal_jets", [True, False])
+@pytest.mark.parametrize("equal_global_objects", [True, False])
 @pytest.mark.parametrize("cuts_list", [["x != -1"], ["x != 1"], ["x == -1"]])
-def test_equal_jets_estimate(equal_jets, cuts_list):
+def test_equal_global_objects_estimate(equal_global_objects, cuts_list):
     # fix the seed to make the test deterministic
     np.random.seed(42)
 
@@ -162,8 +164,8 @@ def test_equal_jets_estimate(equal_jets, cuts_list):
             cut_condition = eval(cuts_list[0])
             actual_available_jets.append(x[cut_condition].shape[0])
 
-    # calculate the actual number of available jets after cuts
-    if equal_jets:
+    # calculate the actual number of available global objects after cuts
+    if equal_global_objects:
         actual_available_jets = min(actual_available_jets) * total_files
     else:
         actual_available_jets = sum(actual_available_jets)
@@ -172,15 +174,15 @@ def test_equal_jets_estimate(equal_jets, cuts_list):
     sample = Sample([f"{x}/*.h5" for x in tmpdirs], name="test")
 
     # test reading from multiple paths
-    reader = H5Reader(sample.path, batch_size=batch_size, equal_jets=equal_jets)
+    reader = H5Reader(sample.path, batch_size=batch_size, equal_global_objects=equal_global_objects)
 
-    # estimate available jets with given cuts
+    # estimate available global objects with given cuts
     cuts = Cuts.from_list(cuts_list)
-    estimated_num_jets = reader.estimate_available_jets(cuts, num=100_000)
+    estimated_num_global_objects = reader.estimate_available_global_objects(cuts, num=100_000)
 
     # These values should be approximately correct, but with the given random seed they are exact
-    assert actual_available_jets >= estimated_num_jets
-    assert estimated_num_jets - actual_available_jets <= 1000
+    assert actual_available_jets >= estimated_num_global_objects
+    assert estimated_num_global_objects - actual_available_jets <= 1000
 
 
 def test_reader_transform():
@@ -194,7 +196,7 @@ def test_reader_transform():
     })
 
     reader = H5Reader(fname, transform=transform, batch_size=1)
-    data = reader.load(num_jets=10)
+    data = reader.load(num_global_objects=10)
 
     assert "pt_new" in data["jets"].dtype.names
 
@@ -278,7 +280,7 @@ def test_stream(singlereader):
     total = 0
     for batch in singlereader.stream():
         total += len(batch["jets"])
-    assert total == singlereader.num_jets
+    assert total == singlereader.num_global_objects
 
 
 def test_weighting_two_files_100_vs_900(tmp_path):

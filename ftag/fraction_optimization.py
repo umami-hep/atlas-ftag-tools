@@ -447,11 +447,11 @@ def main(args: Sequence[str] | None = None) -> None:
     jets = H5Reader(
         fname=parsed_args.input_file,
         batch_size=parsed_args.batch_size,
-        jets_name=parsed_args.jets_name,
+        global_objects_name=parsed_args.jets_name,
         shuffle=False,
     ).load(
         variables={parsed_args.jets_name: vars_to_load},
-        num_jets=parsed_args.num_jets,
+        num_global_objects=parsed_args.num_jets,
         cuts=cuts,
     )[parsed_args.jets_name]
 

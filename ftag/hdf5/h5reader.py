@@ -26,20 +26,20 @@ class H5SingleReader:
         Path to the file
     batch_size: int, optional
         Batch size to read, by default 100_000
-    jets_name: str, optional
-        Name of the jets dataset, by default "jets"
+    global_objects_name: str, optional
+        Name of the global objects dataset, by default "jets"
     precision: str | None, optional
         Precision that is to be used, by default None
     shuffle: bool, optional
-        If random jets are loaded from the file, by default True
+        If random global objects are loaded from the file, by default True
     do_remove_inf: bool, optional
-        Remove infs from the jets, by default False
+        Remove infs from the global objects, by default False
     transform: Transform | None, optional
         Transformation that should be applied, by default None
     groups: list[str] | None, optional
         List of the groups that hold metadata, by default None
     dsets: list[str] | None, optional
-        List of the datsets, that hold the per jet/track data, by default None
+        List of the datsets, that hold the per global-object/track data, by default None
     vds_dir: Path | str | None, optional
         Directory where virtual datasets will be stored if wildcard is used, by default None.
         If None, the virtual files will be created in the same directory as the input files.
@@ -47,14 +47,14 @@ class H5SingleReader:
 
     fname: Path | str
     batch_size: int = 100_000
-    jets_name: str = "jets"
+    global_objects_name: str = "jets"
     precision: str | None = None
     shuffle: bool = True
     do_remove_inf: bool = False
     transform: Transform | None = None
     # groups hold meta-data e.g. "cutBookkeeper"
     groups: list[str] | None = None
-    # dsets hold data and all have a first dimension of njets
+    # dsets hold data and all have a first dimension of n_global_objects
     dsets: list[str] | None = None
     vds_dir: Path | str | None = None
 
@@ -70,9 +70,9 @@ class H5SingleReader:
             self.dsets = self.dsets or [d for d in f if isinstance(f[d], h5py.Dataset)]
 
     @cached_property
-    def num_jets(self) -> int:
+    def num_global_objects(self) -> int:
         with h5py.File(self.fname) as f:
-            return len(f[self.jets_name])
+            return len(f[self.global_objects_name])
 
     def get_attr(self, name, group=None):
         with h5py.File(self.fname) as f:
@@ -86,23 +86,23 @@ class H5SingleReader:
         return np.array(0, dtype=get_dtype(ds, variables, self.precision, transform=self.transform))
 
     def read_chunk(self, ds: h5py.Dataset, array: np.ndarray, low: int) -> np.ndarray:
-        high = min(low + self.batch_size, self.num_jets)
+        high = min(low + self.batch_size, self.num_global_objects)
         shape = (high - low, *ds.shape[1:])
         array.resize(shape, refcheck=False)
         ds.read_direct(array, np.s_[low:high])
         return array
 
     def remove_inf(self, data: dict) -> dict:
-        keep_idx = np.full(len(data[self.jets_name]), True)
+        keep_idx = np.full(len(data[self.global_objects_name]), True)
         for name, array in data.items():
             for var in array.dtype.names:
                 isinf = np.isinf(array[var])
-                isinf = isinf if name == self.jets_name else isinf.any(axis=-1)
+                isinf = isinf if name == self.global_objects_name else isinf.any(axis=-1)
                 keep_idx &= ~isinf
                 if num_inf := isinf.sum():
                     logger.warning(
                         f"{num_inf} inf values detected for variable {var} in"
-                        f" {name} array. Removing the affected jets."
+                        f" {name} array. Removing the affected global objects."
                     )
         return {name: array[keep_idx] for name, array in data.items()}
 
@@ -124,7 +124,7 @@ class H5SingleReader:
         """
         # apply selections
         if cuts:
-            idx = cuts(data[self.jets_name]).idx
+            idx = cuts(data[self.global_objects_name]).idx
             data = {name: array[idx] for name, array in data.items()}
 
         # check for inf and remove
@@ -140,24 +140,25 @@ class H5SingleReader:
     def stream(
         self,
         variables: dict | None = None,
-        num_jets: int | None = None,
+        num_global_objects: int | None = None,
         cuts: Cuts | None = None,
         start: int = 0,
         skip_batches: int = 0,
     ) -> Generator:
-        if num_jets is None:
-            num_jets = self.num_jets
+        if num_global_objects is None:
+            num_global_objects = self.num_global_objects
         if skip_batches > 0:
             assert not self.shuffle, "Cannot skip batches if shuffle is True"
-        if num_jets > self.num_jets:
+        if num_global_objects > self.num_global_objects:
             logger.warning(
-                f"{num_jets:,} jets requested but only {self.num_jets:,} available in {self.fname}."
+                f"{num_global_objects:,} global objects requested but only"
+                f" {self.num_global_objects:,} available in {self.fname}."
                 " Set to maximum available number!"
             )
-            num_jets = self.num_jets
+            num_global_objects = self.num_global_objects
 
         if variables is None:
-            variables = {self.jets_name: None}
+            variables = {self.global_objects_name: None}
 
         total = 0
         with h5py.File(self.fname) as f:
@@ -165,7 +166,7 @@ class H5SingleReader:
             data = {name: self.empty(f[name], var) for name, var in variables.items()}
 
             # get indices
-            indices = list(range(start, self.num_jets + start, self.batch_size))
+            indices = list(range(start, self.num_global_objects + start, self.batch_size))
             if self.shuffle:
                 self.rng.shuffle(indices)
             if skip_batches > 0:
@@ -179,9 +180,9 @@ class H5SingleReader:
                 data = self._process_batch(data, cuts)
 
                 # check for completion
-                total += len(data[self.jets_name])
-                if total >= num_jets:
-                    keep = num_jets - (total - len(data[self.jets_name]))
+                total += len(data[self.global_objects_name])
+                if total >= num_global_objects:
+                    keep = num_global_objects - (total - len(data[self.global_objects_name]))
                     data = {name: array[:keep] for name, array in data.items()}
                     yield data
                     break
@@ -193,22 +194,22 @@ class H5SingleReader:
         variables: dict | None = None,
         cuts: Cuts | None = None,
     ) -> Callable:
-        """Get a function to read batches of selected jets.
+        """Get a function to read batches of selected global objects.
 
         Parameters
         ----------
         variables : dict | None, optional
-            Dictionary of variables to for each group, by default use all jet variables.
+            Dictionary of variables to for each group, by default use all global object variables.
         cuts : Cuts | None, optional
             Selection cuts to apply, by default None
 
         Returns
         -------
         Callable
-            Function that takes an index and returns a batch of selected jets.
+            Function that takes an index and returns a batch of selected global objects.
         """
         if variables is None:
-            variables = {self.jets_name: None}
+            variables = {self.global_objects_name: None}
         h5 = h5py.File(self.fname, "r")
         arrays = {name: self.empty(h5[name], var) for name, var in variables.items()}
         # nonlocal data
@@ -228,7 +229,7 @@ class H5SingleReader:
                 Dictionary of arrays for each group, or None if no more batches are available.
             """
             low = idx * self.batch_size
-            if low >= self.num_jets:
+            if low >= self.num_global_objects:
                 return None
 
             for name in variables:
@@ -250,9 +251,9 @@ class H5Reader:
     fname : Path | str | list[Path | str]
         Path to the HDF5 file or list of paths
     batch_size : int, optional
-        Number of jets to read at a time, by default 100_000
-    jets_name : str, optional
-        Name of the jets dataset, by default "jets"
+        Number of global objects to read at a time, by default 100_000
+    global_objects_name : str, optional
+        Name of the global objects dataset, by default "jets"
     precision : str | None, optional
         Cast floats to given precision, by default None
     shuffle : bool, optional
@@ -260,17 +261,17 @@ class H5Reader:
     weights : list[float] | None, optional
         Weights for different input datasets, by default None
     do_remove_inf : bool, optional
-        Remove jets with inf values, by default False
+        Remove global objects with inf values, by default False
     transform : Transform | None, optional
         Transform to apply to data, by default None
-    equal_jets : bool, optional
-        Take the same number of jets (weighted) from each sample, by default True.
+    equal_global_objects : bool, optional
+        Take the same number of global objects (weighted) from each sample, by default True.
         This is useful when you specify a list of DSIDs for the sample and they are
         qualitatively different, and you want to ensure that you always return batches
-        with jets from all DSIDs. This is used for example in the QCD resampling for Xbb.
-        If False, use all jets in each sample, allowing for the full available statistics
-        to be used. Useful for example if you have multiple ttbar samples and you want to
-        use all available jets from each sample.
+        with global objects from all DSIDs. This is used for example in the QCD resampling
+        for Xbb. If False, use all global objects in each sample, allowing for the full
+        available statistics to be used. Useful for example if you have multiple ttbar
+        samples and you want to use all available global objects from each sample.
     vds_dir: Path | str | None, optional
         Directory where virtual datasets will be stored if wildcard is used, by default None.
         If None, the virtual files will be created in the same directory as the input files.
@@ -278,13 +279,13 @@ class H5Reader:
 
     fname: Path | str | list[Path | str]
     batch_size: int = 100_000
-    jets_name: str = "jets"
+    global_objects_name: str = "jets"
     precision: str | None = None
     shuffle: bool = True
     weights: list[float] | None = None
     do_remove_inf: bool = False
     transform: Transform | None = None
-    equal_jets: bool = False
+    equal_global_objects: bool = False
     vds_dir: Path | str | None = None
 
     def __post_init__(self) -> None:
@@ -295,7 +296,9 @@ class H5Reader:
         # calculate batch sizes
         if self.weights is None:
             rows_per_file = [
-                H5SingleReader(f, jets_name=self.jets_name, vds_dir=self.vds_dir).num_jets
+                H5SingleReader(
+                    f, global_objects_name=self.global_objects_name, vds_dir=self.vds_dir
+                ).num_global_objects
                 for f in self.fname
             ]
             num_total = sum(rows_per_file)
@@ -308,7 +311,7 @@ class H5Reader:
             H5SingleReader(
                 f,
                 b,
-                self.jets_name,
+                self.global_objects_name,
                 self.precision,
                 self.shuffle,
                 self.do_remove_inf,
@@ -319,8 +322,8 @@ class H5Reader:
         ]
 
     @property
-    def num_jets(self) -> int:
-        return sum(r.num_jets for r in self.readers)
+    def num_global_objects(self) -> int:
+        return sum(r.num_global_objects for r in self.readers)
 
     @property
     def files(self) -> list[Path]:
@@ -345,60 +348,71 @@ class H5Reader:
                     dtypes[name] = dtype
         return dtypes
 
-    def shapes(self, num_jets: int, groups: list[str] | None = None) -> dict[str, tuple[int, ...]]:
+    def shapes(
+        self, num_global_objects: int, groups: list[str] | None = None
+    ) -> dict[str, tuple[int, ...]]:
         if groups is None:
-            groups = [self.jets_name]
+            groups = [self.global_objects_name]
         shapes = {}
         with h5py.File(self.files[0]) as f:
             for group in groups:
                 shape = f[group].shape
-                shapes[group] = (num_jets, *shape[1:])
+                shapes[group] = (num_global_objects, *shape[1:])
         return shapes
 
     def stream(
         self,
         variables: dict | None = None,
-        num_jets: int | None = None,
+        num_global_objects: int | None = None,
         cuts: Cuts | None = None,
         start: int = 0,
         skip_batches: int = 0,
     ) -> Generator:
-        """Generate batches of selected jets.
+        """Generate batches of selected global objects.
 
         Parameters
         ----------
         variables : dict | None, optional
-            Dictionary of variables to for each group, by default use all jet variables.
-        num_jets : int | None, optional
-            Total number of selected jets to generate, by default all.
+            Dictionary of variables to for each group, by default use all global object variables.
+        num_global_objects : int | None, optional
+            Total number of selected global objects to generate, by default all.
         cuts : Cuts | None, optional
             Selection cuts to apply, by default None
         start : int, optional
-            Starting index of the first jet to read, by default 0
+            Starting index of the first global object to read, by default 0
         skip_batches : int, optional
             Number of batches to skip, by default 0
 
         Yields
         ------
         Generator
-            Generator of batches of selected jets.
+            Generator of batches of selected global objects.
         """
-        # Check if number of jets is given, if not, set to maximum available
-        if num_jets is None:
-            num_jets = self.num_jets
+        # Check if number of global objects is given, if not, set to maximum available
+        if num_global_objects is None:
+            num_global_objects = self.num_global_objects
 
         # Check if variables if given, if not, set to all
         if variables is None:
-            variables = {self.jets_name: None}
+            variables = {self.global_objects_name: None}
 
-        if self.jets_name not in variables or variables[self.jets_name] is not None:
-            jet_vars = variables.get(self.jets_name, [])
-            variables[self.jets_name] = list(jet_vars) + (cuts.variables if cuts else [])
+        if (
+            self.global_objects_name not in variables
+            or variables[self.global_objects_name] is not None
+        ):
+            global_object_vars = variables.get(self.global_objects_name, [])
+            variables[self.global_objects_name] = list(global_object_vars) + (
+                cuts.variables if cuts else []
+            )
 
-        # get streams for selected jets from each reader
+        # get streams for selected global objects from each reader
         streams = [
             r.stream(
-                variables, int(r.num_jets / self.num_jets * num_jets), cuts, start, skip_batches
+                variables,
+                int(r.num_global_objects / self.num_global_objects * num_global_objects),
+                cuts,
+                start,
+                skip_batches,
             )
             for r in self.readers
         ]
@@ -414,21 +428,21 @@ class H5Reader:
                     try:
                         samples.append(next(stream))
 
-                    # if equal_jets is True, stop when any sample is done
+                    # if equal_global_objects is True, stop when any sample is done
                     # otherwise if stream is exhausted, mark it as such and continue
                     except StopIteration:
-                        if self.equal_jets:
+                        if self.equal_global_objects:
                             return
                         streams_done[i] = True
 
-                # if equal_jets is False, we need to keep going until all streams are done
+                # if equal_global_objects is False, we need to keep going until all streams are done
                 if all(streams_done):
                     return
 
             # combine samples and shuffle
             data = {name: np.concatenate([s[name] for s in samples]) for name in variables}
             if self.shuffle:
-                idx = np.arange(len(data[self.jets_name]))
+                idx = np.arange(len(data[self.global_objects_name]))
                 self.rng.shuffle(idx)
                 data = {name: array[idx] for name, array in data.items()}
 
@@ -441,12 +455,12 @@ class H5Reader:
         cuts: Cuts | None = None,
         shuffle: bool = True,
     ) -> Callable:
-        """Get a function to read batches of selected jets.
+        """Get a function to read batches of selected global objects.
 
         Parameters
         ----------
         variables : dict | None, optional
-            Dictionary of variables to for each group, by default use all jet variables.
+            Dictionary of variables to for each group, by default use all global object variables.
         cuts : Cuts | None, optional
             Selection cuts to apply, by default None
         shuffle : bool, optional
@@ -455,10 +469,10 @@ class H5Reader:
         Returns
         -------
         Callable
-            Function that takes an index and returns a batch of selected jets.
+            Function that takes an index and returns a batch of selected global objects.
         """
         if variables is None:
-            variables = {self.jets_name: None}
+            variables = {self.global_objects_name: None}
 
         # create batch readers for each sample
         batch_readers = [r.get_batch_reader(variables, cuts) for r in self.readers]
@@ -477,7 +491,7 @@ class H5Reader:
                 Dictionary of arrays for each group, or None if no more batches are available.
             """
             assert idx >= 0, "Index must be non-negative"
-            if idx * self.batch_size >= self.num_jets:
+            if idx * self.batch_size >= self.num_global_objects:
                 return None
             # get a batch from each sample
             samples = [br(idx) for br in batch_readers]
@@ -487,7 +501,7 @@ class H5Reader:
             # combine samples and shuffle
             data = {name: np.concatenate([s[name] for s in samples]) for name in variables}
             if shuffle:
-                idx = np.arange(len(data[self.jets_name]))
+                idx = np.arange(len(data[self.global_objects_name]))
                 self.rng.shuffle(idx)
                 data = {name: array[idx] for name, array in data.items()}
             return data
@@ -495,16 +509,19 @@ class H5Reader:
         return get_batch
 
     def load(
-        self, variables: dict | None = None, num_jets: int | None = None, cuts: Cuts | None = None
+        self,
+        variables: dict | None = None,
+        num_global_objects: int | None = None,
+        cuts: Cuts | None = None,
     ) -> dict:
-        """Load multiple batches of selected jets into memory.
+        """Load multiple batches of selected global objects into memory.
 
         Parameters
         ----------
         variables : dict | None, optional
-            Dictionary of variables to for each group, by default use all jet variables.
-        num_jets : int | None, optional
-            Total number of selected jets to load, by default all.
+            Dictionary of variables to for each group, by default use all global object variables.
+        num_global_objects : int | None, optional
+            Total number of selected global objects to load, by default all.
         cuts : Cuts | None, optional
             Selection cuts to apply, by default None
 
@@ -514,14 +531,14 @@ class H5Reader:
             Dictionary of arrays for each group.
         """
         # handle default arguments
-        if num_jets == -1:
-            num_jets = self.num_jets
+        if num_global_objects == -1:
+            num_global_objects = self.num_global_objects
         if variables is None:
-            variables = {self.jets_name: None}
+            variables = {self.global_objects_name: None}
 
         # get data from each sample
         data: dict[str, list] = {name: [] for name in variables}
-        for batch in self.stream(variables, num_jets, cuts):
+        for batch in self.stream(variables, num_global_objects, cuts):
             for name, array in batch.items():
                 if name in data:
                     data[name].append(array)
@@ -529,38 +546,42 @@ class H5Reader:
         # concatenate batches
         return {name: np.concatenate(array) for name, array in data.items()}
 
-    def estimate_available_jets(self, cuts: Cuts, num: int = 1_000_000) -> int:
-        """Estimate the number of jets available after selection cuts.
+    def estimate_available_global_objects(self, cuts: Cuts, num: int = 1_000_000) -> int:
+        """Estimate the number of global objects available after selection cuts.
 
         Parameters
         ----------
         cuts : Cuts
             Selection cuts to apply.
         num : int, optional
-            Number of jets to use for the estimation, by default 1_000_000.
+            Number of global objects to use for the estimation, by default 1_000_000.
 
         Returns
         -------
         int
-            Estimated number of jets available after selection cuts, rounded down.
+            Estimated number of global objects available after selection cuts, rounded down.
         """
-        # reset rngs to ensure same jets are used for each sample
+        # reset rngs to ensure same global objects are used for each sample
         self.rng = np.random.default_rng(42)
         for r in self.readers:
             r.rng = np.random.default_rng(42)
 
-        # if equal jets is True, available jets is based on the smallest sample
-        if self.equal_jets:
-            num_jets = []
+        # if equal_global_objects is True, available objects is based on the smallest sample
+        if self.equal_global_objects:
+            num_global_objects = []
             for r in self.readers:
-                stream = r.stream({self.jets_name: cuts.variables}, num)
-                all_jets = np.concatenate([batch[self.jets_name].copy() for batch in stream])
-                frac_selected = len(cuts(all_jets).values) / len(all_jets)
-                num_jets.append(frac_selected * r.num_jets)
-            estimated_num_jets = min(num_jets) * len(self.readers)
-        # otherwise, available jets is based on all samples
+                stream = r.stream({self.global_objects_name: cuts.variables}, num)
+                all_global_objects = np.concatenate([
+                    batch[self.global_objects_name].copy() for batch in stream
+                ])
+                frac_selected = len(cuts(all_global_objects).values) / len(all_global_objects)
+                num_global_objects.append(frac_selected * r.num_global_objects)
+            estimated_num_global_objects = min(num_global_objects) * len(self.readers)
+        # otherwise, available objects is based on all samples
         else:
-            all_jets = self.load({self.jets_name: cuts.variables}, num)[self.jets_name]
-            frac_selected = len(cuts(all_jets).values) / len(all_jets)
-            estimated_num_jets = frac_selected * self.num_jets
-        return math.floor(estimated_num_jets * 0.99)
+            all_global_objects = self.load({self.global_objects_name: cuts.variables}, num)[
+                self.global_objects_name
+            ]
+            frac_selected = len(cuts(all_global_objects).values) / len(all_global_objects)
+            estimated_num_global_objects = frac_selected * self.num_global_objects
+        return math.floor(estimated_num_global_objects * 0.99)

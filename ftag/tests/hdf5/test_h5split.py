@@ -18,14 +18,14 @@ def mock_h5_file():
 
 
 def test_parse_args():
-    args = ["--src", "input.h5", "--jets_per_file", "1000"]
+    args = ["--src", "input.h5", "--global_objects_per_file", "1000"]
     parsed_args = parse_args(args)
     assert parsed_args.src == Path("input.h5")
-    assert parsed_args.jets_per_file == 1000
+    assert parsed_args.global_objects_per_file == 1000
 
 
 def test_main(mock_h5_file, capsys):
-    args = ["--src", str(mock_h5_file), "--jets_per_file", "100", "--batch_size", "10"]
+    args = ["--src", str(mock_h5_file), "--global_objects_per_file", "100", "--batch_size", "10"]
     main(args)
 
     captured = capsys.readouterr()
@@ -52,7 +52,14 @@ def test_main(mock_h5_file, capsys):
 
 def test_remainder(mock_h5_file, capsys):
     n_per_file = 201
-    args = ["--src", str(mock_h5_file), "--jets_per_file", str(n_per_file), "--batch_size", "10"]
+    args = [
+        "--src",
+        str(mock_h5_file),
+        "--global_objects_per_file",
+        str(n_per_file),
+        "--batch_size",
+        "10",
+    ]
     main(args)
 
     captured = capsys.readouterr()
@@ -78,7 +85,7 @@ def test_remainder(mock_h5_file, capsys):
 
 
 def test_attrs(mock_h5_file):
-    args = ["--src", str(mock_h5_file), "--jets_per_file", "100", "--batch_size", "10"]
+    args = ["--src", str(mock_h5_file), "--global_objects_per_file", "100", "--batch_size", "10"]
     main(args)
 
     split_dir = mock_h5_file.parent / f"split_{mock_h5_file.stem}"

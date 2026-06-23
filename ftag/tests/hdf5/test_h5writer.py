@@ -87,7 +87,7 @@ def test_close(tmp_path, mock_data):
         dst=Path(tmp_path) / "test.h5",
         dtypes={"jets": np.dtype([("pt", "f4"), ("eta", "f4")])},
         shapes={"jets": (100,)},
-        num_jets=100,
+        num_global_objects=100,
         shuffle=False,
     )
 
@@ -116,10 +116,10 @@ def test_post_init_fixed_mode(tmp_path, jet_dtype):
         dst=Path(tmp_path) / "test.h5",
         dtypes={"jets": jet_dtype},
         shapes={"jets": (100,)},
-        num_jets=100,
+        num_global_objects=100,
     )
 
-    assert writer.num_jets == 100
+    assert writer.num_global_objects == 100
     assert writer.fixed_mode is True
     assert writer.dst == Path(tmp_path) / "test.h5"
     assert writer.rng is not None
@@ -130,10 +130,10 @@ def test_post_init_dynamic_mode(tmp_path, jet_dtype):
         dst=Path(tmp_path) / "test_dynamic.h5",
         dtypes={"jets": jet_dtype},
         shapes={"jets": (100,)},
-        num_jets=None,
+        num_global_objects=None,
     )
 
-    assert writer.num_jets is None
+    assert writer.num_global_objects is None
     assert writer.fixed_mode is False
     writer.close()
 
@@ -143,11 +143,11 @@ def test_invalid_write(tmp_path, jet_dtype):
         dst=Path(tmp_path) / "test.h5",
         dtypes={"jets": jet_dtype},
         shapes={"jets": (100,)},
-        num_jets=100,
+        num_global_objects=100,
     )
 
     data = {"jets": np.zeros(110, dtype=writer.dtypes["jets"])}
-    with pytest.raises(ValueError, match="Attempted to write more jets than expected"):
+    with pytest.raises(ValueError, match="Attempted to write more global objects than expected"):
         writer.write(data)
 
 
@@ -231,7 +231,7 @@ def test_dynamic_mode_write(tmp_path, mock_data):
         dst=Path(tmp_path) / "test_dynamic.h5",
         dtypes=dtypes,
         shapes=shapes,
-        num_jets=None,
+        num_global_objects=None,
         shuffle=False,
     )
 
@@ -279,14 +279,14 @@ def test_close_raises_on_incomplete_write(tmp_path, jet_dtype):
         dst=Path(tmp_path) / "test_close_incomplete.h5",
         dtypes={"jets": jet_dtype},
         shapes={"jets": (100,)},
-        num_jets=100,
+        num_global_objects=100,
         shuffle=False,
     )
 
     partial_data = {"jets": np.zeros(60, dtype=writer.dtypes["jets"])}
     writer.write(partial_data)
 
-    with pytest.raises(ValueError, match="only 60 out of 100 jets have been written"):
+    with pytest.raises(ValueError, match="only 60 out of 100 global objects have been written"):
         writer.close()
 
 
@@ -308,7 +308,7 @@ def test_from_file_with_variable_subset(tmp_path):
     writer = H5Writer.from_file(
         source=path,
         dst=tmp_path / "out.h5",
-        num_jets=10,
+        num_global_objects=10,
         variables=variables,
         precision=None,
     )
