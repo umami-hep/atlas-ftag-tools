@@ -2,6 +2,7 @@
 
 ### [Latest]
 
+- Rename `jet` to `global object` in the HDF5 tools (`num_jets` → `num_global_objects`, `jets_name` → `global_objects_name`, etc.); breaking change for the HDF5 reader/writer API and `h5split`/`h5addcol` CLI flags [#172](https://github.com/umami-hep/atlas-ftag-tools/pull/172)
 - Adding command line options for fraction optimization [#169](https://github.com/umami-hep/atlas-ftag-tools/pull/169)
 
 ### [v0.3.3](https://github.com/umami-hep/atlas-ftag-tools/releases/tag/v0.3.3) (25.05.2026)
