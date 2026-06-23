@@ -25,6 +25,7 @@ Submodules
    /autoapi/ftag/mock/index
    /autoapi/ftag/region/index
    /autoapi/ftag/sample/index
+   /autoapi/ftag/track_selector/index
    /autoapi/ftag/transform/index
    /autoapi/ftag/utils/index
    /autoapi/ftag/vds/index
