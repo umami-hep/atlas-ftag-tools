@@ -2,6 +2,7 @@
 
 ### [Latest]
 
+- Rename `jet` to `global object` in the HDF5 tools (breaking API/CLI change) [#172](https://github.com/umami-hep/atlas-ftag-tools/pull/172)
 
 ### [v0.3.4](https://github.com/umami-hep/atlas-ftag-tools/releases/tag/v0.3.4) (30.06.2026)
 

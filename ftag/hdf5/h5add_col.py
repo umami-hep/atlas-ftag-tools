@@ -49,13 +49,13 @@ def merge_dicts(dicts: list[dict[str, dict[str, np.ndarray]]]) -> dict[str, dict
     return merged
 
 
-def get_shape(num_jets: int, batch: dict[str, np.ndarray]) -> dict[str, tuple[int, ...]]:
+def get_shape(num_global_objects: int, batch: dict[str, np.ndarray]) -> dict[str, tuple[int, ...]]:
     """Returns a dictionary with the correct output shapes for the H5Writer.
 
     Parameters
     ----------
-    num_jets : int
-        Number of jets to write in total
+    num_global_objects : int
+        Number of global objects to write in total
     batch : dict[str, np.ndarray]
         Dictionary representing the batch
 
@@ -68,9 +68,9 @@ def get_shape(num_jets: int, batch: dict[str, np.ndarray]) -> dict[str, tuple[in
 
     for key, values in batch.items():
         if values.ndim == 1:
-            shape[key] = (num_jets,)
+            shape[key] = (num_global_objects,)
         else:
-            shape[key] = (num_jets, *values.shape[1:])
+            shape[key] = (num_global_objects, *values.shape[1:])
     return shape
 
 
@@ -97,7 +97,7 @@ def h5_add_column(
     input_file: str | Path,
     output_file: str | Path,
     append_function: Callable | list[Callable],
-    num_jets: int = -1,
+    num_global_objects: int = -1,
     input_groups: list[str] | None = None,
     output_groups: list[str] | None = None,
     reader_kwargs: dict | None = None,
@@ -116,8 +116,9 @@ def h5_add_column(
         A function, or list of functions, which take a batch from H5Reader and return a
         dictionary keyed by group name. The nested dictionaries map new column names to
         arrays.
-    num_jets : int, optional
-        Number of jets to read from the input file. If -1, reads all jets. By default -1.
+    num_global_objects : int, optional
+        Number of global objects to read from the input file. If -1, reads all
+        global objects. By default -1.
     input_groups : list[str] | None, optional
         List of groups to read from the input file. If None, reads all groups. By default None.
     output_groups : list[str] | None, optional
@@ -168,7 +169,7 @@ def h5_add_column(
     if "precision" not in writer_kwargs:
         writer_kwargs["precision"] = "full"
 
-    njets = reader.num_jets if num_jets == -1 else num_jets
+    n_global_objects = reader.num_global_objects if num_global_objects == -1 else num_global_objects
     writer = None
 
     input_variables = (
@@ -181,8 +182,8 @@ def h5_add_column(
         f"Output groups {output_groups} not in input groups {input_variables.keys()}"
     )
 
-    num_batches = njets // reader.batch_size + 1
-    for i, batch in enumerate(reader.stream(input_variables, num_jets=njets)):
+    num_batches = n_global_objects // reader.batch_size + 1
+    for i, batch in enumerate(reader.stream(input_variables, num_global_objects=n_global_objects)):
         if (i + 1) % 10 == 0:
             print(f"Processing batch {i + 1}/{num_batches} ({(i + 1) / num_batches * 100:.2f}%)")
 
@@ -219,7 +220,7 @@ def h5_add_column(
             writer = H5Writer(
                 output_file,
                 dtypes={key: str_array.dtype for key, str_array in to_write.items()},
-                shapes=get_shape(njets, to_write),
+                shapes=get_shape(n_global_objects, to_write),
                 shuffle=False,
                 **writer_kwargs,
             )
@@ -303,7 +304,10 @@ def parse_args(args: Any | None) -> argparse.Namespace:
     )
     parser.add_argument("--output", type=str, help="Output h5 file")
     parser.add_argument(
-        "--num_jets", type=int, default=-1, help="Number of jets to read from the input file"
+        "--num_global_objects",
+        type=int,
+        default=-1,
+        help="Number of global objects to read from the input file",
     )
     parser.add_argument(
         "--input_groups",
@@ -356,7 +360,7 @@ def main(args: Any | None = None) -> None:
         args.input,
         args.output,
         append_function,
-        num_jets=args.num_jets,
+        num_global_objects=args.num_global_objects,
         input_groups=args.input_groups,
         output_groups=args.output_groups,
         reader_kwargs=args.reader_kwargs,
