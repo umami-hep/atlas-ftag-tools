@@ -175,7 +175,7 @@ The `H5Reader` class allows you to read (batches) of jets from one or more HDF5 
 
 - Variables are specified as `dict[str, list[str]]`.
 - By default the reader will randomly access chunks in the file, giving you a weakly shuffled set of jets.
-- By default the reader will load all variables for all available jets if `variables` and `num_jets` are not specified respectively.
+- By default the reader will load all variables for all available jets if `variables` and `num_global_objects` are not specified respectively.
 
 For example to load 300 jets using three batches of size 100:
 
@@ -185,16 +185,9 @@ For example to load 300 jets using three batches of size 100:
 from ftag.hdf5 import H5Reader
 
 reader = H5Reader(fname, batch_size=100)
-data = reader.load({"jets": ["pt", "eta"]}, num_jets=300)
+data = reader.load({"jets": ["pt", "eta"]}, num_global_objects=300)
 len(data["jets"])
 ```
-
-
-
-
-    300
-
-
 
 To transparently load jets across several files `fname` can also be a pattern including wildcards (`*`).
 Behind the scenes files are globbed and merged into a [virtual dataset](https://docs.h5py.org/en/stable/vds.html).
@@ -211,36 +204,22 @@ If you have globbed several files, you can easily get the total number of jets a
 
 
 ```python
-reader.num_jets
+reader.num_global_objects
 ```
-
-
-
-
-    1000
-
-
 
 You can also load tracks alongside jets (or by themselves) by specifying an additional entry in the `variables` dict:
 
 
 ```python
-data = reader.load({"jets": ["pt", "eta"], "tracks": ["deta", "dphi"]}, num_jets=100)
+data = reader.load({"jets": ["pt", "eta"], "tracks": ["deta", "dphi"]}, num_global_objects=100)
 data["tracks"].dtype
 ```
-
-
-
-
-    dtype([('dphi', '<f4'), ('deta', '<f4')])
-
-
 
 You can apply cuts to the jets as they are loaded. For example, to load 1000 jets which satisfy $p_T > 20$ GeV:
 
 
 ```python
-data = reader.load({"jets": ["pt"]}, num_jets=100, cuts=Cuts.from_list(["pt > 20e3"]))
+data = reader.load({"jets": ["pt"]}, num_global_objects=100, cuts=Cuts.from_list(["pt > 20e3"]))
 assert data["jets"]["pt"].min() > 20e3
 ```
 
@@ -250,7 +229,7 @@ This is useful when you want to work with a large number of jets, but don't want
 
 ```python
 reader = H5Reader(fname, batch_size=100)
-stream = reader.stream({"jets": ["pt", "eta"]}, num_jets=300)
+stream = reader.stream({"jets": ["pt", "eta"]}, num_global_objects=300)
 for batch in stream:
     jets = batch["jets"]
     # do processing on batch...
@@ -282,7 +261,7 @@ To write jets in batches to the output file, you can use the `write` method:
 
 
 ```python
-for batch in reader.stream(variables=variables, num_jets=1000):
+for batch in reader.stream(variables=variables, num_global_objects=1000):
     writer.write(batch)
 writer.close()
 ```
@@ -329,16 +308,9 @@ The resulting object will return transformed values.
 
 ```python
 reader = H5Reader(fname, batch_size=100, transform=transform)
-data = reader.load({"jets": ["pt", "eta"]}, num_jets=300)
+data = reader.load({"jets": ["pt", "eta"]}, num_global_objects=300)
 data["jets"]["pt"].min(), data["jets"]["pt"].max()
 ```
-
-
-
-
-    (np.float32(8.156475), np.float32(12.896797))
-
-
 
 ## Adding columns to an h5 file.
 
@@ -384,7 +356,7 @@ with tempfile.TemporaryDirectory() as tmpdir:
         fname,
         output,
         add_number_of_tracks,
-        num_jets=1000,
+        num_global_objects=1000,
     )
     # Check if the new column was added
     with h5py.File(output, "r") as f:
@@ -393,10 +365,6 @@ with tempfile.TemporaryDirectory() as tmpdir:
             "Output has 'number_of_tracks'? ", "number_of_tracks" in dummy_file["jets"].dtype.names
         )
 ```
-
-    Input has 'number_of_tracks'?  False
-    Output has 'number_of_tracks'?  False
-
 
 You ccan also use the above as a script from the terminal
 

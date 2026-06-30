@@ -649,17 +649,14 @@ For example:</p>
 <ul class="simple">
 <li><p>Variables are specified as <code class="docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">list[str]]</span></code>.</p></li>
 <li><p>By default the reader will randomly access chunks in the file, giving you a weakly shuffled set of jets.</p></li>
-<li><p>By default the reader will load all variables for all available jets if <code class="docutils literal notranslate"><span class="pre">variables</span></code> and <code class="docutils literal notranslate"><span class="pre">num_jets</span></code> are not specified respectively.</p></li>
+<li><p>By default the reader will load all variables for all available jets if <code class="docutils literal notranslate"><span class="pre">variables</span></code> and <code class="docutils literal notranslate"><span class="pre">num_global_objects</span></code> are not specified respectively.</p></li>
 </ul>
 <p>For example to load 300 jets using three batches of size 100:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ftag.hdf5</span><span class="w"> </span><span class="kn">import</span> <span class="n">H5Reader</span>
 
 <span class="n">reader</span> <span class="o">=</span> <span class="n">H5Reader</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load</span><span class="p">({</span><span class="s2">&quot;jets&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;pt&quot;</span><span class="p">,</span> <span class="s2">&quot;eta&quot;</span><span class="p">]},</span> <span class="n">num_jets</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load</span><span class="p">({</span><span class="s2">&quot;jets&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;pt&quot;</span><span class="p">,</span> <span class="s2">&quot;eta&quot;</span><span class="p">]},</span> <span class="n">num_global_objects</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
 <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;jets&quot;</span><span class="p">])</span>
-</pre></div>
-</div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>300
 </pre></div>
 </div>
 <p>To transparently load jets across several files <code class="docutils literal notranslate"><span class="pre">fname</span></code> can also be a pattern including wildcards (<code class="docutils literal notranslate"><span class="pre">*</span></code>).
@@ -671,29 +668,23 @@ So the following also works:</p>
 </pre></div>
 </div>
 <p>If you have globbed several files, you can easily get the total number of jets across all files with</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">reader</span><span class="o">.</span><span class="n">num_jets</span>
-</pre></div>
-</div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>1000
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">reader</span><span class="o">.</span><span class="n">num_global_objects</span>
 </pre></div>
 </div>
 <p>You can also load tracks alongside jets (or by themselves) by specifying an additional entry in the <code class="docutils literal notranslate"><span class="pre">variables</span></code> dict:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load</span><span class="p">({</span><span class="s2">&quot;jets&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;pt&quot;</span><span class="p">,</span> <span class="s2">&quot;eta&quot;</span><span class="p">],</span> <span class="s2">&quot;tracks&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;deta&quot;</span><span class="p">,</span> <span class="s2">&quot;dphi&quot;</span><span class="p">]},</span> <span class="n">num_jets</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load</span><span class="p">({</span><span class="s2">&quot;jets&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;pt&quot;</span><span class="p">,</span> <span class="s2">&quot;eta&quot;</span><span class="p">],</span> <span class="s2">&quot;tracks&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;deta&quot;</span><span class="p">,</span> <span class="s2">&quot;dphi&quot;</span><span class="p">]},</span> <span class="n">num_global_objects</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 <span class="n">data</span><span class="p">[</span><span class="s2">&quot;tracks&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dtype([(&#39;dphi&#39;, &#39;&lt;f4&#39;), (&#39;deta&#39;, &#39;&lt;f4&#39;)])
-</pre></div>
-</div>
 <p>You can apply cuts to the jets as they are loaded. For example, to load 1000 jets which satisfy $p_T &gt; 20$ GeV:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load</span><span class="p">({</span><span class="s2">&quot;jets&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;pt&quot;</span><span class="p">]},</span> <span class="n">num_jets</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">cuts</span><span class="o">=</span><span class="n">Cuts</span><span class="o">.</span><span class="n">from_list</span><span class="p">([</span><span class="s2">&quot;pt &gt; 20e3&quot;</span><span class="p">]))</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load</span><span class="p">({</span><span class="s2">&quot;jets&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;pt&quot;</span><span class="p">]},</span> <span class="n">num_global_objects</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">cuts</span><span class="o">=</span><span class="n">Cuts</span><span class="o">.</span><span class="n">from_list</span><span class="p">([</span><span class="s2">&quot;pt &gt; 20e3&quot;</span><span class="p">]))</span>
 <span class="k">assert</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;jets&quot;</span><span class="p">][</span><span class="s2">&quot;pt&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mf">20e3</span>
 </pre></div>
 </div>
 <p>Rather than return a single <code class="docutils literal notranslate"><span class="pre">dict</span></code> of arrays, the reader can also return a generator of batches.
 This is useful when you want to work with a large number of jets, but don’t want to load them all into memory at once.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">reader</span> <span class="o">=</span> <span class="n">H5Reader</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-<span class="n">stream</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">stream</span><span class="p">({</span><span class="s2">&quot;jets&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;pt&quot;</span><span class="p">,</span> <span class="s2">&quot;eta&quot;</span><span class="p">]},</span> <span class="n">num_jets</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+<span class="n">stream</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">stream</span><span class="p">({</span><span class="s2">&quot;jets&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;pt&quot;</span><span class="p">,</span> <span class="s2">&quot;eta&quot;</span><span class="p">]},</span> <span class="n">num_global_objects</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
     <span class="n">jets</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;jets&quot;</span><span class="p">]</span>
     <span class="c1"># do processing on batch...</span>
@@ -719,7 +710,7 @@ This is useful when you want to work with a large number of jets, but don’t wa
 </pre></div>
 </div>
 <p>To write jets in batches to the output file, you can use the <code class="docutils literal notranslate"><span class="pre">write</span></code> method:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">reader</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="n">variables</span><span class="o">=</span><span class="n">variables</span><span class="p">,</span> <span class="n">num_jets</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">reader</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="n">variables</span><span class="o">=</span><span class="n">variables</span><span class="p">,</span> <span class="n">num_global_objects</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
     <span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
 <span class="n">writer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
@@ -758,11 +749,8 @@ Three operations are supported:</p>
 <p>This object can be passed to the <code class="docutils literal notranslate"><span class="pre">H5Reader</span></code> constructor.
 The resulting object will return transformed values.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">reader</span> <span class="o">=</span> <span class="n">H5Reader</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load</span><span class="p">({</span><span class="s2">&quot;jets&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;pt&quot;</span><span class="p">,</span> <span class="s2">&quot;eta&quot;</span><span class="p">]},</span> <span class="n">num_jets</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load</span><span class="p">({</span><span class="s2">&quot;jets&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;pt&quot;</span><span class="p">,</span> <span class="s2">&quot;eta&quot;</span><span class="p">]},</span> <span class="n">num_global_objects</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
 <span class="n">data</span><span class="p">[</span><span class="s2">&quot;jets&quot;</span><span class="p">][</span><span class="s2">&quot;pt&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;jets&quot;</span><span class="p">][</span><span class="s2">&quot;pt&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
-</pre></div>
-</div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(np.float32(8.156475), np.float32(12.896797))
 </pre></div>
 </div>
 </section>
@@ -807,7 +795,7 @@ The function requires an input file, and output file, and a function (or list of
         <span class="n">fname</span><span class="p">,</span>
         <span class="n">output</span><span class="p">,</span>
         <span class="n">add_number_of_tracks</span><span class="p">,</span>
-        <span class="n">num_jets</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+        <span class="n">num_global_objects</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="c1"># Check if the new column was added</span>
     <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -815,10 +803,6 @@ The function requires an input file, and output file, and a function (or list of
         <span class="nb">print</span><span class="p">(</span>
             <span class="s2">&quot;Output has &#39;number_of_tracks&#39;? &quot;</span><span class="p">,</span> <span class="s2">&quot;number_of_tracks&quot;</span> <span class="ow">in</span> <span class="n">dummy_file</span><span class="p">[</span><span class="s2">&quot;jets&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span>
         <span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Input has &#39;number_of_tracks&#39;?  False
-Output has &#39;number_of_tracks&#39;?  False
 </pre></div>
 </div>
 <p>You ccan also use the above as a script from the terminal</p>

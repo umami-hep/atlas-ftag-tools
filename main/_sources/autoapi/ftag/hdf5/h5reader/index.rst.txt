@@ -32,9 +32,9 @@ Module Contents
 
       :type: int, optional
 
-   .. attribute:: jets_name
+   .. attribute:: global_objects_name
 
-      Name of the jets dataset, by default "jets"
+      Name of the global objects dataset, by default "jets"
 
       :type: str, optional
 
@@ -46,13 +46,13 @@ Module Contents
 
    .. attribute:: shuffle
 
-      If random jets are loaded from the file, by default True
+      If random global objects are loaded from the file, by default True
 
       :type: bool, optional
 
    .. attribute:: do_remove_inf
 
-      Remove infs from the jets, by default False
+      Remove infs from the global objects, by default False
 
       :type: bool, optional
 
@@ -70,7 +70,7 @@ Module Contents
 
    .. attribute:: dsets
 
-      List of the datsets, that hold the per jet/track data, by default None
+      List of the datsets, that hold the per global-object/track data, by default None
 
       :type: list[str] | None, optional
 
@@ -92,7 +92,7 @@ Module Contents
 
 
 
-   .. py:attribute:: jets_name
+   .. py:attribute:: global_objects_name
       :type:  str
       :value: 'jets'
 
@@ -143,7 +143,7 @@ Module Contents
    .. py:method:: __post_init__() -> None
 
 
-   .. py:property:: num_jets
+   .. py:property:: num_global_objects
       :type: int
 
 
@@ -175,19 +175,19 @@ Module Contents
 
 
 
-   .. py:method:: stream(variables: dict | None = None, num_jets: int | None = None, cuts: ftag.cuts.Cuts | None = None, start: int = 0, skip_batches: int = 0) -> collections.abc.Generator
+   .. py:method:: stream(variables: dict | None = None, num_global_objects: int | None = None, cuts: ftag.cuts.Cuts | None = None, start: int = 0, skip_batches: int = 0) -> collections.abc.Generator
 
 
    .. py:method:: get_batch_reader(variables: dict | None = None, cuts: ftag.cuts.Cuts | None = None) -> collections.abc.Callable
 
-      Get a function to read batches of selected jets.
+      Get a function to read batches of selected global objects.
 
-      :param variables: Dictionary of variables to for each group, by default use all jet variables.
+      :param variables: Dictionary of variables to for each group, by default use all global object variables.
       :type variables: dict | None, optional
       :param cuts: Selection cuts to apply, by default None
       :type cuts: Cuts | None, optional
 
-      :returns: Function that takes an index and returns a batch of selected jets.
+      :returns: Function that takes an index and returns a batch of selected global objects.
       :rtype: Callable
 
 
@@ -204,13 +204,13 @@ Module Contents
 
    .. attribute:: batch_size
 
-      Number of jets to read at a time, by default 100_000
+      Number of global objects to read at a time, by default 100_000
 
       :type: int, optional
 
-   .. attribute:: jets_name
+   .. attribute:: global_objects_name
 
-      Name of the jets dataset, by default "jets"
+      Name of the global objects dataset, by default "jets"
 
       :type: str, optional
 
@@ -234,7 +234,7 @@ Module Contents
 
    .. attribute:: do_remove_inf
 
-      Remove jets with inf values, by default False
+      Remove global objects with inf values, by default False
 
       :type: bool, optional
 
@@ -244,15 +244,15 @@ Module Contents
 
       :type: Transform | None, optional
 
-   .. attribute:: equal_jets
+   .. attribute:: equal_global_objects
 
-      Take the same number of jets (weighted) from each sample, by default True.
+      Take the same number of global objects (weighted) from each sample, by default True.
       This is useful when you specify a list of DSIDs for the sample and they are
       qualitatively different, and you want to ensure that you always return batches
-      with jets from all DSIDs. This is used for example in the QCD resampling for Xbb.
-      If False, use all jets in each sample, allowing for the full available statistics
-      to be used. Useful for example if you have multiple ttbar samples and you want to
-      use all available jets from each sample.
+      with global objects from all DSIDs. This is used for example in the QCD resampling
+      for Xbb. If False, use all global objects in each sample, allowing for the full
+      available statistics to be used. Useful for example if you have multiple ttbar
+      samples and you want to use all available global objects from each sample.
 
       :type: bool, optional
 
@@ -274,7 +274,7 @@ Module Contents
 
 
 
-   .. py:attribute:: jets_name
+   .. py:attribute:: global_objects_name
       :type:  str
       :value: 'jets'
 
@@ -310,7 +310,7 @@ Module Contents
 
 
 
-   .. py:attribute:: equal_jets
+   .. py:attribute:: equal_global_objects
       :type:  bool
       :value: False
 
@@ -325,7 +325,7 @@ Module Contents
    .. py:method:: __post_init__() -> None
 
 
-   .. py:property:: num_jets
+   .. py:property:: num_global_objects
       :type: int
 
 
@@ -338,52 +338,52 @@ Module Contents
    .. py:method:: dtypes(variables: dict[str, list[str]] | None = None) -> dict[str, numpy.dtype]
 
 
-   .. py:method:: shapes(num_jets: int, groups: list[str] | None = None) -> dict[str, tuple[int, Ellipsis]]
+   .. py:method:: shapes(num_global_objects: int, groups: list[str] | None = None) -> dict[str, tuple[int, Ellipsis]]
 
 
-   .. py:method:: stream(variables: dict | None = None, num_jets: int | None = None, cuts: ftag.cuts.Cuts | None = None, start: int = 0, skip_batches: int = 0) -> collections.abc.Generator
+   .. py:method:: stream(variables: dict | None = None, num_global_objects: int | None = None, cuts: ftag.cuts.Cuts | None = None, start: int = 0, skip_batches: int = 0) -> collections.abc.Generator
 
-      Generate batches of selected jets.
+      Generate batches of selected global objects.
 
-      :param variables: Dictionary of variables to for each group, by default use all jet variables.
+      :param variables: Dictionary of variables to for each group, by default use all global object variables.
       :type variables: dict | None, optional
-      :param num_jets: Total number of selected jets to generate, by default all.
-      :type num_jets: int | None, optional
+      :param num_global_objects: Total number of selected global objects to generate, by default all.
+      :type num_global_objects: int | None, optional
       :param cuts: Selection cuts to apply, by default None
       :type cuts: Cuts | None, optional
-      :param start: Starting index of the first jet to read, by default 0
+      :param start: Starting index of the first global object to read, by default 0
       :type start: int, optional
       :param skip_batches: Number of batches to skip, by default 0
       :type skip_batches: int, optional
 
-      :Yields: *Generator* -- Generator of batches of selected jets.
+      :Yields: *Generator* -- Generator of batches of selected global objects.
 
 
 
    .. py:method:: get_batch_reader(variables: dict | None = None, cuts: ftag.cuts.Cuts | None = None, shuffle: bool = True) -> collections.abc.Callable
 
-      Get a function to read batches of selected jets.
+      Get a function to read batches of selected global objects.
 
-      :param variables: Dictionary of variables to for each group, by default use all jet variables.
+      :param variables: Dictionary of variables to for each group, by default use all global object variables.
       :type variables: dict | None, optional
       :param cuts: Selection cuts to apply, by default None
       :type cuts: Cuts | None, optional
       :param shuffle: Read batches in a shuffled order, by default True
       :type shuffle: bool, optional
 
-      :returns: Function that takes an index and returns a batch of selected jets.
+      :returns: Function that takes an index and returns a batch of selected global objects.
       :rtype: Callable
 
 
 
-   .. py:method:: load(variables: dict | None = None, num_jets: int | None = None, cuts: ftag.cuts.Cuts | None = None) -> dict
+   .. py:method:: load(variables: dict | None = None, num_global_objects: int | None = None, cuts: ftag.cuts.Cuts | None = None) -> dict
 
-      Load multiple batches of selected jets into memory.
+      Load multiple batches of selected global objects into memory.
 
-      :param variables: Dictionary of variables to for each group, by default use all jet variables.
+      :param variables: Dictionary of variables to for each group, by default use all global object variables.
       :type variables: dict | None, optional
-      :param num_jets: Total number of selected jets to load, by default all.
-      :type num_jets: int | None, optional
+      :param num_global_objects: Total number of selected global objects to load, by default all.
+      :type num_global_objects: int | None, optional
       :param cuts: Selection cuts to apply, by default None
       :type cuts: Cuts | None, optional
 
@@ -392,16 +392,16 @@ Module Contents
 
 
 
-   .. py:method:: estimate_available_jets(cuts: ftag.cuts.Cuts, num: int = 1000000) -> int
+   .. py:method:: estimate_available_global_objects(cuts: ftag.cuts.Cuts, num: int = 1000000) -> int
 
-      Estimate the number of jets available after selection cuts.
+      Estimate the number of global objects available after selection cuts.
 
       :param cuts: Selection cuts to apply.
       :type cuts: Cuts
-      :param num: Number of jets to use for the estimation, by default 1_000_000.
+      :param num: Number of global objects to use for the estimation, by default 1_000_000.
       :type num: int, optional
 
-      :returns: Estimated number of jets available after selection cuts, rounded down.
+      :returns: Estimated number of global objects available after selection cuts, rounded down.
       :rtype: int
 
 

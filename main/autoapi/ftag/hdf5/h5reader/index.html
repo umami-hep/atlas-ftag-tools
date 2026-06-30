@@ -543,9 +543,9 @@
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="ftag.hdf5.h5reader.H5SingleReader.jets_name">
-<span class="sig-name descname"><span class="pre">jets_name</span></span><a class="headerlink" href="#ftag.hdf5.h5reader.H5SingleReader.jets_name" title="Link to this definition">#</a></dt>
-<dd><p>Name of the jets dataset, by default “jets”</p>
+<dt class="sig sig-object py" id="ftag.hdf5.h5reader.H5SingleReader.global_objects_name">
+<span class="sig-name descname"><span class="pre">global_objects_name</span></span><a class="headerlink" href="#ftag.hdf5.h5reader.H5SingleReader.global_objects_name" title="Link to this definition">#</a></dt>
+<dd><p>Name of the global objects dataset, by default “jets”</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str, optional</p>
@@ -567,7 +567,7 @@
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.hdf5.h5reader.H5SingleReader.shuffle">
 <span class="sig-name descname"><span class="pre">shuffle</span></span><a class="headerlink" href="#ftag.hdf5.h5reader.H5SingleReader.shuffle" title="Link to this definition">#</a></dt>
-<dd><p>If random jets are loaded from the file, by default True</p>
+<dd><p>If random global objects are loaded from the file, by default True</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool, optional</p>
@@ -578,7 +578,7 @@
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.hdf5.h5reader.H5SingleReader.do_remove_inf">
 <span class="sig-name descname"><span class="pre">do_remove_inf</span></span><a class="headerlink" href="#ftag.hdf5.h5reader.H5SingleReader.do_remove_inf" title="Link to this definition">#</a></dt>
-<dd><p>Remove infs from the jets, by default False</p>
+<dd><p>Remove infs from the global objects, by default False</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool, optional</p>
@@ -611,7 +611,7 @@
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.hdf5.h5reader.H5SingleReader.dsets">
 <span class="sig-name descname"><span class="pre">dsets</span></span><a class="headerlink" href="#ftag.hdf5.h5reader.H5SingleReader.dsets" title="Link to this definition">#</a></dt>
-<dd><p>List of the datsets, that hold the per jet/track data, by default None</p>
+<dd><p>List of the datsets, that hold the per global-object/track data, by default None</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list[str] | None, optional</p>
@@ -643,7 +643,7 @@ If None, the virtual files will be created in the same directory as the input fi
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id2">
-<span class="sig-name descname"><span class="pre">jets_name</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'jets'</span></span><a class="headerlink" href="#id2" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">global_objects_name</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'jets'</span></span><a class="headerlink" href="#id2" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -687,8 +687,8 @@ If None, the virtual files will be created in the same directory as the input fi
 <dd></dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="ftag.hdf5.h5reader.H5SingleReader.num_jets">
-<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">num_jets</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#ftag.hdf5.h5reader.H5SingleReader.num_jets" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ftag.hdf5.h5reader.H5SingleReader.num_global_objects">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">num_global_objects</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#ftag.hdf5.h5reader.H5SingleReader.num_global_objects" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -734,22 +734,22 @@ If None, the virtual files will be created in the same directory as the input fi
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ftag.hdf5.h5reader.H5SingleReader.stream">
-<span class="sig-name descname"><span class="pre">stream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_jets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cuts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><span class="pre">ftag.cuts.Cuts</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_batches</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">collections.abc.Generator</span></span></span><a class="headerlink" href="#ftag.hdf5.h5reader.H5SingleReader.stream" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">stream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_global_objects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cuts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><span class="pre">ftag.cuts.Cuts</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_batches</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">collections.abc.Generator</span></span></span><a class="headerlink" href="#ftag.hdf5.h5reader.H5SingleReader.stream" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ftag.hdf5.h5reader.H5SingleReader.get_batch_reader">
 <span class="sig-name descname"><span class="pre">get_batch_reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cuts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><span class="pre">ftag.cuts.Cuts</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">collections.abc.Callable</span></span></span><a class="headerlink" href="#ftag.hdf5.h5reader.H5SingleReader.get_batch_reader" title="Link to this definition">#</a></dt>
-<dd><p>Get a function to read batches of selected jets.</p>
+<dd><p>Get a function to read batches of selected global objects.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>variables</strong> (<em>dict</em><em> | </em><em>None</em><em>, </em><em>optional</em>) – Dictionary of variables to for each group, by default use all jet variables.</p></li>
+<li><p><strong>variables</strong> (<em>dict</em><em> | </em><em>None</em><em>, </em><em>optional</em>) – Dictionary of variables to for each group, by default use all global object variables.</p></li>
 <li><p><strong>cuts</strong> (<a class="reference internal" href="../../cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><em>Cuts</em></a><em> | </em><em>None</em><em>, </em><em>optional</em>) – Selection cuts to apply, by default None</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Function that takes an index and returns a batch of selected jets.</p>
+<dd class="field-even"><p>Function that takes an index and returns a batch of selected global objects.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Callable</p>
@@ -777,7 +777,7 @@ If None, the virtual files will be created in the same directory as the input fi
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.hdf5.h5reader.H5Reader.batch_size">
 <span class="sig-name descname"><span class="pre">batch_size</span></span><a class="headerlink" href="#ftag.hdf5.h5reader.H5Reader.batch_size" title="Link to this definition">#</a></dt>
-<dd><p>Number of jets to read at a time, by default 100_000</p>
+<dd><p>Number of global objects to read at a time, by default 100_000</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int, optional</p>
@@ -786,9 +786,9 @@ If None, the virtual files will be created in the same directory as the input fi
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="ftag.hdf5.h5reader.H5Reader.jets_name">
-<span class="sig-name descname"><span class="pre">jets_name</span></span><a class="headerlink" href="#ftag.hdf5.h5reader.H5Reader.jets_name" title="Link to this definition">#</a></dt>
-<dd><p>Name of the jets dataset, by default “jets”</p>
+<dt class="sig sig-object py" id="ftag.hdf5.h5reader.H5Reader.global_objects_name">
+<span class="sig-name descname"><span class="pre">global_objects_name</span></span><a class="headerlink" href="#ftag.hdf5.h5reader.H5Reader.global_objects_name" title="Link to this definition">#</a></dt>
+<dd><p>Name of the global objects dataset, by default “jets”</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str, optional</p>
@@ -832,7 +832,7 @@ If None, the virtual files will be created in the same directory as the input fi
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ftag.hdf5.h5reader.H5Reader.do_remove_inf">
 <span class="sig-name descname"><span class="pre">do_remove_inf</span></span><a class="headerlink" href="#ftag.hdf5.h5reader.H5Reader.do_remove_inf" title="Link to this definition">#</a></dt>
-<dd><p>Remove jets with inf values, by default False</p>
+<dd><p>Remove global objects with inf values, by default False</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool, optional</p>
@@ -852,15 +852,15 @@ If None, the virtual files will be created in the same directory as the input fi
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="ftag.hdf5.h5reader.H5Reader.equal_jets">
-<span class="sig-name descname"><span class="pre">equal_jets</span></span><a class="headerlink" href="#ftag.hdf5.h5reader.H5Reader.equal_jets" title="Link to this definition">#</a></dt>
-<dd><p>Take the same number of jets (weighted) from each sample, by default True.
+<dt class="sig sig-object py" id="ftag.hdf5.h5reader.H5Reader.equal_global_objects">
+<span class="sig-name descname"><span class="pre">equal_global_objects</span></span><a class="headerlink" href="#ftag.hdf5.h5reader.H5Reader.equal_global_objects" title="Link to this definition">#</a></dt>
+<dd><p>Take the same number of global objects (weighted) from each sample, by default True.
 This is useful when you specify a list of DSIDs for the sample and they are
 qualitatively different, and you want to ensure that you always return batches
-with jets from all DSIDs. This is used for example in the QCD resampling for Xbb.
-If False, use all jets in each sample, allowing for the full available statistics
-to be used. Useful for example if you have multiple ttbar samples and you want to
-use all available jets from each sample.</p>
+with global objects from all DSIDs. This is used for example in the QCD resampling
+for Xbb. If False, use all global objects in each sample, allowing for the full
+available statistics to be used. Useful for example if you have multiple ttbar
+samples and you want to use all available global objects from each sample.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool, optional</p>
@@ -892,7 +892,7 @@ If None, the virtual files will be created in the same directory as the input fi
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id12">
-<span class="sig-name descname"><span class="pre">jets_name</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'jets'</span></span><a class="headerlink" href="#id12" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">global_objects_name</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'jets'</span></span><a class="headerlink" href="#id12" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -922,7 +922,7 @@ If None, the virtual files will be created in the same directory as the input fi
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id18">
-<span class="sig-name descname"><span class="pre">equal_jets</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#id18" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">equal_global_objects</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#id18" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -936,8 +936,8 @@ If None, the virtual files will be created in the same directory as the input fi
 <dd></dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="ftag.hdf5.h5reader.H5Reader.num_jets">
-<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">num_jets</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#ftag.hdf5.h5reader.H5Reader.num_jets" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ftag.hdf5.h5reader.H5Reader.num_global_objects">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">num_global_objects</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#ftag.hdf5.h5reader.H5Reader.num_global_objects" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
@@ -952,25 +952,25 @@ If None, the virtual files will be created in the same directory as the input fi
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ftag.hdf5.h5reader.H5Reader.shapes">
-<span class="sig-name descname"><span class="pre">shapes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_jets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groups</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ftag.hdf5.h5reader.H5Reader.shapes" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">shapes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_global_objects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groups</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ftag.hdf5.h5reader.H5Reader.shapes" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ftag.hdf5.h5reader.H5Reader.stream">
-<span class="sig-name descname"><span class="pre">stream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_jets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cuts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><span class="pre">ftag.cuts.Cuts</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_batches</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">collections.abc.Generator</span></span></span><a class="headerlink" href="#ftag.hdf5.h5reader.H5Reader.stream" title="Link to this definition">#</a></dt>
-<dd><p>Generate batches of selected jets.</p>
+<span class="sig-name descname"><span class="pre">stream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_global_objects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cuts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><span class="pre">ftag.cuts.Cuts</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_batches</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">collections.abc.Generator</span></span></span><a class="headerlink" href="#ftag.hdf5.h5reader.H5Reader.stream" title="Link to this definition">#</a></dt>
+<dd><p>Generate batches of selected global objects.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>variables</strong> (<em>dict</em><em> | </em><em>None</em><em>, </em><em>optional</em>) – Dictionary of variables to for each group, by default use all jet variables.</p></li>
-<li><p><strong>num_jets</strong> (<em>int</em><em> | </em><em>None</em><em>, </em><em>optional</em>) – Total number of selected jets to generate, by default all.</p></li>
+<li><p><strong>variables</strong> (<em>dict</em><em> | </em><em>None</em><em>, </em><em>optional</em>) – Dictionary of variables to for each group, by default use all global object variables.</p></li>
+<li><p><strong>num_global_objects</strong> (<em>int</em><em> | </em><em>None</em><em>, </em><em>optional</em>) – Total number of selected global objects to generate, by default all.</p></li>
 <li><p><strong>cuts</strong> (<a class="reference internal" href="../../cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><em>Cuts</em></a><em> | </em><em>None</em><em>, </em><em>optional</em>) – Selection cuts to apply, by default None</p></li>
-<li><p><strong>start</strong> (<em>int</em><em>, </em><em>optional</em>) – Starting index of the first jet to read, by default 0</p></li>
+<li><p><strong>start</strong> (<em>int</em><em>, </em><em>optional</em>) – Starting index of the first global object to read, by default 0</p></li>
 <li><p><strong>skip_batches</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of batches to skip, by default 0</p></li>
 </ul>
 </dd>
 <dt class="field-even">Yields<span class="colon">:</span></dt>
-<dd class="field-even"><p><em>Generator</em> – Generator of batches of selected jets.</p>
+<dd class="field-even"><p><em>Generator</em> – Generator of batches of selected global objects.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -978,17 +978,17 @@ If None, the virtual files will be created in the same directory as the input fi
 <dl class="py method">
 <dt class="sig sig-object py" id="ftag.hdf5.h5reader.H5Reader.get_batch_reader">
 <span class="sig-name descname"><span class="pre">get_batch_reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cuts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><span class="pre">ftag.cuts.Cuts</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">collections.abc.Callable</span></span></span><a class="headerlink" href="#ftag.hdf5.h5reader.H5Reader.get_batch_reader" title="Link to this definition">#</a></dt>
-<dd><p>Get a function to read batches of selected jets.</p>
+<dd><p>Get a function to read batches of selected global objects.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>variables</strong> (<em>dict</em><em> | </em><em>None</em><em>, </em><em>optional</em>) – Dictionary of variables to for each group, by default use all jet variables.</p></li>
+<li><p><strong>variables</strong> (<em>dict</em><em> | </em><em>None</em><em>, </em><em>optional</em>) – Dictionary of variables to for each group, by default use all global object variables.</p></li>
 <li><p><strong>cuts</strong> (<a class="reference internal" href="../../cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><em>Cuts</em></a><em> | </em><em>None</em><em>, </em><em>optional</em>) – Selection cuts to apply, by default None</p></li>
 <li><p><strong>shuffle</strong> (<em>bool</em><em>, </em><em>optional</em>) – Read batches in a shuffled order, by default True</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Function that takes an index and returns a batch of selected jets.</p>
+<dd class="field-even"><p>Function that takes an index and returns a batch of selected global objects.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Callable</p>
@@ -998,13 +998,13 @@ If None, the virtual files will be created in the same directory as the input fi
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ftag.hdf5.h5reader.H5Reader.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_jets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cuts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><span class="pre">ftag.cuts.Cuts</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#ftag.hdf5.h5reader.H5Reader.load" title="Link to this definition">#</a></dt>
-<dd><p>Load multiple batches of selected jets into memory.</p>
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_global_objects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cuts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><span class="pre">ftag.cuts.Cuts</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#ftag.hdf5.h5reader.H5Reader.load" title="Link to this definition">#</a></dt>
+<dd><p>Load multiple batches of selected global objects into memory.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>variables</strong> (<em>dict</em><em> | </em><em>None</em><em>, </em><em>optional</em>) – Dictionary of variables to for each group, by default use all jet variables.</p></li>
-<li><p><strong>num_jets</strong> (<em>int</em><em> | </em><em>None</em><em>, </em><em>optional</em>) – Total number of selected jets to load, by default all.</p></li>
+<li><p><strong>variables</strong> (<em>dict</em><em> | </em><em>None</em><em>, </em><em>optional</em>) – Dictionary of variables to for each group, by default use all global object variables.</p></li>
+<li><p><strong>num_global_objects</strong> (<em>int</em><em> | </em><em>None</em><em>, </em><em>optional</em>) – Total number of selected global objects to load, by default all.</p></li>
 <li><p><strong>cuts</strong> (<a class="reference internal" href="../../cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><em>Cuts</em></a><em> | </em><em>None</em><em>, </em><em>optional</em>) – Selection cuts to apply, by default None</p></li>
 </ul>
 </dd>
@@ -1018,18 +1018,18 @@ If None, the virtual files will be created in the same directory as the input fi
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ftag.hdf5.h5reader.H5Reader.estimate_available_jets">
-<span class="sig-name descname"><span class="pre">estimate_available_jets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cuts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><span class="pre">ftag.cuts.Cuts</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000000</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#ftag.hdf5.h5reader.H5Reader.estimate_available_jets" title="Link to this definition">#</a></dt>
-<dd><p>Estimate the number of jets available after selection cuts.</p>
+<dt class="sig sig-object py" id="ftag.hdf5.h5reader.H5Reader.estimate_available_global_objects">
+<span class="sig-name descname"><span class="pre">estimate_available_global_objects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cuts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><span class="pre">ftag.cuts.Cuts</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000000</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#ftag.hdf5.h5reader.H5Reader.estimate_available_global_objects" title="Link to this definition">#</a></dt>
+<dd><p>Estimate the number of global objects available after selection cuts.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cuts</strong> (<a class="reference internal" href="../../cuts/index.html#ftag.cuts.Cuts" title="ftag.cuts.Cuts"><em>Cuts</em></a>) – Selection cuts to apply.</p></li>
-<li><p><strong>num</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of jets to use for the estimation, by default 1_000_000.</p></li>
+<li><p><strong>num</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of global objects to use for the estimation, by default 1_000_000.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Estimated number of jets available after selection cuts, rounded down.</p>
+<dd class="field-even"><p>Estimated number of global objects available after selection cuts, rounded down.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int</p>
@@ -1094,7 +1094,7 @@ If None, the virtual files will be created in the same directory as the input fi
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5SingleReader"><code class="docutils literal notranslate"><span class="pre">H5SingleReader</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5SingleReader.fname"><code class="docutils literal notranslate"><span class="pre">H5SingleReader.fname</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5SingleReader.batch_size"><code class="docutils literal notranslate"><span class="pre">H5SingleReader.batch_size</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5SingleReader.jets_name"><code class="docutils literal notranslate"><span class="pre">H5SingleReader.jets_name</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5SingleReader.global_objects_name"><code class="docutils literal notranslate"><span class="pre">H5SingleReader.global_objects_name</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5SingleReader.precision"><code class="docutils literal notranslate"><span class="pre">H5SingleReader.precision</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5SingleReader.shuffle"><code class="docutils literal notranslate"><span class="pre">H5SingleReader.shuffle</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5SingleReader.do_remove_inf"><code class="docutils literal notranslate"><span class="pre">H5SingleReader.do_remove_inf</span></code></a></li>
@@ -1104,7 +1104,7 @@ If None, the virtual files will be created in the same directory as the input fi
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5SingleReader.vds_dir"><code class="docutils literal notranslate"><span class="pre">H5SingleReader.vds_dir</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">H5SingleReader.fname</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><code class="docutils literal notranslate"><span class="pre">H5SingleReader.batch_size</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><code class="docutils literal notranslate"><span class="pre">H5SingleReader.jets_name</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><code class="docutils literal notranslate"><span class="pre">H5SingleReader.global_objects_name</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><code class="docutils literal notranslate"><span class="pre">H5SingleReader.precision</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><code class="docutils literal notranslate"><span class="pre">H5SingleReader.shuffle</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5"><code class="docutils literal notranslate"><span class="pre">H5SingleReader.do_remove_inf</span></code></a></li>
@@ -1113,7 +1113,7 @@ If None, the virtual files will be created in the same directory as the input fi
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8"><code class="docutils literal notranslate"><span class="pre">H5SingleReader.dsets</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9"><code class="docutils literal notranslate"><span class="pre">H5SingleReader.vds_dir</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5SingleReader.__post_init__"><code class="docutils literal notranslate"><span class="pre">H5SingleReader.__post_init__()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5SingleReader.num_jets"><code class="docutils literal notranslate"><span class="pre">H5SingleReader.num_jets</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5SingleReader.num_global_objects"><code class="docutils literal notranslate"><span class="pre">H5SingleReader.num_global_objects</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5SingleReader.get_attr"><code class="docutils literal notranslate"><span class="pre">H5SingleReader.get_attr()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5SingleReader.empty"><code class="docutils literal notranslate"><span class="pre">H5SingleReader.empty()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5SingleReader.read_chunk"><code class="docutils literal notranslate"><span class="pre">H5SingleReader.read_chunk()</span></code></a></li>
@@ -1126,33 +1126,33 @@ If None, the virtual files will be created in the same directory as the input fi
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5Reader"><code class="docutils literal notranslate"><span class="pre">H5Reader</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5Reader.fname"><code class="docutils literal notranslate"><span class="pre">H5Reader.fname</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5Reader.batch_size"><code class="docutils literal notranslate"><span class="pre">H5Reader.batch_size</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5Reader.jets_name"><code class="docutils literal notranslate"><span class="pre">H5Reader.jets_name</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5Reader.global_objects_name"><code class="docutils literal notranslate"><span class="pre">H5Reader.global_objects_name</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5Reader.precision"><code class="docutils literal notranslate"><span class="pre">H5Reader.precision</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5Reader.shuffle"><code class="docutils literal notranslate"><span class="pre">H5Reader.shuffle</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5Reader.weights"><code class="docutils literal notranslate"><span class="pre">H5Reader.weights</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5Reader.do_remove_inf"><code class="docutils literal notranslate"><span class="pre">H5Reader.do_remove_inf</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5Reader.transform"><code class="docutils literal notranslate"><span class="pre">H5Reader.transform</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5Reader.equal_jets"><code class="docutils literal notranslate"><span class="pre">H5Reader.equal_jets</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5Reader.equal_global_objects"><code class="docutils literal notranslate"><span class="pre">H5Reader.equal_global_objects</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5Reader.vds_dir"><code class="docutils literal notranslate"><span class="pre">H5Reader.vds_dir</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10"><code class="docutils literal notranslate"><span class="pre">H5Reader.fname</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11"><code class="docutils literal notranslate"><span class="pre">H5Reader.batch_size</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id12"><code class="docutils literal notranslate"><span class="pre">H5Reader.jets_name</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id12"><code class="docutils literal notranslate"><span class="pre">H5Reader.global_objects_name</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id13"><code class="docutils literal notranslate"><span class="pre">H5Reader.precision</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id14"><code class="docutils literal notranslate"><span class="pre">H5Reader.shuffle</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id15"><code class="docutils literal notranslate"><span class="pre">H5Reader.weights</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id16"><code class="docutils literal notranslate"><span class="pre">H5Reader.do_remove_inf</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id17"><code class="docutils literal notranslate"><span class="pre">H5Reader.transform</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id18"><code class="docutils literal notranslate"><span class="pre">H5Reader.equal_jets</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id18"><code class="docutils literal notranslate"><span class="pre">H5Reader.equal_global_objects</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id19"><code class="docutils literal notranslate"><span class="pre">H5Reader.vds_dir</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5Reader.__post_init__"><code class="docutils literal notranslate"><span class="pre">H5Reader.__post_init__()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5Reader.num_jets"><code class="docutils literal notranslate"><span class="pre">H5Reader.num_jets</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5Reader.num_global_objects"><code class="docutils literal notranslate"><span class="pre">H5Reader.num_global_objects</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5Reader.files"><code class="docutils literal notranslate"><span class="pre">H5Reader.files</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5Reader.dtypes"><code class="docutils literal notranslate"><span class="pre">H5Reader.dtypes()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5Reader.shapes"><code class="docutils literal notranslate"><span class="pre">H5Reader.shapes()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5Reader.stream"><code class="docutils literal notranslate"><span class="pre">H5Reader.stream()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5Reader.get_batch_reader"><code class="docutils literal notranslate"><span class="pre">H5Reader.get_batch_reader()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5Reader.load"><code class="docutils literal notranslate"><span class="pre">H5Reader.load()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5Reader.estimate_available_jets"><code class="docutils literal notranslate"><span class="pre">H5Reader.estimate_available_jets()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5reader.H5Reader.estimate_available_global_objects"><code class="docutils literal notranslate"><span class="pre">H5Reader.estimate_available_global_objects()</span></code></a></li>
 </ul>
 </li>
 </ul>

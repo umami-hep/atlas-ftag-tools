@@ -17,7 +17,7 @@ Module Contents
 
 .. py:class:: H5Writer
 
-   Write jet-based data to an HDF5 file.
+   Write global-object-based data to an HDF5 file.
 
    This class creates one dataset per entry in ``dtypes``/``shapes`` and
    supports both fixed-size and dynamically growing output files. Floating-point
@@ -40,21 +40,21 @@ Module Contents
    .. attribute:: shapes
 
       Mapping from dataset name to output shape. All datasets must agree in
-      their first dimension unless ``num_jets`` is explicitly given.
+      their first dimension unless ``num_global_objects`` is explicitly given.
 
       :type: dict[str, tuple[int, ...]]
 
-   .. attribute:: jets_name
+   .. attribute:: global_objects_name
 
-      Name of the jet dataset. This dataset is used to determine batch sizes
-      during writing. Default is ``"jets"``.
+      Name of the global object dataset. This dataset is used to determine batch
+      sizes during writing. Default is ``"jets"``.
 
       :type: str, optional
 
    .. attribute:: add_flavour_label
 
       If ``True``, append a ``"flavour_label"`` field of type ``i4`` to the
-      jet dataset if it is not already present. Default is ``False``.
+      global object dataset if it is not already present. Default is ``False``.
 
       :type: bool, optional
 
@@ -102,11 +102,11 @@ Module Contents
 
       :type: bool, optional
 
-   .. attribute:: num_jets
+   .. attribute:: num_global_objects
 
-      Expected total number of jets to write. If given, datasets are created
-      in fixed-size mode. If ``None``, datasets are created in dynamic mode
-      and resized during writing. Default is ``None``.
+      Expected total number of global objects to write. If given, datasets are
+      created in fixed-size mode. If ``None``, datasets are created in dynamic
+      mode and resized during writing. Default is ``None``.
 
       :type: int | None, optional
 
@@ -118,8 +118,8 @@ Module Contents
       :type: dict[str, h5py.Group] | None, optional
 
    :raises ValueError: If an unsupported precision or compression setting is provided.
-   :raises AssertionError: If dataset shapes disagree in their first dimension when ``num_jets``
-       is not explicitly specified.
+   :raises AssertionError: If dataset shapes disagree in their first dimension when
+       ``num_global_objects`` is not explicitly specified.
 
 
    .. py:attribute:: dst
@@ -134,7 +134,7 @@ Module Contents
       :type:  dict[str, tuple[int, Ellipsis]]
 
 
-   .. py:attribute:: jets_name
+   .. py:attribute:: global_objects_name
       :type:  str
       :value: 'jets'
 
@@ -176,7 +176,7 @@ Module Contents
 
 
 
-   .. py:attribute:: num_jets
+   .. py:attribute:: num_global_objects
       :type:  int | None
       :value: None
 
@@ -227,7 +227,7 @@ Module Contents
 
 
 
-   .. py:method:: from_file(source: pathlib.Path | str, num_jets: int | None = 0, variables: dict[str, list[str] | None] | None = None, copy_groups: bool = True, **kwargs: Any) -> H5Writer
+   .. py:method:: from_file(source: pathlib.Path | str, num_global_objects: int | None = 0, variables: dict[str, list[str] | None] | None = None, copy_groups: bool = True, **kwargs: Any) -> H5Writer
       :classmethod:
 
 
@@ -237,14 +237,14 @@ Module Contents
       dtypes, shapes, compression, and optionally metadata groups from it.
       It can be used to create a writer that mirrors the input file layout,
       optionally restricted to a subset of variables and/or a different number
-      of output jets.
+      of output global objects.
 
       :param source: Source HDF5 file from which to infer the output structure.
       :type source: Path | str
-      :param num_jets: If non-zero, override the first dimension of all dataset shapes with
-                       this value. If ``0``, keep the original dataset lengths. Default is
-                       ``0``.
-      :type num_jets: int | None, optional
+      :param num_global_objects: If non-zero, override the first dimension of all dataset shapes with
+                                 this value. If ``0``, keep the original dataset lengths. Default is
+                                 ``0``.
+      :type num_global_objects: int | None, optional
       :param variables: Optional mapping from dataset name to a list of variables to keep.
                         If provided, output dtypes are reduced accordingly. Default is
                         ``None``.
@@ -288,8 +288,8 @@ Module Contents
 
       Close the output file.
 
-      :raises ValueError: If the writer is closed before the expected number of jets has been
-          written in fixed-size mode.
+      :raises ValueError: If the writer is closed before the expected number of global objects
+          has been written in fixed-size mode.
 
 
 
@@ -339,7 +339,7 @@ Module Contents
       :param data: Mapping from dataset name to batch array.
       :type data: dict[str, np.ndarray]
 
-      :raises ValueError: If writing this batch would exceed ``num_jets`` in fixed-size mode.
+      :raises ValueError: If writing this batch would exceed ``num_global_objects`` in fixed-size mode.
 
 
 
