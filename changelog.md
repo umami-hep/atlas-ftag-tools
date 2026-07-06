@@ -2,7 +2,7 @@
 
 ### [Latest]
 
-
+- Handle empty inputs in `H5Reader`: constructing/streaming/loading a reader whose files contain no global objects (or a wildcard resolving to only-empty files) now yields an empty result instead of raising `ZeroDivisionError`/`ValueError`
 
 ### [v0.3.5](https://github.com/umami-hep/atlas-ftag-tools/releases/tag/v0.3.5) (30.06.2026)
 

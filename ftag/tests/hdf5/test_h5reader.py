@@ -409,6 +409,56 @@ def test_batch_reader(h5_files):
             assert sel["index"].max() < upper
 
 
+def _write_jets_file(path, num_jets, source=0):
+    jets = np.zeros(num_jets, dtype=[("pt", "f4"), ("source", "i4")])
+    jets["pt"] = 1.0
+    jets["source"] = source
+    with h5py.File(path, "w") as f:
+        f.create_dataset("jets", data=jets)
+
+
+def test_empty_reader_file_list(tmp_path):
+    # all inputs empty: construct, stream and load without crashing
+    paths = [tmp_path / f"empty_{i}.h5" for i in range(3)]
+    for p in paths:
+        _write_jets_file(p, 0)
+
+    reader = H5Reader(paths, batch_size=100, shuffle=False)
+    assert reader.num_global_objects == 0
+    assert list(reader.stream({"jets": ["pt"]})) == []
+
+    loaded = reader.load({"jets": ["pt"]}, num_global_objects=-1)
+    assert loaded["jets"].shape == (0,)
+    assert loaded["jets"].dtype.names == ("pt",)
+
+
+def test_empty_reader_wildcard(tmp_path):
+    # ftag-data-mc use case: a wildcard resolving to only-empty files
+    for i in range(3):
+        _write_jets_file(tmp_path / f"empty_{i}.h5", 0)
+
+    reader = H5Reader(str(tmp_path / "*.h5"), batch_size=100, shuffle=False)
+    assert reader.num_global_objects == 0
+    assert list(reader.stream({"jets": ["pt"]})) == []
+
+
+def test_reader_mixed_empty_and_nonempty(tmp_path):
+    # a raw glob list with empty files must not crash and must return all real jets
+    _write_jets_file(tmp_path / "a_empty.h5", 0)
+    _write_jets_file(tmp_path / "b_full.h5", 500, source=1)
+    _write_jets_file(tmp_path / "c_full.h5", 300, source=2)
+
+    paths = sorted(tmp_path.glob("*.h5"))
+    reader = H5Reader(paths, batch_size=100, shuffle=False)
+    assert reader.num_global_objects == 800
+
+    total = 0
+    for batch in reader.stream({"jets": ["pt", "source"]}):
+        total += len(batch["jets"])
+        assert set(np.unique(batch["jets"]["source"])).issubset({1, 2})
+    assert total == 800
+
+
 def test_single_batch_reader(h5_files):
     reader = H5SingleReader(h5_files[0], batch_size=1000, shuffle=False)
 

@@ -145,6 +145,10 @@ class H5SingleReader:
         start: int = 0,
         skip_batches: int = 0,
     ) -> Generator:
+        # Nothing to read from an empty file (or one whose weighted batch size rounds to zero)
+        if self.num_global_objects == 0 or self.batch_size == 0:
+            return
+
         if num_global_objects is None:
             num_global_objects = self.num_global_objects
         if skip_batches > 0:
@@ -302,7 +306,11 @@ class H5Reader:
                 for f in self.fname
             ]
             num_total = sum(rows_per_file)
-            self.weights = [num / num_total for num in rows_per_file]
+            self.weights = (
+                [num / num_total for num in rows_per_file]
+                if num_total > 0
+                else [0.0 for _ in rows_per_file]
+            )
 
         self.batch_sizes = [int(w * self.batch_size) for w in self.weights]
 
@@ -388,6 +396,10 @@ class H5Reader:
         Generator
             Generator of batches of selected global objects.
         """
+        # Nothing to stream if no global objects are present in any input file
+        if self.num_global_objects == 0:
+            return
+
         # Check if number of global objects is given, if not, set to maximum available
         if num_global_objects is None:
             num_global_objects = self.num_global_objects
@@ -543,8 +555,17 @@ class H5Reader:
                 if name in data:
                     data[name].append(array)
 
-        # concatenate batches
-        return {name: np.concatenate(array) for name, array in data.items()}
+        # concatenate batches (fall back to typed empty arrays if nothing was read)
+        dtypes = None
+        result = {}
+        for name, array in data.items():
+            if array:
+                result[name] = np.concatenate(array)
+            else:
+                if dtypes is None:
+                    dtypes = self.dtypes(variables)
+                result[name] = np.empty(0, dtype=dtypes[name])
+        return result
 
     def estimate_available_global_objects(self, cuts: Cuts, num: int = 1_000_000) -> int:
         """Estimate the number of global objects available after selection cuts.
