@@ -2,7 +2,7 @@
 
 ### [Latest]
 
-
+- Handle empty inputs in `H5Reader`: reading a sample with no global objects now yields an empty result instead of raising [#173](https://github.com/umami-hep/atlas-ftag-tools/pull/173)
 
 ### [v0.3.5](https://github.com/umami-hep/atlas-ftag-tools/releases/tag/v0.3.5) (30.06.2026)
 
