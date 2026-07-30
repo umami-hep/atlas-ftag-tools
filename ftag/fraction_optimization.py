@@ -6,16 +6,22 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 import numpy as np
-from scipy.optimize import minimize
+from scipy.optimize import differential_evolution, minimize
 
 from ftag.cli_utils import HelpFormatter
 from ftag.cuts import Cuts
 from ftag.hdf5 import H5Reader
 from ftag.labels import LabelContainer
-from ftag.utils import calculate_rejection, get_discriminant, logger, set_log_level
+from ftag.utils import (
+    calculate_efficiency,
+    calculate_rejection,
+    get_discriminant,
+    logger,
+    set_log_level,
+)
 
 if TYPE_CHECKING:  # pragma: no cover
-    from collections.abc import Sequence
+    from collections.abc import Callable, Sequence
 
     from ftag.labels import Label
 
@@ -123,6 +129,74 @@ def get_bkg_norm_dict(
     return bkg_rej_norm
 
 
+def calculate_n_bkg_sum(
+    fraction_dict: dict | np.ndarray,
+    jets: np.ndarray,
+    tagger: str,
+    signal: Label,
+    flavours: LabelContainer,
+    working_point: float,
+) -> float:
+    """Calculate the total number of background jets passing the given working point.
+
+    The total number of background jets passing a given working point is defined as:
+
+    Parameters
+    ----------
+    fraction_dict : dict | np.ndarray
+        Dict/Array with the fraction values
+    jets : np.ndarray
+        Loaded jets
+    tagger : str
+        Name of the tagger
+    signal : Label
+        Label instance of the signal
+    flavours : LabelContainer
+        LabelContainer with all flavours
+    working_point : float
+        Working point that is used
+
+    Returns
+    -------
+    float
+        Total number of background jets that pass the given working point.
+    """
+    # Get the background classes
+    backgrounds = flavours.backgrounds(signal)
+
+    # Define a bool array if the jet is signal
+    is_signal = signal.cuts(jets).idx
+
+    # Check that the fraction dict is a dict
+    if isinstance(fraction_dict, np.ndarray):
+        fraction_dict = convert_dict(
+            fraction_values=fraction_dict,
+            backgrounds=backgrounds,
+        )
+
+    # Calculate discriminant
+    disc = get_discriminant(
+        jets=jets,
+        tagger=tagger,
+        signal=signal,
+        flavours=flavours,
+        fraction_values=fraction_dict,
+    )
+
+    # Init the sum
+    n_bkg = 0
+
+    # Loop over the backgrounds and calculate the N_bkg
+    for iter_bkg in backgrounds:
+        n_bkg += calculate_efficiency(
+            sig_disc=disc[is_signal],
+            bkg_disc=disc[iter_bkg.cuts(jets).idx],
+            target_eff=working_point,
+        ) * len(iter_bkg.cuts(jets).idx)
+
+    return n_bkg
+
+
 def calculate_rejection_sum(
     fraction_dict: dict | np.ndarray,
     jets: np.ndarray,
@@ -207,6 +281,8 @@ def calculate_best_fraction_values(
     working_point: float,
     rejection_weights: dict | None = None,
     optimizer_method: str = "Powell",
+    optimizer_options: dict | None = None,
+    optimization_variable: str = "rejection_sum",
 ) -> dict:
     """Calculate the best fraction values for a given tagger and working point.
 
@@ -226,11 +302,20 @@ def calculate_best_fraction_values(
         Rejection weights for the background classes, by default None
     optimizer_method : str, optional
         Optimizer method for the minimization, by default "Powell"
+    optimizer_options : dict | None, optional
+        Options passed to the optimizer, by default None
+    optimization_variable : str, optional
+        Optimization variable which is optimized, by default "rejection_sum"
 
     Returns
     -------
     dict
         Dict with the best fraction values
+
+    Raises
+    ------
+    ValueError
+        If the chosen optimization_variable is not supported.
     """
     logger.debug("Calculating best fraction values.")
     logger.debug(f"tagger: {tagger}")
@@ -239,6 +324,8 @@ def calculate_best_fraction_values(
     logger.debug(f"working_point: {working_point}")
     logger.debug(f"rejection_weights: {rejection_weights}")
     logger.debug(f"optimizer_method: {optimizer_method}")
+    logger.debug(f"optimizer_options: {optimizer_options}")
+    logger.debug(f"optimization_variable: {optimization_variable}")
 
     # Ensure Label instance
     if isinstance(signal, str):
@@ -254,25 +341,70 @@ def calculate_best_fraction_values(
     if rejection_weights is None:
         rejection_weights = {iter_bkg.name: 1 for iter_bkg in backgrounds}
 
-    # Get the normalisation for all bkg rejections
-    bkg_norm_dict = get_bkg_norm_dict(
-        jets=jets,
-        tagger=tagger,
-        signal=signal,
-        flavours=flavours,
-        working_point=working_point,
-    )
+    objective: Callable[..., float]
+    objective_args: tuple
 
-    logger.info(bkg_norm_dict)
+    if optimization_variable == "rejection_sum":
+        # Get the normalisation for all bkg rejections
+        bkg_norm_dict = get_bkg_norm_dict(
+            jets=jets,
+            tagger=tagger,
+            signal=signal,
+            flavours=flavours,
+            working_point=working_point,
+        )
 
-    # Get the best fraction values combination
-    result = minimize(
-        fun=calculate_rejection_sum,
-        x0=convert_dict(fraction_values=def_frac_dict, backgrounds=backgrounds),
-        method=optimizer_method,
-        bounds=[(0, 1)] * len(backgrounds),
-        args=(jets, tagger, signal, flavours, working_point, bkg_norm_dict, rejection_weights),
-    )
+        objective = calculate_rejection_sum
+        objective_args = (
+            jets,
+            tagger,
+            signal,
+            flavours,
+            working_point,
+            bkg_norm_dict,
+            rejection_weights,
+        )
+
+    elif optimization_variable == "n_bkg_sum":
+        objective = calculate_n_bkg_sum
+        objective_args = (jets, tagger, signal, flavours, working_point)
+
+    else:
+        raise ValueError(
+            f"Provided optimization_variable {optimization_variable} is not supported! "
+            "Choose either rejection_sum or n_bkg_sum!"
+        )
+
+    bounds = [(0, 1)] * len(backgrounds)
+    optimizer_options = optimizer_options or {}
+
+    # Differential evolution is a global optimizer suitable for the discrete,
+    # piecewise-constant n_bkg objective.
+    if optimizer_method == "differential_evolution":
+        differential_evolution_options = {
+            "init": "sobol",
+            "maxiter": 100,
+            "popsize": 15,
+            "polish": False,
+            "rng": 42,
+            **optimizer_options,
+        }
+        result = differential_evolution(
+            func=objective,
+            bounds=bounds,
+            args=objective_args,
+            x0=convert_dict(fraction_values=def_frac_dict, backgrounds=backgrounds),
+            **differential_evolution_options,
+        )
+    else:
+        result = minimize(
+            fun=objective,
+            x0=convert_dict(fraction_values=def_frac_dict, backgrounds=backgrounds),
+            method=optimizer_method,
+            bounds=bounds,
+            args=objective_args,
+            options=optimizer_options,
+        )
 
     # Get the final fraction dict
     final_frac_dict = convert_dict(fraction_values=result.x, backgrounds=backgrounds)
@@ -337,7 +469,22 @@ def parse_args(args: Sequence[str] | None) -> argparse.Namespace:
         "--optimizer_method",
         default="Powell",
         type=str,
-        help="Optimizer method for the minimization.",
+        help="Optimizer method for the minimization, including differential_evolution.",
+    )
+    parser.add_argument(
+        "--optimizer_options",
+        default=None,
+        type=json.loads,
+        help='Optimizer options as JSON dict, e.g. \'{"maxiter": 100, "popsize": 15}\'.',
+    )
+    parser.add_argument(
+        "--optimization_variable",
+        default="n_bkg_sum",
+        type=str,
+        help=(
+            "Variable that is to be optimized. Supported are rejection_sum and "
+            "n_bkg_sum. By default rejection_sum."
+        ),
     )
     parser.add_argument(
         "-n",
@@ -462,8 +609,10 @@ def main(args: Sequence[str] | None = None) -> None:
         signal=parsed_args.signal,
         flavours=flavours,
         working_point=parsed_args.working_point,
-        optimizer_method=parsed_args.optimizer_method,
         rejection_weights=parsed_args.rejection_weights,
+        optimizer_method=parsed_args.optimizer_method,
+        optimizer_options=parsed_args.optimizer_options,
+        optimization_variable=parsed_args.optimization_variable,
     )
 
 
