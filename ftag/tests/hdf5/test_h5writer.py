@@ -530,29 +530,29 @@ def test_from_file_override_compression(tmp_path):
         assert f["tracks"].compression_opts == 7
 
 
-def test_add_flavour_label(tmp_path, jet_dtype):
+def test_add_class_label(tmp_path, jet_dtype):
     writer = H5Writer(
-        dst=Path(tmp_path) / "test_flavour_label.h5",
+        dst=Path(tmp_path) / "test_class_label.h5",
         dtypes={"jets": jet_dtype},
         shapes={"jets": (10,)},
-        add_flavour_label=True,
+        add_class_label=True,
     )
 
-    assert "flavour_label" in _named_fields(writer.file["jets"].dtype)
+    assert "class_label" in _named_fields(writer.file["jets"].dtype)
     writer.close()
 
 
-def test_add_flavour_label_does_not_duplicate(tmp_path):
-    jet_dtype_with_label = np.dtype([("pt", "f4"), ("eta", "f4"), ("flavour_label", "i4")])
+def test_add_class_label_does_not_duplicate(tmp_path):
+    jet_dtype_with_label = np.dtype([("pt", "f4"), ("eta", "f4"), ("class_label", "i4")])
 
     writer = H5Writer(
-        dst=Path(tmp_path) / "test_flavour_label_existing.h5",
+        dst=Path(tmp_path) / "test_class_label_existing.h5",
         dtypes={"jets": jet_dtype_with_label},
         shapes={"jets": (10,)},
-        add_flavour_label=True,
+        add_class_label=True,
     )
 
-    assert _named_fields(writer.file["jets"].dtype).count("flavour_label") == 1
+    assert _named_fields(writer.file["jets"].dtype).count("class_label") == 1
     writer.close()
 
 

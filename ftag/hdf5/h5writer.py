@@ -34,8 +34,8 @@ class H5Writer:
     global_objects_name : str, optional
         Name of the global object dataset. This dataset is used to determine batch
         sizes during writing. Default is ``"jets"``.
-    add_flavour_label : bool, optional
-        If ``True``, append a ``"flavour_label"`` field of type ``i4`` to the
+    add_class_label : bool, optional
+        If ``True``, append a ``"class_label"`` field of type ``i4`` to the
         global object dataset if it is not already present. Default is ``False``.
     compression : str | None, optional
         Compression algorithm to use. Supported values are ``None``,
@@ -82,7 +82,7 @@ class H5Writer:
     dtypes: dict[str, np.dtype]
     shapes: dict[str, tuple[int, ...]]
     global_objects_name: str = "jets"
-    add_flavour_label: bool = False
+    add_class_label: bool = False
     compression: str | None = "lz4"
     compression_opts: int | None = None
     precision: str | None = "full"
@@ -316,10 +316,10 @@ class H5Writer:
         """
         if (
             name == self.global_objects_name
-            and self.add_flavour_label
-            and "flavour_label" not in dtype.names
+            and self.add_class_label
+            and "class_label" not in dtype.names
         ):
-            dtype = np.dtype([*dtype.descr, ("flavour_label", "i4")])
+            dtype = np.dtype([*dtype.descr, ("class_label", "i4")])
 
         fp_vars = self.full_precision_vars or []
         dtype = np.dtype([
