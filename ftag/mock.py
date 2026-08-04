@@ -25,7 +25,7 @@ JET_VARS = [
     ("GhostBHadronsFinalCount", "i4"),
     ("GhostCHadronsFinalCount", "i4"),
     ("n_truth_promptLepton", "i4"),
-    ("flavour_label", "i4"),
+    ("class_label", "i4"),
 ]
 
 TRACK_VARS = [
@@ -133,7 +133,7 @@ def mock_jets(num_jets=1000) -> np.ndarray:
     rng = np.random.default_rng(42)
     jets_dtype = np.dtype(JET_VARS)
     jets = u2s(rng.random((num_jets, len(JET_VARS))), jets_dtype)
-    jets["flavour_label"] = rng.choice([0, 4, 5], size=num_jets)
+    jets["class_label"] = rng.choice([0, 4, 5], size=num_jets)
     jets["pt"] *= 400e3
     jets["mass"] *= 50e3
     jets["eta"] = (jets["eta"] - 0.5) * 6.0
