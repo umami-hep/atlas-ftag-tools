@@ -4,7 +4,7 @@ from __future__ import annotations
 import sys
 import types
 import unittest
-from subprocess import CalledProcessError
+from subprocess import DEVNULL, CalledProcessError
 from unittest.mock import MagicMock, call, patch
 
 from ftag.git_check import (
@@ -25,6 +25,7 @@ class TestIsGitRepo(unittest.TestCase):
         m_check_output.assert_called_once_with(
             ["git", "rev-parse", "--is-inside-work-tree", "HEAD"],
             cwd="/some/path",
+            stderr=DEVNULL,
         )
 
     @patch("ftag.git_check.subprocess.check_output")
