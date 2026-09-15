@@ -44,13 +44,15 @@ def is_git_repo(path: str | PathLike[str]) -> bool:
 
         git rev-parse --is-inside-work-tree HEAD
 
-    Any non-zero exit status is treated as "not a Git repository". If Git is not
+    Any non-zero exit status is treated as "not a Git repository". Git's standard
+    error is suppressed, so probing a non-repository stays silent. If Git is not
     available on the system, an :class:`OSError` may be raised by :mod:`subprocess`.
     """
     try:
         subprocess.check_output(
             ["git", "rev-parse", "--is-inside-work-tree", "HEAD"],
             cwd=path,
+            stderr=subprocess.DEVNULL,
         )
     except CalledProcessError:
         return False
