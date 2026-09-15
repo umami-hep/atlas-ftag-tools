@@ -18,7 +18,7 @@ Module Contents
 .. py:class:: Sample
 
    .. py:attribute:: pattern
-      :type:  pathlib.Path | str | tuple[pathlib.Path | str, Ellipsis]
+      :type:  pathlib.Path | str | tuple[pathlib.Path | str, ...]
 
 
    .. py:attribute:: ntuple_dir
@@ -43,7 +43,7 @@ Module Contents
 
 
    .. py:property:: path
-      :type: tuple[pathlib.Path, Ellipsis]
+      :type: tuple[pathlib.Path, ...]
 
 
 

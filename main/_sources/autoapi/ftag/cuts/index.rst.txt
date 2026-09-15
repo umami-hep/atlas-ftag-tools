@@ -107,7 +107,7 @@ Module Contents
 
 
    .. py:attribute:: cuts
-      :type:  tuple[Cut, Ellipsis]
+      :type:  tuple[Cut, ...]
 
 
    .. py:method:: from_list(cuts: list) -> Cuts

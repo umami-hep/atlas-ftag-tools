@@ -38,7 +38,7 @@ Module Contents
    :raises ValueError: If a variable already exists in the merged dictionary.
 
 
-.. py:function:: get_shape(num_global_objects: int, batch: dict[str, numpy.ndarray]) -> dict[str, tuple[int, Ellipsis]]
+.. py:function:: get_shape(num_global_objects: int, batch: dict[str, numpy.ndarray]) -> dict[str, tuple[int, ...]]
 
    Returns a dictionary with the correct output shapes for the H5Writer.
 

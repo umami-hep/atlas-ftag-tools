@@ -230,7 +230,7 @@ Package Contents
    .. py:method:: dtypes(variables: dict[str, list[str]] | None = None) -> dict[str, numpy.dtype]
 
 
-   .. py:method:: shapes(num_global_objects: int, groups: list[str] | None = None) -> dict[str, tuple[int, Ellipsis]]
+   .. py:method:: shapes(num_global_objects: int, groups: list[str] | None = None) -> dict[str, tuple[int, ...]]
 
 
    .. py:method:: stream(variables: dict | None = None, num_global_objects: int | None = None, cuts: ftag.cuts.Cuts | None = None, start: int = 0, skip_batches: int = 0) -> collections.abc.Generator
@@ -474,7 +474,7 @@ Package Contents
 
 
    .. py:attribute:: shapes
-      :type:  dict[str, tuple[int, Ellipsis]]
+      :type:  dict[str, tuple[int, ...]]
 
 
    .. py:attribute:: global_objects_name

@@ -18,14 +18,15 @@ Submodules
    /autoapi/ftag/cli_utils/index
    /autoapi/ftag/cuts/index
    /autoapi/ftag/find_metadata/index
-   /autoapi/ftag/flavours/index
    /autoapi/ftag/fraction_optimization/index
    /autoapi/ftag/git_check/index
    /autoapi/ftag/hdf5/index
    /autoapi/ftag/labeller/index
+   /autoapi/ftag/labels/index
    /autoapi/ftag/mock/index
    /autoapi/ftag/region/index
    /autoapi/ftag/sample/index
+   /autoapi/ftag/track_selector/index
    /autoapi/ftag/transform/index
    /autoapi/ftag/utils/index
    /autoapi/ftag/vds/index
@@ -38,8 +39,6 @@ Attributes
 .. autoapisummary::
 
    ftag.__version__
-   ftag.Extended_Flavours
-   ftag.Flavours
 
 
 Exceptions
@@ -56,6 +55,9 @@ Classes
 .. autoapisummary::
 
    ftag.Cuts
+   ftag.Labeller
+   ftag.Label
+   ftag.LabelContainer
    ftag.Sample
    ftag.Transform
 
@@ -94,7 +96,7 @@ Package Contents
 
 
    .. py:attribute:: cuts
-      :type:  tuple[Cut, Ellipsis]
+      :type:  tuple[Cut, ...]
 
 
    .. py:method:: from_list(cuts: list) -> Cuts
@@ -135,10 +137,6 @@ Package Contents
 
    .. py:method:: __repr__() -> str
 
-
-.. py:data:: Extended_Flavours
-
-.. py:data:: Flavours
 
 .. py:function:: calculate_best_fraction_values(jets: numpy.ndarray, tagger: str, signal: ftag.labels.Label, flavours: ftag.labels.LabelContainer, working_point: float, rejection_weights: dict | None = None, optimizer_method: str = 'Powell') -> dict
 
@@ -251,8 +249,237 @@ Package Contents
 
        git rev-parse --is-inside-work-tree HEAD
 
-   Any non-zero exit status is treated as "not a Git repository". If Git is not
+   Any non-zero exit status is treated as "not a Git repository". Git's standard
+   error is suppressed, so probing a non-repository stays silent. If Git is not
    available on the system, an :class:`OSError` may be raised by :mod:`subprocess`.
+
+
+.. py:class:: Labeller
+
+   Defines a labelling scheme.
+
+   Classes are assigned integer labels in [0, ..., n] based on pre-defined selections.
+
+   .. attribute:: labels
+
+      The labels to be use.
+
+      :type: LabelContainer | list[str | Label]
+
+   .. attribute:: require_labels
+
+      Whether to require that all objects are labelled.
+
+      :type: bool
+
+
+   .. py:attribute:: labels
+      :type:  ftag.labels.LabelContainer | list[str | ftag.labels.Label]
+
+
+   .. py:attribute:: require_labels
+      :type:  bool
+      :value: True
+
+
+
+   .. py:method:: __post_init__() -> None
+
+
+   .. py:property:: variables
+      :type: list[str]
+
+
+      Returns the variables used for labelling.
+
+      :returns: The variables used for labelling.
+      :rtype: list[str]
+
+
+   .. py:method:: get_labels(array: numpy.ndarray) -> numpy.ndarray
+
+      Returns the labels for the given array.
+
+      :param array: The array to label.
+      :type array: np.ndarray
+
+      :returns: The labels for the given array.
+      :rtype: np.ndarray
+
+      :raises ValueError: If the `require_labels` attribute is set to `True` and some objects were not labelled.
+
+
+
+   .. py:method:: add_labels(array: numpy.ndarray, label_name: str = 'labels') -> numpy.ndarray
+
+      Adds the labels to the given array.
+
+      :param array: The array to label.
+      :type array: np.ndarray
+      :param label_name: The name of the label column.
+      :type label_name: str
+
+      :returns: The array with the labels added.
+      :rtype: np.ndarray
+
+      :raises ValueError: If the `require_labels` attribute is set to `False`.
+
+
+
+.. py:class:: Label
+
+   Dataclass to hold info about one flavour/label.
+
+   .. attribute:: name
+
+      Name of the flavour/label
+
+      :type: str
+
+   .. attribute:: label
+
+      Plot label for this flavour/label
+
+      :type: str
+
+   .. attribute:: cuts
+
+      Cuts of this flavour/label
+
+      :type: Cuts
+
+   .. attribute:: colour
+
+      Colour of this flavour/label
+
+      :type: str
+
+   .. attribute:: category
+
+      Flavour category, to which this flavour/label belongs
+
+      :type: str
+
+
+   .. py:attribute:: name
+      :type:  str
+
+
+   .. py:attribute:: label
+      :type:  str
+
+
+   .. py:attribute:: cuts
+      :type:  ftag.cuts.Cuts
+
+
+   .. py:attribute:: colour
+      :type:  str
+
+
+   .. py:attribute:: category
+      :type:  str
+
+
+   .. py:attribute:: _px
+      :type:  str | None
+      :value: None
+
+
+
+   .. py:property:: px
+      :type: str
+
+
+
+   .. py:property:: eff_str
+      :type: str
+
+
+
+   .. py:property:: rej_str
+      :type: str
+
+
+
+   .. py:property:: frac_str
+      :type: str
+
+
+
+   .. py:method:: __str__() -> str
+
+
+   .. py:method:: __lt__(other) -> bool
+
+
+.. py:class:: LabelContainer
+
+   Label container that holds multiple labels.
+
+   .. attribute:: labels
+
+      Dict with the labels this container will hold
+
+      :type: dict[str, Label]
+
+
+   .. py:attribute:: labels
+      :type:  dict[str, Label]
+
+
+   .. py:method:: __iter__() -> collections.abc.Iterator
+
+
+   .. py:method:: __getitem__(key) -> Label
+
+
+   .. py:method:: __len__() -> int
+
+
+   .. py:method:: __getattr__(name) -> Label
+
+
+   .. py:method:: __contains__(label: str | Label) -> bool
+
+
+   .. py:method:: __eq__(other) -> bool
+
+
+   .. py:method:: __repr__() -> str
+
+
+   .. py:property:: categories
+      :type: list[str]
+
+
+
+   .. py:method:: by_category(category: str) -> LabelContainer
+
+
+   .. py:method:: from_cuts(cuts: list | ftag.cuts.Cuts) -> Label
+
+
+   .. py:method:: from_yaml(yaml_path: pathlib.Path | None = None, include_categories: collections.abc.Iterable[str] | None = None, exclude_categories: collections.abc.Iterable[str] | None = None) -> LabelContainer
+      :classmethod:
+
+
+
+   .. py:method:: from_list(labels: list[Label]) -> LabelContainer
+      :classmethod:
+
+
+
+   .. py:method:: backgrounds(signal: Label, only_signals: bool = True) -> LabelContainer
+
+
+   .. py:method:: cut_variables() -> list[str]
+
+      Return all variable names appearing in any Label cuts.
+
+      :returns: Unique variable names used across all cuts in all labels.
+      :rtype: list[str]
+
 
 
 .. py:function:: get_mock_file(num_jets: int = 1000, fname: str | None = None, tracks_name: str = 'tracks', num_tracks: int = 40) -> tuple[str, h5py.File]
@@ -315,7 +542,7 @@ Package Contents
 
 
    .. py:attribute:: pattern
-      :type:  pathlib.Path | str | tuple[pathlib.Path | str, Ellipsis]
+      :type:  pathlib.Path | str | tuple[pathlib.Path | str, ...]
 
 
    .. py:attribute:: ntuple_dir
@@ -352,7 +579,7 @@ Package Contents
 
 
    .. py:property:: path
-      :type: tuple[pathlib.Path, Ellipsis]
+      :type: tuple[pathlib.Path, ...]
 
 
 

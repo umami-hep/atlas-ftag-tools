@@ -131,7 +131,7 @@ Module Contents
 
 
    .. py:attribute:: shapes
-      :type:  dict[str, tuple[int, Ellipsis]]
+      :type:  dict[str, tuple[int, ...]]
 
 
    .. py:attribute:: global_objects_name

@@ -27,18 +27,18 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <script defer src="../_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
     <script src="../_static/documentation_options.js?v=41e4a704"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
@@ -47,7 +47,7 @@
     <script src="../_static/copybutton.js?v=f281be69"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'examples/index';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.20.0';
+        DOCUMENTATION_OPTIONS.theme_version = '0.21.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://umami-hep.github.io/atlas-ftag-tools/main/_static/switcher.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
@@ -468,7 +468,7 @@ part gives a more detailed look on the different functionalities.</p>
 <p>This package contains a script to calculate tagger working points (WPs).
 The script is <code class="docutils literal notranslate"><span class="pre">working_points.py</span></code> and can be run after installing this package with</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wps</span> \
-    <span class="o">--</span><span class="n">ttbar</span> <span class="s2">&quot;path/to/ttbar/*.h5&quot;</span> \
+    <span class="o">--</span><span class="n">ttbar</span> <span class="s2">"path/to/ttbar/*.h5"</span> \
     <span class="o">--</span><span class="n">tagger</span> <span class="n">GN2v01</span> \
     <span class="o">--</span><span class="n">fc</span> <span class="mf">0.1</span> \
     <span class="o">--</span><span class="n">fu</span> <span class="mf">0.8</span> \
@@ -489,7 +489,7 @@ Note that a default selection of $p_T &gt; 250 ~GeV$ to jets in the <code class=
 <p>The same script can be used to calculate the efficiency and rejection values at a given discriminant cut value.
 The script <code class="docutils literal notranslate"><span class="pre">working_points.py</span></code> can be run after installing this package as follows</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wps</span> \
-    <span class="o">--</span><span class="n">ttbar</span> <span class="s2">&quot;path/to/ttbar/*.h5&quot;</span> \
+    <span class="o">--</span><span class="n">ttbar</span> <span class="s2">"path/to/ttbar/*.h5"</span> \
     <span class="o">--</span><span class="n">tagger</span> <span class="n">GN2v01</span> \
     <span class="o">--</span><span class="n">fc</span> <span class="mf">0.1</span> \
     <span class="o">--</span><span class="n">fu</span> <span class="mf">0.8</span> \
@@ -555,7 +555,7 @@ The main features are:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ftag</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_mock_file</span>
 
 <span class="n">fname</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="n">get_mock_file</span><span class="p">()</span>
-<span class="n">jets</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s2">&quot;jets&quot;</span><span class="p">]</span>
+<span class="n">jets</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s2">"jets"</span><span class="p">]</span>
 </pre></div>
 </div>
 <section id="cuts">
@@ -566,8 +566,8 @@ To take a look, first import the <code class="docutils literal notranslate"><spa
 </pre></div>
 </div>
 <p>Instances of <code class="docutils literal notranslate"><span class="pre">Cuts</span></code> can be defined from lists of strings or tuples of strings and values. For example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">kinematic_cuts</span> <span class="o">=</span> <span class="n">Cuts</span><span class="o">.</span><span class="n">from_list</span><span class="p">([</span><span class="s2">&quot;pt &gt; 20e3&quot;</span><span class="p">,</span> <span class="s2">&quot;abs_eta &lt; 2.5&quot;</span><span class="p">])</span>
-<span class="n">flavour_cuts</span> <span class="o">=</span> <span class="n">Cuts</span><span class="o">.</span><span class="n">from_list</span><span class="p">([(</span><span class="s2">&quot;HadronConeExclTruthLabelID&quot;</span><span class="p">,</span> <span class="s2">&quot;==&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)])</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">kinematic_cuts</span> <span class="o">=</span> <span class="n">Cuts</span><span class="o">.</span><span class="n">from_list</span><span class="p">([</span><span class="s2">"pt &gt; 20e3"</span><span class="p">,</span> <span class="s2">"abs_eta &lt; 2.5"</span><span class="p">])</span>
+<span class="n">flavour_cuts</span> <span class="o">=</span> <span class="n">Cuts</span><span class="o">.</span><span class="n">from_list</span><span class="p">([(</span><span class="s2">"HadronConeExclTruthLabelID"</span><span class="p">,</span> <span class="s2">"=="</span><span class="p">,</span> <span class="mi">5</span><span class="p">)])</span>
 </pre></div>
 </div>
 <p>It’s easy to combine cuts</p>
@@ -592,14 +592,14 @@ To take a look, first import the <code class="docutils literal notranslate"><spa
 <span class="n">Flavours</span><span class="o">.</span><span class="n">bjets</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Label(name=&#39;bjets&#39;, label=&#39;$b$-jets&#39;, cuts=[&#39;HadronConeExclTruthLabelID == 5&#39;], colour=&#39;tab:blue&#39;, category=&#39;single-btag&#39;, _px=None)
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Label(name='bjets', label='$b$-jets', cuts=['HadronConeExclTruthLabelID == 5'], colour='tab:blue', category='single-btag', _px=None)
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">dict</span></code> like access is also supported:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Flavours</span><span class="p">[</span><span class="s2">&quot;qcd&quot;</span><span class="p">]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Flavours</span><span class="p">[</span><span class="s2">"qcd"</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Label(name=&#39;qcd&#39;, label=&#39;QCD&#39;, cuts=[&#39;R10TruthLabel_R22v1 == 10&#39;], colour=&#39;#38761D&#39;, category=&#39;xbb&#39;, _px=None)
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Label(name='qcd', label='QCD', cuts=['R10TruthLabel_R22v1 == 10'], colour='#38761D', category='xbb', _px=None)
 </pre></div>
 </div>
 <p>As you can see from the output, each flavour has a <code class="docutils literal notranslate"><span class="pre">name</span></code>, a <code class="docutils literal notranslate"><span class="pre">label</span></code> and <code class="docutils literal notranslate"><span class="pre">colour</span></code> (used for plotting), and a <code class="docutils literal notranslate"><span class="pre">Cuts</span></code> instance, which can be used to select jets of the given flavour.
@@ -611,36 +611,36 @@ For example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Flavours</span><span class="o">.</span><span class="n">categories</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;single-btag&#39;,
- &#39;single-btag-extended&#39;,
- &#39;single-btag-ghost&#39;,
- &#39;xbb&#39;,
- &#39;xbb-extended&#39;,
- &#39;partonic&#39;,
- &#39;lepton-decay&#39;,
- &#39;PDGID&#39;,
- &#39;isolation&#39;,
- &#39;trigger-xbb&#39;]
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>['single-btag',
+ 'single-btag-extended',
+ 'single-btag-ghost',
+ 'xbb',
+ 'xbb-extended',
+ 'partonic',
+ 'lepton-decay',
+ 'PDGID',
+ 'isolation',
+ 'trigger-xbb']
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Flavours</span><span class="o">.</span><span class="n">by_category</span><span class="p">(</span><span class="s2">&quot;xbb&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Flavours</span><span class="o">.</span><span class="n">by_category</span><span class="p">(</span><span class="s2">"xbb"</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>LabelContainer(hbb, hcc, top, qcd, qcdbb, qcdnonbb, qcdbx, qcdcx, qcdll, htauel, htaumu, htauhad)
 </pre></div>
 </div>
 <p>Probability names are also accessible using <code class="docutils literal notranslate"><span class="pre">.px</span></code>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">px</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">Flavours</span><span class="o">.</span><span class="n">by_category</span><span class="p">(</span><span class="s2">&quot;single-btag&quot;</span><span class="p">)]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">px</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">Flavours</span><span class="o">.</span><span class="n">by_category</span><span class="p">(</span><span class="s2">"single-btag"</span><span class="p">)]</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;pb&#39;, &#39;pc&#39;, &#39;pu&#39;, &#39;ptau&#39;]
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>['pb', 'pc', 'pu', 'ptau']
 </pre></div>
 </div>
 <p>And you can also access a flavour from it’s definition</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Flavours</span><span class="o">.</span><span class="n">from_cuts</span><span class="p">([</span><span class="s2">&quot;HadronConeExclTruthLabelID == 5&quot;</span><span class="p">])</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Flavours</span><span class="o">.</span><span class="n">from_cuts</span><span class="p">([</span><span class="s2">"HadronConeExclTruthLabelID == 5"</span><span class="p">])</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Label(name=&#39;bjets&#39;, label=&#39;$b$-jets&#39;, cuts=[&#39;HadronConeExclTruthLabelID == 5&#39;], colour=&#39;tab:blue&#39;, category=&#39;single-btag&#39;, _px=None)
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Label(name='bjets', label='$b$-jets', cuts=['HadronConeExclTruthLabelID == 5'], colour='tab:blue', category='single-btag', _px=None)
 </pre></div>
 </div>
 </section>
@@ -656,8 +656,8 @@ For example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ftag.hdf5</span><span class="w"> </span><span class="kn">import</span> <span class="n">H5Reader</span>
 
 <span class="n">reader</span> <span class="o">=</span> <span class="n">H5Reader</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load</span><span class="p">({</span><span class="s2">&quot;jets&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;pt&quot;</span><span class="p">,</span> <span class="s2">&quot;eta&quot;</span><span class="p">]},</span> <span class="n">num_global_objects</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
-<span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;jets&quot;</span><span class="p">])</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load</span><span class="p">({</span><span class="s2">"jets"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"pt"</span><span class="p">,</span> <span class="s2">"eta"</span><span class="p">]},</span> <span class="n">num_global_objects</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">"jets"</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>To transparently load jets across several files <code class="docutils literal notranslate"><span class="pre">fname</span></code> can also be a pattern including wildcards (<code class="docutils literal notranslate"><span class="pre">*</span></code>).
@@ -665,7 +665,7 @@ Behind the scenes files are globbed and merged into a <a class="reference extern
 So the following also works:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
-<span class="n">reader</span> <span class="o">=</span> <span class="n">H5Reader</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;*.h5&quot;</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">reader</span> <span class="o">=</span> <span class="n">H5Reader</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">"*.h5"</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>If you have globbed several files, you can easily get the total number of jets across all files with</p>
@@ -673,21 +673,21 @@ So the following also works:</p>
 </pre></div>
 </div>
 <p>You can also load tracks alongside jets (or by themselves) by specifying an additional entry in the <code class="docutils literal notranslate"><span class="pre">variables</span></code> dict:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load</span><span class="p">({</span><span class="s2">&quot;jets&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;pt&quot;</span><span class="p">,</span> <span class="s2">&quot;eta&quot;</span><span class="p">],</span> <span class="s2">&quot;tracks&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;deta&quot;</span><span class="p">,</span> <span class="s2">&quot;dphi&quot;</span><span class="p">]},</span> <span class="n">num_global_objects</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-<span class="n">data</span><span class="p">[</span><span class="s2">&quot;tracks&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load</span><span class="p">({</span><span class="s2">"jets"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"pt"</span><span class="p">,</span> <span class="s2">"eta"</span><span class="p">],</span> <span class="s2">"tracks"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"deta"</span><span class="p">,</span> <span class="s2">"dphi"</span><span class="p">]},</span> <span class="n">num_global_objects</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">data</span><span class="p">[</span><span class="s2">"tracks"</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span>
 </pre></div>
 </div>
 <p>You can apply cuts to the jets as they are loaded. For example, to load 1000 jets which satisfy $p_T &gt; 20$ GeV:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load</span><span class="p">({</span><span class="s2">&quot;jets&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;pt&quot;</span><span class="p">]},</span> <span class="n">num_global_objects</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">cuts</span><span class="o">=</span><span class="n">Cuts</span><span class="o">.</span><span class="n">from_list</span><span class="p">([</span><span class="s2">&quot;pt &gt; 20e3&quot;</span><span class="p">]))</span>
-<span class="k">assert</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;jets&quot;</span><span class="p">][</span><span class="s2">&quot;pt&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mf">20e3</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load</span><span class="p">({</span><span class="s2">"jets"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"pt"</span><span class="p">]},</span> <span class="n">num_global_objects</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">cuts</span><span class="o">=</span><span class="n">Cuts</span><span class="o">.</span><span class="n">from_list</span><span class="p">([</span><span class="s2">"pt &gt; 20e3"</span><span class="p">]))</span>
+<span class="k">assert</span> <span class="n">data</span><span class="p">[</span><span class="s2">"jets"</span><span class="p">][</span><span class="s2">"pt"</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mf">20e3</span>
 </pre></div>
 </div>
 <p>Rather than return a single <code class="docutils literal notranslate"><span class="pre">dict</span></code> of arrays, the reader can also return a generator of batches.
 This is useful when you want to work with a large number of jets, but don’t want to load them all into memory at once.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">reader</span> <span class="o">=</span> <span class="n">H5Reader</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-<span class="n">stream</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">stream</span><span class="p">({</span><span class="s2">&quot;jets&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;pt&quot;</span><span class="p">,</span> <span class="s2">&quot;eta&quot;</span><span class="p">]},</span> <span class="n">num_global_objects</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+<span class="n">stream</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">stream</span><span class="p">({</span><span class="s2">"jets"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"pt"</span><span class="p">,</span> <span class="s2">"eta"</span><span class="p">]},</span> <span class="n">num_global_objects</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
-    <span class="n">jets</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;jets&quot;</span><span class="p">]</span>
+    <span class="n">jets</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">"jets"</span><span class="p">]</span>
     <span class="c1"># do processing on batch...</span>
 </pre></div>
 </div>
@@ -700,8 +700,8 @@ This is useful when you want to work with a large number of jets, but don’t wa
 <span class="kn">from</span><span class="w"> </span><span class="nn">ftag.hdf5</span><span class="w"> </span><span class="kn">import</span> <span class="n">H5Writer</span>
 
 <span class="n">reader</span> <span class="o">=</span> <span class="n">H5Reader</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">variables</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;jets&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>  <span class="c1"># &quot;None&quot; means &quot;all variables&quot;</span>
-<span class="n">out_fname</span> <span class="o">=</span> <span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;.h5&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
+<span class="n">variables</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"jets"</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>  <span class="c1"># "None" means "all variables"</span>
+<span class="n">out_fname</span> <span class="o">=</span> <span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s2">".h5"</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
 <span class="n">writer</span> <span class="o">=</span> <span class="n">H5Writer</span><span class="p">(</span>
     <span class="n">dst</span><span class="o">=</span><span class="n">out_fname</span><span class="p">,</span>
     <span class="n">dtypes</span><span class="o">=</span><span class="n">reader</span><span class="o">.</span><span class="n">dtypes</span><span class="p">(</span><span class="n">variables</span><span class="p">),</span>
@@ -720,7 +720,7 @@ This is useful when you want to work with a large number of jets, but don’t wa
 The two files will now have the same contents (since we disabled shuffling):</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">h5py</span>
 
-<span class="k">assert</span> <span class="p">(</span><span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">fname</span><span class="p">)[</span><span class="s2">&quot;jets&quot;</span><span class="p">][:]</span> <span class="o">==</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">out_fname</span><span class="p">)[</span><span class="s2">&quot;jets&quot;</span><span class="p">][:])</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="k">assert</span> <span class="p">(</span><span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">fname</span><span class="p">)[</span><span class="s2">"jets"</span><span class="p">][:]</span> <span class="o">==</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">out_fname</span><span class="p">)[</span><span class="s2">"jets"</span><span class="p">][:])</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>
@@ -737,9 +737,9 @@ Three operations are supported:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ftag.transform</span><span class="w"> </span><span class="kn">import</span> <span class="n">Transform</span>
 
 <span class="n">transform_config</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;floats_map&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;jets&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;pt&quot;</span><span class="p">:</span> <span class="s2">&quot;log&quot;</span><span class="p">,</span>
+    <span class="s2">"floats_map"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"jets"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">"pt"</span><span class="p">:</span> <span class="s2">"log"</span><span class="p">,</span>
         <span class="p">},</span>
     <span class="p">},</span>
 <span class="p">}</span>
@@ -750,8 +750,8 @@ Three operations are supported:</p>
 <p>This object can be passed to the <code class="docutils literal notranslate"><span class="pre">H5Reader</span></code> constructor.
 The resulting object will return transformed values.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">reader</span> <span class="o">=</span> <span class="n">H5Reader</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load</span><span class="p">({</span><span class="s2">&quot;jets&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;pt&quot;</span><span class="p">,</span> <span class="s2">&quot;eta&quot;</span><span class="p">]},</span> <span class="n">num_global_objects</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
-<span class="n">data</span><span class="p">[</span><span class="s2">&quot;jets&quot;</span><span class="p">][</span><span class="s2">&quot;pt&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;jets&quot;</span><span class="p">][</span><span class="s2">&quot;pt&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load</span><span class="p">({</span><span class="s2">"jets"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"pt"</span><span class="p">,</span> <span class="s2">"eta"</span><span class="p">]},</span> <span class="n">num_global_objects</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+<span class="n">data</span><span class="p">[</span><span class="s2">"jets"</span><span class="p">][</span><span class="s2">"pt"</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">data</span><span class="p">[</span><span class="s2">"jets"</span><span class="p">][</span><span class="s2">"pt"</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>
@@ -765,7 +765,7 @@ The function requires an input file, and output file, and a function (or list of
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">add_number_of_tracks</span><span class="p">(</span><span class="n">batch</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add the number of tracks to the jets dict.</span>
+<span class="w">    </span><span class="sd">"""Add the number of tracks to the jets dict.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -776,22 +776,22 @@ The function requires an input file, and output file, and a function (or list of
 <span class="sd">    -------</span>
 <span class="sd">    dict</span>
 <span class="sd">        dict with the number of tracks in the jets dict</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">num_tracks</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;tracks&quot;</span><span class="p">][</span><span class="s2">&quot;valid&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="n">num_tracks</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">"tracks"</span><span class="p">][</span><span class="s2">"valid"</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">&quot;jets&quot;</span><span class="p">:</span> <span class="p">{</span>  <span class="c1"># Add to the &#39;jets&#39; group</span>
-            <span class="s2">&quot;number_of_tracks&quot;</span><span class="p">:</span> <span class="n">num_tracks</span><span class="p">,</span>  <span class="c1"># ... a new variable called &#39;number_of_tracks&#39;</span>
+        <span class="s2">"jets"</span><span class="p">:</span> <span class="p">{</span>  <span class="c1"># Add to the 'jets' group</span>
+            <span class="s2">"number_of_tracks"</span><span class="p">:</span> <span class="n">num_tracks</span><span class="p">,</span>  <span class="c1"># ... a new variable called 'number_of_tracks'</span>
         <span class="p">}</span>
     <span class="p">}</span>
 
 
-<span class="n">dummy_file</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+<span class="n">dummy_file</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span>
 <span class="c1"># Should be False</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Input has &#39;number_of_tracks&#39;? &quot;</span><span class="p">,</span> <span class="s2">&quot;number_of_tracks&quot;</span> <span class="ow">in</span> <span class="n">dummy_file</span><span class="p">[</span><span class="s2">&quot;jets&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Input has 'number_of_tracks'? "</span><span class="p">,</span> <span class="s2">"number_of_tracks"</span> <span class="ow">in</span> <span class="n">dummy_file</span><span class="p">[</span><span class="s2">"jets"</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span><span class="p">)</span>
 
 <span class="c1"># Create a temporary file path for output</span>
 <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tmpdir</span><span class="p">:</span>
-    <span class="n">output</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;output.h5&quot;</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">"output.h5"</span>
     <span class="n">h5_add_column</span><span class="p">(</span>
         <span class="n">fname</span><span class="p">,</span>
         <span class="n">output</span><span class="p">,</span>
@@ -799,10 +799,10 @@ The function requires an input file, and output file, and a function (or list of
         <span class="n">num_global_objects</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="c1"># Check if the new column was added</span>
-    <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="c1"># Should be True</span>
         <span class="nb">print</span><span class="p">(</span>
-            <span class="s2">&quot;Output has &#39;number_of_tracks&#39;? &quot;</span><span class="p">,</span> <span class="s2">&quot;number_of_tracks&quot;</span> <span class="ow">in</span> <span class="n">dummy_file</span><span class="p">[</span><span class="s2">&quot;jets&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span>
+            <span class="s2">"Output has 'number_of_tracks'? "</span><span class="p">,</span> <span class="s2">"number_of_tracks"</span> <span class="ow">in</span> <span class="n">dummy_file</span><span class="p">[</span><span class="s2">"jets"</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span>
         <span class="p">)</span>
 </pre></div>
 </div>
@@ -844,17 +844,17 @@ The function requires an input file, and output file, and a function (or list of
 
 <span class="c1"># Get a test file and load the jets from it</span>
 <span class="n">_</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="n">get_mock_file</span><span class="p">()</span>
-<span class="n">jets</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s2">&quot;jets&quot;</span><span class="p">]</span>
+<span class="n">jets</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s2">"jets"</span><span class="p">]</span>
 
 <span class="c1"># Get the optimal fraction dict</span>
 <span class="n">optimal_fraction_dict</span> <span class="o">=</span> <span class="n">calculate_best_fraction_values</span><span class="p">(</span>
     <span class="n">jets</span><span class="o">=</span><span class="n">jets</span><span class="p">,</span>
-    <span class="n">tagger</span><span class="o">=</span><span class="s2">&quot;MockTagger&quot;</span><span class="p">,</span>
-    <span class="n">signal</span><span class="o">=</span><span class="n">Flavours</span><span class="p">[</span><span class="s2">&quot;bjets&quot;</span><span class="p">],</span>
-    <span class="n">flavours</span><span class="o">=</span><span class="n">Flavours</span><span class="o">.</span><span class="n">by_category</span><span class="p">(</span><span class="s2">&quot;single-btag&quot;</span><span class="p">),</span>
+    <span class="n">tagger</span><span class="o">=</span><span class="s2">"MockTagger"</span><span class="p">,</span>
+    <span class="n">signal</span><span class="o">=</span><span class="n">Flavours</span><span class="p">[</span><span class="s2">"bjets"</span><span class="p">],</span>
+    <span class="n">flavours</span><span class="o">=</span><span class="n">Flavours</span><span class="o">.</span><span class="n">by_category</span><span class="p">(</span><span class="s2">"single-btag"</span><span class="p">),</span>
     <span class="n">working_point</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
     <span class="n">rejection_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">optimizer_method</span><span class="o">=</span><span class="s2">&quot;Powell&quot;</span><span class="p">,</span>
+    <span class="n">optimizer_method</span><span class="o">=</span><span class="s2">"Powell"</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -963,8 +963,8 @@ The function requires an input file, and output file, and a function (or list of
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
-<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -988,7 +988,7 @@ The function requires an input file, and output file, and a function (or list of
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.20.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
 </p></div>
       
     </div>
