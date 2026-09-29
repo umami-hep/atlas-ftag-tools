@@ -77,7 +77,8 @@ Module Contents
       :param info: The task information dictionary from BigPanDA.
       :type info: dict
 
-      :returns: The container name (e.g., 'mc16_13TeV...'), or ``None`` if not found.
+      :returns: The container name (e.g., 'mc16_13TeV...' or 'mc23_13p6TeV...'), or ``None``
+                if not found.
       :rtype: str | None
 
 
@@ -131,6 +132,8 @@ Module Contents
       This method coordinates Task ID extraction, API fetching, DB querying,
       and final HDF5 attribute writing. Metadata is stored in a group
       named ``metadata/{dsid}``.
+
+      :raises RuntimeError: If any step fails and no metadata can be injected.
 
 
 
