@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import sys
 from pathlib import Path
 
 import h5py
@@ -72,10 +73,11 @@ class MetadataFinder:
         Returns
         -------
         str | None
-            The container name (e.g., 'mc16_13TeV...'), or ``None`` if not found.
+            The container name (e.g., 'mc16_13TeV...' or 'mc23_13p6TeV...'), or ``None``
+            if not found.
         """
         text = json.dumps(info)
-        m = re.search(r"(mc\d+_13TeV\.[\w\.]+)", text)
+        m = re.search(r"(mc\d+_13(?:p6)?TeV\.[\w\.]+)", text)
         return m.group(1) if m else None
 
     def _parse_info(self, container: str) -> tuple[int, str, str] | None:
@@ -92,7 +94,7 @@ class MetadataFinder:
             A tuple of (DSID, etag, campaign), or ``None`` if parsing fails.
             Note: 'mc20' is automatically mapped to 'mc16'.
         """
-        mc = re.search(r"\b(mc\d+)_13TeV", container)
+        mc = re.search(r"\b(mc\d+)_13(?:p6)?TeV", container)
         dsid = re.search(r"\.(\d{6})\.", container)
         etag = re.search(r"\.e(\d+)(?:[_.]|$)", container)
         if mc and dsid and etag:
@@ -159,30 +161,31 @@ class MetadataFinder:
         This method coordinates Task ID extraction, API fetching, DB querying,
         and final HDF5 attribute writing. Metadata is stored in a group
         named ``metadata/{dsid}``.
+
+        Raises
+        ------
+        RuntimeError
+            If any step fails and no metadata can be injected.
         """
+        name = self.h5_path.name
         taskid = self._extract_taskid()
         if not taskid:
-            print(f"No Task ID found in {self.h5_path.name}")
-            return
+            raise RuntimeError(f"No Task ID found in {name}")
         info = self._fetch_taskinfo(taskid)
         if not info:
-            print("No BigPanDA info found.")
-            return
+            raise RuntimeError(f"No BigPanDA info found for task {taskid} ({name})")
         container = self._extract_container(info)
 
         if not container:
-            print("Failed to extract container name from BigPanDA info.")
-            return
+            raise RuntimeError(f"Failed to extract container name from BigPanDA info ({name})")
 
         parsed = self._parse_info(container)
         if not parsed:
-            print("Failed to parse DSID/etag/campaign.")
-            return
+            raise RuntimeError(f"Failed to parse DSID/etag/campaign from {container} ({name})")
         dsid, etag, campaign = parsed
         meta = self._query_xsecdb(campaign, dsid, etag)
         if not meta:
-            print("No metadata found in PMG DB.")
-            return
+            raise RuntimeError(f"No metadata found in PMG DB for {dsid} {etag} ({name})")
         with h5py.File(self.h5_path, "a") as f:
             g = f.require_group(f"metadata/{dsid}")
             for k, v in meta.items():
@@ -201,11 +204,18 @@ def main() -> None:
 
     args = parser.parse_args()
 
-    # Process each provided HDF5 file
+    # Process each provided HDF5 file, report failures at the end
+    failed = []
     for h5_path in args.h5_paths:
         print(f"Processing: {h5_path}")
-        finder = MetadataFinder(h5_path)
-        finder.inject_metadata()
+        try:
+            MetadataFinder(h5_path).inject_metadata()
+        except RuntimeError as e:
+            print(f"Failed: {e}")
+            failed.append(h5_path)
+
+    if failed:
+        sys.exit(f"Metadata injection failed for {len(failed)} file(s)")
 
 
 if __name__ == "__main__":

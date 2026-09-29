@@ -2,6 +2,7 @@
 
 ### [Latest]
 
+- Support Run 3 (`13p6TeV`) containers in `find_metadata` and raise instead of silently returning when metadata cannot be injected [#176](https://github.com/umami-hep/atlas-ftag-tools/pull/176)
 - Suppress git stderr in `is_git_repo` to avoid spurious `fatal: not a git repository` messages when probing non-repositories [#175](https://github.com/umami-hep/atlas-ftag-tools/pull/175)
 - Handle empty inputs in `H5Reader`: reading a sample with no global objects now yields an empty result instead of raising [#173](https://github.com/umami-hep/atlas-ftag-tools/pull/173)
 
