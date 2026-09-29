@@ -18,7 +18,7 @@ MOCK_XSEC_LINE = "601229  Pythia8_jetjet  0.015  1.0  1.1  0.0  x  x  e8514\n"
 MOCK_PANDA_INFO = [
     {
         "jeditaskid": 12345678,
-        "taskname": "mc23_13TeV.601229.PhPy8.e8514_s4162/",
+        "taskname": "mc23_13p6TeV.601229.PhPy8.e8514_s4162/",
     }
 ]
 
@@ -54,6 +54,7 @@ class TestMetadataFinder:
         [
             ("mc20_13TeV.123456.e7890", (123456, "e7890", "mc16")),
             ("mc23_13TeV.601229.e8514", (601229, "e8514", "mc23")),
+            ("mc23_13p6TeV.601229.e8514", (601229, "e8514", "mc23")),
             ("bad.name", None),
         ],
     )
@@ -61,6 +62,18 @@ class TestMetadataFinder:
         finder = MetadataFinder(mock_h5)
         result = finder._parse_info(container)
         assert result == expected
+
+    @pytest.mark.parametrize(
+        ("taskname", "expected"),
+        [
+            ("mc20_13TeV.410470.PhPy8.e6337_s3681/", "mc20_13TeV.410470.PhPy8.e6337_s3681"),
+            ("mc23_13p6TeV.601229.PhPy8.e8514_s4162/", "mc23_13p6TeV.601229.PhPy8.e8514_s4162"),
+            ("user.test.output/", None),
+        ],
+    )
+    def test_extract_container(self, mock_h5, taskname, expected):
+        finder = MetadataFinder(mock_h5)
+        assert finder._extract_container({"taskname": taskname}) == expected
 
     # --- Network and Database Logic Tests ---
     @patch("requests.get")
@@ -138,7 +151,7 @@ class TestMetadataFinder:
         with (
             patch.object(finder, "_extract_taskid", return_value="12"),
             patch.object(finder, "_fetch_taskinfo", return_value={"t": "m"}),
-            patch.object(finder, "_extract_container", return_value="mc23_13TeV.601229.e8514"),
+            patch.object(finder, "_extract_container", return_value="mc23_13p6TeV.601229.e8514"),
             patch.object(finder, "_query_xsecdb", return_value=mock_meta),
         ):
             finder.inject_metadata()
@@ -147,21 +160,23 @@ class TestMetadataFinder:
             assert f[f"metadata/{dsid}/cross_section_pb"][()] == pytest.approx(0.015)
 
     # --- Exception Branch Tests ---
-    def test_inject_metadata_fail_branches(self, mock_h5, capsys):
+    def test_inject_metadata_fail_branches(self, mock_h5):
         finder = MetadataFinder(mock_h5)
 
         # 1. No TaskID
-        with patch.object(finder, "_extract_taskid", return_value=None):
+        with (
+            patch.object(finder, "_extract_taskid", return_value=None),
+            pytest.raises(RuntimeError, match="No Task ID found"),
+        ):
             finder.inject_metadata()
-            assert "No Task ID found" in capsys.readouterr().out
 
         # 2. No task info
         with (
             patch.object(finder, "_extract_taskid", return_value="12345678"),
             patch.object(finder, "_fetch_taskinfo", return_value=None),
+            pytest.raises(RuntimeError, match="No BigPanDA info found"),
         ):
             finder.inject_metadata()
-            assert "No BigPanDA info found" in capsys.readouterr().out
 
         # 3. Container parsing failed
         with (
@@ -169,31 +184,30 @@ class TestMetadataFinder:
             patch.object(finder, "_fetch_taskinfo", return_value={"t": "m"}),
             patch.object(finder, "_extract_container", return_value="invalid"),
             patch.object(finder, "_parse_info", return_value=None),
+            pytest.raises(RuntimeError, match="Failed to parse DSID"),
         ):
             finder.inject_metadata()
-            assert "Failed to parse DSID" in capsys.readouterr().out
 
         # 4. No result in database
         with (
             patch.object(finder, "_extract_taskid", return_value="12"),
             patch.object(finder, "_fetch_taskinfo", return_value={"t": "m"}),
-            patch.object(finder, "_extract_container", return_value="mc23_13TeV.601229.e8514"),
+            patch.object(finder, "_extract_container", return_value="mc23_13p6TeV.601229.e8514"),
             patch.object(finder, "_query_xsecdb", return_value=None),
+            pytest.raises(RuntimeError, match="No metadata found in PMG DB"),
         ):
             finder.inject_metadata()
-            assert "No metadata found in PMG DB" in capsys.readouterr().out
 
-    def test_inject_metadata_no_container(self, mock_h5, capsys):
+    def test_inject_metadata_no_container(self, mock_h5):
         """Cover the specific branch: if not container."""
         finder = MetadataFinder(mock_h5)
         with (
             patch.object(finder, "_extract_taskid", return_value="12345678"),
             patch.object(finder, "_fetch_taskinfo", return_value={"some": "info"}),
             patch.object(finder, "_extract_container", return_value=None),
+            pytest.raises(RuntimeError, match="Failed to extract container name"),
         ):
             finder.inject_metadata()
-            captured = capsys.readouterr()
-            assert "Failed to extract container name" in captured.out
 
     # --- CLI Entry Point Test ---
     @patch("sys.argv", ["find_metadata.py", "test_file_1.h5", "test_file_2.h5"])
@@ -217,4 +231,17 @@ class TestMetadataFinder:
         mock_finder_class.assert_any_call("test_file_2.h5")
 
         # Verify the injection method was triggered for each provided file
+        assert mock_instance.inject_metadata.call_count == 2
+
+    @patch("sys.argv", ["find_metadata.py", "test_file_1.h5", "test_file_2.h5"])
+    @patch("ftag.find_metadata.MetadataFinder")
+    def test_main_block_failure(self, mock_finder_class, capsys):
+        """A failing file is reported, the others are still processed and the exit code is set."""
+        mock_instance = mock_finder_class.return_value
+        mock_instance.inject_metadata.side_effect = [RuntimeError("No Task ID found"), None]
+
+        with pytest.raises(SystemExit, match="failed for 1 file"):
+            main()
+
+        assert "Failed: No Task ID found" in capsys.readouterr().out
         assert mock_instance.inject_metadata.call_count == 2
