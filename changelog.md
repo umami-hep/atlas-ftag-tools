@@ -2,6 +2,8 @@
 
 ### [Latest]
 
+- Fix `H5Reader` dropping global objects through float rounding and silently skipping small files [#177](https://github.com/umami-hep/atlas-ftag-tools/pull/177)
+
 
 ### [v0.3.6](https://github.com/umami-hep/atlas-ftag-tools/releases/tag/v0.3.6) (30.09.2026)
 
