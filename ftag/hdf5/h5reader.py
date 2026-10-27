@@ -312,7 +312,8 @@ class H5Reader:
                 else [0.0 for _ in rows_per_file]
             )
 
-        self.batch_sizes = [int(w * self.batch_size) for w in self.weights]
+        # Keep at least one global object per batch, so small files are not silently skipped
+        self.batch_sizes = [max(1, int(w * self.batch_size)) if w > 0 else 0 for w in self.weights]
 
         # create readers
         self.readers = [
@@ -421,7 +422,7 @@ class H5Reader:
         streams = [
             r.stream(
                 variables,
-                int(r.num_global_objects / self.num_global_objects * num_global_objects),
+                r.num_global_objects * num_global_objects // self.num_global_objects,
                 cuts,
                 start,
                 skip_batches,
