@@ -125,7 +125,7 @@ Module Contents
 
 
 
-   .. py:method:: find_metadata() -> tuple[int, dict]
+   .. py:method:: fetch_metadata() -> tuple[int, dict]
 
       Look up the PMG metadata for the HDF5 file without modifying it.
 
@@ -144,7 +144,7 @@ Module Contents
       Find the metadata and write it into the HDF5 file.
 
       Metadata is stored in a group named ``metadata/{dsid}``. A ``RuntimeError``
-      from :meth:`find_metadata` is passed on if no metadata can be found.
+      from :meth:`fetch_metadata` is passed on if no metadata can be found.
 
 
 

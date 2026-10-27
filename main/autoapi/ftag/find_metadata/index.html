@@ -55,7 +55,7 @@
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="ftag.flavours" href="../flavours/index.html" />
+    <link rel="next" title="ftag.fraction_optimization" href="../fraction_optimization/index.html" />
     <link rel="prev" title="ftag.cuts" href="../cuts/index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
@@ -407,7 +407,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../cli_utils/index.html">ftag.cli_utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../cuts/index.html">ftag.cuts</a></li>
 <li class="toctree-l2 current active"><a aria-current="page" class="current reference internal" href="#">ftag.find_metadata</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../flavours/index.html">ftag.flavours</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../fraction_optimization/index.html">ftag.fraction_optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../git_check/index.html">ftag.git_check</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../hdf5/index.html">ftag.hdf5</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -419,7 +418,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../hdf5/h5writer/index.html">ftag.hdf5.h5writer</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2"><a class="reference internal" href="../labeller/index.html">ftag.labeller</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../labels/index.html">ftag.labels</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mock/index.html">ftag.mock</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../region/index.html">ftag.region</a></li>
@@ -669,8 +667,8 @@ or <code class="docutils literal notranslate"><span class="pre">None</span></cod
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ftag.find_metadata.MetadataFinder.find_metadata">
-<span class="sig-name descname"><span class="pre">find_metadata</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ftag.find_metadata.MetadataFinder.find_metadata" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ftag.find_metadata.MetadataFinder.fetch_metadata">
+<span class="sig-name descname"><span class="pre">fetch_metadata</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ftag.find_metadata.MetadataFinder.fetch_metadata" title="Link to this definition">#</a></dt>
 <dd><p>Look up the PMG metadata for the HDF5 file without modifying it.</p>
 <p>This method coordinates Task ID extraction, API fetching and DB querying.</p>
 <dl class="field-list simple">
@@ -692,7 +690,7 @@ and ‘kfactor’.</p>
 <span class="sig-name descname"><span class="pre">inject_metadata</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ftag.find_metadata.MetadataFinder.inject_metadata" title="Link to this definition">#</a></dt>
 <dd><p>Find the metadata and write it into the HDF5 file.</p>
 <p>Metadata is stored in a group named <code class="docutils literal notranslate"><span class="pre">metadata/{dsid}</span></code>. A <code class="docutils literal notranslate"><span class="pre">RuntimeError</span></code>
-from <a class="reference internal" href="#ftag.find_metadata.MetadataFinder.find_metadata" title="ftag.find_metadata.MetadataFinder.find_metadata"><code class="xref py py-meth docutils literal notranslate"><span class="pre">find_metadata()</span></code></a> is passed on if no metadata can be found.</p>
+from <a class="reference internal" href="#ftag.find_metadata.MetadataFinder.fetch_metadata" title="ftag.find_metadata.MetadataFinder.fetch_metadata"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fetch_metadata()</span></code></a> is passed on if no metadata can be found.</p>
 </dd></dl>
 
 </dd></dl>
@@ -726,11 +724,11 @@ from <a class="reference internal" href="#ftag.find_metadata.MetadataFinder.find
       </div>
     </a>
     <a class="right-next"
-       href="../flavours/index.html"
+       href="../fraction_optimization/index.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">ftag.flavours</p>
+        <p class="prev-next-title">ftag.fraction_optimization</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -767,7 +765,7 @@ from <a class="reference internal" href="#ftag.find_metadata.MetadataFinder.find
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.find_metadata.MetadataFinder._parse_info"><code class="docutils literal notranslate"><span class="pre">MetadataFinder._parse_info()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.find_metadata.MetadataFinder._download_db"><code class="docutils literal notranslate"><span class="pre">MetadataFinder._download_db()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.find_metadata.MetadataFinder._query_xsecdb"><code class="docutils literal notranslate"><span class="pre">MetadataFinder._query_xsecdb()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.find_metadata.MetadataFinder.find_metadata"><code class="docutils literal notranslate"><span class="pre">MetadataFinder.find_metadata()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.find_metadata.MetadataFinder.fetch_metadata"><code class="docutils literal notranslate"><span class="pre">MetadataFinder.fetch_metadata()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.find_metadata.MetadataFinder.inject_metadata"><code class="docutils literal notranslate"><span class="pre">MetadataFinder.inject_metadata()</span></code></a></li>
 </ul>
 </li>
