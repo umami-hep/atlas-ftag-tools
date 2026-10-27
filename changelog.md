@@ -2,6 +2,8 @@
 
 ### [Latest]
 
+### [v0.3.7](https://github.com/umami-hep/atlas-ftag-tools/releases/tag/v0.3.7) (27.10.2026)
+
 - Rename `MetadataFinder.find_metadata` to `fetch_metadata` to avoid confusion with the `find_metadata` CLI [#179](https://github.com/umami-hep/atlas-ftag-tools/pull/179)
 - Fix `H5Reader` dropping global objects through float rounding and silently skipping small files [#177](https://github.com/umami-hep/atlas-ftag-tools/pull/177)
 - Add `MetadataFinder.find_metadata` to look up PMG metadata without writing into the HDF5 file [#178](https://github.com/umami-hep/atlas-ftag-tools/pull/178)
