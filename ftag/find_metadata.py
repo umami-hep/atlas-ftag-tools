@@ -155,7 +155,7 @@ class MetadataFinder:
                     }
         return None
 
-    def find_metadata(self) -> tuple[int, dict]:
+    def fetch_metadata(self) -> tuple[int, dict]:
         """Look up the PMG metadata for the HDF5 file without modifying it.
 
         This method coordinates Task ID extraction, API fetching and DB querying.
@@ -196,9 +196,9 @@ class MetadataFinder:
         """Find the metadata and write it into the HDF5 file.
 
         Metadata is stored in a group named ``metadata/{dsid}``. A ``RuntimeError``
-        from :meth:`find_metadata` is passed on if no metadata can be found.
+        from :meth:`fetch_metadata` is passed on if no metadata can be found.
         """
-        dsid, meta = self.find_metadata()
+        dsid, meta = self.fetch_metadata()
         with h5py.File(self.h5_path, "a") as f:
             g = f.require_group(f"metadata/{dsid}")
             for k, v in meta.items():

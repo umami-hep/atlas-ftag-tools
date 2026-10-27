@@ -137,7 +137,7 @@ class TestMetadataFinder:
             assert "metadata/601229/cross_section_pb" in f
             assert f["metadata/601229/cross_section_pb"][()] == pytest.approx(0.015)
 
-    def test_find_metadata_does_not_modify_file(self, mock_h5):
+    def test_fetch_metadata_does_not_modify_file(self, mock_h5):
         """The lookup returns the metadata and leaves the HDF5 file untouched."""
         content_before = mock_h5.read_bytes()
         finder = MetadataFinder(mock_h5)
@@ -149,7 +149,7 @@ class TestMetadataFinder:
             patch.object(finder, "_extract_container", return_value="mc23_13p6TeV.601229.e8514"),
             patch.object(finder, "_query_xsecdb", return_value=mock_meta),
         ):
-            assert finder.find_metadata() == (601229, mock_meta)
+            assert finder.fetch_metadata() == (601229, mock_meta)
 
         assert mock_h5.read_bytes() == content_before
 
