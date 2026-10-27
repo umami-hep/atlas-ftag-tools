@@ -2,6 +2,7 @@
 
 ### [Latest]
 
+- Rename `MetadataFinder.find_metadata` to `fetch_metadata` to avoid confusion with the `find_metadata` CLI [#179](https://github.com/umami-hep/atlas-ftag-tools/pull/179)
 - Add `MetadataFinder.find_metadata` to look up PMG metadata without writing into the HDF5 file [#178](https://github.com/umami-hep/atlas-ftag-tools/pull/178)
 
 
