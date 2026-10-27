@@ -40,7 +40,7 @@ Module Contents
 
 .. py:class:: MetadataFinder(h5_path: str)
 
-   Fetch and inject metadata into .h5 files.
+   Find PMG metadata for .h5 files and optionally inject it.
 
    :param h5_path: Path to the HDF5 file where metadata should be injected.
    :type h5_path: str
@@ -125,15 +125,26 @@ Module Contents
 
 
 
+   .. py:method:: find_metadata() -> tuple[int, dict]
+
+      Look up the PMG metadata for the HDF5 file without modifying it.
+
+      This method coordinates Task ID extraction, API fetching and DB querying.
+
+      :returns: The DSID and a dictionary containing 'cross_section_pb', 'genFiltEff'
+                and 'kfactor'.
+      :rtype: tuple[int, dict]
+
+      :raises RuntimeError: If any step fails and no metadata can be found.
+
+
+
    .. py:method:: inject_metadata() -> None
 
-      Execute the full workflow to inject metadata into the HDF5 file.
+      Find the metadata and write it into the HDF5 file.
 
-      This method coordinates Task ID extraction, API fetching, DB querying,
-      and final HDF5 attribute writing. Metadata is stored in a group
-      named ``metadata/{dsid}``.
-
-      :raises RuntimeError: If any step fails and no metadata can be injected.
+      Metadata is stored in a group named ``metadata/{dsid}``. A ``RuntimeError``
+      from :meth:`find_metadata` is passed on if no metadata can be found.
 
 
 
