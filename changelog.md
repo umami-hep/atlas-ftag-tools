@@ -2,6 +2,8 @@
 
 ### [Latest]
 
+- Add `MetadataFinder.find_metadata` to look up PMG metadata without writing into the HDF5 file [#178](https://github.com/umami-hep/atlas-ftag-tools/pull/178)
+
 
 ### [v0.3.6](https://github.com/umami-hep/atlas-ftag-tools/releases/tag/v0.3.6) (30.09.2026)
 
