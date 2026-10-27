@@ -21,7 +21,7 @@ XSECDB_URL_BASE = "https://atlas-groupdata.web.cern.ch/atlas-groupdata/dev/PMGTo
 
 
 class MetadataFinder:
-    """Fetch and inject metadata into .h5 files.
+    """Find PMG metadata for .h5 files and optionally inject it.
 
     Parameters
     ----------
@@ -155,17 +155,21 @@ class MetadataFinder:
                     }
         return None
 
-    def inject_metadata(self) -> None:
-        """Execute the full workflow to inject metadata into the HDF5 file.
+    def find_metadata(self) -> tuple[int, dict]:
+        """Look up the PMG metadata for the HDF5 file without modifying it.
 
-        This method coordinates Task ID extraction, API fetching, DB querying,
-        and final HDF5 attribute writing. Metadata is stored in a group
-        named ``metadata/{dsid}``.
+        This method coordinates Task ID extraction, API fetching and DB querying.
+
+        Returns
+        -------
+        tuple[int, dict]
+            The DSID and a dictionary containing 'cross_section_pb', 'genFiltEff'
+            and 'kfactor'.
 
         Raises
         ------
         RuntimeError
-            If any step fails and no metadata can be injected.
+            If any step fails and no metadata can be found.
         """
         name = self.h5_path.name
         taskid = self._extract_taskid()
@@ -186,6 +190,15 @@ class MetadataFinder:
         meta = self._query_xsecdb(campaign, dsid, etag)
         if not meta:
             raise RuntimeError(f"No metadata found in PMG DB for {dsid} {etag} ({name})")
+        return dsid, meta
+
+    def inject_metadata(self) -> None:
+        """Find the metadata and write it into the HDF5 file.
+
+        Metadata is stored in a group named ``metadata/{dsid}``. A ``RuntimeError``
+        from :meth:`find_metadata` is passed on if no metadata can be found.
+        """
+        dsid, meta = self.find_metadata()
         with h5py.File(self.h5_path, "a") as f:
             g = f.require_group(f"metadata/{dsid}")
             for k, v in meta.items():
