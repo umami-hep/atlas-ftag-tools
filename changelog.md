@@ -2,6 +2,8 @@
 
 ### [Latest]
 
+- Fix wildcard samples in the same directory sharing one default virtual file, and rebuild virtual files whose inputs changed [#180](https://github.com/umami-hep/atlas-ftag-tools/pull/180)
+
 ### [v0.3.7](https://github.com/umami-hep/atlas-ftag-tools/releases/tag/v0.3.7) (27.10.2026)
 
 - Rename `MetadataFinder.find_metadata` to `fetch_metadata` to avoid confusion with the `find_metadata` CLI [#179](https://github.com/umami-hep/atlas-ftag-tools/pull/179)

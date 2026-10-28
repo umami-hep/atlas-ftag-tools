@@ -126,3 +126,20 @@ def test_sample_virtual_file_wildcard_with_vds_dir(tmp_path):
     expected = vds_dir / f"{DSID}_vds.h5"
     assert result[0] == expected
     assert result[0].exists()
+
+
+def test_sample_virtual_file_two_patterns_with_vds_dir(tmp_path):
+    """Two wildcard samples in the same directory get separate files in vds_dir."""
+    dsid_dir = tmp_path / DSID
+    dsid_dir.mkdir()
+    for name in ("ttbar", "zprime"):
+        get_mock_file(fname=str(dsid_dir / f"{name}_0.h5"))
+
+    vds_dir = tmp_path / "custom_vds"
+    results = [
+        Sample(
+            pattern=str(dsid_dir / f"{name}*.h5"), name=name, skip_checks=True, vds_dir=vds_dir
+        ).virtual_file()[0]
+        for name in ("ttbar", "zprime")
+    ]
+    assert results == [vds_dir / f"{DSID}_ttbar_vds.h5", vds_dir / f"{DSID}_zprime_vds.h5"]
