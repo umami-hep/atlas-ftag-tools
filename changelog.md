@@ -3,6 +3,17 @@
 ### [Latest]
 
 - Rename `flavour_label` to `class_label` in the HDF5 writer and mock data (breaking API change) [#174](https://github.com/umami-hep/atlas-ftag-tools/pull/174)
+
+### [v0.3.7](https://github.com/umami-hep/atlas-ftag-tools/releases/tag/v0.3.7) (27.10.2026)
+
+- Rename `MetadataFinder.find_metadata` to `fetch_metadata` to avoid confusion with the `find_metadata` CLI [#179](https://github.com/umami-hep/atlas-ftag-tools/pull/179)
+- Fix `H5Reader` dropping global objects through float rounding and silently skipping small files [#177](https://github.com/umami-hep/atlas-ftag-tools/pull/177)
+- Add `MetadataFinder.find_metadata` to look up PMG metadata without writing into the HDF5 file [#178](https://github.com/umami-hep/atlas-ftag-tools/pull/178)
+
+### [v0.3.6](https://github.com/umami-hep/atlas-ftag-tools/releases/tag/v0.3.6) (30.09.2026)
+
+- Support Run 3 (`13p6TeV`) containers in `find_metadata` and raise instead of silently returning when metadata cannot be injected [#176](https://github.com/umami-hep/atlas-ftag-tools/pull/176)
+- Suppress git stderr in `is_git_repo` to avoid spurious `fatal: not a git repository` messages when probing non-repositories [#175](https://github.com/umami-hep/atlas-ftag-tools/pull/175)
 - Handle empty inputs in `H5Reader`: reading a sample with no global objects now yields an empty result instead of raising [#173](https://github.com/umami-hep/atlas-ftag-tools/pull/173)
 
 ### [v0.3.5](https://github.com/umami-hep/atlas-ftag-tools/releases/tag/v0.3.5) (30.06.2026)

@@ -459,6 +459,29 @@ def test_reader_mixed_empty_and_nonempty(tmp_path):
     assert total == 800
 
 
+def test_reader_no_rounding_loss(tmp_path):
+    # n / total * total can round below n in float, which used to drop a global object
+    for n in range(1, 61):
+        _write_jets_file(tmp_path / f"f_{n:02d}.h5", n)
+
+    reader = H5Reader(sorted(tmp_path.glob("*.h5")), batch_size=10_000, shuffle=False)
+    total = sum(len(batch["jets"]) for batch in reader.stream({"jets": ["pt"]}))
+    assert total == reader.num_global_objects == 1830
+
+
+def test_reader_small_file_not_skipped(tmp_path):
+    # a file whose weighted batch size rounds to zero must still be read
+    _write_jets_file(tmp_path / "a_small.h5", 1, source=1)
+    _write_jets_file(tmp_path / "b_large.h5", 1000, source=2)
+
+    reader = H5Reader(sorted(tmp_path.glob("*.h5")), batch_size=100, shuffle=False)
+    assert reader.batch_sizes == [1, 99]
+
+    sources = np.concatenate([b["jets"]["source"] for b in reader.stream({"jets": ["source"]})])
+    assert len(sources) == 1001
+    assert np.sum(sources == 1) == 1
+
+
 def test_single_batch_reader(h5_files):
     reader = H5SingleReader(h5_files[0], batch_size=1000, shuffle=False)
 
