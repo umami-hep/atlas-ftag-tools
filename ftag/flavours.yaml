@@ -274,12 +274,12 @@
 # partonic labelling
 - name: upjets
   label: $u$-jets
-  cuts: ["PartonTruthLabelID == 1"]
+  cuts: ["PartonTruthLabelID == 2"]
   colour: lightgreen
   category: partonic
 - name: downjets
   label: $d$-jets
-  cuts: ["PartonTruthLabelID == 2"]
+  cuts: ["PartonTruthLabelID == 1"]
   colour: darkgreen
   category: partonic
 - name: strangejets
