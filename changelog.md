@@ -2,6 +2,7 @@
 
 ### [Latest]
 
+- Rename `flavour_label` to `class_label` in the HDF5 writer and mock data (breaking API change) [#174](https://github.com/umami-hep/atlas-ftag-tools/pull/174)
 - Fix the swapped parton labels of the `upjets` and `downjets` flavours [#181](https://github.com/umami-hep/atlas-ftag-tools/pull/181)
 
 ### [v0.3.7](https://github.com/umami-hep/atlas-ftag-tools/releases/tag/v0.3.7) (27.10.2026)
