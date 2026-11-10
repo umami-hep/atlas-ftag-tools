@@ -394,9 +394,9 @@ Package Contents
 
       :type: str, optional
 
-   .. attribute:: add_flavour_label
+   .. attribute:: add_class_label
 
-      If ``True``, append a ``"flavour_label"`` field of type ``i4`` to the
+      If ``True``, append a ``"class_label"`` field of type ``i4`` to the
       global object dataset if it is not already present. Default is ``False``.
 
       :type: bool, optional
@@ -483,7 +483,7 @@ Package Contents
 
 
 
-   .. py:attribute:: add_flavour_label
+   .. py:attribute:: add_class_label
       :type:  bool
       :value: False
 

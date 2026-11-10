@@ -570,9 +570,9 @@ sizes during writing. Default is <code class="docutils literal notranslate"><spa
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="ftag.hdf5.h5writer.H5Writer.add_flavour_label">
-<span class="sig-name descname"><span class="pre">add_flavour_label</span></span><a class="headerlink" href="#ftag.hdf5.h5writer.H5Writer.add_flavour_label" title="Link to this definition">#</a></dt>
-<dd><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, append a <code class="docutils literal notranslate"><span class="pre">&quot;flavour_label&quot;</span></code> field of type <code class="docutils literal notranslate"><span class="pre">i4</span></code> to the
+<dt class="sig sig-object py" id="ftag.hdf5.h5writer.H5Writer.add_class_label">
+<span class="sig-name descname"><span class="pre">add_class_label</span></span><a class="headerlink" href="#ftag.hdf5.h5writer.H5Writer.add_class_label" title="Link to this definition">#</a></dt>
+<dd><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, append a <code class="docutils literal notranslate"><span class="pre">&quot;class_label&quot;</span></code> field of type <code class="docutils literal notranslate"><span class="pre">i4</span></code> to the
 global object dataset if it is not already present. Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
@@ -706,7 +706,7 @@ into the output file. Default is <code class="docutils literal notranslate"><spa
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id4">
-<span class="sig-name descname"><span class="pre">add_flavour_label</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#id4" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">add_class_label</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#id4" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -991,7 +991,7 @@ If <code class="docutils literal notranslate"><span class="pre">None</span></cod
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5writer.H5Writer.dtypes"><code class="docutils literal notranslate"><span class="pre">H5Writer.dtypes</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5writer.H5Writer.shapes"><code class="docutils literal notranslate"><span class="pre">H5Writer.shapes</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5writer.H5Writer.global_objects_name"><code class="docutils literal notranslate"><span class="pre">H5Writer.global_objects_name</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5writer.H5Writer.add_flavour_label"><code class="docutils literal notranslate"><span class="pre">H5Writer.add_flavour_label</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5writer.H5Writer.add_class_label"><code class="docutils literal notranslate"><span class="pre">H5Writer.add_class_label</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5writer.H5Writer.compression"><code class="docutils literal notranslate"><span class="pre">H5Writer.compression</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5writer.H5Writer.compression_opts"><code class="docutils literal notranslate"><span class="pre">H5Writer.compression_opts</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ftag.hdf5.h5writer.H5Writer.precision"><code class="docutils literal notranslate"><span class="pre">H5Writer.precision</span></code></a></li>
@@ -1003,7 +1003,7 @@ If <code class="docutils literal notranslate"><span class="pre">None</span></cod
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><code class="docutils literal notranslate"><span class="pre">H5Writer.dtypes</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><code class="docutils literal notranslate"><span class="pre">H5Writer.shapes</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><code class="docutils literal notranslate"><span class="pre">H5Writer.global_objects_name</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><code class="docutils literal notranslate"><span class="pre">H5Writer.add_flavour_label</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><code class="docutils literal notranslate"><span class="pre">H5Writer.add_class_label</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5"><code class="docutils literal notranslate"><span class="pre">H5Writer.compression</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6"><code class="docutils literal notranslate"><span class="pre">H5Writer.compression_opts</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7"><code class="docutils literal notranslate"><span class="pre">H5Writer.precision</span></code></a></li>
