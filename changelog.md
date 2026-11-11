@@ -2,6 +2,8 @@
 
 ### [Latest]
 
+### [v0.3.8](https://github.com/umami-hep/atlas-ftag-tools/releases/tag/v0.3.8) (11.11.2026)
+
 - Fix wildcard samples in the same directory sharing one default virtual file, and rebuild virtual files whose inputs changed [#180](https://github.com/umami-hep/atlas-ftag-tools/pull/180)
 - Rename `flavour_label` to `class_label` in the HDF5 writer and mock data (breaking API change) [#174](https://github.com/umami-hep/atlas-ftag-tools/pull/174)
 - Fix the swapped parton labels of the `upjets` and `downjets` flavours [#181](https://github.com/umami-hep/atlas-ftag-tools/pull/181)
