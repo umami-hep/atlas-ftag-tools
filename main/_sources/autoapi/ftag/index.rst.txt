@@ -79,7 +79,7 @@ Package Contents
 ----------------
 
 .. py:data:: __version__
-   :value: 'v0.3.7'
+   :value: 'v0.3.8'
 
 
 .. py:class:: Cuts
