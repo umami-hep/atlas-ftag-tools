@@ -16,6 +16,8 @@ Functions
    ftag.vds.sum_counts_once
    ftag.vds.check_subgroups
    ftag.vds.aggregate_cutbookkeeper
+   ftag.vds.pattern_stem
+   ftag.vds.vds_sources_changed
    ftag.vds.create_virtual_file
    ftag.vds.main
 
@@ -127,19 +129,46 @@ Module Contents
    :rtype: dict[str, np.ndarray] | None
 
 
+.. py:function:: pattern_stem(pattern: pathlib.Path | str) -> str
+
+   Turn the file-name part of a pattern into a string usable in a file name.
+
+   :param pattern: Glob or regex pattern of the input files.
+   :type pattern: Path | str
+
+   :returns: Sanitised pattern, e.g. "ttbar" for "ttbar*.h5". Empty for a bare "*.h5".
+   :rtype: str
+
+
+.. py:function:: vds_sources_changed(vds_fname: pathlib.Path, fnames: list[str]) -> bool
+
+   Check if an existing virtual file points to other files than the given ones.
+
+   :param vds_fname: Path to the existing virtual file.
+   :type vds_fname: Path
+   :param fnames: Input files the virtual file should be built from.
+   :type fnames: list[str]
+
+   :returns: True if the virtual datasets reference a different set of files.
+             False if they match or the file holds no virtual datasets.
+   :rtype: bool
+
+
 .. py:function:: create_virtual_file(pattern: pathlib.Path | str, out_fname: pathlib.Path | str | None = None, use_regex: bool = False, regex_path: str | None = None, overwrite: bool = False, bookkeeper_name: str = 'cutBookkeeper') -> pathlib.Path
 
    Create the virtual dataset file for the given inputs.
 
    :param pattern: Pattern of the input files used. Wildcard is supported
    :type pattern: Path | str
-   :param out_fname: Output path to which the virtual dataset file is written. By default None
+   :param out_fname: Output path to which the virtual dataset file is written. By default None,
+                     which writes to "vds/<pattern>.h5" next to the inputs ("vds/vds.h5" for "*.h5").
    :type out_fname: Path | str | None, optional
    :param use_regex: If you want to use regex instead of glob, by default False
    :type use_regex: bool, optional
    :param regex_path: Regex logic used to define the input files, by default None
    :type regex_path: str | None, optional
-   :param overwrite: Decide, if an existing output file is overwritten, by default False
+   :param overwrite: Decide, if an existing output file is overwritten, by default False.
+                     An existing file is always rebuilt if it points to other input files.
    :type overwrite: bool, optional
    :param bookkeeper_name: Name of the cut bookkeeper in the h5 files.
    :type bookkeeper_name: str, optional
