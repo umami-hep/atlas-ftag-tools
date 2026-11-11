@@ -17,6 +17,7 @@ from ftag.vds import (
     get_virtual_layout,
     glob_re,
     main,
+    pattern_stem,
     regex_files_from_dir,
     sum_counts_once,
 )
@@ -354,6 +355,60 @@ def test_create_virtual_file_multiple_dirs(tmp_path):
     # out_fname=None → should raise because parents differ
     with pytest.raises(ValueError):
         create_virtual_file(pattern)
+
+
+def _write_data_files(directory: Path, prefix: str, n_files: int, value: int) -> None:
+    for i in range(n_files):
+        with h5py.File(directory / f"{prefix}_{i}.h5", "w") as f:
+            f.create_dataset("data", data=[value] * 5)
+
+
+@pytest.mark.parametrize(
+    ("pattern", "expected"),
+    [("*.h5", ""), ("ttbar*.h5", "ttbar"), ("user.*.601589.*.h5", "user._.601589")],
+)
+def test_pattern_stem(pattern, expected):
+    assert pattern_stem(f"/some/dir/{pattern}") == expected
+
+
+def test_create_virtual_file_default_name_per_pattern(tmp_path):
+    """Two patterns in the same directory must not share the default output file."""
+    _write_data_files(tmp_path, "ttbar", n_files=2, value=1)
+    _write_data_files(tmp_path, "zprime", n_files=3, value=2)
+
+    out_ttbar = create_virtual_file(tmp_path / "ttbar*.h5")
+    out_zprime = create_virtual_file(tmp_path / "zprime*.h5")
+    out_all = create_virtual_file(tmp_path / "*.h5")
+
+    assert out_ttbar == tmp_path / "vds" / "ttbar.h5"
+    assert out_zprime == tmp_path / "vds" / "zprime.h5"
+    assert out_all == tmp_path / "vds" / "vds.h5"
+    with h5py.File(out_ttbar) as f_ttbar, h5py.File(out_zprime) as f_zprime:
+        assert set(f_ttbar["data"][:]) == {1}
+        assert set(f_zprime["data"][:]) == {2}
+
+
+def test_create_virtual_file_reuses_unchanged(tmp_path):
+    _write_data_files(tmp_path, "ttbar", n_files=2, value=1)
+    out_fname = create_virtual_file(tmp_path / "ttbar*.h5")
+    with h5py.File(out_fname, "a") as f:
+        f.attrs["marker"] = 1
+
+    create_virtual_file(tmp_path / "ttbar*.h5")
+    with h5py.File(out_fname) as f:
+        assert "marker" in f.attrs
+
+
+def test_create_virtual_file_rebuilds_changed_sources(tmp_path):
+    _write_data_files(tmp_path, "ttbar", n_files=2, value=1)
+    out_fname = tmp_path / "out.h5"
+    create_virtual_file(tmp_path / "ttbar*.h5", out_fname=out_fname)
+
+    _write_data_files(tmp_path, "zprime", n_files=1, value=2)
+    create_virtual_file(tmp_path / "zprime*.h5", out_fname=out_fname)
+    with h5py.File(out_fname) as f:
+        assert len(f["data"]) == 5
+        assert set(f["data"][:]) == {2}
 
 
 def test_main():

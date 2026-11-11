@@ -270,6 +270,49 @@ def aggregate_cutbookkeeper(
     return accum
 
 
+def pattern_stem(pattern: Path | str) -> str:
+    """Turn the file-name part of a pattern into a string usable in a file name.
+
+    Parameters
+    ----------
+    pattern : Path | str
+        Glob or regex pattern of the input files.
+
+    Returns
+    -------
+    str
+        Sanitised pattern, e.g. "ttbar" for "ttbar*.h5". Empty for a bare "*.h5".
+    """
+    stem = Path(pattern).name.removesuffix(".h5")
+    return re.sub(r"[^\w.-]+", "_", stem).strip("_.")
+
+
+def vds_sources_changed(vds_fname: Path, fnames: list[str]) -> bool:
+    """Check if an existing virtual file points to other files than the given ones.
+
+    Parameters
+    ----------
+    vds_fname : Path
+        Path to the existing virtual file.
+    fnames : list[str]
+        Input files the virtual file should be built from.
+
+    Returns
+    -------
+    bool
+        True if the virtual datasets reference a different set of files.
+        False if they match or the file holds no virtual datasets.
+    """
+    with h5py.File(vds_fname, "r") as f:
+        sources = {
+            Path(src.file_name).resolve()
+            for obj in f.values()
+            if isinstance(obj, h5py.Dataset) and obj.is_virtual
+            for src in obj.virtual_sources()
+        }
+    return bool(sources) and sources != {Path(fname).resolve() for fname in fnames}
+
+
 def create_virtual_file(
     pattern: Path | str,
     out_fname: Path | str | None = None,
@@ -285,13 +328,15 @@ def create_virtual_file(
     pattern : Path | str
         Pattern of the input files used. Wildcard is supported
     out_fname : Path | str | None, optional
-        Output path to which the virtual dataset file is written. By default None
+        Output path to which the virtual dataset file is written. By default None,
+        which writes to "vds/<pattern>.h5" next to the inputs ("vds/vds.h5" for "*.h5").
     use_regex : bool, optional
         If you want to use regex instead of glob, by default False
     regex_path : str | None, optional
         Regex logic used to define the input files, by default None
     overwrite : bool, optional
-        Decide, if an existing output file is overwritten, by default False
+        Decide, if an existing output file is overwritten, by default False.
+        An existing file is always rebuilt if it points to other input files.
     bookkeeper_name : str, optional
         Name of the cut bookkeeper in the h5 files.
 
@@ -326,12 +371,13 @@ def create_virtual_file(
     if out_fname is None:
         if len({Path(f).parent for f in fnames}) != 1:
             raise ValueError("Give --output when files reside in multiple dirs")
-        out_fname = Path(fnames[0]).parent / "vds" / "vds.h5"
+        stem = pattern_stem(pattern_str)
+        out_fname = Path(fnames[0]).parent / "vds" / f"{stem or 'vds'}.h5"
     else:
         out_fname = Path(out_fname)
 
-    # If overwrite is not active and a file exists, stop here
-    if not overwrite and out_fname.is_file():
+    # Reuse an existing file unless overwrite is active or its inputs changed
+    if not overwrite and out_fname.is_file() and not vds_sources_changed(out_fname, fnames):
         return out_fname
 
     # Identify common groups across all files

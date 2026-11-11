@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from ftag.labels import remove_suffix
-from ftag.vds import create_virtual_file
+from ftag.vds import create_virtual_file, pattern_stem
 
 
 @dataclass(frozen=True)
@@ -102,7 +102,8 @@ class Sample:
                 continue
 
             p = Path(filepath)
-            out_fname = Path(self.vds_dir) / f"{p.parent.name}_vds.h5"
+            name = "_".join(filter(None, [p.parent.name, pattern_stem(p)]))
+            out_fname = Path(self.vds_dir) / f"{name}_vds.h5"
             out.append(create_virtual_file(p, out_fname=out_fname, **kwargs))
 
         return out
