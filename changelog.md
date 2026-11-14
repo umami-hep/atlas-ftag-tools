@@ -2,6 +2,8 @@
 
 ### [Latest]
 
+- Fix `weighted_percentile` losing precision for samples with millions of entries when the weights sum to less than 10^6, by always accumulating the CDF in float64
+
 ### [v0.3.8](https://github.com/umami-hep/atlas-ftag-tools/releases/tag/v0.3.8) (11.11.2026)
 
 - Fix wildcard samples in the same directory sharing one default virtual file, and rebuild virtual files whose inputs changed [#180](https://github.com/umami-hep/atlas-ftag-tools/pull/180)

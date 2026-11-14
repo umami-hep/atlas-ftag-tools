@@ -15,6 +15,7 @@ from ftag.utils.metrics import (
     calculate_rejection_error,
     get_discriminant,
     save_divide,
+    weighted_percentile,
 )
 
 set_log_level(logger, "DEBUG")
@@ -90,6 +91,42 @@ class SaveDivideTestCase(unittest.TestCase):
         denominator = np.array([2, 4, 6])
         result = save_divide(numerator, denominator)
         self.assertIsInstance(result, np.ndarray, "Expected output to be a numpy array")
+
+
+class WeightedPercentileTestCase(unittest.TestCase):
+    """Test class for the weighted_percentile function."""
+
+    def setUp(self):
+        rng = np.random.default_rng(42)
+        # Millions of entries, as for large physics samples
+        self.arr = rng.normal(size=2_000_000)
+        self.percentiles = np.array([0.02, 0.5, 0.98])
+
+    def test_unit_weights_match_numpy(self):
+        """Without weights, the result is numpy's linear percentile."""
+        np.testing.assert_allclose(
+            weighted_percentile(self.arr, self.percentiles),
+            np.percentile(self.arr, 100 * self.percentiles),
+            atol=1e-6,
+        )
+
+    def test_small_weights_match_unit_weights(self):
+        """Constant small weights, e.g. cross section / sum of weights, change nothing."""
+        weights = np.full(len(self.arr), 3e-12)
+        np.testing.assert_allclose(
+            weighted_percentile(self.arr, self.percentiles, weights=weights),
+            np.percentile(self.arr, 100 * self.percentiles),
+            atol=1e-6,
+        )
+
+    def test_invariant_under_weight_scaling(self):
+        """Scaling all weights by a constant does not change the percentiles."""
+        weights = np.random.default_rng(1).uniform(0.5, 1.5, len(self.arr))
+        np.testing.assert_allclose(
+            weighted_percentile(self.arr, self.percentiles, weights=weights * 1e-9),
+            weighted_percentile(self.arr, self.percentiles, weights=weights * 1e9),
+            atol=1e-6,
+        )
 
 
 class CalcEffTestCase(unittest.TestCase):
