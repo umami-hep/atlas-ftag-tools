@@ -100,16 +100,15 @@ def weighted_percentile(
     if weights is None:
         weights = np.ones_like(arr)
 
-    # Set dtype to float64 if the weights are too large
-    dtype = np.float64 if np.sum(weights) > 1000000 else np.float32
-
     # Get an array sorting and sort the array and the weights
     ix = np.argsort(arr)
     arr = arr[ix]
     weights = weights[ix]
 
-    # Return the cumulative sum
-    cdf = np.cumsum(weights, dtype=dtype) - 0.5 * weights
+    # Return the cumulative sum. Always accumulate in float64: the precision of a cumulative
+    # sum depends on the number of entries, not on the size of the weights, and float32 shifts
+    # the percentiles of samples with millions of entries.
+    cdf = np.cumsum(weights, dtype=np.float64) - 0.5 * weights
     cdf -= cdf[0]
     cdf /= cdf[-1]
 
