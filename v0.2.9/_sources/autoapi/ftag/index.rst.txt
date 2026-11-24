@@ -20,10 +20,8 @@ Submodules
    /autoapi/ftag/flavours/index
    /autoapi/ftag/git_check/index
    /autoapi/ftag/hdf5/index
-   /autoapi/ftag/labeller/index
    /autoapi/ftag/mock/index
    /autoapi/ftag/sample/index
-   /autoapi/ftag/track_selector/index
    /autoapi/ftag/transform/index
    /autoapi/ftag/vds/index
    /autoapi/ftag/wps/index
